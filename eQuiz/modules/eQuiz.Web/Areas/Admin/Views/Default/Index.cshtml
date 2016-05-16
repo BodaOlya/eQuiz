@@ -1,16 +1,45 @@
-﻿
-@{
-    ViewBag.Title = "Index";
+﻿@{
     Layout = "~/Views/Shared/Layout.cshtml";
 }
 
-@section HeadStyles 
-{    
+<div ng-app="equizModule">
+    <div ng-controller="LayoutController as lc">
+        <div layout="row" style="padding:10px">
+            <div>
+                <button style="text-decoration:solid; font-size:20px" ng-click="lc.GoToReview()">
+                    Students
+                </button>
+                <button style="text-decoration:solid; font-size:20px">
+                    Quizzes
+                </button>
+                <label style="text-decoration:solid; font-size:20px; float:right">
+                    Full Name
+                </label>
+            </div>
+        </div>
+        <div compile="lc.review"></div>
+    </div>
+</div>
+
+@section FootScripts
+{
+    <script src="~/Scripts/app/shared/equiz.module.js"></script>
+
+    <script src="~/Areas/Admin/Scripts/review/group.filter.js"></script>
+    <script src="~/Areas/Admin/Scripts/review/highlight.filter.js"></script>
+    <script src="~/Areas/Admin/Scripts/review/start-from.filter.js"></script>
+
+    <script src="~/Areas/Admin/Scripts/quizReview/quiz-review-data.service.js"></script>
+    <script src="~/Areas/Admin/Scripts/review/review-data.service.js"></script>
+    <script src="~/Areas/Admin/Scripts/shared-values.service.js"></script>
+    <script src="~/Areas/Admin/Scripts/student/student-data.service.js"></script>
+
+    <script src="~/Areas/Admin/Scripts/quizReview/quiz-review.controller.js"></script>
+    <script src="~/Areas/Admin/Scripts/review/review.controller.js"></script>
+    <script src="~/Areas/Admin/Scripts/student/student.controller.js"></script>
+    <script src="~/Areas/Admin/Scripts/compile.directive.js"></script>
+    <script src="~/Areas/Admin/Scripts/layout.controller.js"></script>
+
+    <link href="~/Areas/Admin/Styles/bootstrap-combined.css" rel="stylesheet" />
     <link href="~/Areas/Admin/Styles/equiz-temp.css" rel="stylesheet" />
 }
-
-<h2>Hello Admin!!!</h2>
-
-<div>
-    <a href="@Url.Action("Index", "Home", new { area = "" })">Back Home</a>
-</div>

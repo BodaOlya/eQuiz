@@ -1,0 +1,101 @@
+﻿<div ng-controller="StudentController as sc">
+    <h2>{{sc.studentInfo.firstName + ' ' + sc.studentInfo.lastName}}</h2>
+        <div>
+            <ul class="tabLabels">
+                <li><a ng-click="sc.currentTab='Profile';" ng-class="sc.currentTab=='Profile'&&'selected'">Profile</a></li>
+                <li><a ng-click="sc.currentTab='Quizzes';" ng-class="sc.currentTab=='Quizzes'&&'selected'">Quizzes ({{sc.getPassedQuizzes()}})</a></li>
+                <li><a ng-click="sc.currentTab='Comments';" ng-class="sc.currentTab=='Comments'&&'selected'">Comments ({{sc.studentComments.length}})</a></li>
+            </ul>
+        </div>
+
+ <div id="tabContainer">
+     <div id="profileTab" ng-show="sc.currentTab=='Profile'">
+                <form name='profileInfo' ng-submit="sc.saveProfile()" >
+                    <div style="float:left; position:relative; margin-right:40px">
+                        <label>First Name</label>
+                        <input type="text" name="firstName" ng-model="sc.studentInfo.firstName" ng-change="sc.modelChanged = true;" required /><br /><br />
+                        <label>Last Name</label>
+                        <input type="text" name="lastName" ng-model="sc.studentInfo.lastName" ng-change="sc.modelChanged = true;" required /><br /><br />
+                        <label>Phone</label>
+                        <input type="tel" name="phone" ng-model="sc.studentInfo.phone" ng-change="sc.modelChanged = true;" required /><br /><br />
+                    </div>
+                    <div style="position:relative">
+                        <label>E-Mail</label>
+                        <input type="email" ng-model="sc.studentInfo.email" readonly /><br /><br />
+                        <label>User group</label>
+                        <input type="text" ng-model="sc.studentInfo.userGroup" readonly /><br /><br />
+
+                    </div>
+                </form>
+            </div>
+
+     <div id="quizzesTab" ng-show="sc.currentTab=='Quizzes'">
+                <table class="reviewTable">
+                    <thead>
+                        <tr>
+                            <th ng-repeat="h in sc.studentQuizzesHeaders">
+                                <a href="#" class="link" ng-click="sc.refreshPredicate(h.predicateIndex); sc.order(sc.myPredicate[h.predicateIndex],null)">
+                                    <span class="sortorder" ng-show="sc.direction(h.predicateIndex) !== null" ng-class="{direction:sc.direction(h.predicateIndex)}"></span>
+                                    {{h.name}}
+                                </a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="q in sc.studentQuizzes | startFrom: sc.tablePage*sc.resultsPerPage | limitTo:sc.resultsPerPage" style="height: 50px">
+                            <td><a class="link" ng-click="sc.setQuiz(q.name); lc.GoToQuiz()">{{q.name}}</a></td>
+                            <td>{{q.state}}</td>
+                            <td>{{q.questions}}</td>
+                            <td>{{q.verificationType}}</td>
+                            <td>{{q.otherDetails}}</td>
+                        </tr>
+                    </tbody>
+                </table> 
+                 <div layout="row">
+                     <span>
+                         Rows on the page:
+                         <select class="md-primary" ng-model="sc.resultsPerPage" ng-options="p for p in sc.resultsCount"></select>
+                     </span>
+                     <span ng-show="sc.numberOfPages() &gt; 1">
+                         <button ng-disabled="sc.tablePage==0" ng-click="sc.tablePage=sc.tablePage-1">Previous page</button>
+                         <span ng-repeat="i in sc.getNumber(sc.numberOfPages()) track by $index">
+                             <button ng-click="sc.goToPage($index)"><span ng-class="{ 'table-active-page' : sc.tablePage==$index}">{{$index+1}}</span></button>
+                         </span>
+                         <button ng-disabled="sc.tablePage==sc.numberOfPages()-1" ng-click="sc.tablePage=sc.tablePage+1">Next page</button>
+                     </span>
+                 </div>
+            </div>
+
+     <div id="commentsTab" ng-show="sc.currentTab=='Comments'">
+         <div style="float:left; position:relative; margin-right:40px; width:550px">
+             <div style="height:300px; overflow:auto" width:auto>
+                 <div ng-repeat="comment in sc.studentComments">
+                     <label>{{comment.date + ' by ' + comment.author }}</label>
+                     <div style="border:1px solid grey; width:500px; height:auto">
+                         {{comment.text}}
+                     </div>
+                 </div>
+             </div>
+             <a class="link" ng-click="sc.toggleNewCommentFrame()">Add new</a>
+         </div>
+         <div style="position:relative">
+                <form name="addNewCommentForm" ng-submit = "sc.addComment()" ng-show="sc.newCommentFrame">
+                    <label>Author:</label>
+                    <input class="authorTextBox" name="commentAuthor" type="text" ng-model="sc.newComment.author" required />
+                    <label>Text:</label>
+                    <textarea class="commentTextBox" name="commentText" ng-model="sc.newComment.text" cols="80" rows="5" required></textarea>
+                    <br />
+                    <button type="submit">Add comment</button>
+                    <button ng-click="sc.toggleNewCommentFrame()">Close</button>
+                </form>
+         </div>
+    </div>
+</div>
+<br />
+    <div class="footerButtons" layout="row">
+        <button ng-click="sc.saveProfile()" ng-disabled="!sc.validationCheck()">Save</button>
+        <div></div>
+        <button ng-click="sc.cancelProfile()">Cancel</button>
+    </div>
+
+<script src="~/Scripts/app/admin/student/equiz.studentController.js"></script>

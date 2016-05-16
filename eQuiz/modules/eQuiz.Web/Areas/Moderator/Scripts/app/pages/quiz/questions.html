@@ -1,0 +1,151 @@
+﻿<div class="tab" novalidate>
+    <ng-form name="qc.questionsForm">
+        <div ng-form="oneQuestionForm" ng-repeat="question in qc.questions track by $index">
+            <div class="row" show-error>
+                <div class="col-sm-4 col-md-3">
+                    <p class="control-label">
+                        Question #{{ $index + 1 }}
+                    </p>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                    <textarea class="questionText form-control" ng-model="question.QuestionText" required name="QuestionText">{{ question.QuestionText }}</textarea>
+                    <div ng-messages="oneQuestionForm.QuestionText.$error" class="help-block hide">
+                        <p ng-message="required">Question text is required</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-md-2">
+                    <p class="control-label">
+                        Type
+                    </p>
+                </div>
+                <div class="col-sm-3 col-md-3" ng-repeat="type in qc.questionTypes | orderBy: 'Id'">
+                    <button class="form-control" ng-class="{active: question.QuestionTypeId==type.Id}" ng-click="qc.setQuestionType(question, type.Id, oneQuestionForm)">
+                        {{ type.TypeName }}
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 col-md-2">
+                    <p class="control-label">
+                        Tags
+                    </p>
+                </div>
+                <div class="col-sm-12 col-md-12">
+                    <input class="form-control" ng-list type="text" ng-model="qc.tags[$index]">
+                </div>
+            </div>
+            <div ng-switch on="question.QuestionTypeId">
+                <div ng-switch-when="1">
+                </div>
+                <div ng-switch-when="2">
+                    <div class="row">
+                        <div class="col-sm-2 col-md-2">
+                            <p class="control-label">
+                                Options
+                            </p>
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <p class="control-label">
+                                <a href class="control-label" ng-click="qc.addNewAnswer(question, $index)">Add new</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <table class="col-sm-12 col-md-12">
+                            <thead>
+                            <th class="col-sm-8 col-md-8 control-label" ng-click="qc.order($index, 'AnswerText')">{{ qc.showOrderArrow($index, "AnswerText") }} Answer</th>
+                            <th class="col-sm-2 col-md-2 control-label" ng-click="qc.order($index, 'IsRight')">{{ qc.showOrderArrow($index, "IsRight") }} Is correct</th>
+                            <th class="col-sm-2 col-md-2 control-label">Delete</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-form="oneAnswerForm" ng-repeat="answer in qc.answers[$index] | orderBy:qc.orderArray[$index].predicate:qc.orderArray[$index].reverse">
+                                    <td class="col-sm-8 col-md-8">
+                                        <div class="row" show-error>
+                                            <input class="questionText form-control" type="text" ng-model="answer.AnswerText" required name="AnswerText">
+                                            <div ng-messages="oneAnswerForm.AnswerText.$error" class="help-block hide">
+                                                <p ng-message="required">Answer text is required</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-sm-2 col-md-2">
+                                        <input type="checkbox" class="form-control" ng-click="qc.checkAnswerForSelectOne(answer, question)" ng-model="answer.IsRight">
+                                    </td>
+                                    <td class="col-sm-2 col-md-2">
+                                        <a href ng-click="qc.deleteAnswer(answer, question)">Delete</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row" ng-show="qc.getAnswerCount($index, oneQuestionForm)==0">
+                        <div class="col-sm-8 col-md-6 has-error">
+                            <p class="control-label">Required at least 1 answer</p>
+                        </div>
+                    </div>
+                    <div class="row" ng-show="qc.getCheckedCountForSelectOne($index, oneQuestionForm)!=1">
+                        <div class="col-sm-8 col-md-6 has-error">
+                            <p class="control-label">Required 1 correct answer</p>
+                        </div>
+                    </div>
+                </div>
+                <div ng-switch-when="3">
+                    <div class="row">
+                        <div class="col-sm-2 col-md-2">
+                            <p class="control-label">
+                                Options
+                            </p>
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <p class="control-label">
+                                <a href class="control-label" ng-click="qc.addNewAnswer(question, $index)">Add new</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <table class="col-sm-12 col-md-12">
+                            <thead>
+                            <th class="col-sm-8 col-md-8 control-label" ng-click="qc.order($index, 'AnswerText')">{{ qc.showOrderArrow($index, "AnswerText") }} Answer</th>
+                            <th class="col-sm-2 col-md-2 control-label" ng-click="qc.order($index, 'IsRight')">{{ qc.showOrderArrow($index, "IsRight") }} Is correct</th>
+                            <th class="col-sm-2 col-md-2 control-label">Delete</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-form="oneAnswerForm" ng-repeat="answer in qc.answers[$index] | orderBy:qc.orderArray[$index].predicate:qc.orderArray[$index].reverse">
+                                    <td class="col-sm-8 col-md-8">
+                                        <div class="row" show-error>
+                                            <input class="questionText form-control" type="text" ng-model="answer.AnswerText" required name="AnswerText">
+                                            <div ng-messages="oneAnswerForm.AnswerText.$error" class="help-block hide">
+                                                <p ng-message="required">Answer text is required</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-sm-2 col-md-2">
+                                        <input type="checkbox" class="form-control" ng-model="answer.IsRight">
+                                    </td>
+                                    <td class="col-sm-2 col-md-2">
+                                        <a href ng-click="qc.deleteAnswer(answer, question)">Delete</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row" ng-show="qc.getAnswerCount($index, oneQuestionForm)==0">
+                        <div class="col-sm-8 col-md-6 has-error">
+                            <p class="control-label">Required at least 1 answer</p>
+                        </div>
+                    </div>
+                    <div class="row" ng-show="qc.getCheckedCountForSelectMany($index, oneQuestionForm)==0">
+                        <div class="col-sm-8 col-md-6 has-error">
+                            <p class="control-label">Required at least 1 correct answer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div align="right">
+            <a href ng-click="qc.addNewQuestion()">Add new</a>
+            <a href>Add existing one</a>
+        </div>
+    </ng-form>
+</div>

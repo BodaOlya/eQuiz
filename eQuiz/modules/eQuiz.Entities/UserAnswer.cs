@@ -21,5 +21,6 @@ namespace eQuiz.Entities
     
         public virtual QuestionAnswer QuestionAnswer { get; set; }
         public virtual QuizPassQuestion QuizPassQuestion { get; set; }
+        public virtual tblAnswer tblAnswer { get; set; }
     }
 }

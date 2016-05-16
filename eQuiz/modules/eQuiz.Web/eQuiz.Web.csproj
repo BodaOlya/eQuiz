@@ -43,11 +43,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -89,7 +101,42 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Admin\Scripts\compile.directive.js" />
+    <Content Include="Areas\Admin\Scripts\layout.controller.js" />
+    <Content Include="Areas\Admin\Scripts\quiz-review.html" />
+    <Content Include="Areas\Admin\Scripts\quizReview\quiz-review-data.service.js" />
+    <Content Include="Areas\Admin\Scripts\quizReview\quiz-review.controller.js" />
+    <Content Include="Areas\Admin\Scripts\shared-values.service.js" />
+    <Content Include="Areas\Admin\Scripts\review\group.filter.js" />
+    <Content Include="Areas\Admin\Scripts\review\highlight.filter.js" />
+    <Content Include="Areas\Admin\Scripts\review\review.controller.js" />
+    <Content Include="Areas\Admin\Scripts\review\review-data.service.js" />
+    <Content Include="Areas\Admin\Scripts\review\start-from.filter.js" />
+    <Content Include="Areas\Admin\Scripts\shared\popUp.js" />
+    <Content Include="Areas\Admin\Scripts\student\student.controller.js" />
+    <Content Include="Areas\Admin\Scripts\student\student-data.service.js" />
+    <Content Include="Areas\Admin\Scripts\student.html" />
+    <Content Include="Areas\Admin\Styles\bootstrap-combined.css" />
     <Content Include="Areas\Admin\Styles\equiz-temp.css" />
+    <Content Include="Areas\Admin\Scripts\review.html" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quizzesList\quizzes.controller.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quizzesList\quizzes.filters.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quizzesList\quizzes.module.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quizzesList\quizzes.service.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quiz\question.controller.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quiz\question.service.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quiz\questions.html" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.config.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.controller.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.html" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.module.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.service.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quiz\show-time-span-error.directive.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quiz\userGroup.service.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quiz\show-error.directive.js" />
+    <Content Include="Areas\Moderator\Scripts\libs\uib-paging\ui-bootstrap-custom-1.3.2.min.js" />
+    <Content Include="Areas\Moderator\Scripts\libs\uib-paging\ui-bootstrap-custom-tpls-1.3.2.min.js" />
+    <Content Include="Areas\Moderator\Styles\bootstrap.css" />
     <Content Include="Areas\Moderator\Styles\equiz-temp.css" />
     <Content Include="Areas\Student\Styles\equiz-temp.css" />
     <Content Include="Global.asax" />
@@ -104,6 +151,10 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\DefaultController.cs" />
     <Compile Include="Areas\Moderator\Controllers\DefaultController.cs" />
+    <Compile Include="Areas\Moderator\Controllers\QuizController.cs" />
+    <Compile Include="Areas\Moderator\Controllers\QuizQuestionController.cs" />
+    <Compile Include="Areas\Moderator\Controllers\UserGroupController.cs" />
+    <Compile Include="Areas\Moderator\Models\QuizListModel.cs" />
     <Compile Include="Areas\Moderator\ModeratorAreaRegistration.cs" />
     <Compile Include="Areas\Student\Controllers\AccountController.cs" />
     <Compile Include="Areas\Student\Controllers\DefaultController.cs" />
@@ -124,14 +175,19 @@
     <Content Include="Areas\Moderator\Views\web.config" />
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Student\Views\web.config" />
-    <Content Include="Areas\Admin\Views\Default\Index.cshtml" />
     <Content Include="Areas\Moderator\Views\Default\Index.cshtml" />
     <Content Include="Areas\Student\Views\Default\Index.cshtml" />
     <Content Include="Views\Home\MainLogin.cshtml" />
     <Content Include="Areas\Student\Views\Default\Dashboard.cshtml" />
     <Content Include="Areas\Student\Views\Default\Details.cshtml" />
     <Content Include="Areas\Student\Views\Account\Login.cshtml" />
+    <Content Include="Areas\Moderator\Views\Quiz\Edit.cshtml" />
+    <Content Include="Areas\Moderator\Views\Shared\_Header.cshtml" />
+    <Content Include="Areas\Moderator\Views\Quiz\Index.cshtml" />
+    <Content Include="Areas\Moderator\Styles\bootstrap.css.map" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quiz\unique-quiz-name.directive.js" />
     <Content Include="connections.config" />
+    <Content Include="Areas\Admin\Views\Default\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -142,11 +198,9 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\Admin\Scripts\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
-    <Folder Include="Areas\Moderator\Models\" />
-    <Folder Include="Areas\Moderator\Scripts\" />
-    <Folder Include="Areas\Moderator\Views\Shared\" />
+    <Folder Include="Areas\Moderator\Views\QuizQuestion\" />
+    <Folder Include="Areas\Moderator\Views\UserGroup\" />
     <Folder Include="Areas\Student\Models\" />
     <Folder Include="Areas\Student\Scripts\" />
     <Folder Include="Areas\Student\Views\Shared\" />

@@ -9,8 +9,24 @@
     <link href="~/Areas/Moderator/Styles/equiz-temp.css" rel="stylesheet" />
 }
 
-<h2>Hello Moderator!!!</h2>
+<body>
+    <div class="moderator-dashboard-left">
+        <p><h2>Quizzes: @ViewBag.QuizzesCount</h2></p>
+        <p>Active: @ViewBag.ActiveQuizzesCount</p>
+        <p>Inactive: @ViewBag.InactiveQuizzesCount</p>
+        <p><h2>Questions: @ViewBag.QuestionsCount</h2></p>
+        <p>Active: @ViewBag.ActiveQuestionsCount</p>
+        <p>Inactive: @(ViewBag.QuestionsCount - ViewBag.ActiveQuestionsCount)</p>
+        <div>
+            <a href="@Url.Action("Index", "Home", new { area = "" })">Back Home</a>
+        </div>
+    </div>
 
-<div>
-    <a href="@Url.Action("Index", "Home", new { area = "" })">Back Home</a>
-</div>
+    <div class="moderator-dashboard-right">
+        <p><h2>User groups: @ViewBag.UserGroupsCount</h2></p>
+        <p>Active: </p>
+        <p>Archive: </p>
+        <p>Students: @ViewBag.StudentsCount</p>
+    </div>
+
+</body>

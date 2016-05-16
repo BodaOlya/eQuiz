@@ -1,1 +1,193 @@
-﻿
+﻿.highlightedText  {
+    background: lightblue;
+}
+
+.sortorder:after {
+    content: '\25b2';
+}
+
+.sortorder.direction:after {
+    content: '\25bc';
+}
+
+.reviewTable {
+        width: 100%;
+        height: auto;
+        text-align: left;
+}
+th, td {
+    border-bottom: 1px solid #ddd;
+}
+
+.table-active-page {
+    font-weight: bold;
+}
+
+.groupBtn {
+    float:right;
+}
+
+.tabLabels {
+    margin: 0;
+    padding: 0 5px 0 0;
+    float: left;
+    list-style: none;
+    height: 32px;
+    border-bottom: 1px solid #999;
+    border-left: 1px solid #999;
+    width: auto;
+}
+
+#tabContainer {
+    height:300px;
+    border:1px solid gray;
+    padding:40px;
+    width:90em;
+}
+
+.tabLabels li {
+    float: left;
+    margin: 0;
+    padding: 0;
+    height: 31px;
+    line-height: 31px;
+    border: 1px solid #999;
+    border-left: none;
+    margin-bottom: -1px;
+    background: #F0F0F0;
+    overflow: hidden;
+    position: relative;
+}
+
+.tabLabels li a {
+    text-decoration: none;
+    color: #000;
+    display: block;
+    font-size: 1.2em;
+    padding: 0 20px;
+    border: 1px solid #fff;
+    outline: none;
+}
+
+.tabLabels li a:hover {
+    background: #ccc;
+    cursor:pointer;
+}   
+
+html .tabLabels li.active, html .tabLabels li.active a:hover  {
+    background: #fff;
+    border-bottom: 1px solid #fff;
+}
+
+.tabLabels li a.selected
+{
+    color: #000;
+    font-weight:bold;
+    background-color: #fff;
+    border-bottom: 1px solid #fff;
+}
+
+.footerButtons {
+    
+    text-align:center;
+    font:14px
+}
+
+.link
+{
+    cursor:pointer;
+}
+
+.commentTextBox
+{
+    resize: none;
+    width: 300px;
+    height: 170px;
+}
+
+.authorTextBox
+{
+    width: 300px;
+}
+
+.footerButtons button {
+    width:170px; 
+    height:40px
+}
+
+.footerButtons div {
+    width:200px;
+    height:auto;
+    display:inline-block;
+}
+
+.ng-invalid.ng-touched {
+border: 1px solid red;
+}
+
+.ng-valid.ng-touched {
+border: 1px solid green;
+}
+
+/* Next are quizReview styles */
+
+div.confirm_btns_section {    
+    text-align: center;    
+    padding: 10px 50px 10px 50px;
+    margin: 10px;    
+}
+
+button.btn-lightgreen-hover:hover {
+    background: lightgreen;   
+    color: black;
+}
+
+button.btn-lightgrey-hover:hover {
+    background: lightgrey;    
+    color: black;
+}
+button.btn-lightcoral-hover:hover {
+    background: lightcoral;      
+    color: black;
+}
+
+button.btn-standart {
+    background: white;
+    color: black;
+}
+
+button.btn-lightgreen {
+    background: lightgreen;    
+}
+
+button.btn-lightgrey {
+    background: lightgrey;    
+}
+button.btn-lightcoral {
+    background: lightcoral;      
+}
+
+.btn_spacing {
+    margin: 0px 5px 0px 5px;
+}
+
+.btn_length {
+    width: 100px;
+}
+
+.display_inline {
+    display: inline-block;         
+    margin: 5px 50px 0px 5px;
+}
+
+.spacing {
+    margin: 10px 30px;
+    padding: 0px 5px 0px 5px;
+}
+
+.textarea {
+    width: 95%;
+    height: 100px;   
+}
+
+/* quizReview Styles END */

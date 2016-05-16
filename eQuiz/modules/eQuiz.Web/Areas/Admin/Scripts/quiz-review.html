@@ -1,0 +1,86 @@
+﻿<div ng-controller="quizReviewController as ReviewCtrl">
+
+    <div class="spacing">
+        <h4 ng-cloak>
+            {{ReviewCtrl.student.first_name + " " + ReviewCtrl.student.last_name + " " + ReviewCtrl.student.parent_name}}
+            , {{ReviewCtrl.group.group_name}}, {{ReviewCtrl.quiz.quiz_name}}
+        </h4>
+    </div>
+
+    <div class="spacing" ng-cloak>
+        <div class="display_inline">
+            <label> Started: <b> {{ReviewCtrl.quiz.start_date}} </b></label>
+            <label> Finished: <b> {{ReviewCtrl.quiz.end_date + " " + minuteDateDiff()}} </b> </label>
+        </div>
+
+        <div class="display_inline">
+            <label> Total: <b> {{ReviewCtrl.quiz.questions.length}} </b> </label>
+            <label> In verification:<b> {{ReviewCtrl.inVerification}} </b> </label>
+        </div>
+
+        <div class="display_inline">
+            <label> Passed: <b> {{ReviewCtrl.passed}} </b> </label>
+            <label> Not passed: <b> {{ReviewCtrl.notPassed}} </b> </label>
+        </div>
+
+        <div class="display_inline">
+            <label> Score: <b> {{ReviewCtrl.passed}} / {{ReviewCtrl.passed + ReviewCtrl.inVerification + ReviewCtrl.notPassed}} </b> </label>
+        </div>
+    </div>
+
+    <div class="spacing">
+        <span>
+            Filter:
+            <a>All</a>
+            <a>In verification</a>
+            <a>Passed</a>
+            <a>Not passed</a>
+        </span>
+    </div>
+
+    <div class="spacing">
+        <div ng-repeat="item in ReviewCtrl.quiz.questions"  ng-cloak>
+            <div ng-if="item.questionType == 'Manual'">
+                <div>
+                    <p> <b>#</b> {{item.question}} </p>
+                </div>
+
+                <div>
+                    <textarea class="textarea" readonly> {{item.answer}} </textarea>
+                </div>
+
+                <div >
+                    <div class="display_inline">
+                        <label> State:</label>
+                    </div>
+
+                    <div class="btn-group display_inline"> <!-- 0 - in verification, 1 - passed, 2 - not passed -->
+                        <button ng-click="ReviewCtrl.setQuestionStatus(item.question_id, 0)" ng-class="{'btn-lightgrey': ReviewCtrl.setButtonColor(item.questionStatus, 0)}" type="button" class="btn btn-primary btn-lightgrey-hover btn-standart">In Verification</button>
+                        <button ng-click="ReviewCtrl.setQuestionStatus(item.question_id, 1)" ng-class="{'btn-lightgreen': ReviewCtrl.setButtonColor(item.questionStatus, 1)}" type="button" class="btn btn-primary btn-lightgreen-hover btn-standart">Passed</button>
+                        <button ng-click="ReviewCtrl.setQuestionStatus(item.question_id, 2)" ng-class="{'btn-lightcoral': ReviewCtrl.setButtonColor(item.questionStatus, 2)}" type="button" class="btn btn-primary btn-lightcoral-hover btn-standart">Not Passed</button>
+                    </div>
+                </div>
+                <br>
+            </div>
+            
+            <div ng-if="item.questionType == 'Auto'">
+                <div>
+                    <p> <b>#</b> {{item.question}} </p>
+                </div>
+
+                <div ng-repeat="anw in item.answers">                    
+                    <input ng-checked="ReviewCtrl.addAttriChecked(item.question_id, anw.id)" type="checkbox" onclick="return false;" onkeydown="return false;"> {{anw.answer}} <br>                    
+                </div>
+            </div>  
+            <br>       
+        </div>
+    </div>
+
+    <div class="confirm_btns_section spacing">
+        <span class="btn_spacing">
+            <button ng-click="ReviewCtrl.saveQuizReview()" type="button" class="btn_spacing btn_length">Save</button>
+            <button ng-click="lc.GoToStudent()" type="button" class="btn_spacing btn_length">Close</button>
+            <button ng-click="ReviewCtrl.cancelQuizReview()" type="button" class="btn_spacing btn_length">Cancel</button>
+        </span>
+    </div>
+</div>

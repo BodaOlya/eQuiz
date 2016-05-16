@@ -1,1 +1,150 @@
-﻿
+﻿.tab {
+    background-color: lightgray;
+}
+
+.tab-navigation-button {
+    padding: 10px;
+    background-color: white;
+    color: black;
+    border-color: black;
+    border-width: 2px;
+    border-style: solid;
+    border-bottom: none;
+}
+
+    .tab-navigation-button.active {
+        background-color: lightgray;
+    }
+
+.control-label {
+    margin-bottom: 0px;
+    margin-top: 7px;
+}
+
+.help-block{
+    margin-bottom: 0px;
+}
+
+.help-block p{
+    margin-bottom: 0px;
+}
+
+.hide{
+    display: none;
+}
+
+.inline-block{
+    display: inline-block;
+}
+
+.row {
+    margin: 5px 0px 10px 0px;
+}
+
+.tab {
+    padding: 5px;
+    border-color: black;
+    border-width: 2px;
+    border-style: solid;
+    margin-bottom: 20px;
+}
+
+input[type=number].small {
+    width: 50px;
+    padding-right: 2px;
+}
+
+.lightgray{
+    background-color: lightgray;
+}
+
+button.active {
+    background-color: lightgray;
+}
+
+.moderator-top-header li {
+    font-size: 2rem;
+    display: inline;
+    list-style-type: none;
+    padding-right: 20px;
+}
+
+.moderator-top-header {
+    margin-top: 5px;
+    border-bottom: 2px solid black;
+}
+
+ul.moderator-top-header li:last-child {
+    float: right;
+}
+
+#container {
+    width: 60%;
+    margin: 0 auto;
+}
+
+thead, th, td {
+    border: 1px solid black;
+}
+
+.questionText {
+    max-width: 100%;
+    width: 100%;
+}
+
+.moderator-dashboard-left {
+    position: absolute;
+    left: 5%;
+    top: 5%;
+    width: 50%;
+}
+
+.moderator-dashboard-right {
+    position: absolute;
+    right: 5%;
+    top: 5%;
+    width: 50%;
+}
+
+.listQuizzes-wrapper {
+    margin-left: 40px;
+}
+
+.container-quizzes a {
+    color: blue;
+}
+
+.container-quizzes {
+    margin: 0 auto;
+    width: 60%;
+}
+
+.table-quizzes {
+    table-layout: fixed;
+    /*overflow-x:auto;*/
+    border-collapse: collapse;
+    border: 1px solid black;
+    width: 50%;
+}
+
+    .table-quizzes th, td {
+        text-align: left;
+        padding: 6px;
+        border: 1px solid black;
+    }
+
+    .table-quizzes thead {
+        background-color: darkgrey;
+    }
+
+    .table-quizzes a {
+        text-decoration: none;
+    }
+
+    .table-quizzes th a, .table-quizzes th a:hover {
+        color: black;
+    }
+
+    .table-quizzes td a, .table-quizzes td a:hover {
+        color: deepskyblue;
+    }

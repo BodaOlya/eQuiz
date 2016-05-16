@@ -19,6 +19,7 @@ namespace eQuiz.Entities
         {
             this.QuizBlocks = new HashSet<QuizBlock>();
             this.QuizPasses = new HashSet<QuizPass>();
+            this.tblQuizVariants = new HashSet<QuizVariant>();
         }
     
         public int Id { get; set; }
@@ -37,5 +38,7 @@ namespace eQuiz.Entities
         public virtual ICollection<QuizBlock> QuizBlocks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuizPass> QuizPasses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QuizVariant> tblQuizVariants { get; set; }
     }
 }

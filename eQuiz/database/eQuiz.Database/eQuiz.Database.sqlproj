@@ -59,8 +59,10 @@
     <Folder Include="Properties" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="create.sql" />
     <None Include="drop.sql" />
     <None Include="insert.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="create.sql" />
   </ItemGroup>
 </Project>

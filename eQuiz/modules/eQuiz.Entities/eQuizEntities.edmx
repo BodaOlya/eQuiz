@@ -5,6 +5,15 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="eQuizModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblAnswer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AnswerText" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AnswerOrder" Type="tinyint" />
+          <Property Name="IsRight" Type="bit" />
+        </EntityType>
         <EntityType Name="tblFacebookUser">
           <Key>
             <PropertyRef Name="Id" />
@@ -35,6 +44,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="QuestionId" Type="int" Nullable="false" />
+          <Property Name="AnswerId" Type="int" Nullable="false" />
           <Property Name="AnswerText" Type="nvarchar(max)" Nullable="false" />
           <Property Name="AnswerOrder" Type="tinyint" />
           <Property Name="IsRight" Type="bit" />
@@ -244,6 +254,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblQuestionAnswer_tblAnswer">
+          <End Role="tblAnswer" Type="Self.tblAnswer" Multiplicity="1" />
+          <End Role="tblQuestionAnswer" Type="Self.tblQuestionAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAnswer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblQuestionAnswer">
+              <PropertyRef Name="AnswerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblQuestionAnswer_tblQuestion">
           <End Role="tblQuestion" Type="Self.tblQuestion" Multiplicity="1" />
           <End Role="tblQuestionAnswer" Type="Self.tblQuestionAnswer" Multiplicity="*" />
@@ -436,11 +458,23 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tblUserAnswer_tblQuestionAnswer">
-          <End Role="tblQuestionAnswer" Type="Self.tblQuestionAnswer" Multiplicity="1" />
+        <Association Name="FK_tblQuizVariant_tblQuiz">
+          <End Role="tblQuiz" Type="Self.tblQuiz" Multiplicity="1" />
+          <End Role="tblQuizVariant" Type="Self.tblQuizVariant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblQuiz">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblQuizVariant">
+              <PropertyRef Name="QuizId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUserAnswer_tblAnswer">
+          <End Role="tblAnswer" Type="Self.tblAnswer" Multiplicity="1" />
           <End Role="tblUserAnswer" Type="Self.tblUserAnswer" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="tblQuestionAnswer">
+            <Principal Role="tblAnswer">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="tblUserAnswer">
@@ -497,6 +531,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="eQuizModelStoreContainer">
+          <EntitySet Name="tblAnswer" EntityType="Self.tblAnswer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblFacebookUser" EntityType="Self.tblFacebookUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblQuestion" EntityType="Self.tblQuestion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblQuestionAnswer" EntityType="Self.tblQuestionAnswer" Schema="dbo" store:Type="Tables" />
@@ -529,6 +564,10 @@
           <AssociationSet Name="FK_tblQuestion_tblTopic" Association="Self.FK_tblQuestion_tblTopic">
             <End Role="tblTopic" EntitySet="tblTopic" />
             <End Role="tblQuestion" EntitySet="tblQuestion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblQuestionAnswer_tblAnswer" Association="Self.FK_tblQuestionAnswer_tblAnswer">
+            <End Role="tblAnswer" EntitySet="tblAnswer" />
+            <End Role="tblQuestionAnswer" EntitySet="tblQuestionAnswer" />
           </AssociationSet>
           <AssociationSet Name="FK_tblQuestionAnswer_tblQuestion" Association="Self.FK_tblQuestionAnswer_tblQuestion">
             <End Role="tblQuestion" EntitySet="tblQuestion" />
@@ -594,8 +633,12 @@
             <End Role="tblQuizVariant" EntitySet="tblQuizVariant" />
             <End Role="tblQuizQuestion" EntitySet="tblQuizQuestion" />
           </AssociationSet>
-          <AssociationSet Name="FK_tblUserAnswer_tblQuestionAnswer" Association="Self.FK_tblUserAnswer_tblQuestionAnswer">
-            <End Role="tblQuestionAnswer" EntitySet="tblQuestionAnswer" />
+          <AssociationSet Name="FK_tblQuizVariant_tblQuiz" Association="Self.FK_tblQuizVariant_tblQuiz">
+            <End Role="tblQuiz" EntitySet="tblQuiz" />
+            <End Role="tblQuizVariant" EntitySet="tblQuizVariant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserAnswer_tblAnswer" Association="Self.FK_tblUserAnswer_tblAnswer">
+            <End Role="tblAnswer" EntitySet="tblAnswer" />
             <End Role="tblUserAnswer" EntitySet="tblUserAnswer" />
           </AssociationSet>
           <AssociationSet Name="FK_tblUserAnswer_tblQuizPassQuestion" Association="Self.FK_tblUserAnswer_tblQuizPassQuestion">
@@ -656,11 +699,13 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="QuestionId" Type="Int32" Nullable="false" />
-          <Property Name="AnswerText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="AnswerOrder" Type="Byte" />
-          <Property Name="IsRight" Type="Boolean" />
           <NavigationProperty Name="Question" Relationship="Self.FK_tblQuestionAnswer_tblQuestion" FromRole="tblQuestionAnswer" ToRole="tblQuestion" />
           <NavigationProperty Name="UserAnswers" Relationship="Self.FK_tblUserAnswer_tblQuestionAnswer" FromRole="tblQuestionAnswer" ToRole="tblUserAnswer" />
+          <Property Name="AnswerId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblAnswer" Relationship="eQuizModel.FK_tblQuestionAnswer_tblAnswer" FromRole="QuestionAnswer" ToRole="tblAnswer" />
+          <Property Name="AnswerText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AnswerOrder" Type="Byte" />
+          <Property Name="IsRight" Type="Boolean" />
         </EntityType>
         <EntityType Name="QuestionTag">
           <Key>
@@ -698,6 +743,7 @@
           <NavigationProperty Name="QuizType" Relationship="Self.FK_tblQuiz_tblQuizType" FromRole="tblQuiz" ToRole="tblQuizType" />
           <NavigationProperty Name="QuizBlocks" Relationship="Self.FK_tblQuizBlock_tblQuiz" FromRole="tblQuiz" ToRole="tblQuizBlock" />
           <NavigationProperty Name="QuizPasses" Relationship="Self.FK_tblQuizPass_tblQuiz" FromRole="tblQuiz" ToRole="tblQuizPass" />
+          <NavigationProperty Name="tblQuizVariants" Relationship="eQuizModel.FK_tblQuizVariant_tblQuiz" FromRole="Quiz" ToRole="QuizVariant" />
         </EntityType>
         <EntityType Name="QuizBlock">
           <Key>
@@ -784,6 +830,7 @@
           <Property Name="QuizId" Type="Int32" Nullable="false" />
           <Property Name="VariantNumber" Type="Byte" Nullable="false" />
           <NavigationProperty Name="QuizQuestions" Relationship="eQuizModel.FK_tblQuizQuestion_tblQuizVariant" FromRole="tblQuizVariant" ToRole="tblQuizQuestion" />
+          <NavigationProperty Name="tblQuiz" Relationship="eQuizModel.FK_tblQuizVariant_tblQuiz" FromRole="QuizVariant" ToRole="Quiz" />
         </EntityType>
         <EntityType Name="Tag">
           <Key>
@@ -832,6 +879,7 @@
           <Property Name="AnswerTime" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="QuestionAnswer" Relationship="Self.FK_tblUserAnswer_tblQuestionAnswer" FromRole="tblUserAnswer" ToRole="tblQuestionAnswer" />
           <NavigationProperty Name="QuizPassQuestion" Relationship="Self.FK_tblUserAnswer_tblQuizPassQuestion" FromRole="tblUserAnswer" ToRole="tblQuizPassQuestion" />
+          <NavigationProperty Name="tblAnswer" Relationship="eQuizModel.FK_tblUserAnswer_tblAnswer" FromRole="UserAnswer" ToRole="tblAnswer" />
         </EntityType>
         <EntityType Name="UserAnswerScore">
           <Key>
@@ -1244,6 +1292,19 @@
             <End Role="tblQuizVariant" EntitySet="QuizVariants" />
             <End Role="tblQuizQuestion" EntitySet="QuizQuestions" />
           </AssociationSet>
+          <EntitySet Name="tblAnswers" EntityType="eQuizModel.tblAnswer" />
+          <AssociationSet Name="FK_tblQuestionAnswer_tblAnswer" Association="eQuizModel.FK_tblQuestionAnswer_tblAnswer">
+            <End Role="tblAnswer" EntitySet="tblAnswers" />
+            <End Role="QuestionAnswer" EntitySet="QuestionAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserAnswer_tblAnswer" Association="eQuizModel.FK_tblUserAnswer_tblAnswer">
+            <End Role="tblAnswer" EntitySet="tblAnswers" />
+            <End Role="UserAnswer" EntitySet="UserAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblQuizVariant_tblQuiz" Association="eQuizModel.FK_tblQuizVariant_tblQuiz">
+            <End Role="Quiz" EntitySet="Quizs" />
+            <End Role="QuizVariant" EntitySet="QuizVariants" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="UserTextAnswer">
           <Key>
@@ -1274,6 +1335,53 @@
             </Principal>
             <Dependent Role="tblQuizQuestion">
               <PropertyRef Name="QuizVariantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblAnswer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AnswerText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AnswerOrder" Type="Byte" />
+          <Property Name="IsRight" Type="Boolean" />
+          <NavigationProperty Name="tblQuestionAnswers" Relationship="eQuizModel.FK_tblQuestionAnswer_tblAnswer" FromRole="tblAnswer" ToRole="QuestionAnswer" />
+          <NavigationProperty Name="tblUserAnswers" Relationship="eQuizModel.FK_tblUserAnswer_tblAnswer" FromRole="tblAnswer" ToRole="UserAnswer" />
+        </EntityType>
+        <Association Name="FK_tblQuestionAnswer_tblAnswer">
+          <End Type="eQuizModel.tblAnswer" Role="tblAnswer" Multiplicity="1" />
+          <End Type="eQuizModel.QuestionAnswer" Role="QuestionAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAnswer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QuestionAnswer">
+              <PropertyRef Name="AnswerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUserAnswer_tblAnswer">
+          <End Type="eQuizModel.tblAnswer" Role="tblAnswer" Multiplicity="1" />
+          <End Type="eQuizModel.UserAnswer" Role="UserAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAnswer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserAnswer">
+              <PropertyRef Name="AnswerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblQuizVariant_tblQuiz">
+          <End Type="eQuizModel.Quiz" Role="Quiz" Multiplicity="1" />
+          <End Type="eQuizModel.QuizVariant" Role="QuizVariant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quiz">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QuizVariant">
+              <PropertyRef Name="QuizId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1312,12 +1420,13 @@
           <EntitySetMapping Name="QuestionAnswers">
             <EntityTypeMapping TypeName="eQuizModel.QuestionAnswer">
               <MappingFragment StoreEntitySet="tblQuestionAnswer">
+                <ScalarProperty Name="IsRight" ColumnName="IsRight" />
+                <ScalarProperty Name="AnswerOrder" ColumnName="AnswerOrder" />
+                <ScalarProperty Name="AnswerText" ColumnName="AnswerText" />
+                <ScalarProperty Name="AnswerId" ColumnName="AnswerId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
-                <ScalarProperty Name="AnswerText" ColumnName="AnswerText" />
-                <ScalarProperty Name="AnswerOrder" ColumnName="AnswerOrder" />
-                <ScalarProperty Name="IsRight" ColumnName="IsRight" />
-              </MappingFragment>
+                </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="QuestionTags">
@@ -1502,6 +1611,16 @@
               <MappingFragment StoreEntitySet="tblUserTextAnswer">
                 <ScalarProperty Name="AnswerText" ColumnName="AnswerText" />
                 <ScalarProperty Name="AnswerTime" ColumnName="AnswerTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblAnswers">
+            <EntityTypeMapping TypeName="eQuizModel.tblAnswer">
+              <MappingFragment StoreEntitySet="tblAnswer">
+                <ScalarProperty Name="IsRight" ColumnName="IsRight" />
+                <ScalarProperty Name="AnswerOrder" ColumnName="AnswerOrder" />
+                <ScalarProperty Name="AnswerText" ColumnName="AnswerText" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

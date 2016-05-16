@@ -50,6 +50,10 @@
         <EntityTypeShape EntityType="eQuizModel.UserTextAnswer" Width="1.5" PointX="6.375" PointY="0.75" />
         <AssociationConnector Association="eQuizModel.FK_tblQuizQuestion_tblQuestion" />
         <AssociationConnector Association="eQuizModel.FK_tblQuizQuestion_tblQuizVariant" />
+        <EntityTypeShape EntityType="eQuizModel.tblAnswer" Width="1.5" PointX="10.375" PointY="0.875" />
+        <AssociationConnector Association="eQuizModel.FK_tblQuestionAnswer_tblAnswer" />
+        <AssociationConnector Association="eQuizModel.FK_tblUserAnswer_tblAnswer" />
+        <AssociationConnector Association="eQuizModel.FK_tblQuizVariant_tblQuiz" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

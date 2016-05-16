@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewBag.Title = "Edit/Create quiz";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<section class="listQuizzes-wrapper" ng-app="quizzesModule">
+
+    <h2>@Html.ActionLink(linkText:"Create new", actionName: "Create")</h2>
+    <br />
+
+    <div class="container-quizzes" ng-controller="QuizzesController as q">
+        <table class="table-quizzes">
+            <thead>
+                <tr>
+                    <th>
+                        <a href="#" ng-click="q.sortBy('Name')">
+                            {{q.showOrderArrow('Name')}}Quiz
+                        </a>
+                    </th>
+                    <th>
+                        <a href="#" ng-click="q.sortBy('CountOfQuestions')">
+                            {{q.showOrderArrow('CountOfQuestions')}}Questions
+                        </a>
+                    </th>
+                    <th>
+                        <a href="#" ng-click="q.sortBy('StartDate')">
+                            {{q.showOrderArrow('StartDate')}}Start Date
+                        </a>
+                    </th>
+                    <th>
+                        <a href="#" ng-click="q.sortBy('Duration')">
+                            {{q.showOrderArrow('Duration')}}Duration, m
+                        </a>
+                    </th>
+                    <th>
+                        Active
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="quiz in q.quizzes">
+                    <td><a ng-href="/moderator/quiz/edit/#/quiz?id={{quiz.Id}}">{{ quiz.Name }}</a></td>
+                    <td>{{ quiz.CountOfQuestions }}</td>
+                    <td>{{ quiz.StartDate | ctime | date:"dd-MM-yyyy HH:mm" }}</td>
+                    <td>{{ quiz.Duration }}</td>
+                    <td>{{ quiz.Active }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <br />
+        <uib-pagination total-items="q.pagingInfo.quizzesTotal" ng-model="q.pagingInfo.currentPage" ng-change="q.reloadQuizzes()"
+                        items-per-page="q.pagingInfo.quizzesPerPage" max-size="5" class="pagination-sm" boundary-link-numbers="true">
+        </uib-pagination>
+    </div>
+
+</section>
+
+@section FootScripts{
+    <script src="~/Areas/Moderator/Scripts/libs/uib-paging/ui-bootstrap-custom-1.3.2.min.js"></script>
+    <script src="~/Areas/Moderator/Scripts/libs/uib-paging/ui-bootstrap-custom-tpls-1.3.2.min.js"></script>
+    <script src="~/Areas/Moderator/Scripts/app/pages/quizzesList/quizzes.module.js"></script>
+    <script src="~/Areas/Moderator/Scripts/app/pages/quizzesList/quizzes.service.js"></script>
+    <script src="~/Areas/Moderator/Scripts/app/pages/quizzesList/quizzes.controller.js"></script>
+    <script src="~/Areas/Moderator/Scripts/app/pages/quizzesList/quizzes.filters.js"></script>
+}
+

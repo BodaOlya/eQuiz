@@ -26,5 +26,6 @@ namespace eQuiz.Entities
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuizQuestion> QuizQuestions { get; set; }
+        public virtual Quiz tblQuiz { get; set; }
     }
 }

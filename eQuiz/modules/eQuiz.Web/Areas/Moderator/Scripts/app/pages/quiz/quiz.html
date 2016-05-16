@@ -1,0 +1,95 @@
+﻿<div class="tab">
+    <ng-form name="vm.quizForm">
+        <div class="row" unique-quiz-name>
+            <div class="col-sm-2 col-md-2">
+                <p class="control-label">
+                    Name
+                </p>
+            </div>
+            <div class="col-sm-4 col-md-4">
+                <input class="form-control" type="text" ng-model="vm.quiz.Name" required name="name" />
+                <div ng-messages="vm.quizForm.name.$error" class="help-block hide">
+                    <p ng-message="required">Name is required</p>
+                    <p ng-message="nonUniqueName">This name is already used</p>
+                </div>
+            </div>
+        </div>
+        <div class="row" show-error>
+            <div class="col-sm-2 col-md-2">
+                <p class="control-label">
+                    Start
+                </p>
+            </div>
+            <div class="col-sm-4 col-md-4">
+                <input class="form-control" type="datetime-local" required ng-model="vm.quiz.StartDate" name="startDate" />
+                <div ng-messages="vm.quizForm.startDate.$error" class="help-block hide">
+                    <p ng-message="datetimelocal">Start date is required</p>
+                    <p ng-message="required">Start date is required</p>
+                </div>
+             </div>
+        </div>
+        <div class="row" show-time-span-error>
+            <div class="col-sm-2 col-md-2">
+                <p class="control-label">
+                    Duration
+                </p>
+            </div>
+            <div class="col-sm-4 col-md-4">
+                <input class="form-control small inline-block" type="number" max="24" min="0" ng-model="vm.quiz.DurationHours" name="durationHours" required />
+                <div class="inline-block">h</div>
+                <input class="form-control small inline-block" type="number" max="60" min="0" ng-model="vm.quiz.DurationMinutes" name="durationMinutes" required />
+                <div class="inline-block">min</div>
+                <div ng-messages="vm.quizForm.durationHours.$error" class="help-block hide">
+                    <p ng-message="required">Hours are required</p>
+                    <p ng-message="min">Value can not be less then 0</p>
+                    <p ng-message="max">Value can not be greater then 24</p>
+                </div>
+                <div ng-messages="vm.quizForm.durationMinutes.$error" class="help-block hide">
+                    <p ng-message="required">Minutes are required</p>
+                    <p ng-message="min">Value can not be less then 0</p>
+                    <p ng-message="max">Value can not be greater then 60</p>
+                </div>
+            </div>
+        </div>
+        <div class="row" show-error>
+            <div class="col-sm-2 col-md-2">
+                <p class="control-label">
+                    Questions
+                </p>
+            </div>
+            <div class="col-sm-4 col-md-4">
+                <input class="form-control" type="number" min="0" required ng-model="vm.quizBlock.QuestionCount" name="questionCount" />
+                <div ng-messages="vm.quizForm.questionCount.$error" class="help-block hide">
+                    <p ng-message="required">Question count is required</p>
+                    <p ng-message="min">Value can not be less then 0</p>
+                </div>
+            </div>
+        </div>
+        <div class="row" show-error>
+            <div class="col-sm-2 col-md-2">
+                <p class="control-label">
+                    Type
+                </p>
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <button ng-click="vm.quiz.QuizTypeId = 1" class="form-control" ng-class="{active : vm.quiz.QuizTypeId == 1}">Regular</button>
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <button ng-click="vm.quiz.QuizTypeId = 2" class="form-control" ng-class="{active : vm.quiz.QuizTypeId == 2}">Random</button>
+            </div>
+        </div>
+        <div class="row" show-error>
+            <div class="col-sm-2 col-md-2">
+                <p class="control-label">
+                    User group
+                </p>
+            </div>
+            <div class="col-sm-4 col-md-4">
+                <select required class="form-control" name="userGroup" ng-options="item as item.Name for item in vm.userGroups track by item.Id" ng-model="vm.quiz.UserGroup"></select>
+                <div ng-messages="vm.quizForm.userGroup.$error" class="help-block hide">
+                    <p ng-message="required">User group is required</p>
+                </div>
+            </div>
+        </div>
+    </ng-form>
+</div>
