@@ -4,6 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Data.Entity.Core.Objects;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 
 namespace eQuiz.Repositories.Extentions
 {
@@ -13,9 +15,9 @@ namespace eQuiz.Repositories.Extentions
         private static readonly Type ENUMERABLE_TYPE = typeof(Enumerable);
         private const string SINGLE_METHOD_NAME = "Single";
 
-        public static IQueryable<T> Include<T>(this IQueryable<T> sequence, string path)
+        public static IQueryable<TEntity> Include<TEntity>(this IQueryable<TEntity> sequence, string path) where TEntity: class
         {
-            ObjectQuery<T> objectQuery = sequence as ObjectQuery<T>;
+            DbQuery<TEntity> objectQuery = sequence as DbQuery<TEntity>;
             if (objectQuery != null)
             {
                 return objectQuery.Include(path);
@@ -23,9 +25,9 @@ namespace eQuiz.Repositories.Extentions
             return sequence;
         }
 
-        public static ObjectQuery<TSource> Include<TSource, TResult>(this IQueryable<TSource> sequence, Expression<Func<TSource, TResult>> path)
+        public static DbQuery<TSource> Include<TSource, TResult>(this IQueryable<TSource> sequence, Expression<Func<TSource, TResult>> path) where TSource: class
         {
-            ObjectQuery<TSource> query = sequence as ObjectQuery<TSource>;
+            DbQuery<TSource> query = sequence as DbQuery<TSource>;
             if (query == null)
             {
                 throw new ArgumentNullException("Query can not be null");
