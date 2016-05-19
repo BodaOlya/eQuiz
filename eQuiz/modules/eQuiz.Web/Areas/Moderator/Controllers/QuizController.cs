@@ -1,4 +1,6 @@
 ﻿using eQuiz.Entities;
+using eQuiz.Repositories.Abstract;
+using eQuiz.Repositories.Concrete;
 using eQuiz.Web.Areas.Moderator.Models;
 using eQuiz.Web.Code;
 using Newtonsoft.Json;
@@ -12,6 +14,25 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 {
     public class QuizController : BaseController
     {
+        #region Fields
+
+        private readonly IRepository _repository;
+
+        #endregion
+
+        #region Constructors
+
+        public QuizController()
+        {
+            var dataContextSettings = new DefaultDataContextSettings(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString);
+            var dataContextFactory = new EFDataContextFactory(dataContextSettings);
+            this._repository = new EFRepository(dataContextFactory);
+        }
+
+        #endregion
+
+        #region Web Actions
+
         public ActionResult Index()
         {
             return View();
@@ -30,24 +51,28 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         [HttpGet]
         public ActionResult IsNameUnique(string name)
         {
-            Quiz quiz = null;
-            using(eQuizEntities model = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
-            {
-                quiz = model.Quizs.FirstOrDefault(q => q.Name == name);
-            }
+            //Quiz quiz = null;
+            //using(eQuizEntities model = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
+            //{
+            //    quiz = model.Quizs.FirstOrDefault(q => q.Name == name);
+            //}
 
+            Quiz quiz = _repository.GetSingle<Quiz>(q => q.Name == name);
             return Json(quiz == null, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Get(int id)
         {
-            Quiz quiz = null;
-            QuizBlock block = null;
-            using (eQuizEntities model = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
-            {
-                quiz = model.Quizs.Include("UserGroup").FirstOrDefault(q => q.Id == id);
-                block = model.QuizBlocks.FirstOrDefault(b => b.QuizId == id);
-            }
+            //Quiz quiz = null;
+            //QuizBlock block = null;
+            //using (eQuizEntities model = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
+            //{
+            //    quiz = model.Quizs.Include("UserGroup").FirstOrDefault(q => q.Id == id);
+            //    block = model.QuizBlocks.FirstOrDefault(b => b.QuizId == id);
+            //}
+            
+            Quiz quiz = _repository.GetSingle<Quiz>(q => q.Id == id, r => r.UserGroup);
+            QuizBlock block = _repository.GetSingle<QuizBlock>(b => b.QuizId == id);
 
             var data = JsonConvert.SerializeObject(new { quiz = quiz, block = block }, Formatting.None,
                                                     new JsonSerializerSettings()
@@ -165,5 +190,8 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
             return Content(data, "application/json");
         }
+
+        #endregion
+
     }
 }
