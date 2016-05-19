@@ -2,6 +2,8 @@
 
 ALTER TABLE [dbo].[tblQuestionAnswer] DROP CONSTRAINT [FK_tblQuestionAnswer_tblQuestion];
 
+ALTER TABLE [dbo].[tblQuestionAnswer] DROP  CONSTRAINT [FK_tblQuestionAnswer_tblAnswer]; 
+
 ALTER TABLE [dbo].[tblQuestion] DROP CONSTRAINT [FK_tblQuestion_tblQuestionType];
 
 ALTER TABLE [dbo].[tblQuestion] DROP CONSTRAINT [FK_tblQuestion_tblTopic];
@@ -17,6 +19,8 @@ ALTER TABLE [dbo].[tblQuizBlock] DROP CONSTRAINT [FK_tblQuizBlock_Topic];
 ALTER TABLE [dbo].[tblQuiz] DROP CONSTRAINT [FK_tblQuiz_tblQuizType];
 
 ALTER TABLE [dbo].[tblQuiz] DROP CONSTRAINT [FK_tblQuiz_tblGroup];
+
+ALTER TABLE [dbo].[tblQuiz] DROP CONSTRAINT [FK_tblQuiz_tblQuizState];
 
 ALTER TABLE [dbo].[tblQuizPass] DROP CONSTRAINT [FK_tblQuizPass_tblQuiz];
 
@@ -40,7 +44,7 @@ ALTER TABLE [dbo].[tblQuizQuestion] DROP CONSTRAINT [FK_tblQuizQuestion_tblQuizV
 
 --ALTER TABLE [dbo].[tblQuizVariant] DROP CONSTRAINT [FK_tblQuizVariant_tblQuiz];
 
-ALTER TABLE [dbo].[tblUserAnswer] DROP CONSTRAINT [FK_tblUserAnswer_tblQuestionAnswer];
+ALTER TABLE [dbo].[tblUserAnswer] DROP CONSTRAINT [FK_tblUserAnswer_tblAnswer];
 
 ALTER TABLE [dbo].[tblUserAnswer] DROP CONSTRAINT [FK_tblUserAnswer_tblQuizPassQuestion];
 
@@ -65,6 +69,8 @@ DROP TABLE [tblFacebookUser];
 DROP TABLE [tblQuizPassScore];
  
 DROP TABLE [tblUserAnswer];
+
+DROP TABLE [tblAnswer];
  
 DROP TABLE [tblQuizPassQuestion];
  
@@ -91,6 +97,8 @@ DROP TABLE [tblTopic];
 DROP TABLE [tblQuizVariant];
  
 DROP TABLE [tblQuiz];
+
+DROP TABLE [tblQuizState];
  
 DROP TABLE [tblUserGroup];
  
