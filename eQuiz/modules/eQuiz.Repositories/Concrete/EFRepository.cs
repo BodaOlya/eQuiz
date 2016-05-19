@@ -26,7 +26,7 @@ namespace eQuiz.Repositories.Concrete
 
         #region IRepository Members
 
-        public virtual TEntity GetByKey<TKey, TEntity>(string keyPropertyName, TKey key, Expression<Func<TEntity, object>>[] paths = null) where TEntity : class
+        public virtual TEntity GetByKey<TKey, TEntity>(string keyPropertyName, TKey key, params Expression<Func<TEntity, object>>[] paths) where TEntity : class
         {
             using (var context = this.DataContextFactory.NewInstance())
             {
@@ -36,7 +36,7 @@ namespace eQuiz.Repositories.Concrete
             }    
         }
 
-        public virtual List<TEntity> Get<TEntity>(Func<TEntity, bool> criteria = null, Expression<Func<TEntity, object>>[] paths = null) where TEntity: class
+        public virtual List<TEntity> Get<TEntity>(Func<TEntity, bool> criteria = null, params Expression<Func<TEntity, object>>[] paths) where TEntity: class
         {
             using (var context = this.DataContextFactory.NewInstance())
             {
@@ -50,7 +50,7 @@ namespace eQuiz.Repositories.Concrete
             }
         }
 
-        public virtual TEntity GetSingle<TEntity>(Func<TEntity, bool> criteria = null, Expression<Func<TEntity, object>>[] paths = null) where TEntity : class
+        public virtual TEntity GetSingle<TEntity>(Func<TEntity, bool> criteria = null, params Expression<Func<TEntity, object>>[] paths) where TEntity : class
         {
             using (var context = this.DataContextFactory.NewInstance())
             {
