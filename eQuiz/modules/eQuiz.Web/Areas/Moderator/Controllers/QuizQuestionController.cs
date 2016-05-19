@@ -109,14 +109,14 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                                 {
                                     questionAnswer.Remove(existedAnswer);
                                 }
-                                existedAnswer.AnswerOrder = answer.AnswerOrder;
-                                existedAnswer.AnswerText = answer.AnswerText;
-                                existedAnswer.IsRight = answer.IsRight;
+                                //existedAnswer.AnswerOrder = answer.AnswerOrder;
+                                //existedAnswer.AnswerText = answer.AnswerText;
+                                //existedAnswer.IsRight = answer.IsRight;
                                 existedAnswer.QuestionId = answer.QuestionId;
                             }
                             else
                             {
-                                answer.AnswerOrder = (byte)(qa + 1);
+                                //answer.AnswerOrder = (byte)(qa + 1);
                                 answer.QuestionId = questions[i].Id;
                                 context.QuestionAnswers.Add(answer);
                             }

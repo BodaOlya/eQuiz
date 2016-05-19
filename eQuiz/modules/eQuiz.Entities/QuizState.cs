@@ -12,15 +12,18 @@ namespace eQuiz.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class UserAnswer
+    public partial class QuizState
     {
-        public int Id { get; set; }
-        public int QuizPassQuestionId { get; set; }
-        public int AnswerId { get; set; }
-        public System.DateTime AnswerTime { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public QuizState()
+        {
+            this.Quizs = new HashSet<Quiz>();
+        }
     
-        public virtual QuestionAnswer QuestionAnswer { get; set; }
-        public virtual QuizPassQuestion QuizPassQuestion { get; set; }
-        public virtual Answer Answer { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Quiz> Quizs { get; set; }
     }
 }

@@ -46,6 +46,7 @@ namespace eQuiz.Entities
         public virtual DbSet<UserGroup> UserGroups { get; set; }
         public virtual DbSet<UserToUserGroup> UserToUserGroups { get; set; }
         public virtual DbSet<UserTextAnswer> UserTextAnswers { get; set; }
-        public virtual DbSet<tblAnswer> tblAnswers { get; set; }
+        public virtual DbSet<Answer> Answers { get; set; }
+        public virtual DbSet<QuizState> QuizStates { get; set; }
     }
 }

@@ -7,7 +7,7 @@
       <Diagram DiagramId="0b635835e46d46fb8a280aaf6c27e7cf" Name="Diagram1">
         <EntityTypeShape EntityType="eQuizModel.FacebookUser" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
         <EntityTypeShape EntityType="eQuizModel.Question" Width="1.5" PointX="6" PointY="22.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="eQuizModel.QuestionAnswer" Width="1.5" PointX="8.25" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="eQuizModel.QuestionAnswer" Width="1.875" PointX="8.25" PointY="3.625" IsExpanded="true" />
         <EntityTypeShape EntityType="eQuizModel.QuestionTag" Width="1.5" PointX="8.25" PointY="22.75" IsExpanded="true" />
         <EntityTypeShape EntityType="eQuizModel.QuestionType" Width="1.5" PointX="3.75" PointY="21.5" IsExpanded="true" />
         <EntityTypeShape EntityType="eQuizModel.Quiz" Width="1.5" PointX="3.75" PointY="17" IsExpanded="true" />
@@ -50,10 +50,12 @@
         <EntityTypeShape EntityType="eQuizModel.UserTextAnswer" Width="1.5" PointX="6.375" PointY="0.75" />
         <AssociationConnector Association="eQuizModel.FK_tblQuizQuestion_tblQuestion" />
         <AssociationConnector Association="eQuizModel.FK_tblQuizQuestion_tblQuizVariant" />
-        <EntityTypeShape EntityType="eQuizModel.tblAnswer" Width="1.5" PointX="10.375" PointY="0.875" />
+        <EntityTypeShape EntityType="eQuizModel.Answer" Width="1.5" PointX="10.375" PointY="0.875" />
         <AssociationConnector Association="eQuizModel.FK_tblQuestionAnswer_tblAnswer" />
         <AssociationConnector Association="eQuizModel.FK_tblUserAnswer_tblAnswer" />
         <AssociationConnector Association="eQuizModel.FK_tblQuizVariant_tblQuiz" />
+        <EntityTypeShape EntityType="eQuizModel.QuizState" Width="1.5" PointX="10.375" PointY="4.875" />
+        <AssociationConnector Association="eQuizModel.FK_tblQuiz_tblQuizState" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

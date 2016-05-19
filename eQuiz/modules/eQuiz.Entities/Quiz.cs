@@ -19,7 +19,7 @@ namespace eQuiz.Entities
         {
             this.QuizBlocks = new HashSet<QuizBlock>();
             this.QuizPasses = new HashSet<QuizPass>();
-            this.tblQuizVariants = new HashSet<QuizVariant>();
+            this.QuizVariants = new HashSet<QuizVariant>();
         }
     
         public int Id { get; set; }
@@ -31,6 +31,7 @@ namespace eQuiz.Entities
         public Nullable<short> TimeLimitMinutes { get; set; }
         public bool InternetAccess { get; set; }
         public int GroupId { get; set; }
+        public int QuizStateId { get; set; }
     
         public virtual UserGroup UserGroup { get; set; }
         public virtual QuizType QuizType { get; set; }
@@ -39,6 +40,7 @@ namespace eQuiz.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuizPass> QuizPasses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<QuizVariant> tblQuizVariants { get; set; }
+        public virtual ICollection<QuizVariant> QuizVariants { get; set; }
+        public virtual QuizState QuizState { get; set; }
     }
 }

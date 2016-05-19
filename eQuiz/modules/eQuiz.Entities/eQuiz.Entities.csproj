@@ -51,6 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Answer.cs">
+      <DependentUpon>eQuizEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="eQuizEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -101,6 +104,9 @@
     <Compile Include="QuizQuestion.cs">
       <DependentUpon>eQuizEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="QuizState.cs">
+      <DependentUpon>eQuizEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="QuizType.cs">
       <DependentUpon>eQuizEntities.tt</DependentUpon>
     </Compile>
@@ -108,9 +114,6 @@
       <DependentUpon>eQuizEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Tag.cs">
-      <DependentUpon>eQuizEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="tblAnswer.cs">
       <DependentUpon>eQuizEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Topic.cs">

@@ -35,9 +35,6 @@ CREATE TABLE [dbo].[tblQuestionAnswer]
 	[Id] [INT] NOT NULL IDENTITY(1, 1),
 	[QuestionId] [INT] NOT NULL,
 	[AnswerId] [INT] NOT NULL,
-	[AnswerText] [NVARCHAR](MAX) NOT NULL,
-	[AnswerOrder] [TINYINT] NULL,
-	[IsRight] [BIT] NULL,
 	CONSTRAINT [PK_tblQuestionAnswer_Id] PRIMARY KEY ([Id])
 );
 
@@ -88,6 +85,7 @@ CREATE TABLE [dbo].[tblQuiz]
 (
 	[Id] [INT] NOT NULL IDENTITY(1, 1),
 	[QuizTypeId] [INT] NOT NULL,
+	[QuizStateId] [INT] NOT NULL,
 	[Name] [NVARCHAR](50) NOT NULL,
 	[Description] [NVARCHAR](MAX) NULL,
 	[StartDate] [SMALLDATETIME] NULL,
@@ -99,6 +97,14 @@ CREATE TABLE [dbo].[tblQuiz]
 	CONSTRAINT [UK_tblQuiz_Name] UNIQUE ([Name]),
 	CONSTRAINT [CK_tblQuiz_StartDate_EndDate] CHECK ([StartDate] <= [EndDate])
  ); 
+
+ CREATE TABLE [dbo].[tblQuizState]
+ (
+	[Id] [INT] NOT NULL IDENTITY(1, 1),
+	[Name] [NVARCHAR](50) NOT NULL,
+	CONSTRAINT [PK_tblQuizState_Id] PRIMARY KEY ([Id]),
+	CONSTRAINT [UK_tblQuizState_Name] UNIQUE ([Name])
+ );
 
 CREATE TABLE [dbo].[tblQuizPass]
 (
@@ -255,6 +261,8 @@ ALTER TABLE [dbo].[tblQuizBlock] ADD CONSTRAINT [FK_tblQuizBlock_Topic] FOREIGN 
 ALTER TABLE [dbo].[tblQuiz] ADD CONSTRAINT [FK_tblQuiz_tblQuizType] FOREIGN KEY([QuizTypeId]) REFERENCES [dbo].[tblQuizType] ([Id]);
 
 ALTER TABLE [dbo].[tblQuiz] ADD CONSTRAINT [FK_tblQuiz_tblGroup] FOREIGN KEY([GroupId]) REFERENCES [dbo].[tblUserGroup] ([Id]);
+
+ALTER TABLE [dbo].[tblQuiz] ADD CONSTRAINT [FK_tblQuiz_tblQuizState] FOREIGN KEY([QuizStateId]) REFERENCES [dbo].[tblQuizState] ([Id]);
 
 ALTER TABLE [dbo].[tblQuizPass] ADD CONSTRAINT [FK_tblQuizPass_tblQuiz] FOREIGN KEY([QuizId]) REFERENCES [dbo].[tblQuiz] ([Id]);
 
