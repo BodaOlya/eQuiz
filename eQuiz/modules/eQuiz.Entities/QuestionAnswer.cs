@@ -23,9 +23,6 @@ namespace eQuiz.Entities
         public int Id { get; set; }
         public int QuestionId { get; set; }
         public int AnswerId { get; set; }
-        public string AnswerText { get; set; }
-        public Nullable<byte> AnswerOrder { get; set; }
-        public Nullable<bool> IsRight { get; set; }
     
         public virtual Question Question { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

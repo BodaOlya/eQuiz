@@ -7,7 +7,7 @@
       <Diagram DiagramId="0b635835e46d46fb8a280aaf6c27e7cf" Name="Diagram1">
         <EntityTypeShape EntityType="eQuizModel.FacebookUser" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
         <EntityTypeShape EntityType="eQuizModel.Question" Width="1.5" PointX="6" PointY="22.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="eQuizModel.QuestionAnswer" Width="1.5" PointX="8.25" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="eQuizModel.QuestionAnswer" Width="1.875" PointX="8.25" PointY="3.625" IsExpanded="true" />
         <EntityTypeShape EntityType="eQuizModel.QuestionTag" Width="1.5" PointX="8.25" PointY="22.75" IsExpanded="true" />
         <EntityTypeShape EntityType="eQuizModel.QuestionType" Width="1.5" PointX="3.75" PointY="21.5" IsExpanded="true" />
         <EntityTypeShape EntityType="eQuizModel.Quiz" Width="1.5" PointX="3.75" PointY="17" IsExpanded="true" />

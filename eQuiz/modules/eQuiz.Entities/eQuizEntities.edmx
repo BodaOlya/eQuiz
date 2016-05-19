@@ -725,10 +725,7 @@
           <NavigationProperty Name="UserAnswers" Relationship="Self.FK_tblUserAnswer_tblQuestionAnswer" FromRole="tblQuestionAnswer" ToRole="tblUserAnswer" />
           <Property Name="AnswerId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Answer" Relationship="eQuizModel.FK_tblQuestionAnswer_tblAnswer" FromRole="QuestionAnswer" ToRole="tblAnswer" />
-          <Property Name="AnswerText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AnswerOrder" Type="Byte" />
-          <Property Name="IsRight" Type="Boolean" />
-        </EntityType>
+          </EntityType>
         <EntityType Name="QuestionTag">
           <Key>
             <PropertyRef Name="Id" />
