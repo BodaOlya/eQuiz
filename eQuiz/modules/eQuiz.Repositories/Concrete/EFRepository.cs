@@ -64,6 +64,19 @@ namespace eQuiz.Repositories.Concrete
             }
         }
 
+        public virtual int Count<TEntity>(Func<TEntity, bool> criteria = null) where TEntity : class
+        {
+            using (var context = this.DataContextFactory.NewInstance())
+            {
+                IQueryable<TEntity> query = context.Query<TEntity>();                
+                if (criteria != null)
+                {
+                    query = query.Where(criteria).AsQueryable();
+                }
+                return query.Count();
+            }
+        }
+
         public virtual bool Exists<TEntity>(Func<TEntity, bool> criteria = null) where TEntity : class
         {
             using (var context = this.DataContextFactory.NewInstance())
