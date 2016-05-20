@@ -174,6 +174,8 @@
     <Compile Include="Areas\Moderator\ModeratorAreaRegistration.cs" />
     <Compile Include="Areas\Student\Controllers\AccountController.cs" />
     <Compile Include="Areas\Student\Controllers\DefaultController.cs" />
+    <Compile Include="Areas\Student\Models\QuizResultModel.cs" />
+    <Compile Include="Areas\Student\Models\UserAnswer.cs" />
     <Compile Include="Areas\Student\StudentAreaRegistration.cs" />
     <Compile Include="AutofacModule.cs" />
     <Compile Include="Code\BaseController.cs" />
@@ -218,7 +220,6 @@
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Areas\Moderator\Views\QuizQuestion\" />
     <Folder Include="Areas\Moderator\Views\UserGroup\" />
-    <Folder Include="Areas\Student\Models\" />
     <Folder Include="Areas\Student\Views\Shared\" />
     <Folder Include="Models\" />
     <Folder Include="Scripts\app\pages\" />
