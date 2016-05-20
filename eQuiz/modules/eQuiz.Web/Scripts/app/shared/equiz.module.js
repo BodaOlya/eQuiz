@@ -1,5 +1,5 @@
 ﻿(function (angular) {
 
-    angular.module("equizModule", ["ngRoute"]);
+    angular.module("equizModule", ['ngRoute', 'ngMessages']);
 
 })(angular);
