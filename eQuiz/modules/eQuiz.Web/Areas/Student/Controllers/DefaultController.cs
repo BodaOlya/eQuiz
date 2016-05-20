@@ -21,11 +21,9 @@ namespace eQuiz.Web.Areas.Student.Controllers
 
         #region Constructors
 
-        public DefaultController()
+        public DefaultController(IRepository repository)
         {
-            var dataContextSettings = new DefaultDataContextSettings(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString);
-            var dataContextFactory = new EFDataContextFactory(dataContextSettings);
-            this._repository = new EFRepository(dataContextFactory);
+            this._repository = repository;
         }
         #endregion
 

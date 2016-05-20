@@ -38,6 +38,10 @@
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -85,6 +89,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\..\modules\eQuiz.Repositories\eQuiz.Repositories.csproj">
+      <Project>{d0cfad94-9121-4666-9b6d-f01733a74c02}</Project>
+      <Name>eQuiz.Repositories</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\modules\eQuiz.Web\eQuiz.Web.csproj">
       <Project>{da383d80-9cae-4dae-a143-1923bd6f1931}</Project>
       <Name>eQuiz.Web</Name>
