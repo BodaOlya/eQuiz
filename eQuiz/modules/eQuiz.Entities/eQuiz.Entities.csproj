@@ -145,7 +145,7 @@
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
+    <None Include="App.config" />
     <None Include="eQuizEntities.edmx.diagram">
       <DependentUpon>eQuizEntities.edmx</DependentUpon>
     </None>
