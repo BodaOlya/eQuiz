@@ -6,7 +6,7 @@
         <nav id="quizNav">
             <table>
                 <tr>
-                    <td class="navQuestions" ng-repeat="question in quizQuestions" ng-click="setCurrentQuestion($index)">{{$index + 1}}</td>
+                    <td ng-class="{navQuestionsActive: $index == currentQuestion, navQuestions: $index != currentQuestion}" ng-repeat="question in quizQuestions" ng-click="setCurrentQuestion($index)">{{$index + 1}}</td>
                     <!--<td class="emptyTdInQuestNav" ng-repeat-end="">--------</td>-->
                 </tr>
                 <tr>
