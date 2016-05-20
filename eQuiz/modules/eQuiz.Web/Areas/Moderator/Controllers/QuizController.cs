@@ -49,8 +49,8 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         [HttpGet]
         public ActionResult IsNameUnique(string name)
         {
-            Quiz quiz = _repository.GetSingle<Quiz>(q => q.Name == name);
-            return Json(quiz == null, JsonRequestBehavior.AllowGet);
+            bool exists = _repository.Exists<Quiz>(q => q.Name == name);
+            return Json(exists, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Get(int id)
