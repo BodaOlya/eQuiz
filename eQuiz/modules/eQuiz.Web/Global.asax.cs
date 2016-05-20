@@ -11,6 +11,7 @@ namespace eQuiz.Web
     {
         protected void Application_Start()
         {
+            AutofacConfig.Initialize();
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }
