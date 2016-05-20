@@ -129,9 +129,7 @@
     <Content Include="Areas\Admin\Scripts\review.html" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quizzesList\quizzes.controller.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quizzesList\quizzes.filters.js" />
-    <Content Include="Areas\Moderator\Scripts\app\pages\quizzesList\quizzes.module.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quizzesList\quizzes.service.js" />
-    <Content Include="Areas\Moderator\Scripts\app\pages\quiz\question.controller.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\question.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\questions.html" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.config.js" />
@@ -155,6 +153,7 @@
     <Content Include="Areas\Student\Styles\equiz-temp.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\app\shared\equiz.module.js" />
+    <Content Include="Scripts\libs\angularjs\angular-messages.js" />
     <Content Include="Scripts\libs\angularjs\angular-route.js" />
     <Content Include="Scripts\libs\angularjs\angular.js" />
     <Content Include="Scripts\libs\angularjs\angular.min.js" />
