@@ -1,5 +1,5 @@
 ﻿(function () {
-    angular.module('quizModule')
+    angular.module('equizModule')
            .factory('userGroupService', userGroupService)
     userGroupService.$inject = ['$http'];
 

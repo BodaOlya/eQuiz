@@ -1,5 +1,5 @@
 ﻿(function () {
-    angular.module('quizModule').
+    angular.module('equizModule').
     directive('uniqueQuizName', uniqueQuizName);
 
     uniqueQuizName.$inject = ['quizService'];

@@ -1,5 +1,5 @@
 ﻿(function () {
-    angular.module('quizModule').
+    angular.module('equizModule').
     directive('showTimeSpanError', function () {
         return {
             restrict: 'A',
