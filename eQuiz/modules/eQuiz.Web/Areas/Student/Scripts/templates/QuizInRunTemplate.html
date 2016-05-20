@@ -26,7 +26,7 @@
                     </p>
                 </li>  
             </ul>
-            <textarea ng-if="!quizQuestions[currentQuestion].IsAutomatic"></textarea>
+            <textarea draggable="false" rows="25" ng-if="!quizQuestions[currentQuestion].IsAutomatic" id="fieldForText"></textarea>
         </div>
     </div>
 
@@ -34,11 +34,11 @@
         <table>
             <tr>
                 <td>
-                    <input type="button" value="&laquo Previous" ng-click="setCurrentQuestion(currentQuestion - 1)">
+                    <input type="button" value="&laquo Q{{currentQuestion > 0 ? currentQuestion: currentQuestion + 1}}" ng-click="setCurrentQuestion(currentQuestion - 1)">
                 </td>
                 <td class="empty"></td>
                 <td>
-                    <input type="button" value="Next &raquo" ng-click="setCurrentQuestion(currentQuestion + 1)">
+                    <input type="button" value="Q{{currentQuestion < 19 ? currentQuestion + 2 : currentQuestion + 1}} &raquo" ng-click="setCurrentQuestion(currentQuestion + 1)">
                 </td>
                 <td class="empty"></td>
                 <td>
