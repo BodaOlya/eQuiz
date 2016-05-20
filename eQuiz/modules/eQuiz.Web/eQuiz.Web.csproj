@@ -138,9 +138,16 @@
     <Content Include="Areas\Moderator\Scripts\libs\uib-paging\ui-bootstrap-custom-tpls-1.3.2.min.js" />
     <Content Include="Areas\Moderator\Styles\bootstrap.css" />
     <Content Include="Areas\Moderator\Styles\equiz-temp.css" />
+    <Content Include="Areas\Student\Scripts\dashboard.controller.js" />
+    <Content Include="Areas\Student\Scripts\dashboard.service.js" />
+    <Content Include="Areas\Student\Scripts\quizInRun.controller.js" />
+    <Content Include="Areas\Student\Scripts\routeConfig.js" />
+    <Content Include="Areas\Student\Scripts\templates\DashboardTemplate.html" />
+    <Content Include="Areas\Student\Scripts\templates\QuizInRunTemplate.html" />
     <Content Include="Areas\Student\Styles\equiz-temp.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\app\shared\equiz.module.js" />
+    <Content Include="Scripts\libs\angularjs\angular-route.js" />
     <Content Include="Scripts\libs\angularjs\angular.js" />
     <Content Include="Scripts\libs\angularjs\angular.min.js" />
     <Content Include="Styles\equiz-temp.css" />
@@ -202,7 +209,6 @@
     <Folder Include="Areas\Moderator\Views\QuizQuestion\" />
     <Folder Include="Areas\Moderator\Views\UserGroup\" />
     <Folder Include="Areas\Student\Models\" />
-    <Folder Include="Areas\Student\Scripts\" />
     <Folder Include="Areas\Student\Views\Shared\" />
     <Folder Include="Models\" />
     <Folder Include="Scripts\app\pages\" />
