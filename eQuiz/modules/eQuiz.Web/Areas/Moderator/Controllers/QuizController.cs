@@ -51,12 +51,6 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         [HttpGet]
         public ActionResult IsNameUnique(string name)
         {
-            //Quiz quiz = null;
-            //using(eQuizEntities model = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
-            //{
-            //    quiz = model.Quizs.FirstOrDefault(q => q.Name == name);
-            //}
-
             Quiz quiz = _repository.GetSingle<Quiz>(q => q.Name == name);
             return Json(quiz == null, JsonRequestBehavior.AllowGet);
         }
@@ -70,8 +64,8 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             //    quiz = model.Quizs.Include("UserGroup").FirstOrDefault(q => q.Id == id);
             //    block = model.QuizBlocks.FirstOrDefault(b => b.QuizId == id);
             //}
-            
-            Quiz quiz = _repository.GetSingle<Quiz>(q => q.Id == id, r => r.UserGroup);
+
+            Quiz quiz = _repository.GetSingle<Quiz>(q => q.Id == id, r => r.UserGroup, s => s.QuizState);
             QuizBlock block = _repository.GetSingle<QuizBlock>(b => b.QuizId == id);
 
             var data = JsonConvert.SerializeObject(new { quiz = quiz, block = block }, Formatting.None,
@@ -79,6 +73,37 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                                                     {
                                                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                                                     });
+
+            return Content(data, "application/json");
+        }
+
+        public ActionResult GetQuizzesForCopy()
+        {
+            IEnumerable<Quiz> quizzes = _repository.Get<Quiz>(q => q.QuizState.Name != "Draft", q=>q.QuizState);
+
+            var data = JsonConvert.SerializeObject(quizzes, Formatting.None,
+                                                   new JsonSerializerSettings()
+                                                   {
+                                                       ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                                   });
+
+            return Content(data, "application/json");
+        }
+
+        public ActionResult GetStates()
+        {
+            var states = new List<QuizState>();
+
+            states.Add(_repository.GetSingle<QuizState>(s => s.Name == "Draft"));
+            states.Add(_repository.GetSingle<QuizState>(s => s.Name == "Opened"));
+            states.Add(_repository.GetSingle<QuizState>(s => s.Name == "Scheduled"));
+            states.Add(_repository.GetSingle<QuizState>(s => s.Name == "Archived"));
+
+            var data = JsonConvert.SerializeObject(states, Formatting.None,
+                                                  new JsonSerializerSettings()
+                                                  {
+                                                      ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                                  });
 
             return Content(data, "application/json");
         }
@@ -105,7 +130,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                             Active = false
                         }).OrderBy(q => q.Name);
 
-                quizzesTotal = quizzesList.Count();                
+                quizzesTotal = quizzesList.Count();
 
                 switch (predicate)
                 {
@@ -123,7 +148,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                         break;
                     case "Duration":
                         quizzesList = reverse ? quizzesList.OrderByDescending(q => q.Duration) : quizzesList.OrderBy(q => q.Duration);
-                        break;                    
+                        break;
                     default:
                         quizzesList = reverse ? quizzesList.OrderByDescending(q => q.Name) : quizzesList.OrderBy(q => q.Name);
                         break;
@@ -178,7 +203,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                     quiz.UserGroup = model.UserGroups.Where(g => g.Id == quiz.UserGroup.Id).First();
                     model.Quizs.Add(quiz);
                     model.QuizBlocks.Add(block);
-                  //  model.QuizVariants.Add(new QuizVariant() { QuizId = quiz.Id });   UPDATE DB
+                    //  model.QuizVariants.Add(new QuizVariant() { QuizId = quiz.Id });   UPDATE DB
                     model.SaveChanges();
                 }
             }
