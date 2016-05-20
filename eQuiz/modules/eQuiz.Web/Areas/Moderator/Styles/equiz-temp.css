@@ -2,6 +2,18 @@
     background-color: lightgray;
 }
 
+.float-right{
+    float: right;
+}
+
+.dropdown-menu li a{
+    display: inline-block;
+}
+
+.dropdown-menu li a.float-right{
+    color: #337ab7;
+}
+
 .tab-navigation-button {
     padding: 10px;
     background-color: white;
@@ -10,6 +22,12 @@
     border-width: 2px;
     border-style: solid;
     border-bottom: none;
+}
+
+.dropdown-menu{
+    display: block;
+    position: relative;
+    width: 100%;
 }
 
     .tab-navigation-button.active {

@@ -1,6 +1,6 @@
 ﻿<div class="tab" novalidate>
-    <ng-form name="qc.questionsForm">
-        <div ng-form="oneQuestionForm" ng-repeat="question in qc.questions track by $index">
+    <ng-form name="vm.model.questionsForm">
+        <div ng-form="oneQuestionForm" ng-repeat="question in vm.model.questions track by $index">
             <div class="row" show-error>
                 <div class="col-sm-4 col-md-3">
                     <p class="control-label">
@@ -20,8 +20,8 @@
                         Type
                     </p>
                 </div>
-                <div class="col-sm-3 col-md-3" ng-repeat="type in qc.questionTypes | orderBy: 'Id'">
-                    <button class="form-control" ng-class="{active: question.QuestionTypeId==type.Id}" ng-click="qc.setQuestionType(question, type.Id, oneQuestionForm)">
+                <div class="col-sm-3 col-md-3" ng-repeat="type in vm.model.questionTypes | orderBy: 'Id'">
+                    <button class="form-control" ng-class="{active: question.QuestionTypeId==type.Id}" ng-click="vm.setQuestionType(question, type.Id, oneQuestionForm)">
                         {{ type.TypeName }}
                     </button>
                 </div>
@@ -33,7 +33,7 @@
                     </p>
                 </div>
                 <div class="col-sm-12 col-md-12">
-                    <input class="form-control" ng-list type="text" ng-model="qc.tags[$index]">
+                    <input class="form-control" ng-list type="text" ng-model="vm.model.tags[$index]">
                 </div>
             </div>
             <div ng-switch on="question.QuestionTypeId">
@@ -48,19 +48,19 @@
                         </div>
                         <div class="col-sm-2 col-md-2">
                             <p class="control-label">
-                                <a href class="control-label" ng-click="qc.addNewAnswer(question, $index)">Add new</a>
+                                <a href class="control-label" ng-click="vm.addNewAnswer(question, $index)">Add new</a>
                             </p>
                         </div>
                     </div>
                     <div class="row">
                         <table class="col-sm-12 col-md-12">
                             <thead>
-                            <th class="col-sm-8 col-md-8 control-label" ng-click="qc.order($index, 'AnswerText')">{{ qc.showOrderArrow($index, "AnswerText") }} Answer</th>
-                            <th class="col-sm-2 col-md-2 control-label" ng-click="qc.order($index, 'IsRight')">{{ qc.showOrderArrow($index, "IsRight") }} Is correct</th>
+                            <th class="col-sm-8 col-md-8 control-label" ng-click="vm.order($index, 'AnswerText')">{{ vm.showOrderArrow($index, "AnswerText") }} Answer</th>
+                            <th class="col-sm-2 col-md-2 control-label" ng-click="vm.order($index, 'IsRight')">{{ vm.showOrderArrow($index, "IsRight") }} Is correct</th>
                             <th class="col-sm-2 col-md-2 control-label">Delete</th>
                             </thead>
                             <tbody>
-                                <tr ng-form="oneAnswerForm" ng-repeat="answer in qc.answers[$index] | orderBy:qc.orderArray[$index].predicate:qc.orderArray[$index].reverse">
+                                <tr ng-form="oneAnswerForm" ng-repeat="answer in vm.model.answers[$index] | orderBy:vm.model.orderArray[$index].predicate:vm.model.orderArray[$index].reverse">
                                     <td class="col-sm-8 col-md-8">
                                         <div class="row" show-error>
                                             <input class="questionText form-control" type="text" ng-model="answer.AnswerText" required name="AnswerText">
@@ -70,21 +70,21 @@
                                         </div>
                                     </td>
                                     <td class="col-sm-2 col-md-2">
-                                        <input type="checkbox" class="form-control" ng-click="qc.checkAnswerForSelectOne(answer, question)" ng-model="answer.IsRight">
+                                        <input type="checkbox" class="form-control" ng-click="vm.checkAnswerForSelectOne(answer, question)" ng-model="answer.IsRight">
                                     </td>
                                     <td class="col-sm-2 col-md-2">
-                                        <a href ng-click="qc.deleteAnswer(answer, question)">Delete</a>
+                                        <a href ng-click="vm.deleteAnswer(answer, question)">Delete</a>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="row" ng-show="qc.getAnswerCount($index, oneQuestionForm)==0">
+                    <div class="row" ng-show="vm.getAnswerCount($index, oneQuestionForm)==0">
                         <div class="col-sm-8 col-md-6 has-error">
                             <p class="control-label">Required at least 1 answer</p>
                         </div>
                     </div>
-                    <div class="row" ng-show="qc.getCheckedCountForSelectOne($index, oneQuestionForm)!=1">
+                    <div class="row" ng-show="vm.getCheckedCountForSelectOne($index, oneQuestionForm)!=1">
                         <div class="col-sm-8 col-md-6 has-error">
                             <p class="control-label">Required 1 correct answer</p>
                         </div>
@@ -99,19 +99,19 @@
                         </div>
                         <div class="col-sm-2 col-md-2">
                             <p class="control-label">
-                                <a href class="control-label" ng-click="qc.addNewAnswer(question, $index)">Add new</a>
+                                <a href class="control-label" ng-click="vm.addNewAnswer(question, $index)">Add new</a>
                             </p>
                         </div>
                     </div>
                     <div class="row">
                         <table class="col-sm-12 col-md-12">
                             <thead>
-                            <th class="col-sm-8 col-md-8 control-label" ng-click="qc.order($index, 'AnswerText')">{{ qc.showOrderArrow($index, "AnswerText") }} Answer</th>
-                            <th class="col-sm-2 col-md-2 control-label" ng-click="qc.order($index, 'IsRight')">{{ qc.showOrderArrow($index, "IsRight") }} Is correct</th>
+                            <th class="col-sm-8 col-md-8 control-label" ng-click="vm.model.order($index, 'AnswerText')">{{ vm.model.showOrderArrow($index, "AnswerText") }} Answer</th>
+                            <th class="col-sm-2 col-md-2 control-label" ng-click="vm.model.order($index, 'IsRight')">{{ vm.model.showOrderArrow($index, "IsRight") }} Is correct</th>
                             <th class="col-sm-2 col-md-2 control-label">Delete</th>
                             </thead>
                             <tbody>
-                                <tr ng-form="oneAnswerForm" ng-repeat="answer in qc.answers[$index] | orderBy:qc.orderArray[$index].predicate:qc.orderArray[$index].reverse">
+                                <tr ng-form="oneAnswerForm" ng-repeat="answer in vm.model.answers[$index] | orderBy:vm.model.orderArray[$index].predicate:vm.model.orderArray[$index].reverse">
                                     <td class="col-sm-8 col-md-8">
                                         <div class="row" show-error>
                                             <input class="questionText form-control" type="text" ng-model="answer.AnswerText" required name="AnswerText">
@@ -124,18 +124,18 @@
                                         <input type="checkbox" class="form-control" ng-model="answer.IsRight">
                                     </td>
                                     <td class="col-sm-2 col-md-2">
-                                        <a href ng-click="qc.deleteAnswer(answer, question)">Delete</a>
+                                        <a href ng-click="vm.deleteAnswer(answer, question)">Delete</a>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="row" ng-show="qc.getAnswerCount($index, oneQuestionForm)==0">
+                    <div class="row" ng-show="vm.getAnswerCount($index, oneQuestionForm)==0">
                         <div class="col-sm-8 col-md-6 has-error">
                             <p class="control-label">Required at least 1 answer</p>
                         </div>
                     </div>
-                    <div class="row" ng-show="qc.getCheckedCountForSelectMany($index, oneQuestionForm)==0">
+                    <div class="row" ng-show="vm.getCheckedCountForSelectMany($index, oneQuestionForm)==0">
                         <div class="col-sm-8 col-md-6 has-error">
                             <p class="control-label">Required at least 1 correct answer</p>
                         </div>
@@ -144,7 +144,7 @@
             </div>
         </div>
         <div align="right">
-            <a href ng-click="qc.addNewQuestion()">Add new</a>
+            <a href ng-click="vm.addNewQuestion()">Add new</a>
             <a href>Add existing one</a>
         </div>
     </ng-form>

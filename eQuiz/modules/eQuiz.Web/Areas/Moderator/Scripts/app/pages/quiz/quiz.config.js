@@ -1,5 +1,5 @@
 ﻿(function () {
-    angular.module("quizModule")
+    angular.module("equizModule")
             .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
                 $routeProvider.
                   when('/quiz', {

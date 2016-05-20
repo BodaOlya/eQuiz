@@ -1,9 +1,9 @@
 ﻿(function () {
-    angular.module('quizModule')
+    angular.module('equizModule')
            .factory('questionService', questionService);
-    questionService.$inject = ['$http'];
+    questionService.$inject = ['$http', '$q'];
 
-    function questionService($http) {
+    function questionService($http, $q) {
         var questionTypes = [];
         var quizQuestions = {};
 
@@ -34,12 +34,34 @@
             return promise;
         }
 
+        function getQuestionsCopy(quizId) {
+            var deferred = $q.defer();
+            getQuestions(quizId).then(function (data){
+                data.data.questions.forEach(function(item, i, array){
+                    item.Id = 0;
+                });
+                data.data.answers.forEach(function(item, i, array){
+                    item.Id = 0;
+                });
+                data.data.tags.forEach(function(item, i, array){
+                    item.forEach(function(innerItem, j, innerArray){
+                        innerItem.Id = 0;
+                    });
+                });
+
+                deferred.resolve(data);
+            });
+
+            return deferred.promise;
+        }
+
         return {
             questionTypes: questionTypes,
             quizQuestions: quizQuestions,
             getQuestionTypes: getTypes,
             saveQuestions: saveQuestions,
-            getQuestions: getQuestions
+            getQuestions: getQuestions,
+            getQuestionsCopy: getQuestionsCopy
         };
 
     }

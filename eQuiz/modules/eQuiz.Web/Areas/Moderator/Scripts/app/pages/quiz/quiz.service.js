@@ -1,5 +1,5 @@
 ﻿(function () {
-    angular.module('quizModule')
+    angular.module('equizModule')
            .factory('quizService', quizService);
 
     quizService.$inject = ['$http'];
@@ -7,10 +7,12 @@
         quiz = {};
 
         return {
-            'save': save,
-            'quiz': quiz,
-            'get': get,
-            'isNameUnique': isNameUnique
+            save: save,
+            quiz: quiz,
+            get: get,
+            isNameUnique: isNameUnique,
+            getStates: getStates,
+            getQuizzesForCopy: getQuizzesForCopy
         }
 
         function get(id) {
@@ -32,6 +34,14 @@
 
         function isNameUnique(name) {
             return $http.get("/quiz/IsNameUnique?name=" + name.toString());
+        }
+
+        function getQuizzesForCopy() {
+            return $http.get("/quiz/GetQuizzesForCopy");
+        }
+
+        function getStates() {
+            return $http.get("/quiz/GetStates");
         }
     }
 })();

@@ -6,6 +6,7 @@ using eQuiz.Web.Code;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -50,20 +51,14 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         public ActionResult IsNameUnique(string name)
         {
             bool exists = _repository.Exists<Quiz>(q => q.Name == name);
-            return Json(exists, JsonRequestBehavior.AllowGet);
+            return Json(!exists, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Get(int id)
         {
-            //Quiz quiz = null;
-            //QuizBlock block = null;
-            //using (eQuizEntities model = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
-            //{
-            //    quiz = model.Quizs.Include("UserGroup").FirstOrDefault(q => q.Id == id);
-            //    block = model.QuizBlocks.FirstOrDefault(b => b.QuizId == id);
-            //}
-
             Quiz quiz = _repository.GetSingle<Quiz>(q => q.Id == id, r => r.UserGroup, s => s.QuizState);
+            quiz.UserGroup.Quizs = null;
+            quiz.QuizState.Quizs = null;
             QuizBlock block = _repository.GetSingle<QuizBlock>(b => b.QuizId == id);
 
             var data = JsonConvert.SerializeObject(new { quiz = quiz, block = block }, Formatting.None,
@@ -77,7 +72,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
         public ActionResult GetQuizzesForCopy()
         {
-            IEnumerable<Quiz> quizzes = _repository.Get<Quiz>(q => q.QuizState.Name != "Draft", q=>q.QuizState);
+            IEnumerable<Quiz> quizzes = _repository.Get<Quiz>(q => q.QuizState.Name != "Draft", q => q.QuizState);
 
             var data = JsonConvert.SerializeObject(quizzes, Formatting.None,
                                                    new JsonSerializerSettings()
@@ -162,48 +157,65 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         {
             if (quiz.Id != 0)
             {
-                using (eQuizEntities model = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
-                {
-                    var updateQuiz = model.Quizs.FirstOrDefault(q => q.Id == quiz.Id);
-                    if (updateQuiz == null)
-                    {
-                        return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Quiz not found");
-                    }
+                //using (eQuizEntities model = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
+                //{
+                //    var updateQuiz = model.Quizs.FirstOrDefault(q => q.Id == quiz.Id);
+                //    if (updateQuiz == null)
+                //    {
+                //        return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Quiz not found");
+                //    }
 
-                    var updateBlock = model.QuizBlocks.FirstOrDefault(q => q.Id == quiz.Id);
-                    if (updateBlock == null)
-                    {
-                        return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "QuizBlock not found");
-                    }
+                //    var updateBlock = model.QuizBlocks.FirstOrDefault(q => q.Id == quiz.Id);
+                //    if (updateBlock == null)
+                //    {
+                //        return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "QuizBlock not found");
+                //    }
 
-                    updateQuiz.Name = quiz.Name;
-                    updateQuiz.QuizTypeId = quiz.QuizTypeId;
-                    updateQuiz.StartDate = quiz.StartDate;
-                    updateQuiz.EndDate = quiz.EndDate;
-                    updateQuiz.TimeLimitMinutes = quiz.TimeLimitMinutes;
-                    updateQuiz.GroupId = quiz.GroupId;
+                //    updateQuiz.Name = quiz.Name;
+                //    updateQuiz.QuizTypeId = quiz.QuizTypeId;
+                //    updateQuiz.StartDate = quiz.StartDate;
+                //    updateQuiz.EndDate = quiz.EndDate;
+                //    updateQuiz.TimeLimitMinutes = quiz.TimeLimitMinutes;
+                //    updateQuiz.GroupId = quiz.GroupId;
 
-                    updateBlock.QuestionCount = block.QuestionCount;
+                //    updateBlock.QuestionCount = block.QuestionCount;
 
-                    model.SaveChanges();
-                    quiz = updateQuiz;
-                    quiz.UserGroup = model.UserGroups.FirstOrDefault(g => g.Id == quiz.GroupId);
-                    block = updateBlock;
-                }
+                //    model.SaveChanges();
+                //    quiz = updateQuiz;
+                //    quiz.UserGroup = model.UserGroups.FirstOrDefault(g => g.Id == quiz.GroupId);
+                //    block = updateBlock;
+                //}
+
+                _repository.Update<Quiz>(quiz);
+                _repository.Update<QuizBlock>(block);
+                
             }
             else
             {
-                block.TopicId = 1;
-                block.Quiz = quiz;
+                //block.TopicId = 1;
+                //block.Quiz = quiz;
 
-                using (eQuizEntities model = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
-                {
-                    quiz.UserGroup = model.UserGroups.Where(g => g.Id == quiz.UserGroup.Id).First();
-                    model.Quizs.Add(quiz);
-                    model.QuizBlocks.Add(block);
-                    //  model.QuizVariants.Add(new QuizVariant() { QuizId = quiz.Id });   UPDATE DB
-                    model.SaveChanges();
-                }
+                //using (eQuizEntities model = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
+                //{
+                //    quiz.UserGroup = model.UserGroups.Where(g => g.Id == quiz.UserGroup.Id).First();
+                //    model.Quizs.Add(quiz);
+                //    model.QuizBlocks.Add(block);
+                //    //  model.QuizVariants.Add(new QuizVariant() { QuizId = quiz.Id });   UPDATE DB
+                //    model.SaveChanges();
+                //}
+
+
+                //    //  model.QuizVariants.Add(new QuizVariant() { QuizId = quiz.Id });   UPDATE DB
+                //temp
+                quiz.QuizStateId = quiz.QuizState.Id;
+                quiz.QuizState = null;
+                quiz.GroupId = 1; // UPDATE DB
+                //
+                _repository.Insert<Quiz>(quiz);
+                block.TopicId = 1;
+                block.QuizId = quiz.Id;
+                _repository.Insert<QuizBlock>(block);
+                _repository.Insert<QuizVariant>(new QuizVariant() { QuizId = quiz.Id });
             }
             var data = JsonConvert.SerializeObject(new { quiz = quiz, block = block }, Formatting.None,
                                                     new JsonSerializerSettings()
