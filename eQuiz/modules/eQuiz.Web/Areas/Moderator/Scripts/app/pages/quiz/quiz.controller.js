@@ -78,8 +78,8 @@
                 vm.model.userGroups = data.data;
             });
 
-            questionService.getQuestionTypes().then(function (responce) {
-                vm.model.questionTypes = responce.data;
+            questionService.getQuestionTypes().then(function (response) {
+                vm.model.questionTypes = response.data;
             });
         }
 
@@ -139,6 +139,18 @@
 
         function setQuestionType(question, typeId, form) {
             question.QuestionTypeId = typeId;
+
+            var questionIndex = vm.model.questions.indexOf(question);
+
+            var countChecked = vm.model.answers[questionIndex].filter(function (item) {
+                return item.IsRight;
+            }).length;
+
+            if (typeId == 2 && countChecked != 1) {
+                for (var i = 0; i < vm.model.answers[questionIndex].length; i++) {
+                    vm.model.answers[questionIndex][i].IsRight = false;
+                }
+            }
 
             form.$setValidity("No answers", true);
             form.$setValidity("Only one correct answer", true);
