@@ -22,6 +22,35 @@
                 <button class="form-control lightgray">Cancel</button>
             </div>
         </div>
+
+
+        <div class="loading-background" ng-show="vm.loadingVisible">
+            <div class="loading-content">
+                <p>
+                    Processing...
+                </p>
+            </div>
+        </div>
+        <div class="message-container" ng-show="vm.errorMessageVisible">
+            <div class="message-content">
+                <p>
+                    Changes have not been saved due to
+                </p>
+                <p class="red text-center">
+                    SERVER ERROR
+                </p>
+            </div>
+        </div>
+        <div class="message-container" ng-show="vm.successMessageVisible">
+            <div class="message-content">
+                <p>
+                    All changes have been
+                </p>
+                <p class="green">
+                    SUCCESSFULLY SAVED
+                </p>
+            </div>
+        </div>
     </div>
 </div>
 
