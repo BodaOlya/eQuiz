@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -241,6 +242,78 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                                                     });
 
             return Content(data, "application/json");
+        }
+
+        [HttpDelete]
+        public ActionResult DeleteQuizById(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var quizBlocks = _repository.Get<QuizBlock>(qb => qb.QuizId == id);
+
+            if (!quizBlocks.Any())
+            {
+                return HttpNotFound();
+            }
+
+            foreach (var quizBlock in quizBlocks)
+            {
+                var quizQuestions = _repository.Get<QuizQuestion>(qq => qq.QuizBlockId == quizBlock.Id);
+                foreach (var quizQuestion in quizQuestions)
+                {
+                    _repository.Delete<int, QuizQuestion>("Id", quizQuestion.Id);
+                }
+
+                var quizPassQuestions = _repository.Get<QuizPassQuestion>(qpq => qpq.QuizBlockId == quizBlock.Id);
+
+                foreach (var quizPassQuestion in quizPassQuestions)
+                {
+                    var userAnswers =
+                        _repository.Get<UserAnswer>(ua => ua.QuizPassQuestionId == quizPassQuestion.Id);
+                    foreach (var userAnswer in userAnswers)
+                    {
+                        _repository.Delete<int, UserAnswer>("Id", userAnswer.Id);
+                    }
+                    
+                    _repository.Delete<int, QuizPassQuestion>("Id", quizPassQuestion.Id);
+                }
+
+                _repository.Delete<int?, QuizBlock>("Id", quizBlock.Id);
+            }
+            
+            var quizPasses = _repository.Get<QuizPass>(qp => qp.QuizId == id);
+
+            foreach (var quizPass in quizPasses)
+            {
+                var quizPassQuestions = _repository.Get<QuizPassQuestion>(qpq => qpq.QuizBlockId == quizPass.Id);
+                foreach (var quizPassQuestion in quizPassQuestions)
+                {
+                    var userAnswers = _repository.Get<UserAnswer>(ua => ua.QuizPassQuestionId == quizPassQuestion.Id);
+
+                    foreach (var userAnswer in userAnswers)
+                    {
+                        _repository.Delete<int, UserAnswer>("Id", userAnswer.Id);
+                    }
+
+                    _repository.Delete<int, QuizPassQuestion>("Id", quizPassQuestion.Id);
+                }
+
+                _repository.Delete<int?, QuizPass>("Id", quizPass.Id);
+            }
+
+            var quizVariants = _repository.Get<QuizVariant>(qv => qv.QuizId == id);
+
+            foreach (var quizVariant in quizVariants)
+            {
+                _repository.Delete<int?, QuizVariant>("Id", quizVariant.Id);
+            }           
+            
+            _repository.Delete<int?, Quiz>("Id", id);
+
+            return RedirectToAction("Index", "Quiz");
         }
 
         #endregion
