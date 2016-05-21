@@ -38,6 +38,7 @@
         vm.getAnswerCount = getAnswerCount;
         vm.getCheckedCountForSelectOne = getCheckedCountForSelectOne;
         vm.getCheckedCountForSelectMany = getCheckedCountForSelectMany;
+        vm.isEditingEnabled = isEditingEnabled;
 
         vm.toggleQuizzesForCopy = toggleQuizzesForCopy;
         vm.quizzesForCopyVisible = false;
@@ -391,5 +392,8 @@
             return countChecked;
         }
 
+        function isEditingEnabled() {
+            return !vm.model.quiz.State || vm.model.quiz.State.Name != 'Scheduled';
+        }
     }
 })();
