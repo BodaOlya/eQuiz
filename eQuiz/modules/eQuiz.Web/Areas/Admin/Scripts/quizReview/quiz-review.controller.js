@@ -3,18 +3,24 @@
         .module("equizModule")
         .controller('QuizReviewController', quizReviewController);
 
-    quizReviewController.$inject = ['$scope', 'quizReviewDataService'];
+    quizReviewController.$inject = ['$scope', 'quizReviewDataService', '$routeParams'];
 
-    function quizReviewController($scope, quizReviewDataService) {
+    function quizReviewController($scope, quizReviewDataService, $routeParams) {
         var vm = this;
         vm.passed = 0;
         vm.notPassed = 0;
         vm.inVerification = 0;
+        vm.saveIsDisabled = true;
+        vm.isFinalized = false;
+
+        vm.selectedStatuses = [];
+        vm.statusList = [{ id: 0, name: "In Verification" }, { id: 1, name: "Passed" }, { id: 2, name: "Not Passed" }];
 
         vm.countStats = function () {
             vm.passed = 0;
             vm.notPassed = 0;
             vm.inVerification = 0;
+            //vm.isFinalized = vm.quiz.isFinalized;
 
             vm.quiz.questions.forEach(function (item) {
                 if (item.questionStatus === 0) {
@@ -32,33 +38,36 @@
         function activate() {
             vm.student = quizReviewDataService.getStudent();
             vm.group = quizReviewDataService.getGroup();
-            vm.quiz = quizReviewDataService.getQuiz();
+            vm.quiz = quizReviewDataService.getQuiz($routeParams.quizId);
 
             vm.countStats();
         };
 
         activate();
 
-        vm.setQuestionStatus = function (id, status) {        
-            for (var i = 0; i < vm.quiz.questions.length; i++){            
-                if (vm.quiz.questions[i].question_id === id) {                    
-                    vm.quiz.questions[i].questionStatus = status;
+        vm.setQuestionStatus = function (id, status) {
+            if (!vm.isFinalized) {
+                for (var i = 0; i < vm.quiz.questions.length; i++) {
+                    if (vm.quiz.questions[i].question_id === id) {
+                        vm.quiz.questions[i].questionStatus = status;
+                    }
                 }
             }
-            
-            vm.countStats();           
+
+            vm.saveIsDisabled = false;
+            vm.countStats();
         }
 
         vm.addAttriChecked = function (questionId, aswerId) {    //add attribute 'checked' to checkboxes if finds proper user answer     
             for (var i = 0; i < vm.quiz.questions.length; i++) {
                 if (vm.quiz.questions[i].question_id == questionId) {
                     for (var j = 0; j < vm.quiz.questions[i].userAnswer.length; j++) {
-                        if (vm.quiz.questions[i].userAnswer[j] == aswerId) {                            
+                        if (vm.quiz.questions[i].userAnswer[j] == aswerId) {
                             return true;
                         }
                     }
                 }
-            }            
+            }
         }
 
         vm.setButtonColor = function (questionStatus, expectedStatus) { // sets button color
@@ -73,6 +82,66 @@
 
         vm.saveQuizReview = function () {
             quizReviewDataService.saveQuizReview(vm.quiz);
+            vm.saveIsDisabled = true;
         }
+
+        vm.finalizeQuizReview = function () {
+            vm.quiz.isFinalized = true;
+            quizReviewDataService.finalizeQuizReview(vm.quiz);
+            vm.isFinalized = true;
+        }
+
+
+        $scope.setSelectedStatuses = function () { // DONT PUT THIS FUNCTION INTO VM! let it be in scope (because of 'this' in function)
+            var id = this.status.id;
+            if (vm.selectedStatuses.toString().indexOf(id.toString()) > -1) {
+                for (var i = 0; i < vm.selectedStatuses.length; i++) {
+                    if (vm.selectedStatuses[i] === id) {
+                        vm.selectedStatuses.splice(i, 1);
+                    }
+                }
+            } else {
+                vm.selectedStatuses.push(id);
+            }
+            return false;
+        };
+
+        vm.selectStatusId = function (id) { // DONT PUT THIS FUNCTION INTO VM! let it be in scope (because of 'this' in function)
+            // debugger;
+            if (vm.selectedStatuses.toString().indexOf(id.toString()) > -1) {
+                for (var i = 0; i < vm.selectedStatuses.length; i++) {
+                    if (vm.selectedStatuses[i] === id) {
+                        vm.selectedStatuses.splice(i, 1);
+                    }
+                }
+            } else {
+                vm.selectedStatuses.push(id);
+            }
+            return false;
+        };
+
+        vm.isChecked = function (id) {
+            if (vm.selectedStatuses.toString().indexOf(id.toString()) > -1 || vm.selectedStatuses.length === 0) {
+                return true;
+            }
+            return false;
+        };
+
+        vm.allChecked = function () {
+            if (vm.selectedStatuses.length === 0) {
+                return true;
+            }
+            return false;
+        };
+
+        vm.checkAll = function () {
+            for (var i = 0; i < vm.statusList.length; i++) {
+                vm.selectedStatuses.push(vm.statusList[i].id);
+            }
+        };
+
+        vm.unCheckAll = function () {
+            vm.selectedStatuses = [];
+        };
     };
 })(angular);

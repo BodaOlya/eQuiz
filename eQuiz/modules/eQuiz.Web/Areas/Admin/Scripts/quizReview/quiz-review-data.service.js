@@ -12,7 +12,8 @@
             getStudent: getStudentAjax,
             getQuiz: getQuizAjax,
             getGroup: getGroupAjax,
-            saveQuizReview: saveQuizReviewAjax
+            saveQuizReview: saveQuizReviewAjax,
+            finalizeQuizReview: finalizeQuizReviewAjax
         };
 
         return service;
@@ -21,12 +22,12 @@
             var promise = {
                 first_name: "Paul",
                 last_name: "Dema",
-                parent_name: "Michael"                              
+                parent_name: "Michael"
             };
             return promise;
         }
 
-        function getQuizAjax() {
+        function getQuizAjax(quizeId) {
             var promise = {
                 quiz_name: ".Net junior test",
                 start_date: "21.04.2016 10:05",
@@ -51,6 +52,10 @@
 
         function saveQuizReviewAjax(quizToSave) {
             //TODO save quiz review data
+        }
+
+        function finalizeQuizReviewAjax(quizToFinalize) {
+            // TODO finalize quiz
         }
     }
 
