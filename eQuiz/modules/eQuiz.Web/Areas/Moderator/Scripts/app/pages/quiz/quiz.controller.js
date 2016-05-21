@@ -393,7 +393,7 @@
         }
 
         function isEditingEnabled() {
-            return !vm.model.quiz.State || vm.model.quiz.State.Name != 'Scheduled';
+            return !vm.model.quiz.QuizState || vm.model.quiz.QuizState.Name != 'Scheduled';
         }
     }
 })();
