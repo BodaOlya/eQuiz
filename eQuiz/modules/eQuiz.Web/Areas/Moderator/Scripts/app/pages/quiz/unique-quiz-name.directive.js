@@ -2,9 +2,9 @@
     angular.module('equizModule').
     directive('uniqueQuizName', uniqueQuizName);
 
-    uniqueQuizName.$inject = ['quizService'];
+    uniqueQuizName.$inject = ['quizService', '$location'];
 
-    function uniqueQuizName(quizService) {
+    function uniqueQuizName(quizService, $location) {
     	return {
     		restrict: 'A',
     		require: '^form',
@@ -14,12 +14,23 @@
     			var inputName = inputNgElement.attr('name');
     			var messagesBlock = inputNgElement.next();
 
+    			function callback(data) {
+    			    formControl.name.$setValidity('nonUniqueName', data.data);
+    			    element.toggleClass('has-error', formControl[inputName].$invalid);
+    			    messagesBlock.toggleClass('hide', formControl[inputName].$valid);
+    			}
+
     			inputNgElement.bind('blur', function () {
-    			    quizService.isNameUnique(inputElement.value).then(function (data) {
-    			            formControl.name.$setValidity('nonUniqueName', data.data);
-    			            element.toggleClass('has-error', formControl[inputName].$invalid);
-    			            messagesBlock.toggleClass('hide', formControl[inputName].$valid);
-    			    })
+    			    if ($location.search().id) {
+    			        quizService.isNameUnique(inputElement.value, $location.search().id).then(function (data) {
+    			            callback(data);
+    			        });
+    			    }
+    			    else {
+    			        quizService.isNameUnique(inputElement.value).then(function (data) {
+    			            callback(data);
+    			        });
+    			    }
     			})
     		}
     	}

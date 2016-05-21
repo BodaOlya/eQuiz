@@ -32,8 +32,13 @@
             return promise;
         }
 
-        function isNameUnique(name) {
-            return $http.get("/quiz/IsNameUnique?name=" + name.toString());
+        function isNameUnique(name, id) {
+            if (id) {
+                return $http.get("/quiz/IsNameUnique?name=" + name.toString() + "&id=" + id.toString());
+            }
+            else {
+                return $http.get("/quiz/IsNameUnique?name=" + name.toString());
+            }
         }
 
         function getQuizzesForCopy() {
