@@ -22,7 +22,8 @@
             answers: [],
             tags: [],
             orderArray: [],
-            questionTypes: []
+            questionTypes: [],
+            answersDirty: []
         }
         vm.setQuestionType = setQuestionType;
         vm.addNewQuestion = addNewQuestion;
@@ -39,6 +40,8 @@
         vm.getCheckedCountForSelectOne = getCheckedCountForSelectOne;
         vm.getCheckedCountForSelectMany = getCheckedCountForSelectMany;
         vm.isEditingEnabled = isEditingEnabled;
+        vm.isDirtyAnswerCount = isDirtyAnswerCount;
+        vm.isDirtyAnswerChecked = isDirtyAnswerChecked;
 
         vm.toggleQuizzesForCopy = toggleQuizzesForCopy;
         vm.quizzesForCopyVisible = false;
@@ -199,6 +202,10 @@
                 }
             }
 
+            vm.model.answersDirty[questionIndex] = {
+                countAnswersDirty: false,
+                checkedAnswersDirty: false
+            };
             form.$setValidity("No answers", true);
             form.$setValidity("Only one correct answer", true);
             form.$setValidity("At least one correct answer", true);
@@ -228,6 +235,11 @@
                 reverse: false,
                 predicate: ""
             });
+
+            vm.model.answersDirty.push({
+                countAnswersDirty: false,
+                checkedAnswersDirty: false
+            });
         }
 
         function addNewAnswer(question, questionIndex) {
@@ -241,6 +253,8 @@
                 Question: null,
                 UserAnswers: null
             });
+
+            vm.model.answersDirty[questionIndex].countAnswersDirty = true;
         }
 
         function checkAnswerForSelectOne(answer, question) {
@@ -249,19 +263,25 @@
                 vm.model.answers[questionIndex][i].IsRight = false;
             }
             answer.IsRight = true;
+
+            vm.model.answersDirty[questionIndex].checkedAnswersDirty = true;
         }
 
         function deleteAnswer(answer, question) {
             var questionIndex = vm.model.questions.indexOf(question);
             var answerIndex = vm.model.answers[questionIndex].indexOf(answer);
             vm.model.answers[questionIndex].splice(answerIndex, 1);
+
+            vm.model.answersDirty[questionIndex].countAnswersDirty = true;
+            vm.model.answersDirty[questionIndex].checkedAnswersDirty = true;
         }
 
         function deleteQuestion(questionIndex) {
             vm.model.questions.splice(questionIndex, 1);
             vm.model.answers.splice(questionIndex, 1);
             vm.model.tags.splice(questionIndex, 1);
-            vm.model.orderArray.splice(questionIndex, 1)
+            vm.model.orderArray.splice(questionIndex, 1);
+            vm.model.answersDirty.splice(questionIndex, 1);
         }
 
         function order(questionIndex, name) {
@@ -351,6 +371,12 @@
                         predicate: ""
                     };
                 });
+                vm.model.answersDirty = Array.apply(null, Array(vm.model.questions.length)).map(function () {
+                    return {
+                        countAnswersDirty: false,
+                        checkedAnswersDirty: false
+                    };
+                });
             });
         }
 
@@ -366,6 +392,12 @@
                     return {
                         reverse: false,
                         predicate: ""
+                    };
+                });
+                vm.model.answersDirty = Array.apply(null, Array(vm.model.questions.length)).map(function () {
+                    return {
+                        countAnswersDirty: false,
+                        checkedAnswersDirty: false
                     };
                 });
                 vm.model.quizBlock.QuestionCount = vm.model.questions.length;
@@ -395,6 +427,16 @@
 
         function isEditingEnabled() {
             return !vm.model.quiz.QuizState || vm.model.quiz.QuizState.Name != 'Scheduled';
+        }
+
+        function isDirtyAnswerCount(question) {
+            var questionIndex = vm.model.questions.indexOf(question);
+            return vm.model.answersDirty[questionIndex].countAnswersDirty;
+        }
+
+        function isDirtyAnswerChecked(question) {
+            var questionIndex = vm.model.questions.indexOf(question);
+            return vm.model.answersDirty[questionIndex].checkedAnswersDirty;
         }
     }
 })();

@@ -80,12 +80,12 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="row" ng-show="vm.getAnswerCount($index, oneQuestionForm)==0">
+                    <div class="row" ng-show="vm.getAnswerCount($index, oneQuestionForm) == 0 && vm.isDirtyAnswerCount(question)">
                         <div class="col-sm-8 col-md-6 has-error">
                             <p class="control-label">Required at least 1 answer</p>
                         </div>
                     </div>
-                    <div class="row" ng-show="vm.getCheckedCountForSelectOne($index, oneQuestionForm)!=1">
+                    <div class="row" ng-show="vm.getCheckedCountForSelectOne($index, oneQuestionForm) != 1 && vm.isDirtyAnswerChecked(question)">
                         <div class="col-sm-8 col-md-6 has-error">
                             <p class="control-label">Required 1 correct answer</p>
                         </div>
@@ -118,7 +118,7 @@
                                         </div>
                                     </td>
                                     <td class="col-sm-2 col-md-2">
-                                        <input type="checkbox" ng-disabled="!vm.isEditingEnabled()" class="form-control" ng-model="answer.IsRight">
+                                        <input type="checkbox" ng-disabled="!vm.isEditingEnabled()" class="form-control" ng-click="vm.model.answersDirty[vm.model.questions.indexOf(question)].checkedAnswersDirty=true" ng-model="answer.IsRight">
                                     </td>
                                     <td class="col-sm-2 col-md-2">
                                         <a href ng-click="vm.isEditingEnabled() && vm.deleteAnswer(answer, question)">Delete</a>
@@ -127,12 +127,12 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="row" ng-show="vm.getAnswerCount($index, oneQuestionForm)==0">
+                    <div class="row" ng-show="vm.getAnswerCount($index, oneQuestionForm) == 0 && vm.isDirtyAnswerCount(question)">
                         <div class="col-sm-8 col-md-6 has-error">
                             <p class="control-label">Required at least 1 answer</p>
                         </div>
                     </div>
-                    <div class="row" ng-show="vm.getCheckedCountForSelectMany($index, oneQuestionForm)==0">
+                    <div class="row" ng-show="vm.getCheckedCountForSelectMany($index, oneQuestionForm )== 0 && vm.isDirtyAnswerChecked(question)">
                         <div class="col-sm-8 col-md-6 has-error">
                             <p class="control-label">Required at least 1 correct answer</p>
                         </div>
