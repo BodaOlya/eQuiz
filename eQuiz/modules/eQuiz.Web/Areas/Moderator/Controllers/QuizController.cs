@@ -49,9 +49,26 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         }
 
         [HttpGet]
-        public ActionResult IsNameUnique(string name)
+        public ActionResult IsNameUnique(string name, int? id)
         {
-            bool exists = _repository.Exists<Quiz>(q => q.Name == name);
+            bool exists = true;
+
+            if (id != null)
+            {
+                var quiz = _repository.GetSingle<Quiz>(q => q.Name == name);
+                if (quiz == null)
+                {
+                    exists = false;
+                }
+                else if (quiz.Id == (int)id)
+                {
+                    exists = false;
+                }
+            }
+            else
+            {
+                exists = _repository.Exists<Quiz>(q => q.Name == name);
+            }
             return Json(!exists, JsonRequestBehavior.AllowGet);
         }
 
@@ -189,7 +206,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
                 _repository.Update<Quiz>(quiz);
                 _repository.Update<QuizBlock>(block);
-                
+
             }
             else
             {

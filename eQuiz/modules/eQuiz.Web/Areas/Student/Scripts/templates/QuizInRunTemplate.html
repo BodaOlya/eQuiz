@@ -38,7 +38,7 @@
                 </td>
                 <td class="empty"></td>
                 <td>
-                    <input type="button" value="Q{{currentQuestion < 19 ? currentQuestion + 2 : currentQuestion + 1}} &raquo" ng-click="setCurrentQuestion(currentQuestion + 1)">
+                    <input type="button" value="Q{{currentQuestion < quizQuestions.length - 1 ? currentQuestion + 2 : currentQuestion + 1}} &raquo" ng-click="setCurrentQuestion(currentQuestion + 1)">
                 </td>
                 <td class="empty"></td>
                 <td>

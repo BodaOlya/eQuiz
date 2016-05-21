@@ -1,10 +1,13 @@
 ﻿(function () {
     angular.module("equizModule")
            .controller("QuizController", QuizController);
-    QuizController.$inject = ['$scope', 'quizService', 'userGroupService', '$location', 'questionService'];
+    QuizController.$inject = ['$scope', 'quizService', 'userGroupService', '$location', 'questionService', '$timeout'];
 
-    function QuizController($scope, quizService, userGroupService, $location, questionService) {
+    function QuizController($scope, quizService, userGroupService, $location, questionService, $timeout) {
         var vm = this;
+        vm.loadingVisible = false;
+        vm.errorMessageVisible = false;
+        vm.successMessageVisible = false;
         vm.tab = 'quiz';
         vm.save = save;
         vm.switchTab = switchTab;
@@ -26,15 +29,16 @@
         vm.addNewAnswer = addNewAnswer;
         vm.checkAnswerForSelectOne = checkAnswerForSelectOne;
         vm.deleteAnswer = deleteAnswer;
+        vm.deleteQuestion = deleteQuestion;
         vm.order = order;
         vm.showOrderArrow = showOrderArrow;
         vm.toViewModel = toViewModel;
         vm.toServerModel = toServerModel;
-        vm.saveQuestions = saveQuestions;
         vm.getQuestions = getQuestions;
         vm.getAnswerCount = getAnswerCount;
         vm.getCheckedCountForSelectOne = getCheckedCountForSelectOne;
         vm.getCheckedCountForSelectMany = getCheckedCountForSelectMany;
+        vm.isEditingEnabled = isEditingEnabled;
 
         vm.toggleQuizzesForCopy = toggleQuizzesForCopy;
         vm.quizzesForCopyVisible = false;
@@ -124,16 +128,59 @@
         }
 
         function save() {
-            vm.model.quiz.TimeLimitMinutes = vm.model.quiz.DurationHours * 60 + vm.model.quiz.DurationMinutes;
-            quizService.save({ quiz: vm.model.quiz, block: vm.model.quizBlock }).then(function (data) {
-                vm.model.quiz = data.data.quiz;
-                vm.model.quiz.StartDate = new Date(vm.model.quiz.StartDate);
-                vm.model.quiz.DurationMinutes = vm.model.quiz.TimeLimitMinutes % 60;
-                vm.model.quiz.DurationHours = (vm.model.quiz.TimeLimitMinutes - vm.model.quiz.TimeLimitMinutes % 60) / 60;
-                vm.model.quizBlock = data.data.block;
-                vm.saveQuestions(vm.model.quiz.Id);
-            });
+            showLoading();
+            saveQuiz();
 
+            function saveQuestions() {
+                var quizQuestionVM = vm.toServerModel();
+                quizQuestionVM.id = vm.model.quiz.Id;
+                questionService.saveQuestions(quizQuestionVM).then(function (response) {
+                    var modelFromServer = response.data;
+                    var model = vm.toViewModel(modelFromServer);
+                    vm.model.questions = model.questions;
+                    vm.model.answers = model.answers;
+                    vm.model.tags = model.tags;
+                    hideLoading();
+                    showSuccess();
+                }, function (response) {
+                    hideLoading();
+                    showError();
+                });
+            }
+
+            function saveQuiz() {
+                vm.model.quiz.TimeLimitMinutes = vm.model.quiz.DurationHours * 60 + vm.model.quiz.DurationMinutes;
+                quizService.save({ quiz: vm.model.quiz, block: vm.model.quizBlock }).then(function (data) {
+                    vm.model.quiz = data.data.quiz;
+                    vm.model.quiz.StartDate = new Date(vm.model.quiz.StartDate);
+                    vm.model.quiz.DurationMinutes = vm.model.quiz.TimeLimitMinutes % 60;
+                    vm.model.quiz.DurationHours = (vm.model.quiz.TimeLimitMinutes - vm.model.quiz.TimeLimitMinutes % 60) / 60;
+                    vm.model.quizBlock = data.data.block;
+                    saveQuestions();
+                }, function (data) {
+                    hideLoading();
+                    showError();
+                });
+            }
+
+            function showSuccess() {
+                vm.successMessageVisible = true;
+                $timeout(function () {
+                    vm.successMessageVisible = false;
+                }, 4000);
+            }
+            function showError() {
+                vm.errorMessageVisible = true;
+                $timeout(function () {
+                    vm.errorMessageVisible = false;
+                }, 4000);
+            }
+            function showLoading() {
+                vm.loadingVisible = true;
+            }
+            function hideLoading() {
+                vm.loadingVisible = false;
+            }
         }
 
 
@@ -210,6 +257,12 @@
             vm.model.answers[questionIndex].splice(answerIndex, 1);
         }
 
+        function deleteQuestion(questionIndex) {
+            vm.model.questions.splice(questionIndex, 1);
+            vm.model.answers.splice(questionIndex, 1);
+            vm.model.tags.splice(questionIndex, 1);
+        }
+
         function order(questionIndex, name) {
             vm.model.orderArray[questionIndex].reverse = (vm.model.orderArray[questionIndex].predicate === name) ? !vm.model.orderArray[questionIndex].reverse : false;
             vm.model.orderArray[questionIndex].predicate = name;
@@ -283,19 +336,6 @@
             };
         }
 
-        function saveQuestions(quizId) {
-            var quizQuestionVM = vm.toServerModel();
-            quizQuestionVM.id = quizId;
-            questionService.saveQuestions(quizQuestionVM).then(function (response) {
-                var modelFromServer = response.data;
-
-                var model = vm.toViewModel(modelFromServer);
-                vm.model.questions = model.questions;
-                vm.model.answers = model.answers;
-                vm.model.tags = model.tags;
-            });
-        }
-
         function getQuestions(quizId) {
             questionService.getQuestions(quizId).then(function (response) {
                 var modelFromServer = response.data;
@@ -352,5 +392,8 @@
             return countChecked;
         }
 
+        function isEditingEnabled() {
+            return !vm.model.quiz.State || vm.model.quiz.State.Name != 'Scheduled';
+        }
     }
 })();

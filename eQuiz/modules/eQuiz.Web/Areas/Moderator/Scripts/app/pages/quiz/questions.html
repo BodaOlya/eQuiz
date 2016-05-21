@@ -2,13 +2,14 @@
     <ng-form name="vm.model.questionsForm">
         <div ng-form="oneQuestionForm" ng-repeat="question in vm.model.questions track by $index">
             <div class="row" show-error>
-                <div class="col-sm-4 col-md-3">
+                <div class="col-sm-12 col-md-12">
                     <p class="control-label">
                         Question #{{ $index + 1 }}
+                        <a href class="control-label" ng-click="vm.isEditingEnabled() && vm.deleteQuestion($index)">Delete question</a>
                     </p>
                 </div>
                 <div class="col-sm-12 col-md-12">
-                    <textarea class="questionText form-control" ng-model="question.QuestionText" required name="QuestionText">{{ question.QuestionText }}</textarea>
+                    <textarea class="questionText form-control" ng-model="question.QuestionText" ng-disabled="!vm.isEditingEnabled()" required name="QuestionText">{{ question.QuestionText }}</textarea>
                     <div ng-messages="oneQuestionForm.QuestionText.$error" class="help-block hide">
                         <p ng-message="required">Question text is required</p>
                     </div>
@@ -21,7 +22,7 @@
                     </p>
                 </div>
                 <div class="col-sm-3 col-md-3" ng-repeat="type in vm.model.questionTypes | orderBy: 'Id'">
-                    <button class="form-control" ng-class="{active: question.QuestionTypeId==type.Id}" ng-click="vm.setQuestionType(question, type.Id, oneQuestionForm)">
+                    <button class="form-control" ng-class="{active: question.QuestionTypeId==type.Id}" ng-disabled="!vm.isEditingEnabled()" ng-click="vm.setQuestionType(question, type.Id, oneQuestionForm)">
                         {{ type.TypeName }}
                     </button>
                 </div>
@@ -33,7 +34,7 @@
                     </p>
                 </div>
                 <div class="col-sm-12 col-md-12">
-                    <input class="form-control" ng-list type="text" ng-model="vm.model.tags[$index]">
+                    <input class="form-control" ng-disabled="!vm.isEditingEnabled()" ng-list type="text" ng-model="vm.model.tags[$index]">
                 </div>
             </div>
             <div ng-switch on="question.QuestionTypeId">
@@ -41,14 +42,10 @@
                 </div>
                 <div ng-switch-when="2">
                     <div class="row">
-                        <div class="col-sm-2 col-md-2">
+                        <div class="col-sm-12 col-md-12">
                             <p class="control-label">
                                 Options
-                            </p>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <p class="control-label">
-                                <a href class="control-label" ng-click="vm.addNewAnswer(question, $index)">Add new</a>
+                                <a href class="control-label" ng-click="vm.isEditingEnabled() && vm.addNewAnswer(question, $index)">Add new</a>
                             </p>
                         </div>
                     </div>
@@ -63,7 +60,7 @@
                                 <tr ng-form="oneAnswerForm" ng-repeat="answer in vm.model.answers[$index] | orderBy:vm.model.orderArray[$index].predicate:vm.model.orderArray[$index].reverse">
                                     <td class="col-sm-8 col-md-8">
                                         <div class="row" show-error>
-                                            <input class="questionText form-control" type="text" ng-model="answer.AnswerText" required name="AnswerText">
+                                            <input class="questionText form-control" type="text" ng-disabled="!vm.isEditingEnabled()" ng-model="answer.AnswerText" required name="AnswerText">
                                             <div ng-messages="oneAnswerForm.AnswerText.$error" class="help-block hide">
                                                 <p ng-message="required">Answer text is required</p>
                                             </div>
@@ -72,12 +69,12 @@
                                     <td class="col-sm-2 col-md-2">
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" class="form-control" name="optradio" ng-click="vm.checkAnswerForSelectOne(answer, question)" ng-value="true" ng-model="answer.IsRight">
+                                                <input type="radio" class="form-control" ng-disabled="!vm.isEditingEnabled()" ng-click="vm.checkAnswerForSelectOne(answer, question)" ng-value="true" ng-model="answer.IsRight">
                                             </label>
                                         </div>
                                     </td>
                                     <td class="col-sm-2 col-md-2">
-                                        <a href ng-click="vm.deleteAnswer(answer, question)">Delete</a>
+                                        <a href ng-click="vm.isEditingEnabled() && vm.deleteAnswer(answer, question)">Delete</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -96,14 +93,10 @@
                 </div>
                 <div ng-switch-when="3">
                     <div class="row">
-                        <div class="col-sm-2 col-md-2">
+                        <div class="col-sm-12 col-md-12">
                             <p class="control-label">
                                 Options
-                            </p>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <p class="control-label">
-                                <a href class="control-label" ng-click="vm.addNewAnswer(question, $index)">Add new</a>
+                                <a href class="control-label" ng-click="vm.isEditingEnabled() && vm.addNewAnswer(question, $index)">Add new</a>
                             </p>
                         </div>
                     </div>
@@ -118,17 +111,17 @@
                                 <tr ng-form="oneAnswerForm" ng-repeat="answer in vm.model.answers[$index] | orderBy:vm.model.orderArray[$index].predicate:vm.model.orderArray[$index].reverse">
                                     <td class="col-sm-8 col-md-8">
                                         <div class="row" show-error>
-                                            <input class="questionText form-control" type="text" ng-model="answer.AnswerText" required name="AnswerText">
+                                            <input class="questionText form-control" type="text" ng-disabled="!vm.isEditingEnabled()" ng-model="answer.AnswerText" required name="AnswerText">
                                             <div ng-messages="oneAnswerForm.AnswerText.$error" class="help-block hide">
                                                 <p ng-message="required">Answer text is required</p>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="col-sm-2 col-md-2">
-                                        <input type="checkbox" class="form-control" ng-model="answer.IsRight">
+                                        <input type="checkbox" ng-disabled="!vm.isEditingEnabled()" class="form-control" ng-model="answer.IsRight">
                                     </td>
                                     <td class="col-sm-2 col-md-2">
-                                        <a href ng-click="vm.deleteAnswer(answer, question)">Delete</a>
+                                        <a href ng-click="vm.isEditingEnabled() && vm.deleteAnswer(answer, question)">Delete</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -148,7 +141,7 @@
             </div>
         </div>
         <div align="right">
-            <a href ng-click="vm.addNewQuestion()">Add new</a>
+            <a href ng-click="vm.isEditingEnabled() && vm.addNewQuestion()">Add new</a>
             <a href>Add existing one</a>
         </div>
     </ng-form>
