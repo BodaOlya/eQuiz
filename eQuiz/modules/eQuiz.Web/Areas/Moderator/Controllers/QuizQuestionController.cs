@@ -7,11 +7,26 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using Newtonsoft.Json;
 using eQuiz.Web.Code;
+using eQuiz.Repositories.Abstract;
 
 namespace eQuiz.Web.Areas.Moderator.Controllers
 {
     public class QuizQuestionController : BaseController
     {
+        #region Fields
+
+        private readonly IRepository _repository;
+
+        #endregion
+
+        #region Constructor
+
+        public QuizQuestionController(IRepository repository)
+        {
+            this._repository = repository;
+        }
+
+        #endregion
         public ActionResult Index()
         {
             return View();
@@ -20,26 +35,36 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         [HttpGet]
         public ActionResult GetQuestionTypes()
         {
-            using (var context = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
-            {
-                var typesList = context.QuestionTypes.OrderBy(x => x.TypeName).ToList();
-                return Json(typesList, JsonRequestBehavior.AllowGet);
-            }
+            //using (var context = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
+            //{
+            //    var typesList = context.QuestionTypes.OrderBy(x => x.TypeName).ToList();
+            //    return Json(typesList, JsonRequestBehavior.AllowGet);
+            //}
+            var questionTypes = _repository.Get<QuestionType>().ToList();
+            return Json(questionTypes, JsonRequestBehavior.AllowGet);
         }
 
 
         [HttpPost]
-        public ActionResult Save(int id, Question[] questions, QuestionAnswer[][] answers, Tag[][] tags)
+        public ActionResult Save(int id, Question[] questions, Answer[][] answers, Tag[][] tags)
         {
+
             if (questions == null)
             {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Can not save quiz without question.");
             }
             using (var context = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
             {
+                var quiz = context.Quizs.FirstOrDefault(x => x.Id == id);
+                var quizState = context.QuizStates.FirstOrDefault(state => state.Id == quiz.QuizStateId).Name;
+                var quizBlock = context.QuizBlocks.First(x => x.QuizId == id);
+                if(quizBlock.QuestionCount != questions.Length && quizState != "Draft")
+                {
+                    return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Not enough question had created.");
+                }
                 var topicId = context.Topics.First().Id;
                 var quizVariantId = 1; /*context.QuizVariants.First(x => x.QuizId == id).Id;*/ //we don't have fk on tblQuiz
-                var blockId = context.QuizBlocks.First(x => x.QuizId == id).Id;
+                var blockId = quizBlock.Id;
                 var newQuestions = questions.Where(q => q.Id == 0).ToList();
 
                 for (int i = 0; i < questions.Length; i++)
@@ -76,7 +101,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                     {
                         var quizQuestion = new QuizQuestion
                         {
-                            QuestionId= question.Id,
+                            QuestionId = question.Id,
                             QuizVariantId = quizVariantId,
                             QuestionOrder = (short)(i + 1),
                             QuizBlockId = blockId
@@ -88,7 +113,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 for (int i = 0; i < answers.Length; i++)
                 {
                     var questionId = questions[i].Id;
-                    var questionAnswer = context.Questions.Include("QuestionAnswers").FirstOrDefault(y => y.Id == questionId).QuestionAnswers.ToList();
+                    var questionAnswer = context.QuestionAnswers.Where(y => y.Id == questionId).ToList(); // list of answers for current question 
 
                     if (answers[i][0] != null)
                     {
@@ -98,48 +123,51 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
                             if (answer.Id != 0)
                             {
-                                var existedAnswer = context.QuestionAnswers.FirstOrDefault(x => x.Id == answer.Id);
+                                var existedAnswer = context.Answers.Include("QuestionAnswer").FirstOrDefault(x => x.Id == answer.Id);
 
                                 if (existedAnswer == null)
                                 {
                                     return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Answer is not found");
                                 }
+                                var temp = context.QuestionAnswers.FirstOrDefault(x => x.AnswerId == existedAnswer.Id && x.QuestionId == questionId);
 
-                                if (questionAnswer.Contains(existedAnswer))
+                                if (questionAnswer.Contains(temp))
                                 {
-                                    questionAnswer.Remove(existedAnswer);
+                                    questionAnswer.Remove(temp);
                                 }
-                                //existedAnswer.AnswerOrder = answer.AnswerOrder;
-                                //existedAnswer.AnswerText = answer.AnswerText;
-                                //existedAnswer.IsRight = answer.IsRight;
-                                existedAnswer.QuestionId = answer.QuestionId;
+                                existedAnswer.AnswerOrder = answer.AnswerOrder;
+                                existedAnswer.AnswerText = answer.AnswerText;
+                                existedAnswer.IsRight = answer.IsRight;
                             }
                             else
                             {
-                                //answer.AnswerOrder = (byte)(qa + 1);
-                                answer.QuestionId = questions[i].Id;
-                                context.QuestionAnswers.Add(answer);
+                                answer.AnswerOrder = (byte)(qa + 1);
+                                answer.QuestionAnswers.Add(new QuestionAnswer
+                                {
+                                    Answer = answer
+                                });
                             }
                         }
                         if (questionAnswer != null)
                         {
                             foreach (var item in questionAnswer)
                             {
-                                context.QuestionAnswers.Remove(item);//todo
+                                context.QuestionAnswers.Remove(item);//test it 
                             }
                         }
                     }
                     //todo doesn't delete tags 
-                 
+
                     if (tags[i][0] != null)
                     {
+                        var question = context.Questions.FirstOrDefault(x => x.Id == questionId);
+                        var questionTags = context.QuestionTags.Where(x => x.QuestionId == questionId).ToList();
+
                         for (int qt = 0; qt < tags[i].Length; qt++)
                         {
                             var tag = tags[i][qt];
 
-                           var existedTag = context.Tags.FirstOrDefault(x => x.Name == tag.Name);
-
-                            var question = context.Questions.FirstOrDefault(x => x.Id == questionId);
+                            var existedTag = context.Tags.FirstOrDefault(x => x.Name == tag.Name);
 
                             if (existedTag == null)
                             {
@@ -148,6 +176,32 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                                 {
                                     Tag = tag
                                 });
+                            }
+                            else
+                            {
+                                var temp = context.QuestionTags.FirstOrDefault(x => x.TagId == existedTag.Id && x.QuestionId == questionId);
+                                if (temp != null)
+                                {
+                                    if (questionTags.Contains(temp))
+                                    {
+                                        questionTags.Remove(temp);
+                                    }
+                                }
+                                else
+                                {
+                                    question.QuestionTags.Add(new QuestionTag
+                                    {
+                                        Tag = existedTag
+                                    });
+                                }
+
+                            }
+                        }
+                        if (questionTags != null)
+                        {
+                            foreach (var item in questionTags)
+                            {
+                                context.QuestionTags.Remove(item);//test it 
                             }
                         }
                     }
@@ -160,53 +214,73 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         public ActionResult Get(int id)
         {
             List<Question> questions = new List<Question>();
-            List<List<QuestionAnswer>> answers = null;
+            List<List<Answer>> answers = null;
             List<List<Tag>> tags = null;
             int quizId = 0;
-            using (var context = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
-            {
-                var quiz = context.Quizs.Where(x => x.Id == id).FirstOrDefault();  //check if exists
-
+            //using (var context = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
+            //{
+                //var quiz = context.Quizs.Where(x => x.Id == id).FirstOrDefault();  //check if exists
+                var quiz = _repository.GetSingle<Quiz>(q => q.Id == id);
                 if (quiz == null)
                 {
                     return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Quiz is not found");
                 }
-                quizId = quiz.Id;
-                var quizBlockIds = context.QuizBlocks.Where(b => b.QuizId == quizId).Select(b => b.Id).ToList();
-                var quizQuestios = context.QuizQuestions.Where(x => quizBlockIds.Contains(x.QuizBlockId)).OrderBy(x => x.QuestionOrder).ToList();
 
-                foreach (var quizQuestion in quizQuestios)
+                // var quizState = context.QuizStates.FirstOrDefault(state => state.Id == quiz.QuizStateId).Name;
+                var quizState = _repository.GetSingle<QuizState>(qs=>qs.Id==quiz.QuizStateId).Name;
+
+                if (quizState != "Archived")
                 {
-                    questions.Add(context.Questions.Where(q => q.Id == quizQuestion.QuestionId).Include(q => q.QuestionAnswers).Include(q => q.QuestionTags).First());
-                }
+                    quizId = quiz.Id;
+                    //var quizBlockIds = context.QuizBlocks.Where(b => b.QuizId == quizId).Select(b => b.Id).ToList();
+                    //var quizQuestios = context.QuizQuestions.Where(x => quizBlockIds.Contains(x.QuizBlockId)).OrderBy(x => x.QuestionOrder).ToList();
+                    var quizBlockIds = _repository.Get<QuizBlock>(qb => qb.Id == quizId).Select(qb=>qb.Id).ToList();
+                    var quizQuestios = _repository.Get<QuizQuestion>(qq => quizBlockIds.Contains(qq.QuizBlockId)).ToList();
 
-                answers = new List<List<QuestionAnswer>>();
-                foreach (var item in questions)
-                {
-                    answers.Add(item.QuestionAnswers.ToList());
-                }
-
-                tags = new List<List<Tag>>();
-                foreach (var item in questions)
-                {
-                    var questionTags = context.QuestionTags.Where(x=>x.QuestionId == item.Id).Include("Tag").ToList();
-
-                    var tagStorage = new List<Tag>();
-                    foreach (var tag in questionTags)
+                    foreach (var quizQuestion in quizQuestios)
                     {
-                        tagStorage.Add(tag.Tag);
+                        // questions.Add(context.Questions.Where(q => q.Id == quizQuestion.QuestionId).Include(q => q.QuestionAnswers).Include(q => q.QuestionTags).First());
+                        questions.Add(_repository.GetSingle<Question>(q => q.Id == quizQuestion.QuestionId, q => q.QuestionAnswers, q => q.QuestionTags));
+
                     }
-                    tags.Add(tagStorage);
+
+                    answers = new List<List<Answer>>();
+                    foreach (var item in questions)
+                    {
+                        // var questionAnswers = context.QuestionAnswers.Where(x => x.QuestionId == item.Id).Include("Answer").ToList();
+                        var questionAnswers = _repository.Get<QuestionAnswer>(x => x.QuestionId == item.Id, x=>x.Answer).ToList();
+                        var answerStorage = new List<Answer>();
+                        foreach (var answer in questionAnswers)
+                        {
+                            answerStorage.Add(answer.Answer);
+                        }
+                        answers.Add(answerStorage);
+                    }
+
+                    tags = new List<List<Tag>>();
+                    foreach (var item in questions)
+                    {
+                       // var questionTags = context.QuestionTags.Where(x => x.QuestionId == item.Id).Include("Tag").ToList();
+                        var questionTags = _repository.Get<QuestionTag>(x => x.QuestionId == item.Id, x=>x.Tag).ToList();
+
+                        var tagStorage = new List<Tag>();
+                        foreach (var tag in questionTags)
+                        {
+                            tagStorage.Add(tag.Tag);
+                        }
+                        tags.Add(tagStorage);
+                    }
+
                 }
-            }
+                var data = JsonConvert.SerializeObject(new { questions = questions, answers = answers, id = quizId, tags = tags }, Formatting.None,
+                                                        new JsonSerializerSettings()
+                                                        {
+                                                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                                        });
 
-            var data = JsonConvert.SerializeObject(new { questions = questions, answers = answers, id = quizId, tags = tags }, Formatting.None,
-                                                    new JsonSerializerSettings()
-                                                    {
-                                                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                                                    });
+                return Content(data, "application/json");
 
-            return Content(data, "application/json");
+           // }
         }
     }
 }

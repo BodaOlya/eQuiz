@@ -261,6 +261,7 @@
             vm.model.questions.splice(questionIndex, 1);
             vm.model.answers.splice(questionIndex, 1);
             vm.model.tags.splice(questionIndex, 1);
+            vm.model.orderArray.splice(questionIndex, 1)
         }
 
         function order(questionIndex, name) {
