@@ -29,6 +29,7 @@
         vm.addNewAnswer = addNewAnswer;
         vm.checkAnswerForSelectOne = checkAnswerForSelectOne;
         vm.deleteAnswer = deleteAnswer;
+        vm.deleteQuestion = deleteQuestion;
         vm.order = order;
         vm.showOrderArrow = showOrderArrow;
         vm.toViewModel = toViewModel;
@@ -253,6 +254,12 @@
             var questionIndex = vm.model.questions.indexOf(question);
             var answerIndex = vm.model.answers[questionIndex].indexOf(answer);
             vm.model.answers[questionIndex].splice(answerIndex, 1);
+        }
+
+        function deleteQuestion(questionIndex) {
+            vm.model.questions.splice(questionIndex, 1);
+            vm.model.answers.splice(questionIndex, 1);
+            vm.model.tags.splice(questionIndex, 1);
         }
 
         function order(questionIndex, name) {

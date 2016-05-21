@@ -2,9 +2,10 @@
     <ng-form name="vm.model.questionsForm">
         <div ng-form="oneQuestionForm" ng-repeat="question in vm.model.questions track by $index">
             <div class="row" show-error>
-                <div class="col-sm-4 col-md-3">
+                <div class="col-sm-12 col-md-12">
                     <p class="control-label">
                         Question #{{ $index + 1 }}
+                        <a href class="control-label" ng-click="vm.deleteQuestion($index)">Delete question</a>
                     </p>
                 </div>
                 <div class="col-sm-12 col-md-12">
