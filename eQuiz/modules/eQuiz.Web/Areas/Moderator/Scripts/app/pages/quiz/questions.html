@@ -41,13 +41,9 @@
                 </div>
                 <div ng-switch-when="2">
                     <div class="row">
-                        <div class="col-sm-2 col-md-2">
+                        <div class="col-sm-12 col-md-12">
                             <p class="control-label">
                                 Options
-                            </p>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <p class="control-label">
                                 <a href class="control-label" ng-click="vm.addNewAnswer(question, $index)">Add new</a>
                             </p>
                         </div>
@@ -72,7 +68,7 @@
                                     <td class="col-sm-2 col-md-2">
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" class="form-control" name="optradio" ng-click="vm.checkAnswerForSelectOne(answer, question)" ng-value="true" ng-model="answer.IsRight">
+                                                <input type="radio" class="form-control" ng-click="vm.checkAnswerForSelectOne(answer, question)" ng-value="true" ng-model="answer.IsRight">
                                             </label>
                                         </div>
                                     </td>
