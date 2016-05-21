@@ -16,12 +16,14 @@
                 answerResult: []
             };
 
-            $scope.startDate = null;
-            $scope.finishDate = null;
 
-            $scope.setCurrentQuestion = function (questionId) {
-                if (questionId < $scope.quizQuestions.length && questionId >= 0)
-                    $scope.currentQuestion = questionId;
+            $scope.setCurrentQuestion = function (currentQuestionId, index, questionId, isAutomatic, quizBlock, answerText) {
+                $scope.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, answerText);
+
+                if (currentQuestionId < $scope.quizQuestions.length && currentQuestionId >= 0) {
+                    $scope.currentQuestion = currentQuestionId;
+                }
+                
             };
 
             getQuestionById($scope.quizId);
@@ -35,18 +37,32 @@
                 }).then(function (response) {
                     console.log(response.data);
                     $scope.quizQuestions = response.data;
-                    $scope.startDate = Date.now();
+                    $scope.finalUserResult.startDate = Date.now();
                 });
             };
 
-            $scope.setUserChoice = function (index, questionId, answerId, isAutomatic, quizBlock, answerText, answerTime) {
-                $scope.finalUserResult.answerResult[index] = {
-                    Id: questionId, AnswerId: answerId, AnswerText: answerText, answerTime: answerTime, IsAutomatic: isAutomatic, QuizBlock: quizBlock
-                };
-                $scope.finalUserResult.startDate = $scope.startDate.toString();
-                console.log($scope.finalUserResult);
+            $scope.setUserChoice = function (index, questionId, answerId, isAutomatic, quizBlock) {
+                if (isAutomatic) {
+                    $scope.finalUserResult.answerResult[index] = {
+                        QuestionId: questionId, AnswerId: answerId, AnswerText: null, AnswerTime: Date.now(), IsAutomatic: isAutomatic, QuizBlock: quizBlock
+                    };
+                }
+
+                //console.log($scope.finalUserResult);
                 //console.log($scope.finalUserResult.answerResult.length);
             };
+            $scope.setUserTextAnswers = function (index, questionId, isAutomatic, quizBlock, answerText) {
+                if (!isAutomatic && answerText != "") {
+                    $scope.finalUserResult.answerResult[index] = {
+                        QuestionId: questionId, AnswerId: null, AnswerText: answerText, AnswerTime: Date.now(), IsAutomatic: isAutomatic, QuizBlock: quizBlock
+                    };
+                }
+            };
+
+            $scope.finishQuiz = function () {
+                $scope.finalUserResult.finishDate = Date.now();
+                console.log($scope.finalUserResult);
+            }
 
             /////////////////////////////////TIMER
             $scope.tSeconds = 0;
