@@ -6,14 +6,14 @@
         function ($scope, $http, $routeParams, $interval) {
             $scope.quizQuestions = null;
 
-            $scope.quizId = $routeParams.id;
+            $scope.quizId = parseInt($routeParams.id);
             $scope.quizDuration = $routeParams.dura;
             $scope.currentQuestion = 0;
-            $scope.finalUserResult = {
-                quizId: $scope.quizId,
-                startDate: null,
-                finishDate: null,
-                answerResult: []
+            $scope.passedQuiz = {
+                QuizId: $scope.quizId,
+                StartDate: null,
+                FinishDate: null,
+                UserAnswers: []
             };
 
 
@@ -37,15 +37,16 @@
                 }).then(function (response) {
                     console.log(response.data);
                     $scope.quizQuestions = response.data;
-                    $scope.finalUserResult.startDate = Date.now();
+                    $scope.passedQuiz.StartDate = new Date(Date.now());
                 });
             };
 
             $scope.setUserChoice = function (index, questionId, answerId, isAutomatic, quizBlock) {
                 if (isAutomatic) {
-                    $scope.finalUserResult.answerResult[index] = {
-                        QuestionId: questionId, AnswerId: answerId, AnswerText: null, AnswerTime: Date.now(), IsAutomatic: isAutomatic, QuizBlock: quizBlock
+                    var UserAnswer = {
+                        QuestionId: questionId, AnswerId: answerId, AnswerText: null, AnswerTime: new Date(Date.now()), IsAutomatic: isAutomatic, QuizBlock: quizBlock
                     };
+                    $scope.passedQuiz.UserAnswers[index] = UserAnswer;
                 }
 
                 //console.log($scope.finalUserResult);
@@ -53,15 +54,21 @@
             };
             $scope.setUserTextAnswers = function (index, questionId, isAutomatic, quizBlock, answerText) {
                 if (!isAutomatic && answerText != "") {
-                    $scope.finalUserResult.answerResult[index] = {
-                        QuestionId: questionId, AnswerId: null, AnswerText: answerText, AnswerTime: Date.now(), IsAutomatic: isAutomatic, QuizBlock: quizBlock
+                    var UserAnswer = {
+                        QuestionId: questionId, AnswerId: null, AnswerText: answerText, AnswerTime: new Date(Date.now()), IsAutomatic: isAutomatic, QuizBlock: quizBlock
                     };
+                    $scope.passedQuiz.UserAnswers[index] = UserAnswer;
                 }
             };
 
             $scope.finishQuiz = function () {
-                $scope.finalUserResult.finishDate = Date.now();
-                console.log($scope.finalUserResult);
+                $scope.passedQuiz.FinishDate = new Date(Date.now());
+                //console.log($scope.passedQuiz);
+                console.log(JSON.stringify($scope.passedQuiz));
+                var passedQuiz = $scope.passedQuiz;
+                $http.post("InsertQuizResult", passedQuiz).success(function (data) {
+                    console.log("OK");
+                });
             }
 
             /////////////////////////////////TIMER

@@ -8,6 +8,7 @@ using eQuiz.Repositories.Abstract;
 using eQuiz.Repositories.Concrete;
 using eQuiz.Entities;
 using Newtonsoft.Json;
+using eQuiz.Web.Areas.Student.Models;
 
 namespace eQuiz.Web.Areas.Student.Controllers
 {
@@ -99,6 +100,12 @@ namespace eQuiz.Web.Areas.Student.Controllers
 
             return Json(quizInfoList, JsonRequestBehavior.AllowGet);
 
+        }
+
+
+        public ActionResult InsertQuizResult(QuizResultModel passedQuiz)
+        {
+            return null;
         }
 
         #endregion
