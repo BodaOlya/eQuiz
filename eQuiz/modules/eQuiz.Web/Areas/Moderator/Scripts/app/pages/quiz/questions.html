@@ -70,7 +70,11 @@
                                         </div>
                                     </td>
                                     <td class="col-sm-2 col-md-2">
-                                        <input type="checkbox" class="form-control" ng-click="vm.checkAnswerForSelectOne(answer, question)" ng-model="answer.IsRight">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" class="form-control" name="optradio" ng-click="vm.checkAnswerForSelectOne(answer, question)" ng-value="true" ng-model="answer.IsRight">
+                                            </label>
+                                        </div>
                                     </td>
                                     <td class="col-sm-2 col-md-2">
                                         <a href ng-click="vm.deleteAnswer(answer, question)">Delete</a>
