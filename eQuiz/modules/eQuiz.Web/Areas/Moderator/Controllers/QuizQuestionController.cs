@@ -67,6 +67,8 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 var blockId = quizBlock.Id;
                 var newQuestions = questions.Where(q => q.Id == 0).ToList();
 
+                DeleteQuestions(id, questions);
+
                 for (int i = 0; i < questions.Length; i++)
                 {
                     var question = questions[i];
@@ -209,6 +211,55 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 context.SaveChanges();
             }
             return RedirectToAction("Get", new { id = id });
+        }
+
+        private void DeleteQuestions(int quizId, Question[] questions)
+        {
+            //using (var context = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
+            //{
+            //    var quiz = context.Quizs.FirstOrDefault(x => x.Id == quizId);
+            //    var blockId = context.QuizBlocks.First(x => x.QuizId == quizId).Id;
+
+            //    // deleting questions
+            //    var quizQuestions = context.QuizQuestions.Where(qq => qq.QuizBlockId == blockId).ToList();
+            //    for (int i = 0; i < questions.Length; i++)
+            //    {
+            //        int currentQuestionId = questions[i].Id;
+            //        QuizQuestion matchedQuizQuestion = context.QuizQuestions.Where(qq => qq.QuestionId == currentQuestionId && qq.QuizBlockId == blockId).FirstOrDefault();
+            //        if (quizQuestions.Contains(matchedQuizQuestion))
+            //        {
+            //            quizQuestions.Remove(matchedQuizQuestion);
+            //        }
+            //        if (quizQuestions != null)
+            //        {
+            //            foreach (var item in quizQuestions)
+            //            {
+            //                context.QuizQuestions.Remove(item); //test it 
+            //            }
+            //        }
+            //    }
+            //    context.SaveChanges();
+            //}
+            var quiz = _repository.GetSingle<Quiz>(x => x.Id == quizId);
+            var blockId = _repository.GetSingle<QuizBlock>(x => x.QuizId == quizId).Id;
+
+            var quizQuestions = _repository.Get<QuizQuestion>(qq => qq.QuizBlockId == blockId).ToList();
+            for (int i = 0; i < questions.Length; i++)
+            {
+                int currentQuestionId = questions[i].Id;
+                QuizQuestion matchedQuizQuestion = _repository.GetSingle<QuizQuestion>(qq => qq.QuestionId == currentQuestionId && qq.QuizBlockId == blockId);
+                if (quizQuestions.Contains(matchedQuizQuestion))
+                {
+                    quizQuestions.Remove(matchedQuizQuestion);
+                }
+                if (quizQuestions != null)
+                {
+                    foreach (var item in quizQuestions)
+                    {
+                        _repository.Delete<int, QuizQuestion>("Id", item.Id);
+                    }
+                }
+            }
         }
 
         public ActionResult Get(int id)
