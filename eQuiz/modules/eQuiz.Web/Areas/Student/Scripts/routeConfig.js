@@ -3,12 +3,12 @@
     var equizModule = angular.module("equizModule");
     equizModule.config(function ($routeProvider) {
         $routeProvider.when("/", {
-            templateUrl: "/Areas/Student/Scripts/templates/DashboardTemplate.html",
+            templateUrl: "/Areas/Student/Scripts/app/pages/dashboard/dashboard.html",
             controller: "dashboardCtrl",
             controllerAs: "dashboardCtrl"
         })
         .when("/quizInRun/:id/:dura/", {
-            templateUrl: "/Areas/Student/Scripts/templates/QuizInRunTemplate.html",
+            templateUrl: "/Areas/Student/Scripts/app/pages/quizInRun/quizInRun.html",
             controller: "quizInRunCtrl",
             controllerAs: "quizCtrl"
         })

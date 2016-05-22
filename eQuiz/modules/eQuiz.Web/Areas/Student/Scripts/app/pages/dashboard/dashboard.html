@@ -1,0 +1,26 @@
+﻿<div id='content'>
+    <table id='quizzesTable'>
+        <thead>
+            <tr>
+                <th><h2>Quizzes</h2></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="quiz in allQuizes">
+                <td>
+                    {{quiz.Name}}
+                </td>
+                <td>
+                    {{quiz.StartDate}}
+                </td>
+                <td>
+                    {{quiz.TimeLimitMinutes}}
+                </td>
+                <td>
+                    <a href='#/quizInRun/{{quiz.Id}}/{{quiz.TimeLimitMinutes}}' ng-if="quiz.InternetAccess" ng-click="getQuestionById(quiz.Id)">Start{{quiz.Id}}</a>
+                    <div ng-if="!quiz.InternetAccess">Inactive</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
