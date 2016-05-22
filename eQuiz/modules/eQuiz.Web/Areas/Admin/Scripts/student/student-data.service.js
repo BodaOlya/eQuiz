@@ -18,52 +18,21 @@
         return service;
 
         function getStudentInfo(studentId) {
-            var promise = $http.get("/Admin/Default/GetStudentInfo", studentId);
+            var promise = $http({
+                url: '/Admin/Review/GetStudentInfo',
+                method: "GET",
+                params: {id: studentId}
+            });
             return promise;
-
-            //return {
-            //    id:1,
-            //    firstName: 'Eugene',
-            //    lastName: 'Shtefaniuk',
-            //    phone: '555-15-734',
-            //    email: 'yevhen.sht@gmail.com',
-            //    userGroup: 'Student'
-            //};
         }
 
         function getStudentQuizzes(studentId) {
-            var promise = $http.get("/Admin/Default/GetStudentQuizzes", studentId);
+            var promise = $http({
+                url: '/Admin/Review/GetStudentQuizzes',
+                method: "GET",
+                params: { id: studentId }
+            });
             return promise;
-
-            //return [
-            //    {
-            //        id:1,
-            //        name: 'Quiz 1',
-            //        state: 'Passed',
-            //        questions: 20,
-            //        verificationType: 'Auto',
-            //        otherDetails: 'Details 1',
-            //        date: '15.05.2016'
-            //    },
-            //    {
-            //        id:2,
-            //        name: 'Quiz 2',
-            //        state: 'In Verification',
-            //        questions: 10,
-            //        verificationType: 'Manual',
-            //        otherDetails: 'Details 2',
-            //        date: '04.04.2016'
-            //    },
-            //    {
-            //        id:3,
-            //        name: 'Quiz 3',
-            //        state: 'Not passed',
-            //        questions: 20,
-            //        verificationType: 'Combined (A:12, M:8)',
-            //        otherDetails: 'Details 3',
-            //        date: '10.05.2016'
-            //    }
-            //];
         }
 
         function getStudentComments(studentId) {
