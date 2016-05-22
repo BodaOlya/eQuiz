@@ -1,7 +1,7 @@
 ﻿(function (angular) {
 
     angular
-        .module('quizzesModule')
+        .module('equizModule')
         .service('quizzesService', quizzesService);
 
     quizzesService.$inject = ['$http'];
