@@ -2,8 +2,8 @@
 (function (angular) {
     var equizModule = angular.module("equizModule");
 
-    equizModule.controller("quizInRunCtrl", ["$scope", "$http", "$routeParams", "$interval",
-        function ($scope, $http, $routeParams, $interval) {
+    equizModule.controller("quizInRunCtrl", ["$scope", "quizService", "$routeParams", "$interval",
+        function ($scope, quizService, $routeParams, $interval) {
             $scope.quizQuestions = null;
 
             $scope.quizId = parseInt($routeParams.id);
@@ -23,22 +23,18 @@
                 if (currentQuestionId < $scope.quizQuestions.length && currentQuestionId >= 0) {
                     $scope.currentQuestion = currentQuestionId;
                 }
-                
+
             };
 
             getQuestionById($scope.quizId);
 
             function getQuestionById(questionId) {
-                $http({
-                    method: "GET",
-                    url: "GetQuestionsByQuizId",
-                    params: { id: questionId }
-
-                }).then(function (response) {
-                    console.log(response.data);
-                    $scope.quizQuestions = response.data;
-                    $scope.passedQuiz.StartDate = new Date(Date.now());
-                });
+                quizService.getQuestionsById(questionId)
+                    .then(function (response) {
+                        console.log(response.data);
+                        $scope.quizQuestions = response.data;
+                        $scope.passedQuiz.StartDate = new Date(Date.now());
+                    });
             };
 
             $scope.setUserChoice = function (index, questionId, answerId, isAutomatic, quizBlock) {
@@ -48,10 +44,8 @@
                     };
                     $scope.passedQuiz.UserAnswers[index] = UserAnswer;
                 }
-
-                //console.log($scope.finalUserResult);
-                //console.log($scope.finalUserResult.answerResult.length);
             };
+
             $scope.setUserTextAnswers = function (index, questionId, isAutomatic, quizBlock, answerText) {
                 if (!isAutomatic && answerText != "") {
                     var UserAnswer = {
@@ -61,14 +55,17 @@
                 }
             };
 
+            //FINISH BUTTON
             $scope.finishQuiz = function () {
                 $scope.passedQuiz.FinishDate = new Date(Date.now());
-                //console.log($scope.passedQuiz);
+
                 console.log(JSON.stringify($scope.passedQuiz));
+
                 var passedQuiz = $scope.passedQuiz;
-                $http.post("InsertQuizResult", passedQuiz).success(function (data) {
-                    console.log("OK");
-                });
+                quizService.sendUserResult(passedQuiz)
+                    .success(function (data) {
+                        console.log("OK");
+                    });
             }
 
             /////////////////////////////////TIMER
