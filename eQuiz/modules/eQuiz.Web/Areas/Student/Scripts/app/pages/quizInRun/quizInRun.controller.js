@@ -2,8 +2,8 @@
 (function (angular) {
     var equizModule = angular.module("equizModule");
 
-    equizModule.controller("quizInRunCtrl", ["$scope", "quizService", "trackUserResultService", "$routeParams", "$interval",
-        function ($scope, quizService, trackUserResultService, $routeParams, $interval) {
+    equizModule.controller("quizInRunCtrl", ["$scope", "quizService", "trackUserResultService", "$routeParams", "$interval", "$window",
+        function ($scope, quizService, trackUserResultService, $routeParams, $interval, $window) {
             $scope.quizQuestions = null;
 
             $scope.quizId = parseInt($routeParams.id);
@@ -11,6 +11,7 @@
             $scope.currentQuestion = 0;
             $scope.passedQuiz = trackUserResultService.passedQuiz;
             $scope.passedQuiz.QuizId = $scope.quizId;
+            $scope.windowHeight = $window.innerHeight;
 
 
             $scope.setCurrentQuestion = function (currentQuestionId, index, questionId, isAutomatic, quizBlock, answerText) {
@@ -52,7 +53,13 @@
                     .success(function (data) {
                         console.log("OK");
                     });
-            }
+            };
+
+            $scope.$watch(function () {
+                return $window.innerHeight;
+            }, function (value) {
+                $scope.windowHeight = value;
+            });
 
             /////////////////////////////////TIMER
             $scope.tSeconds = 0;
