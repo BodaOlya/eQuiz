@@ -2,19 +2,16 @@
 (function (angular) {
     var equizModule = angular.module("equizModule");
 
-    equizModule.controller("quizInRunCtrl", ["$scope", "$http", "$routeParams", "$interval",
-        function ($scope, $http, $routeParams, $interval) {
+    equizModule.controller("quizInRunCtrl", ["$scope", "quizService", "trackUserResultService", "$routeParams", "$interval", "$window",
+        function ($scope, quizService, trackUserResultService, $routeParams, $interval, $window) {
             $scope.quizQuestions = null;
 
             $scope.quizId = parseInt($routeParams.id);
             $scope.quizDuration = $routeParams.dura;
             $scope.currentQuestion = 0;
-            $scope.passedQuiz = {
-                QuizId: $scope.quizId,
-                StartDate: null,
-                FinishDate: null,
-                UserAnswers: []
-            };
+            $scope.passedQuiz = trackUserResultService.passedQuiz;
+            $scope.passedQuiz.QuizId = $scope.quizId;
+            $scope.windowHeight = $window.innerHeight;
 
 
             $scope.setCurrentQuestion = function (currentQuestionId, index, questionId, isAutomatic, quizBlock, answerText) {
@@ -23,53 +20,46 @@
                 if (currentQuestionId < $scope.quizQuestions.length && currentQuestionId >= 0) {
                     $scope.currentQuestion = currentQuestionId;
                 }
-                
+
             };
 
             getQuestionById($scope.quizId);
 
             function getQuestionById(questionId) {
-                $http({
-                    method: "GET",
-                    url: "GetQuestionsByQuizId",
-                    params: { id: questionId }
-
-                }).then(function (response) {
-                    console.log(response.data);
-                    $scope.quizQuestions = response.data;
-                    $scope.passedQuiz.StartDate = new Date(Date.now());
-                });
+                quizService.getQuestionsById(questionId)
+                    .then(function (response) {
+                        console.log(response.data);
+                        $scope.quizQuestions = response.data;
+                        $scope.passedQuiz.StartDate = new Date(Date.now());
+                    });
             };
 
             $scope.setUserChoice = function (index, questionId, answerId, isAutomatic, quizBlock) {
-                if (isAutomatic) {
-                    var UserAnswer = {
-                        QuestionId: questionId, AnswerId: answerId, AnswerText: null, AnswerTime: new Date(Date.now()), IsAutomatic: isAutomatic, QuizBlock: quizBlock
-                    };
-                    $scope.passedQuiz.UserAnswers[index] = UserAnswer;
-                }
-
-                //console.log($scope.finalUserResult);
-                //console.log($scope.finalUserResult.answerResult.length);
+                trackUserResultService.setUserAnswers(index, questionId, answerId, isAutomatic, quizBlock);
             };
+
             $scope.setUserTextAnswers = function (index, questionId, isAutomatic, quizBlock, answerText) {
-                if (!isAutomatic && answerText != "") {
-                    var UserAnswer = {
-                        QuestionId: questionId, AnswerId: null, AnswerText: answerText, AnswerTime: new Date(Date.now()), IsAutomatic: isAutomatic, QuizBlock: quizBlock
-                    };
-                    $scope.passedQuiz.UserAnswers[index] = UserAnswer;
-                }
+                trackUserResultService.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, answerText);
             };
 
+            //FINISH BUTTON
             $scope.finishQuiz = function () {
                 $scope.passedQuiz.FinishDate = new Date(Date.now());
-                //console.log($scope.passedQuiz);
+
                 console.log(JSON.stringify($scope.passedQuiz));
+
                 var passedQuiz = $scope.passedQuiz;
-                $http.post("InsertQuizResult", passedQuiz).success(function (data) {
-                    console.log("OK");
-                });
-            }
+                quizService.sendUserResult(passedQuiz)
+                    .success(function (data) {
+                        console.log("OK");
+                    });
+            };
+
+            $scope.$watch(function () {
+                return $window.innerHeight;
+            }, function (value) {
+                $scope.windowHeight = value;
+            });
 
             /////////////////////////////////TIMER
             $scope.tSeconds = 0;
