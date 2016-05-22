@@ -2,19 +2,15 @@
 (function (angular) {
     var equizModule = angular.module("equizModule");
 
-    equizModule.controller("quizInRunCtrl", ["$scope", "quizService", "$routeParams", "$interval",
-        function ($scope, quizService, $routeParams, $interval) {
+    equizModule.controller("quizInRunCtrl", ["$scope", "quizService", "trackUserResultService", "$routeParams", "$interval",
+        function ($scope, quizService, trackUserResultService, $routeParams, $interval) {
             $scope.quizQuestions = null;
 
             $scope.quizId = parseInt($routeParams.id);
             $scope.quizDuration = $routeParams.dura;
             $scope.currentQuestion = 0;
-            $scope.passedQuiz = {
-                QuizId: $scope.quizId,
-                StartDate: null,
-                FinishDate: null,
-                UserAnswers: []
-            };
+            $scope.passedQuiz = trackUserResultService.passedQuiz;
+            $scope.passedQuiz.QuizId = $scope.quizId;
 
 
             $scope.setCurrentQuestion = function (currentQuestionId, index, questionId, isAutomatic, quizBlock, answerText) {
@@ -38,21 +34,11 @@
             };
 
             $scope.setUserChoice = function (index, questionId, answerId, isAutomatic, quizBlock) {
-                if (isAutomatic) {
-                    var UserAnswer = {
-                        QuestionId: questionId, AnswerId: answerId, AnswerText: null, AnswerTime: new Date(Date.now()), IsAutomatic: isAutomatic, QuizBlock: quizBlock
-                    };
-                    $scope.passedQuiz.UserAnswers[index] = UserAnswer;
-                }
+                trackUserResultService.setUserAnswers(index, questionId, answerId, isAutomatic, quizBlock);
             };
 
             $scope.setUserTextAnswers = function (index, questionId, isAutomatic, quizBlock, answerText) {
-                if (!isAutomatic && answerText != "") {
-                    var UserAnswer = {
-                        QuestionId: questionId, AnswerId: null, AnswerText: answerText, AnswerTime: new Date(Date.now()), IsAutomatic: isAutomatic, QuizBlock: quizBlock
-                    };
-                    $scope.passedQuiz.UserAnswers[index] = UserAnswer;
-                }
+                trackUserResultService.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, answerText);
             };
 
             //FINISH BUTTON

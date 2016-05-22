@@ -148,6 +148,7 @@
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.service.js" />
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\quizInRun.controller.js" />
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\quizInRun.service.js" />
+    <Content Include="Areas\Student\Scripts\app\pages\quizInRun\trackUserResult.service.js" />
     <Content Include="Areas\Student\Scripts\routeConfig.js" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.html" />
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\quizInRun.html" />
