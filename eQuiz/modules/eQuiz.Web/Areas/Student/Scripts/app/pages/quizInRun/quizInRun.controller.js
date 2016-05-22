@@ -44,15 +44,21 @@
 
             //FINISH BUTTON
             $scope.finishQuiz = function () {
-                $scope.passedQuiz.FinishDate = new Date(Date.now());
 
-                console.log(JSON.stringify($scope.passedQuiz));
+                var isUserWantFinish = confirm("A you sure want to finish the  quiz?");
 
-                var passedQuiz = $scope.passedQuiz;
-                quizService.sendUserResult(passedQuiz)
-                    .success(function (data) {
-                        console.log("OK");
-                    });
+                if (isUserWantFinish) {
+                    $scope.passedQuiz.FinishDate = new Date(Date.now());
+
+                    console.log(JSON.stringify($scope.passedQuiz));
+
+                    var passedQuiz = $scope.passedQuiz;
+                    quizService.sendUserResult(passedQuiz)
+                        .success(function (data) {
+                            console.log("OK");
+                        });
+                }
+                
             };
 
             $scope.$watch(function () {
