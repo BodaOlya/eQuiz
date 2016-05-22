@@ -48,10 +48,11 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         [HttpPost]
         public ActionResult Save(int id, Question[] questions, Answer[][] answers, Tag[][] tags)
         {
-
-            if (questions == null)
+            string[] errors = QuestionsValidation(id, questions, answers, tags);
+            if (errors != null)
             {
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Can not save quiz without question.");
+                string mergedErrors = string.Join("\n", errors);
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, mergedErrors);
             }
             using (var context = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
             {
@@ -260,6 +261,99 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                     }
                 }
             }
+        }
+
+        private string[] QuestionsValidation(int quizId, Question[] questions, Answer[][] answers, Tag[][] tags)
+        {
+            var errorMessages = new List<string>();
+
+            if (quizId == 0)
+            {
+                errorMessages.Add("Quiz is not exist");
+            }
+
+            if (questions == null)
+            {
+                errorMessages.Add("No questions");
+            }
+
+            if (answers == null)
+            {
+                errorMessages.Add("No answers");
+            }
+
+            if (tags == null)
+            {
+                errorMessages.Add("No tags");
+            }
+
+            if (questions.Length != answers.Length || questions.Length != tags.Length || answers.Length != tags.Length)
+            {
+                errorMessages.Add("Different length of questions, answers or tags");
+            }
+
+            var isAllQuestionsHaveText = true;
+            var isExistsAnswers = true;
+            var isAllAnswersHaveText = true;
+            var isExistsCheckedAnswerForAllQuestions = true;
+
+            for (var i = 0; i < questions.Length; i++)
+            {
+                if (string.IsNullOrEmpty(questions[i].QuestionText))
+                {
+                    isAllQuestionsHaveText = false;
+                }
+                if (questions[i].QuestionTypeId == 2 || questions[i].QuestionTypeId == 3)
+                {
+                    if (answers[i] == null || answers[i].Length == 0)
+                    {
+                        isExistsAnswers = false;
+                        isExistsCheckedAnswerForAllQuestions = false;
+                    }
+                    else
+                    {
+                        var chechedCount = 0;
+                        for (var j = 0; j < answers[i].Length; j++)
+                        {
+                            if (string.IsNullOrEmpty(answers[i][j].AnswerText))
+                            {
+                                isAllAnswersHaveText = false;
+                            }
+                            chechedCount = (bool)answers[i][j].IsRight ? chechedCount++ : chechedCount;
+                        }
+                        if (questions[i].QuestionTypeId == 2 && chechedCount != 1)
+                        {
+                            isExistsCheckedAnswerForAllQuestions = false;
+                        }
+                        if (questions[i].QuestionTypeId == 3 && chechedCount < 1)
+                        {
+                            isExistsCheckedAnswerForAllQuestions = false;
+                        }
+                    }
+                }
+            }
+
+            if (!isAllQuestionsHaveText)
+            {
+                errorMessages.Add("Not all questions have text");
+            }
+
+            if (!isExistsAnswers)
+            {
+                errorMessages.Add("Not all questions with type 'Select one' or 'Select many' have answers");
+            }
+
+            if (!isAllAnswersHaveText)
+            {
+                errorMessages.Add("Not all answers have text");
+            }
+
+            if (!isExistsCheckedAnswerForAllQuestions)
+            {
+                errorMessages.Add("Not all questions with type 'Select one' or 'Select many' have right answers");
+            }
+
+            return errorMessages.Count > 0 ? errorMessages.ToArray() : null;
         }
 
         public ActionResult Get(int id)
