@@ -42,6 +42,7 @@
         vm.isEditingEnabled = isEditingEnabled;
         vm.isDirtyAnswerCount = isDirtyAnswerCount;
         vm.isDirtyAnswerChecked = isDirtyAnswerChecked;
+        vm.isQuestionsFormValid = isQuestionsFormValid;
 
         vm.toggleQuizzesForCopy = toggleQuizzesForCopy;
         vm.quizzesForCopyVisible = false;
@@ -115,10 +116,10 @@
         }
 
         function saveCanExecute() {
-            if (vm.model.quizForm) {
-                return !vm.model.quizForm.$valid;
+            if (vm.quizForm) {
+                return !vm.quizForm.$valid || !vm.isQuestionsFormValid();
             }
-            return false;
+            return !vm.isQuestionsFormValid();
         }
 
         function switchTab(tab) {
@@ -437,6 +438,17 @@
         function isDirtyAnswerChecked(question) {
             var questionIndex = vm.model.questions.indexOf(question);
             return vm.model.answersDirty[questionIndex].checkedAnswersDirty;
+        }
+
+        function isQuestionsFormValid() {
+            if (vm.model.questionsForm) {
+                var questionCountValid = true;
+                if (!vm.model.quiz.QuizState || vm.model.quiz.QuizState.Name != 'Draft') {
+                    questionCountValid = (vm.model.questions.length == vm.model.quizBlock.QuestionCount);
+                }
+                return vm.model.questionsForm.$valid && questionCountValid;
+            }
+            return false;
         }
     }
 })();
