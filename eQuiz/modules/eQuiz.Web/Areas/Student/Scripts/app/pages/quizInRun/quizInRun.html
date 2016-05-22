@@ -21,12 +21,12 @@
                     <h2>{{quizQuestions[currentQuestion].Text}}</h2>
                 </li>
                 <li ng-repeat="answer in quizQuestions[currentQuestion].Answers" ng-if="quizQuestions[currentQuestion].IsAutomatic">
-                    <p>
-                        <input type="radio" name="answersGroup" value="{{answer.Id}}" ng-click="setUserChoice(currentQuestion, quizQuestions[currentQuestion].Id, answer.Id, quizQuestions[currentQuestion].IsAutomatic, quizQuestions[currentQuestion].QuizBlock)"> {{answer.Text}}
-                    </p>
+                    <label>
+                        <input type="radio"  name="answersGroup" value="{{answer.Id}}" ng-click="setUserChoice(currentQuestion, quizQuestions[currentQuestion].Id, answer.Id, quizQuestions[currentQuestion].IsAutomatic, quizQuestions[currentQuestion].QuizBlock)"> {{answer.Text}}
+                    </label>
                 </li>  
             </ul>
-            <textarea draggable="false" rows="25" ng-if="!quizQuestions[currentQuestion].IsAutomatic" id="fieldForText" ng-model="passedQuiz.UserAnswers[currentQuestion].AnswerText"></textarea>
+            <textarea rows="{{windowHeight * 20 | number}}" ng-if="!quizQuestions[currentQuestion].IsAutomatic" id="fieldForText" ng-model="passedQuiz.UserAnswers[currentQuestion].AnswerText"></textarea>
         </div>
     </div>
 

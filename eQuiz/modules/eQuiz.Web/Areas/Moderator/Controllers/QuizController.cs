@@ -316,6 +316,78 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return RedirectToAction("Index", "Quiz");
         }
 
+        private string[] ValidateQuiz(Quiz quiz, QuizBlock block)
+        {
+            var errorMessages = new List<string>();
+
+            if(quiz.Name == null)
+            {
+                errorMessages.Add("There is no quiz name");
+            }
+
+            if(_repository.Exists<Quiz>(q => q.Name == quiz.Name))
+            {
+                errorMessages.Add("Quiz name is not unique");
+            }
+
+            if(block.QuestionCount == null)
+            {
+                errorMessages.Add("There is no question quantity");
+            }
+
+            if (block.QuestionCount <= 0)
+            {
+                errorMessages.Add("Question quantity should be greater then 0");
+            }
+
+            if (quiz.StartDate == null)
+            {
+                errorMessages.Add("There is no start date");
+            }
+
+            if (quiz.StartDate <= DateTime.Now)
+            {
+                errorMessages.Add("Start date should be greater then current date");
+            }
+
+            if (quiz.EndDate == null)
+            {
+                errorMessages.Add("There is no end date");
+            }
+
+            if (quiz.EndDate <= DateTime.Now)
+            {
+                errorMessages.Add("End date should be greater then current date");
+            }
+
+            if (quiz.TimeLimitMinutes == null)
+            {
+                errorMessages.Add("There is no time limit");
+            }
+
+            if (quiz.TimeLimitMinutes <= 0)
+            {
+                errorMessages.Add("Time limit should be greater then 0");
+            }
+
+            if (quiz.UserGroup == null)
+            {
+                errorMessages.Add("There is no user group selected");
+            }
+
+            if (!_repository.Exists<Quiz>(q => q.UserGroup == quiz.UserGroup))
+            {
+                errorMessages.Add("There is no such user group in the database");
+            }
+
+            if (!_repository.Exists<Quiz>(q => q.QuizTypeId == quiz.QuizTypeId))
+            {
+                errorMessages.Add("There is no such quiz type in database");
+            }
+
+            return errorMessages.Count > 0 ? errorMessages.ToArray() : null;
+        }
+
         #endregion
 
     }

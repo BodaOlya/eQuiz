@@ -48,10 +48,11 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         [HttpPost]
         public ActionResult Save(int id, Question[] questions, Answer[][] answers, Tag[][] tags)
         {
-
-            if (questions == null)
+            string[] errors = QuestionsValidation(id, questions, answers, tags);
+            if (errors != null)
             {
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Can not save quiz without question.");
+                string mergedErrors = string.Join("\n", errors);
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, mergedErrors);
             }
             using (var context = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
             {
@@ -66,6 +67,8 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 var quizVariantId = 1; /*context.QuizVariants.First(x => x.QuizId == id).Id;*/ //we don't have fk on tblQuiz
                 var blockId = quizBlock.Id;
                 var newQuestions = questions.Where(q => q.Id == 0).ToList();
+
+                DeleteQuestions(id, questions);
 
                 for (int i = 0; i < questions.Length; i++)
                 {
@@ -209,6 +212,148 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 context.SaveChanges();
             }
             return RedirectToAction("Get", new { id = id });
+        }
+
+        private void DeleteQuestions(int quizId, Question[] questions)
+        {
+            //using (var context = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
+            //{
+            //    var quiz = context.Quizs.FirstOrDefault(x => x.Id == quizId);
+            //    var blockId = context.QuizBlocks.First(x => x.QuizId == quizId).Id;
+
+            //    // deleting questions
+            //    var quizQuestions = context.QuizQuestions.Where(qq => qq.QuizBlockId == blockId).ToList();
+            //    for (int i = 0; i < questions.Length; i++)
+            //    {
+            //        int currentQuestionId = questions[i].Id;
+            //        QuizQuestion matchedQuizQuestion = context.QuizQuestions.Where(qq => qq.QuestionId == currentQuestionId && qq.QuizBlockId == blockId).FirstOrDefault();
+            //        if (quizQuestions.Contains(matchedQuizQuestion))
+            //        {
+            //            quizQuestions.Remove(matchedQuizQuestion);
+            //        }
+            //        if (quizQuestions != null)
+            //        {
+            //            foreach (var item in quizQuestions)
+            //            {
+            //                context.QuizQuestions.Remove(item); //test it 
+            //            }
+            //        }
+            //    }
+            //    context.SaveChanges();
+            //}
+            var quiz = _repository.GetSingle<Quiz>(x => x.Id == quizId);
+            var blockId = _repository.GetSingle<QuizBlock>(x => x.QuizId == quizId).Id;
+
+            var quizQuestions = _repository.Get<QuizQuestion>(qq => qq.QuizBlockId == blockId).ToList();
+            for (int i = 0; i < questions.Length; i++)
+            {
+                int currentQuestionId = questions[i].Id;
+                QuizQuestion matchedQuizQuestion = _repository.GetSingle<QuizQuestion>(qq => qq.QuestionId == currentQuestionId && qq.QuizBlockId == blockId);
+                if (quizQuestions.Contains(matchedQuizQuestion))
+                {
+                    quizQuestions.Remove(matchedQuizQuestion);
+                }
+                if (quizQuestions != null)
+                {
+                    foreach (var item in quizQuestions)
+                    {
+                        _repository.Delete<int, QuizQuestion>("Id", item.Id);
+                    }
+                }
+            }
+        }
+
+        private string[] QuestionsValidation(int quizId, Question[] questions, Answer[][] answers, Tag[][] tags)
+        {
+            var errorMessages = new List<string>();
+
+            if (quizId == 0)
+            {
+                errorMessages.Add("Quiz is not exist");
+            }
+
+            if (questions == null)
+            {
+                errorMessages.Add("No questions");
+            }
+
+            if (answers == null)
+            {
+                errorMessages.Add("No answers");
+            }
+
+            if (tags == null)
+            {
+                errorMessages.Add("No tags");
+            }
+
+            if (questions.Length != answers.Length || questions.Length != tags.Length || answers.Length != tags.Length)
+            {
+                errorMessages.Add("Different length of questions, answers or tags");
+            }
+
+            var isAllQuestionsHaveText = true;
+            var isExistsAnswers = true;
+            var isAllAnswersHaveText = true;
+            var isExistsCheckedAnswerForAllQuestions = true;
+
+            for (var i = 0; i < questions.Length; i++)
+            {
+                if (string.IsNullOrEmpty(questions[i].QuestionText))
+                {
+                    isAllQuestionsHaveText = false;
+                }
+                if (questions[i].QuestionTypeId == 2 || questions[i].QuestionTypeId == 3)
+                {
+                    if (answers[i] == null || answers[i].Length == 0)
+                    {
+                        isExistsAnswers = false;
+                        isExistsCheckedAnswerForAllQuestions = false;
+                    }
+                    else
+                    {
+                        var chechedCount = 0;
+                        for (var j = 0; j < answers[i].Length; j++)
+                        {
+                            if (string.IsNullOrEmpty(answers[i][j].AnswerText))
+                            {
+                                isAllAnswersHaveText = false;
+                            }
+                            chechedCount = (bool)answers[i][j].IsRight ? chechedCount++ : chechedCount;
+                        }
+                        if (questions[i].QuestionTypeId == 2 && chechedCount != 1)
+                        {
+                            isExistsCheckedAnswerForAllQuestions = false;
+                        }
+                        if (questions[i].QuestionTypeId == 3 && chechedCount < 1)
+                        {
+                            isExistsCheckedAnswerForAllQuestions = false;
+                        }
+                    }
+                }
+            }
+
+            if (!isAllQuestionsHaveText)
+            {
+                errorMessages.Add("Not all questions have text");
+            }
+
+            if (!isExistsAnswers)
+            {
+                errorMessages.Add("Not all questions with type 'Select one' or 'Select many' have answers");
+            }
+
+            if (!isAllAnswersHaveText)
+            {
+                errorMessages.Add("Not all answers have text");
+            }
+
+            if (!isExistsCheckedAnswerForAllQuestions)
+            {
+                errorMessages.Add("Not all questions with type 'Select one' or 'Select many' have right answers");
+            }
+
+            return errorMessages.Count > 0 ? errorMessages.ToArray() : null;
         }
 
         public ActionResult Get(int id)
