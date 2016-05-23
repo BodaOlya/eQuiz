@@ -39,13 +39,23 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var query = from u in users
                         join uug in userToUserGroups on u.Id equals uug.UserId
                         join ug in userGroups on uug.GroupId equals ug.Id
+                        group ug by u.Id into resgrouped
+                        //select resgrouped;
+                        //select new
+                        //{
+                        //    id = u.id,
+                        //    student = u.firstname + " " + u.lastname,
+                        //    userGroup = ug.name,
+                        //    quizzes = ".net"
+                        //};
                         select new
                         {
-                            id = u.Id,
-                            student = u.FirstName + " " + u.LastName,
-                            userGroup = ug.Name,
+                            id = resgrouped.Key,
+                            student = "Вася Пупкин",
+                            userGroup = resgrouped.Select(ugr => ugr.Name),
                             quizzes = ".Net"
                         };
+
 
             foreach (var item in query)
             {

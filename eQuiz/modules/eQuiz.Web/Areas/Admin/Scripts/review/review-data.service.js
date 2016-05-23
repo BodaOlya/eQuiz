@@ -16,6 +16,7 @@
 
         function getStudentsAjax() {
             var promise = $http.get('/Admin/Review/GetStudentsList');
+            console.log(promise);
             return promise;
         }
     }
