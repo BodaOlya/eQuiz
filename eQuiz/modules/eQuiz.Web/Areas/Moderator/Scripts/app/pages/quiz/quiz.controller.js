@@ -50,11 +50,14 @@
         vm.getQuestionsCopy = getQuestionsCopy;
         vm.selectQuizCopy = selectQuizCopy;
         vm.selectedQuizCopy = { Id: 0, Name: 'New' };
+        vm.showLoading = showLoading;
+        vm.hideLoading = hideLoading;
 
         activate();
 
         function activate() {
             if ($location.search().id) {
+                vm.showLoading();
                 vm.getQuestions($location.search().id);
                 quizService.get($location.search().id).then(function (data) {
                     vm.model.quiz = data.data.quiz;
@@ -181,12 +184,6 @@
                     vm.errorMessageVisible = false;
                 }, 4000);
             }
-            function showLoading() {
-                vm.loadingVisible = true;
-            }
-            function hideLoading() {
-                vm.loadingVisible = false;
-            }
         }
 
 
@@ -212,6 +209,13 @@
             form.$setValidity("No answers", true);
             form.$setValidity("Only one correct answer", true);
             form.$setValidity("At least one correct answer", true);
+        }
+
+        function showLoading() {
+            vm.loadingVisible = true;
+        }
+        function hideLoading() {
+            vm.loadingVisible = false;
         }
 
         function addNewQuestion() {
@@ -380,10 +384,12 @@
                         checkedAnswersDirty: false
                     };
                 });
+                vm.hideLoading();
             });
         }
 
         function getQuestionsCopy(quizId) {
+            vm.showLoading();
             questionService.getQuestionsCopy(quizId).then(function (response) {
                 var modelFromServer = response.data;
 
@@ -405,6 +411,7 @@
                 });
                 vm.model.quizBlock.QuestionCount = vm.model.questions.length;
                 vm.isQuestionsFormValidBackup = true;
+                vm.hideLoading();
             });
         }
 
