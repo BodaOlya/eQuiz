@@ -18,7 +18,8 @@
             quizzesPerPage: 5,
             predicate: 'Name',
             reverse: false,
-            quizzesTotal: 0
+            quizzesTotal: 0,
+            searchText : null
         };
 
         //functions

@@ -120,7 +120,8 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetQuizzesPage(int currentPage = 1, int quizzesPerPage = 3, string predicate = "Name", bool reverse = false)
+        public ActionResult GetQuizzesPage(int currentPage = 1, int quizzesPerPage = 3, string predicate = "Name", 
+                                            bool reverse = false, string searchText = null)
         {
             IEnumerable<QuizListModel> quizzesList = null;
             var quizzesTotal = 0;
@@ -139,7 +140,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                             StartDate = quiz.StartDate,
                             Duration = quiz.TimeLimitMinutes,
                             Active = false
-                        }).OrderBy(q => q.Name);
+                        }).Where(item => (searchText == null || item.Name.Contains(searchText))).OrderBy(q => q.Name);
 
                 quizzesTotal = quizzesList.Count();
 

@@ -10,6 +10,8 @@
     <br />
 
     <div class="container-quizzes" ng-controller="QuizzesController as q">
+        <label>Search</label>
+        <input type="text" ng-model="q.pagingInfo.searchText" ng-change="q.reloadQuizzes()" style="width:15em; margin-bottom: 10px">
         <table class="table-quizzes">
             <thead>
                 <tr>
