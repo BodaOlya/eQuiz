@@ -8,6 +8,7 @@
         vm.loadingVisible = false;
         vm.errorMessageVisible = false;
         vm.successMessageVisible = false;
+        vm.isStateEditable = true;
         vm.tab = 'quiz';
         vm.save = save;
         vm.switchTab = switchTab;
@@ -61,6 +62,7 @@
                 vm.getQuestions($location.search().id);
                 quizService.get($location.search().id).then(function (data) {
                     vm.model.quiz = data.data.quiz;
+                    vm.isStateEditable = vm.model.quiz.QuizState.Name != 'Scheduled';
                     vm.model.quiz.StartDate = new Date(vm.model.quiz.StartDate);
                     vm.model.quiz.DurationMinutes = vm.model.quiz.TimeLimitMinutes % 60;
                     vm.model.quiz.DurationHours = (vm.model.quiz.TimeLimitMinutes - vm.model.quiz.TimeLimitMinutes % 60) / 60;
