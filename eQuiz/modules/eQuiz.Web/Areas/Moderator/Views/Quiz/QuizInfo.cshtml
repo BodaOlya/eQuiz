@@ -6,8 +6,8 @@
 <div align="center">
     <h2>@Model.Name</h2>
     <p>
-        <a href="#">Edit</a>
-        <a href="#">Delete</a>
+        <a href="/moderator/quiz/edit/#/quiz?id=@Model.Id">Edit</a>
+        <a href="/moderator/quiz/DeleteQuizById?id=@Model.Id">Delete</a>
     </p>
     <p>
         <i>@Model.Descriprtion</i>
@@ -94,7 +94,7 @@
                     {
                         case "Descriptive":
                             {
-                                <p>@question.Answers[0].AnswerText</p>
+                                <p>Description...</p>
                             }
                             break;
                         case "Select one":
