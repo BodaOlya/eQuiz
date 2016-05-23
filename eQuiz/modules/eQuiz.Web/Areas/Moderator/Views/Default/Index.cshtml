@@ -9,7 +9,7 @@
     <link href="~/Areas/Moderator/Styles/equiz-temp.css" rel="stylesheet" />
 }
 
-<body>
+
     <div class="moderator-dashboard-left">
         <p><h2>Quizzes: @ViewBag.QuizzesCount</h2></p>
         <p>Active: @ViewBag.ActiveQuizzesCount</p>
@@ -29,4 +29,8 @@
         <p>Students: @ViewBag.StudentsCount</p>
     </div>
 
-</body>
+@section PageHeader{
+    @{
+        Html.RenderPartial("~/Areas/Moderator/Views/Shared/_Header.cshtml");
+    }
+}
