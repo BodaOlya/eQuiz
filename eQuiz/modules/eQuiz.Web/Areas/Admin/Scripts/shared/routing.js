@@ -23,7 +23,7 @@
                     templateUrl: '/Areas/Admin/Scripts/student.html',
                     controller: 'StudentController',
                     controllerAs: 'sc',
-                    resolve: {
+                  /*  resolve: {
                         studentInfo: function ($route, studentDataService) {
                             return studentDataService.getStudentInfo($route.current.params.studentId).then(function (respond) {
                                 return respond.data;
@@ -39,7 +39,7 @@
                                 return respond.data;
                             })
                         }
-                    }
+                    } */
                 })
                 .otherwise({ redirectTo: '/Index/Student/List' });
 
