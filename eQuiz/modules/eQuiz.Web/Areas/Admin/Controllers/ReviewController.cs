@@ -52,7 +52,6 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                 res.Add(item);
             }
                         
-
             //res.Add(new { id = 1, student = "Ben Gann", userGroup = "Student", quizzes = ".Net" });
 
             return Json(res, JsonRequestBehavior.AllowGet);

@@ -29,7 +29,8 @@
         </div>
 
         <div id="quizzesTab" ng-show="sc.currentTab=='Quizzes'">
-            <table class="reviewTable">
+            <div style="height:300px; overflow:auto">
+                <table class="reviewTable">
                 <thead>
                     <tr>
                         <th ng-repeat="h in sc.studentQuizzesHeaders">
@@ -50,6 +51,7 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
             <div layout="row">
                 <span>
                     Rows on the page:

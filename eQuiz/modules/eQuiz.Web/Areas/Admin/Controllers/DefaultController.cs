@@ -15,9 +15,8 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpGet]
-       
-        public JsonResult GetStudentComments()
+        [HttpGet]       
+        public JsonResult GetStudentComments(int id)
         {
             var studentComments = new List<object>();
 
