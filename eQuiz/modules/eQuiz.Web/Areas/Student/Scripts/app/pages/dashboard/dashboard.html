@@ -6,7 +6,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="quiz in allQuizes">
+            <tr ng-repeat="quiz in allQuizes" ng-class="{ activeQuiz: quiz.InternetAccess, inactiveQuiz: !quiz.InternetAccess }">
                 <td>
                     {{quiz.Name}}
                 </td>
@@ -17,7 +17,7 @@
                     {{quiz.TimeLimitMinutes}}
                 </td>
                 <td>
-                    <a href='#/quizInRun/{{quiz.Id}}/{{quiz.TimeLimitMinutes}}' ng-if="quiz.InternetAccess" ng-click="getQuestionById(quiz.Id)">Start{{quiz.Id}}</a>
+                    <a href='#/quizInRun/{{quiz.Id}}/{{quiz.TimeLimitMinutes}}' ng-if="quiz.InternetAccess" ng-click="getQuestionById(quiz.Id)">Start</a>
                     <div ng-if="!quiz.InternetAccess">Inactive</div>
                 </td>
             </tr>
