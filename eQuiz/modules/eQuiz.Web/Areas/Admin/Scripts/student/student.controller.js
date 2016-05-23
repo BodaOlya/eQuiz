@@ -152,11 +152,14 @@
         };
 
         vm.saveProfile = function () {
-            studentDataService.saveProfileInfo(vm.studentInfo, vm.studentComments);
-            //Here has popUp be called
-
-
-
+                var saveInfo = {
+                    id: vm.studentInfo.id,
+                    firstName: vm.studentInfo.firstName,
+                    lastName: vm.studentInfo.lastName,
+                    phone: vm.studentInfo.phone
+                }
+                studentDataService.saveProfileInfo(saveInfo)
+                //Here has popUp be called
             vm.modelChanged = false;
         };
 

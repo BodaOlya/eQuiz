@@ -45,8 +45,8 @@
             return promise;
         }
 
-        function saveProfileInfo(studentInfo, studentComments) {
-            //var promise = $http.post("/Main/SaveStudentInfo", studentInfo);
+        function saveProfileInfo(saveInfo) {
+            var promise = $http.post("/Main/SaveStudentInfo", saveInfo);
             //var promise = $http.post("/Main/SaveStudentComments", studentComments);
             //return promise;
         }
