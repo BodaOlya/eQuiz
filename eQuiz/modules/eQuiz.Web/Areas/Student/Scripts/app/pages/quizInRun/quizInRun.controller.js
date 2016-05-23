@@ -2,8 +2,8 @@
 (function (angular) {
     var equizModule = angular.module("equizModule");
 
-    equizModule.controller("quizInRunCtrl", ["$scope", "quizService", "trackUserResultService", "$routeParams", "$interval", "$window",
-        function ($scope, quizService, trackUserResultService, $routeParams, $interval, $window) {
+    equizModule.controller("quizInRunCtrl", ["$scope", "quizService", "trackUserResultService", "$routeParams", "$interval", "$window", "$location",
+        function ($scope, quizService, trackUserResultService, $routeParams, $interval, $window, $location) {
             $scope.quizQuestions = null;
 
             $scope.quizId = parseInt($routeParams.id);
@@ -57,6 +57,8 @@
                         .success(function (data) {
                             console.log("OK");
                         });
+
+                    $location.path("/Dashboard");
                 }
                 
             };
