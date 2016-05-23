@@ -175,56 +175,12 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         {
             if (quiz.Id != 0)
             {
-                //using (eQuizEntities model = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
-                //{
-                //    var updateQuiz = model.Quizs.FirstOrDefault(q => q.Id == quiz.Id);
-                //    if (updateQuiz == null)
-                //    {
-                //        return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Quiz not found");
-                //    }
-
-                //    var updateBlock = model.QuizBlocks.FirstOrDefault(q => q.Id == quiz.Id);
-                //    if (updateBlock == null)
-                //    {
-                //        return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "QuizBlock not found");
-                //    }
-
-                //    updateQuiz.Name = quiz.Name;
-                //    updateQuiz.QuizTypeId = quiz.QuizTypeId;
-                //    updateQuiz.StartDate = quiz.StartDate;
-                //    updateQuiz.EndDate = quiz.EndDate;
-                //    updateQuiz.TimeLimitMinutes = quiz.TimeLimitMinutes;
-                //    updateQuiz.GroupId = quiz.GroupId;
-
-                //    updateBlock.QuestionCount = block.QuestionCount;
-
-                //    model.SaveChanges();
-                //    quiz = updateQuiz;
-                //    quiz.UserGroup = model.UserGroups.FirstOrDefault(g => g.Id == quiz.GroupId);
-                //    block = updateBlock;
-                //}
-
                 _repository.Update<Quiz>(quiz);
                 _repository.Update<QuizBlock>(block);
 
             }
             else
             {
-                //block.TopicId = 1;
-                //block.Quiz = quiz;
-
-                //using (eQuizEntities model = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
-                //{
-                //    quiz.UserGroup = model.UserGroups.Where(g => g.Id == quiz.UserGroup.Id).First();
-                //    model.Quizs.Add(quiz);
-                //    model.QuizBlocks.Add(block);
-                //    //  model.QuizVariants.Add(new QuizVariant() { QuizId = quiz.Id });   UPDATE DB
-                //    model.SaveChanges();
-                //}
-
-
-                //    //  model.QuizVariants.Add(new QuizVariant() { QuizId = quiz.Id });   UPDATE DB
-                //temp
                 quiz.QuizStateId = quiz.QuizState.Id;
                 quiz.QuizState = null;
                 quiz.GroupId = 1; // UPDATE DB
@@ -315,6 +271,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return RedirectToAction("Index", "Quiz");
         }
 
+        [NonAction]
         private string[] ValidateQuiz(Quiz quiz, QuizBlock block)
         {
             var errorMessages = new List<string>();
@@ -333,55 +290,75 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             {
                 errorMessages.Add("There is no question quantity");
             }
-
-            if (block.QuestionCount <= 0)
+            else if (block.QuestionCount <= 0)
             {
                 errorMessages.Add("Question quantity should be greater then 0");
-            }
-
-            if (quiz.StartDate == null)
-            {
-                errorMessages.Add("There is no start date");
-            }
-
-            if (quiz.StartDate <= DateTime.Now)
-            {
-                errorMessages.Add("Start date should be greater then current date");
-            }
-
-            if (quiz.EndDate == null)
-            {
-                errorMessages.Add("There is no end date");
-            }
-
-            if (quiz.EndDate <= DateTime.Now)
-            {
-                errorMessages.Add("End date should be greater then current date");
-            }
-
-            if (quiz.TimeLimitMinutes == null)
-            {
-                errorMessages.Add("There is no time limit");
-            }
-
-            if (quiz.TimeLimitMinutes <= 0)
-            {
-                errorMessages.Add("Time limit should be greater then 0");
-            }
-
-            if (quiz.UserGroup == null)
-            {
-                errorMessages.Add("There is no user group selected");
-            }
-
-            if (!_repository.Exists<Quiz>(q => q.UserGroup == quiz.UserGroup))
-            {
-                errorMessages.Add("There is no such user group in the database");
             }
 
             if (!_repository.Exists<Quiz>(q => q.QuizTypeId == quiz.QuizTypeId))
             {
                 errorMessages.Add("There is no such quiz type in database");
+            }
+
+            if(quiz.QuizState == null)
+            {
+                if (quiz.StartDate != null)
+                {
+                    errorMessages.Add("There is start date but state isnt Scheduled");
+                }
+                if (quiz.EndDate != null)
+                {
+                    errorMessages.Add("There is end date but state isnt Scheduled");
+                }
+                if (quiz.TimeLimitMinutes != null)
+                {
+                    errorMessages.Add("There is time limit but state isnt Scheduled");
+                }
+                if (quiz.UserGroup != null)
+                {
+                    errorMessages.Add("There is user group selected but state isnt Scheduled");
+                }
+            }
+            else if(quiz.QuizState.Name == "Scheduled")
+            {
+                if (quiz.StartDate == null)
+                {
+                    errorMessages.Add("There is no start date");
+                }
+
+                if (quiz.StartDate <= DateTime.Now)
+                {
+                    errorMessages.Add("Start date should be greater then current date");
+                }
+
+                if (quiz.EndDate == null)
+                {
+                    errorMessages.Add("There is no end date");
+                }
+
+                if (quiz.EndDate <= DateTime.Now)
+                {
+                    errorMessages.Add("End date should be greater then current date");
+                }
+
+                if (quiz.TimeLimitMinutes == null)
+                {
+                    errorMessages.Add("There is no time limit");
+                }
+                else if (quiz.TimeLimitMinutes <= 0)
+                {
+                    errorMessages.Add("Time limit should be greater then 0");
+                }
+
+                if (quiz.UserGroup == null)
+                {
+                    errorMessages.Add("There is no user group selected");
+                }
+
+                if (!_repository.Exists<Quiz>(q => q.UserGroup == quiz.UserGroup))
+                {
+                    errorMessages.Add("There is no such user group in the database");
+                }
             }
 
             return errorMessages.Count > 0 ? errorMessages.ToArray() : null;
