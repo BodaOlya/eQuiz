@@ -27,6 +27,37 @@ namespace eQuiz.Web.Areas.Admin.Controllers
         #endregion
 
         #region Web Actions
+        [HttpGet]
+        public JsonResult GetStudentsList()
+        {
+            var res = new List<object>();
+
+            var users = _repository.Get<User>();
+            var userGroups = _repository.Get<UserGroup>();
+            var userToUserGroups = _repository.Get<UserToUserGroup>();
+
+            var query = from u in users
+                        join uug in userToUserGroups on u.Id equals uug.UserId
+                        join ug in userGroups on uug.GroupId equals ug.Id
+                        select new
+                        {
+                            id = u.Id,
+                            student = u.FirstName + " " + u.LastName,
+                            userGroup = ug.Name,
+                            quizzes = ".Net"
+                        }; 
+              
+            foreach ( var item in query)
+            {
+                res.Add(item);
+            }
+                        
+
+            //res.Add(new { id = 1, student = "Ben Gann", userGroup = "Student", quizzes = ".Net" });
+
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
+
 
         [HttpGet]
         public JsonResult GetStudentInfo(int id)

@@ -43,6 +43,7 @@
         vm.isDirtyAnswerCount = isDirtyAnswerCount;
         vm.isDirtyAnswerChecked = isDirtyAnswerChecked;
         vm.isQuestionsFormValid = isQuestionsFormValid;
+        vm.isQuestionsFormValidBackup = false;
 
         vm.toggleQuizzesForCopy = toggleQuizzesForCopy;
         vm.quizzesForCopyVisible = false;
@@ -117,7 +118,8 @@
 
         function saveCanExecute() {
             if (vm.quizForm) {
-                return !vm.quizForm.$valid || !vm.isQuestionsFormValid();
+                var res = vm.quizForm.$valid && vm.isQuestionsFormValid();
+                return vm.quizForm.$valid && vm.isQuestionsFormValid();
             }
             return !vm.isQuestionsFormValid();
         }
@@ -402,6 +404,7 @@
                     };
                 });
                 vm.model.quizBlock.QuestionCount = vm.model.questions.length;
+                vm.isQuestionsFormValidBackup = true;
             });
         }
 
@@ -446,9 +449,9 @@
                 if (!vm.model.quiz.QuizState || vm.model.quiz.QuizState.Name != 'Draft') {
                     questionCountValid = (vm.model.questions.length == vm.model.quizBlock.QuestionCount);
                 }
-                return vm.model.questionsForm.$valid && questionCountValid;
+                vm.isQuestionsFormValidBackup = vm.model.questionsForm.$valid && questionCountValid;
             }
-            return false;
+            return vm.isQuestionsFormValidBackup;
         }
     }
 })();
