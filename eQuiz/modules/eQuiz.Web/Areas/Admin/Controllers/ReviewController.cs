@@ -35,6 +35,19 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var uug = _repository.Get<UserToUserGroup>(ug => ug.UserId == id);
             var usergroup = _repository.Get<UserGroup>();
 
+            var query = from g in usergroup
+                        join ug in uug on g.Id equals ug.GroupId
+                        where ug.UserId == id
+                        select g;
+
+            var gr = new List<object>();
+
+            foreach(var item in query)
+            {
+                gr.Add(item.Name);
+            }
+
+
             var data = new
             {
                 id = student.Id,
@@ -42,7 +55,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                 lastName = student.LastName,
                 phone = student.Phone,
                 email = student.Email,
-                userGroup = "Student"
+                userGroup = gr
             };
 
             return Json(data, JsonRequestBehavior.AllowGet);
