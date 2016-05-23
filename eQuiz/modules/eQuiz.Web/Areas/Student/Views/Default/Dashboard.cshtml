@@ -16,13 +16,15 @@
     <script src="~/Areas/Student/Scripts/app/pages/quizInRun/quizInRun.controller.js"></script>
     <script src="~/Areas/Student/Scripts/app/pages/quizInRun/timer.service.js"></script>
 }
-<header>
-    <table id='headerTable'>
-        <tr>
-            <td id='Menu_td'><a href="#">Menu</a></td>
-            <td id='User_group_td'>User Group # <a href="#">FullName</a></td>
-        </tr>
-    </table>
-</header>
+@section PageHeader{
+    <header>
+        <table id='headerTable'>
+            <tr>
+                <td id='Menu_td'><a href="#">Menu</a></td>
+                <td id='User_group_td'>User Group # <a href="#">FullName</a></td>
+            </tr>
+        </table>
+    </header>
+}
 <hr>
 <ng-view></ng-view>
