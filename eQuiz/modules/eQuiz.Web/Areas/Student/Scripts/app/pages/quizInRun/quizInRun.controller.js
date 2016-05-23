@@ -60,7 +60,7 @@
 
                     $location.path("/Dashboard");
                 }
-                
+                $scope.reset();
             };
 
             $scope.$watch(function () {
@@ -104,7 +104,7 @@
                 }, 1000);
             };//start timer
 
-            $scope.stop = function () {
+            $scope.Stop = function () {
                 if (angular.isDefined(stop)) {
                     $interval.cancel(stop);
                     stop = undefined;
@@ -113,11 +113,11 @@
 
             $scope.reset = function () {
                 $scope.Stop();
-                if ($scope.tSeconds >= 60 && $scope.tSeconds < 0) {
+                if ($scope.tSeconds <= 60 && $scope.tSeconds > 0) {
                     $scope.tSeconds = 0;
                 }
 
-                if ($scope.tMinutes < 0) {
+                if ($scope.tMinutes > 0) {
                     $scope.tMinutes = 0;
                 }
 
