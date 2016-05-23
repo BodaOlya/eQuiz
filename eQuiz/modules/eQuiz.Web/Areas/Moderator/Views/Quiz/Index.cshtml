@@ -36,7 +36,7 @@
                         </a>
                     </th>
                     <th>
-                        Active
+                        Status
                     </th>
                 </tr>
             </thead>
@@ -46,7 +46,7 @@
                     <td>{{ quiz.CountOfQuestions }}</td>
                     <td>{{ quiz.StartDate | ctime | date:"dd-MM-yyyy HH:mm" }}</td>
                     <td>{{ quiz.Duration }}</td>
-                    <td>{{ quiz.Active }}</td>
+                    <td>{{ quiz.StateName }}</td>
                 </tr>
             </tbody>
         </table>

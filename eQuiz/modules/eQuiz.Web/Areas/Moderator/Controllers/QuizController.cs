@@ -128,19 +128,20 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
             using (var context = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
             {
-                quizzesList = context.Quizs.Join(context.QuizBlocks,
-                    quiz => quiz.Id,
-                    quizBlock => quizBlock.QuizId,
-                    (quiz, quizBlock) =>
-                        new QuizListModel
-                        {
-                            Id = quiz.Id,
-                            Name = quiz.Name,
-                            CountOfQuestions = quizBlock.QuestionCount,
-                            StartDate = quiz.StartDate,
-                            Duration = quiz.TimeLimitMinutes,
-                            Active = false
-                        }).Where(item => (searchText == null || item.Name.Contains(searchText))).OrderBy(q => q.Name);
+                //TODO : edit using repositories
+                quizzesList = (from quiz in context.Quizs
+                               join quizBlock in context.QuizBlocks on quiz.Id equals quizBlock.QuizId
+                               join quizState in context.QuizStates on quiz.QuizStateId equals quizState.Id
+                               select
+                                     new QuizListModel
+                                     {
+                                         Id = quiz.Id,
+                                         Name = quiz.Name,
+                                         CountOfQuestions = quizBlock.QuestionCount,
+                                         StartDate = quiz.StartDate,
+                                         Duration = quiz.TimeLimitMinutes,
+                                         StateName = quizState.Name
+                                     }).Where(item => (searchText == null || item.Name.Contains(searchText))).OrderBy(q => q.Name);                
 
                 quizzesTotal = quizzesList.Count();
 
@@ -155,8 +156,8 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                     case "StartDate":
                         quizzesList = reverse ? quizzesList.OrderByDescending(q => q.StartDate) : quizzesList.OrderBy(q => q.StartDate);
                         break;
-                    case "Active":
-                        quizzesList = reverse ? quizzesList.OrderByDescending(q => q.Active) : quizzesList.OrderBy(q => q.Active);
+                    case "StateName":
+                        quizzesList = reverse ? quizzesList.OrderByDescending(q => q.StateName) : quizzesList.OrderBy(q => q.StateName);
                         break;
                     case "Duration":
                         quizzesList = reverse ? quizzesList.OrderByDescending(q => q.Duration) : quizzesList.OrderBy(q => q.Duration);
