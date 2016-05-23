@@ -36,71 +36,13 @@
         }
 
         function getStudentComments(studentId) {
-            var promise = $http.get("/Admin/Default/GetStudentComments", studentId);
+            var promise = $http({
+                url: '/Admin/Review/GetStudentQuizzes',
+                method: "GET",
+                params: { id: studentId }
+            });
+            //var promise = $http.get("/Admin/Default/GetStudentComments", studentId);
             return promise;
-
-            //return [
-            //    {
-            //        date: '15.04.2016',
-            //        author: 'Volodymyr',
-            //        text: 'Responsible, initiative student with excellent knowledge of necessary frameworks'
-            //    },
-            //    {
-            //        date: '03.05.2016',
-            //        author: 'Ivan',
-            //        text: 'Demonstrates deep theoretical knowledge'
-            //    },
-            //                    {
-            //                        date: '22.04.2016',
-            //                        author: 'Volodymyr',
-            //                        text: 'Responsible, initiative student with excellent knowledge of necessary frameworks'
-            //                    },
-            //    {
-            //        date: '10.05.2016',
-            //        author: 'Ivan',
-            //        text: 'Demonstrates deep theoretical knowledge'
-            //    },
-            //                    {
-            //                        date: '10.04.2016',
-            //                        author: 'Volodymyr',
-            //                        text: 'Responsible, initiative student with excellent knowledge of necessary frameworks'
-            //                    },
-            //    {
-            //        date: '10.05.2016',
-            //        author: 'Ivan',
-            //        text: 'Demonstrates deep theoretical knowledge'
-            //    },
-            //                    {
-            //                        date: '10.04.2016',
-            //                        author: 'Volodymyr',
-            //                        text: 'Responsible, initiative student with excellent knowledge of necessary frameworks'
-            //                    },
-            //    {
-            //        date: '11.05.2016',
-            //        author: 'Ivan',
-            //        text: 'Demonstrates deep theoretical knowledge'
-            //    },
-            //                    {
-            //                        date: '15.04.2016',
-            //                        author: 'Volodymyr',
-            //                        text: 'Responsible, initiative student with excellent knowledge of necessary frameworks'
-            //                    },
-            //    {
-            //        date: '12.05.2016',
-            //        author: 'Ivan',
-            //        text: 'Demonstrates deep theoretical knowledge'
-            //    },
-            //                    {
-            //                        date: '12.04.2016',
-            //                        author: 'Volodymyr',
-            //                        text: 'Responsible, initiative student with excellent knowledge of necessary frameworks'
-            //                    },
-            //    {
-            //        date: '13.05.2016',
-            //        author: 'Ivan',
-            //        text: 'Demonstrates deep theoretical knowledge'
-            //    }
-            //];
         }
 
         function saveProfileInfo(studentInfo, studentComments) {
