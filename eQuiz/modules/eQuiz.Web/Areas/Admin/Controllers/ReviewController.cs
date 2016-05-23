@@ -45,13 +45,13 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                             student = u.FirstName + " " + u.LastName,
                             userGroup = ug.Name,
                             quizzes = ".Net"
-                        }; 
-              
-            foreach ( var item in query)
+                        };
+
+            foreach (var item in query)
             {
                 res.Add(item);
             }
-                        
+
             //res.Add(new { id = 1, student = "Ben Gann", userGroup = "Student", quizzes = ".Net" });
 
             return Json(res, JsonRequestBehavior.AllowGet);
@@ -72,7 +72,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
 
             var gr = new List<object>();
 
-            foreach(var item in query)
+            foreach (var item in query)
             {
                 gr.Add(item.Name);
             }
@@ -119,6 +119,17 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             }
 
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public void UpdateUserInfo(int id, string name, string surname, string phone)
+        {
+            var user = _repository.GetSingle<User>(u => u.Id == id);
+            user.FirstName = name;
+            user.LastName = surname;
+            user.Phone = phone;
+
+            _repository.Update<User>(user);
         }
 
         #endregion

@@ -55,6 +55,11 @@ input[type='text'], select {
     height: 60px;
 }
 
+#quizButtons input{
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
 footer table {
     float: right;
     margin-right: 10%;
@@ -98,7 +103,7 @@ input[type="button"] {
     margin:auto;
 }
 .navQuestions{
-    border:1px solid black;
+    border:2px solid black;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -106,7 +111,7 @@ input[type="button"] {
 
 }
 .navQuestionsActive{
-    border:1px solid black;
+    border:2px solid black;
     width: 30px;
     height: 30px;
     border-radius: 50%;
