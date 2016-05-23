@@ -1,14 +1,17 @@
 ﻿(function (angular) {
     angular.module('equizModule').controller('StudentController', StudentController);
 
-    StudentController.$inject = ['$scope', '$filter', 'studentDataService', '$routeParams', 'studentInfo', 'studentQuizzes', 'studentComments'];
+    StudentController.$inject = ['$scope', '$filter', 'studentDataService', '$routeParams'/*, 'studentInfo', 'studentQuizzes', 'studentComments'*/];
 
-    function StudentController($scope, $filter, studentDataService, $routeParams, studentInfo, studentQuizzes, studentComments) {
+    function StudentController($scope, $filter, studentDataService, $routeParams/*, studentInfo, studentQuizzes, studentComments*/) {
         var vm = this;
-        vm.studentInfo = studentInfo;
-        vm.studentQuizzes = studentQuizzes;
-        vm.studentComments = studentComments;
 
+        vm.studentInfo = {};//studentInfo;
+        vm.studentQuizzes = [];//studentQuizzes;
+        vm.studentComments = [];//studentComments;
+        activate1();
+        activate2();
+        activate3();
         vm.studentQuizzesHeaders = [
         {
             name: 'Name',
@@ -45,18 +48,28 @@
         vm.tablePage = 0;
         vm.resultsPerPage = 10;
 
-        var activate = function () {
-            studentDataService.getStudentInfo($routeParams.studentId).then(function (response) {
+ 
+
+        function activate1() {
+            return studentDataService.getStudentInfo($routeParams.studentId).then(function (response) {
                 vm.studentInfo = response.data;
-            });
-            studentDataService.getStudentQuizzes($routeParams.studentId).then(function (response) {
+                return vm.studentInfo;
+            });}
+        function activate2() {
+            return studentDataService.getStudentQuizzes($routeParams.studentId).then(function (response) {
                 vm.studentQuizzes = response.data;
-            });
-            studentDataService.getStudentComments($routeParams.studentId).then(function (response) {
+                return vm.studentQuizzes;
+            });}
+        function activate3() {
+            return studentDataService.getStudentComments($routeParams.studentId).then(function (response) {
                 vm.studentComments = response.data;
-            });
+                return vm.studentComments;
+            });}
+            //while (vm.studentInfo == undefined || vm.studentQuizzes == undefined || vm.studentComments == undefined)
+            //{
+            //    ;;
+            //}
             generatePredicate();
-        };
 
         vm.studentQuizzes = sortByDate(vm.studentQuizzes);
         vm.studentComments = sortByDate(vm.studentComments);
@@ -152,13 +165,7 @@
         };
 
         vm.saveProfile = function () {
-                var saveInfo = {
-                    id: vm.studentInfo.id,
-                    firstName: vm.studentInfo.firstName,
-                    lastName: vm.studentInfo.lastName,
-                    phone: vm.studentInfo.phone
-                }
-                studentDataService.saveProfileInfo(saveInfo)
+                studentDataService.saveProfileInfo(vm.studentInfo.id, vm.studentInfo.firstName, vm.studentInfo.lastName, vm.studentInfo.phone)
                 //Here has popUp be called
             vm.modelChanged = false;
         };
