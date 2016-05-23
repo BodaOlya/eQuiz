@@ -51,7 +51,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             string[] errors = QuestionsValidation(id, questions, answers, tags);
             if (errors != null)
             {
-                string mergedErrors = string.Join("\n", errors);
+                string mergedErrors = string.Join(". ", errors);
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, mergedErrors);
             }
             using (var context = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
@@ -116,7 +116,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 for (int i = 0; i < answers.Length; i++)
                 {
                     var questionId = questions[i].Id;
-                    var questionAnswer = context.QuestionAnswers.Where(y => y.Id == questionId).ToList(); // list of answers for current question 
+                    var questionAnswer = context.QuestionAnswers.Where(y => y.QuestionId == questionId).ToList(); // list of answers for current question 
 
                     if (answers[i][0] != null)
                     {
@@ -126,17 +126,20 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
                             if (answer.Id != 0)
                             {
-                                var existedAnswer = context.Answers.Include("QuestionAnswer").FirstOrDefault(x => x.Id == answer.Id);
+                                var existedAnswer = context.Answers.Include("QuestionAnswers").FirstOrDefault(x => x.Id == answer.Id);
 
                                 if (existedAnswer == null)
                                 {
                                     return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Answer is not found");
                                 }
-                                var temp = context.QuestionAnswers.FirstOrDefault(x => x.AnswerId == existedAnswer.Id && x.QuestionId == questionId);
-
-                                if (questionAnswer.Contains(temp))
+                                var temp = context.QuestionAnswers.Where(x => x.AnswerId == answer.Id && x.QuestionId == questionId).FirstOrDefault();
+                                if (temp != null)
                                 {
-                                    questionAnswer.Remove(temp);
+                                    var answerFromList = questionAnswer.Where(a => a.Id == temp.Id).FirstOrDefault();
+                                    if (answerFromList != null)
+                                    {
+                                        questionAnswer.Remove(answerFromList);
+                                    }
                                 }
                                 existedAnswer.AnswerOrder = answer.AnswerOrder;
                                 existedAnswer.AnswerText = answer.AnswerText;
@@ -145,10 +148,17 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                             else
                             {
                                 answer.AnswerOrder = (byte)(qa + 1);
-                                answer.QuestionAnswers.Add(new QuestionAnswer
+                                context.Answers.Add(answer);
+                                context.QuestionAnswers.Add(new QuestionAnswer
                                 {
-                                    Answer = answer
+                                    QuestionId = questionId,
+                                    Answer = answer,
                                 });
+                                //answer.AnswerOrder = (byte)(qa + 1);
+                                //answer.QuestionAnswers.Add(new QuestionAnswer
+                                //{
+                                //    Answer = answer
+                                //});
                             }
                         }
                         if (questionAnswer != null)
@@ -208,6 +218,14 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                             }
                         }
                     }
+                    else
+                    {
+                        var questionTags = context.QuestionTags.Where(x => x.QuestionId == questionId).ToList();
+                        foreach (var item in questionTags)
+                        {
+                            context.QuestionTags.Remove(item); 
+                        }
+                    }
                 }
                 context.SaveChanges();
             }
@@ -216,31 +234,6 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
         private void DeleteQuestions(int quizId, Question[] questions)
         {
-            //using (var context = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
-            //{
-            //    var quiz = context.Quizs.FirstOrDefault(x => x.Id == quizId);
-            //    var blockId = context.QuizBlocks.First(x => x.QuizId == quizId).Id;
-
-            //    // deleting questions
-            //    var quizQuestions = context.QuizQuestions.Where(qq => qq.QuizBlockId == blockId).ToList();
-            //    for (int i = 0; i < questions.Length; i++)
-            //    {
-            //        int currentQuestionId = questions[i].Id;
-            //        QuizQuestion matchedQuizQuestion = context.QuizQuestions.Where(qq => qq.QuestionId == currentQuestionId && qq.QuizBlockId == blockId).FirstOrDefault();
-            //        if (quizQuestions.Contains(matchedQuizQuestion))
-            //        {
-            //            quizQuestions.Remove(matchedQuizQuestion);
-            //        }
-            //        if (quizQuestions != null)
-            //        {
-            //            foreach (var item in quizQuestions)
-            //            {
-            //                context.QuizQuestions.Remove(item); //test it 
-            //            }
-            //        }
-            //    }
-            //    context.SaveChanges();
-            //}
             var quiz = _repository.GetSingle<Quiz>(x => x.Id == quizId);
             var blockId = _repository.GetSingle<QuizBlock>(x => x.QuizId == quizId).Id;
 
@@ -249,16 +242,20 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             {
                 int currentQuestionId = questions[i].Id;
                 QuizQuestion matchedQuizQuestion = _repository.GetSingle<QuizQuestion>(qq => qq.QuestionId == currentQuestionId && qq.QuizBlockId == blockId);
-                if (quizQuestions.Contains(matchedQuizQuestion))
+                if (matchedQuizQuestion != null)
                 {
-                    quizQuestions.Remove(matchedQuizQuestion);
-                }
-                if (quizQuestions != null)
-                {
-                    foreach (var item in quizQuestions)
+                    QuizQuestion questionFromList = quizQuestions.Where(qq => qq.Id == matchedQuizQuestion.Id).FirstOrDefault();
+                    if (questionFromList != null)
                     {
-                        _repository.Delete<int, QuizQuestion>("Id", item.Id);
+                        quizQuestions.Remove(questionFromList);
                     }
+                }
+            }
+            if (quizQuestions != null)
+            {
+                foreach (var item in quizQuestions)
+                {
+                    _repository.Delete<int, QuizQuestion>("Id", item.Id);
                 }
             }
         }
@@ -297,40 +294,54 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             var isAllAnswersHaveText = true;
             var isExistsCheckedAnswerForAllQuestions = true;
 
-            for (var i = 0; i < questions.Length; i++)
+            try
             {
-                if (string.IsNullOrEmpty(questions[i].QuestionText))
+                for (var i = 0; i < questions.Length; i++)
                 {
-                    isAllQuestionsHaveText = false;
-                }
-                if (questions[i].QuestionTypeId == 2 || questions[i].QuestionTypeId == 3)
-                {
-                    if (answers[i] == null || answers[i].Length == 0)
+                    if (string.IsNullOrEmpty(questions[i].QuestionText))
                     {
-                        isExistsAnswers = false;
-                        isExistsCheckedAnswerForAllQuestions = false;
+                        isAllQuestionsHaveText = false;
                     }
-                    else
+                    if (questions[i].QuestionTypeId == 2 || questions[i].QuestionTypeId == 3)
                     {
-                        var chechedCount = 0;
-                        for (var j = 0; j < answers[i].Length; j++)
+                        if (answers[i] == null || answers[i].Length == 0)
                         {
-                            if (string.IsNullOrEmpty(answers[i][j].AnswerText))
+                            isExistsAnswers = false;
+                            isExistsCheckedAnswerForAllQuestions = false;
+                        }
+                        else
+                        {
+                            var chechedCount = 0;
+                            for (var j = 0; j < answers[i].Length; j++)
                             {
-                                isAllAnswersHaveText = false;
+                                if (answers[i][j] == null)
+                                {
+                                    isExistsAnswers = false;
+                                }
+                                else
+                                {
+                                    if (string.IsNullOrEmpty(answers[i][j].AnswerText))
+                                    {
+                                        isAllAnswersHaveText = false;
+                                    }
+                                    chechedCount = (bool)answers[i][j].IsRight ? chechedCount + 1 : chechedCount;
+                                }
                             }
-                            chechedCount = (bool)answers[i][j].IsRight ? chechedCount++ : chechedCount;
-                        }
-                        if (questions[i].QuestionTypeId == 2 && chechedCount != 1)
-                        {
-                            isExistsCheckedAnswerForAllQuestions = false;
-                        }
-                        if (questions[i].QuestionTypeId == 3 && chechedCount < 1)
-                        {
-                            isExistsCheckedAnswerForAllQuestions = false;
+                            if (questions[i].QuestionTypeId == 2 && chechedCount != 1)
+                            {
+                                isExistsCheckedAnswerForAllQuestions = false;
+                            }
+                            if (questions[i].QuestionTypeId == 3 && chechedCount < 1)
+                            {
+                                isExistsCheckedAnswerForAllQuestions = false;
+                            }
                         }
                     }
                 }
+            }
+            catch(Exception e)
+            {
+                errorMessages.Add("Some internal error");
             }
 
             if (!isAllQuestionsHaveText)
