@@ -41,8 +41,16 @@ input[type='text'], select {
 
 #quizzesTable {
     border-collapse: separate;
-    border-spacing: 0 1em;
-    border-spacing: 10px;
+    border-spacing: 0 10px;
+    /*border-spacing: 10px;*/
+    width: 40%;
+    font-size: 14pt;
+}
+.activeQuiz{
+    background-color:ghostwhite;
+}
+.inactiveQuiz{
+    background-color: lightgray;
 }
 
 #content {
