@@ -243,8 +243,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
             return Content(data, "application/json");
         }
-
-        [HttpPost]
+        
         public ActionResult DeleteQuizById(int? id)
         {
             if (id == null)
@@ -389,7 +388,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         }
 
         [HttpGet]
-        public ActionResult QuizInfo(int id = 9)
+        public ActionResult QuizInfo(int id = 1)
         {
             var quiz = _repository.GetByKey<int, Quiz>("Id", id);            
             var userGroup = _repository.GetSingle<UserGroup>(ug => ug.Id == quiz.GroupId);
