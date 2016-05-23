@@ -171,6 +171,7 @@
     <Compile Include="Areas\Moderator\Controllers\QuizController.cs" />
     <Compile Include="Areas\Moderator\Controllers\QuizQuestionController.cs" />
     <Compile Include="Areas\Moderator\Controllers\UserGroupController.cs" />
+    <Compile Include="Areas\Moderator\Models\QuizInfoModel.cs" />
     <Compile Include="Areas\Moderator\Models\QuizListModel.cs" />
     <Compile Include="Areas\Moderator\ModeratorAreaRegistration.cs" />
     <Compile Include="Areas\Student\Controllers\AccountController.cs" />
@@ -208,6 +209,7 @@
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\unique-quiz-name.directive.js" />
     <Content Include="connections.config" />
     <Content Include="Areas\Admin\Views\Default\Index.cshtml" />
+    <None Include="Areas\Moderator\Views\Quiz\QuizInfo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

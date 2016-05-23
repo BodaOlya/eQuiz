@@ -1,0 +1,163 @@
+﻿@model eQuiz.Web.Areas.Moderator.Models.QuizInfoModel
+@{
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<div align="center">
+    <h2>@Model.Name</h2>
+    <p>
+        <a href="#">Edit</a>
+        <a href="#">Delete</a>
+    </p>
+    <p>
+        <i>@Model.Descriprtion</i>
+    </p>
+    <table class="table-quiz-info" >
+        <tr>
+            <td><b>Type:</b></td>
+            <td>@Model.Type</td>
+        </tr>
+
+        <tr>
+            <td><b>State:</b></td>
+            <td>@Model.State</td>
+        </tr>
+
+        <tr>
+            <td><b>Group name:</b></td>
+            <td>@Model.Group</td>
+        </tr>
+
+        <tr>
+            <td><b>Start date:</b></td>
+            <td>@Model.StartDate</td>
+        </tr>
+
+        <tr>
+            <td><b>End date:</b></td>
+            <td>@Model.EndDate</td>
+        </tr>
+
+        <tr>
+            <td><b>Time limit in minutes:</b></td>
+            <td>@Model.TimeLimitMinutes</td>
+        </tr>
+
+        <tr>
+            <td><b>Internet access:</b></td>
+            <td>@Model.InternetAccess.ToString()</td>
+        </tr>
+
+        <tr>
+            <td><b>Topic:</b></td>
+            <td>@Model.Topic</td>
+        </tr>
+
+        <tr>
+            <td><b>Is random:</b></td>
+            <td>@Model.IsRandom.ToString()</td>
+        </tr>
+
+        <tr>
+            <td><b>Question min complexity:</b></td>
+            <td>@Model.QuestionMinComplexity</td>
+        </tr>
+
+        <tr>
+            <td><b>Question max complexity:</b></td>
+            <td>@Model.QuestionMaxComplexity</td>
+        </tr>
+
+        <tr>
+            <td><b>Question count:</b></td>
+            <td>@Model.QuestionCount</td>
+        </tr>
+    </table>
+
+    @foreach (var question in Model.Questions)
+    {
+        <table class="table-quiz-info">
+            <tr>
+                <td><b>Question Score:</b></td>
+                <td>@question.QuestionScore</td>
+            </tr>
+            <tr>
+                <td><b>Question complexity:</b></td>
+                <td>@question.QuestionComplexity</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <p>
+                        <i>@question.Text</i>
+                    </p>
+                    @switch (question.Type)
+                    {
+                        case "Descriptive":
+                            {
+                                <p>@question.Answers[0].AnswerText</p>
+                            }
+                            break;
+                        case "Select one":
+                            {
+                                <form>
+                                    @foreach (var answer in question.Answers)
+                                    {
+                                        if (answer.IsRight == true)
+                                         {
+                                             <input type="radio" disabled="disabled" checked/>
+                                             @answer.AnswerText
+                                             ;
+                                             <br>
+                                        }
+                                        else
+                                        {
+                                            <input type="radio" disabled="disabled"/>
+                                            @answer.AnswerText
+                                            ;
+                                            <br>
+                                        }
+                                    }
+                                </form>
+                                break;
+                            }
+                        case "Select many":
+                            {
+                                <form>
+                                    @foreach (var answer in question.Answers)
+                                    {
+                                        if (answer.IsRight == true)
+                                        {
+                                            <input type="checkbox" disabled="disabled" checked />
+                                            @answer.AnswerText
+                                            ;
+                                            <br>
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" disabled="disabled" />
+                                            @answer.AnswerText
+                                            ;
+                                            <br>
+                                        }
+                                    }
+                                </form>
+                                break;
+                            }
+                    }
+                </td>
+            </tr>
+        </table>
+    }
+</div>
+
+@section HeadStyles{
+
+    <link href="~/Areas/Moderator/Styles/bootstrap.css" rel="stylesheet" />
+    <link href="~/Areas/Moderator/Styles/equiz-temp.css" rel="stylesheet" />
+}
+
+@section PageHeader{
+    @{
+        Html.RenderPartial("~/Areas/Moderator/Views/Shared/_Header.cshtml");
+    }
+}

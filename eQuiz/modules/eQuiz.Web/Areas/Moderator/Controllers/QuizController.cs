@@ -244,7 +244,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return Content(data, "application/json");
         }
 
-        [HttpDelete]
+        [HttpPost]
         public ActionResult DeleteQuizById(int? id)
         {
             if (id == null)
@@ -386,6 +386,66 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             }
 
             return errorMessages.Count > 0 ? errorMessages.ToArray() : null;
+        }
+
+        [HttpGet]
+        public ActionResult QuizInfo(int id = 9)
+        {
+            var quiz = _repository.GetByKey<int, Quiz>("Id", id);            
+            var userGroup = _repository.GetSingle<UserGroup>(ug => ug.Id == quiz.GroupId);
+            var quizType = _repository.GetSingle<QuizType>(qt => qt.Id == quiz.QuizTypeId);
+            var quizState = _repository.GetSingle<QuizState>(qs => qs.Id == quiz.QuizStateId);
+
+            var quizInfoModel = new QuizInfoModel();
+
+            quizInfoModel.Id = quiz.Id;
+            quizInfoModel.Type = quizType.TypeName;
+            quizInfoModel.Name = quiz.Name;
+            quizInfoModel.Descriprtion = quiz.Description;
+            quizInfoModel.StartDate = quiz.StartDate;
+            quizInfoModel.EndDate = quiz.EndDate;
+            quizInfoModel.TimeLimitMinutes = quiz.TimeLimitMinutes;
+            quizInfoModel.InternetAccess = quiz.InternetAccess;
+            quizInfoModel.Group = userGroup.Name;
+            quizInfoModel.State = quizState.Name;
+
+            var quizBlock = _repository.GetSingle<QuizBlock>(qb => qb.QuizId == id);
+            var quizTopic = _repository.GetSingle<Topic>(t => t.Id == quizBlock.TopicId);
+
+            quizInfoModel.Topic = quizTopic.Name;
+            quizInfoModel.IsRandom = quizBlock.IsRandom;
+            quizInfoModel.QuestionMinComplexity = quizBlock.QuestionMinComplexity;
+            quizInfoModel.QuestionMaxComplexity = quizBlock.QuestionMaxComplexity;
+            quizInfoModel.QuestionCount = quizBlock.QuestionCount;
+
+            var quizQuestions = _repository.Get<QuizQuestion>(qq => qq.QuizBlockId == quizBlock.Id);
+
+            quizInfoModel.Questions = new List<QuestionInfo>();
+
+            foreach (var quizQuestion in quizQuestions)
+            {
+                var question = _repository.GetSingle<Question>(q => q.Id == quizQuestion.QuestionId);
+                                
+                var questionType = _repository.GetSingle<QuestionType>(qt => qt.Id == question.QuestionTypeId);
+
+                var questionAnswers = _repository.Get<QuestionAnswer>(qa => qa.QuestionId == question.Id);
+
+                var answers = questionAnswers.Select(questionAnswer => _repository.GetSingle<Answer>(a => a.Id == questionAnswer.AnswerId)).ToList();
+
+                var questionInfo = new QuestionInfo
+                {
+                    Answers = answers,
+                    QuestionComplexity = question.QuestionComplexity,
+                    QuestionScore = quizQuestion.QuestionScore,
+                    QuestionOrder = quizQuestion.QuestionOrder,
+                    Type = questionType.TypeName,
+                    Text = question.QuestionText
+                };
+
+                quizInfoModel.Questions.Add(questionInfo);
+            }
+
+            return View(quizInfoModel);
         }
 
         #endregion
