@@ -37,7 +37,7 @@
 
         function getStudentComments(studentId) {
             var promise = $http({
-                url: '/Admin/Review/GetStudentQuizzes',
+                url: '/Admin/Default/GetStudentComments',
                 method: "GET",
                 params: { id: studentId }
             });
