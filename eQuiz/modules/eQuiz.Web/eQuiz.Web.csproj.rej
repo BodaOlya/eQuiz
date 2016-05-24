@@ -1,0 +1,9 @@
+diff a/eQuiz/modules/eQuiz.Web/eQuiz.Web.csproj b/eQuiz/modules/eQuiz.Web/eQuiz.Web.csproj	(rejected hunks)
+@@ -147,6 +147,7 @@
+     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.service.js" />
+     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\quizInRun.controller.js" />
+     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\quizInRun.service.js" />
++    <Content Include="Areas\Student\Scripts\app\pages\quizInRun\timer.service.js" />
+     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\trackUserResult.service.js" />
+     <Content Include="Areas\Student\Scripts\routeConfig.js" />
+     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.html" />
