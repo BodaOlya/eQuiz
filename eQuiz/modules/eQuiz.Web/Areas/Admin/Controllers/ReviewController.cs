@@ -41,24 +41,16 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var query = from u in users
                         join uug in userToUserGroups on u.Id equals uug.UserId
                         join ug in userGroups on uug.GroupId equals ug.Id
-                        //join qp in quizzPasses on u.Id equals qp.UserId
-                        //join q in quizzes on qp.QuizId equals q.Id
-                        group new { u, ug } by u.Id into grouped
+                        join qp in quizzPasses on u.Id equals qp.UserId
+                        join q in quizzes on qp.QuizId equals q.Id
+                        group new { u, ug, q } by new { u.Id } into grouped
                         select new
                         {
                             id = grouped.Key,
                             student = grouped.Select(g => g.u.FirstName + " " + g.u.LastName).Distinct(),
-                            userGroup = grouped.Select(g => g.ug.Name),
-                            //quizzes = grouped.Select(g => g.q.Name).Distinct()
-                            quizzes = ".Net"
+                            userGroup = grouped.Select(g => g.ug.Name).Distinct(),
+                            quizzes = grouped.Select(g => g.q.Name).Distinct()
                         };
-                        //select new
-                        //{
-                        //    id = u.Id,
-                        //    student = u.FirstName + " " + u.LastName,
-                        //    userGroup = ug.Name,
-                        //    quizzes = ".Net"
-                        //};
 
             foreach (var item in query)
             {
