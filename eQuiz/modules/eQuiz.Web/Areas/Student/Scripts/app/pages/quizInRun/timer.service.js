@@ -6,8 +6,7 @@
         var stop = undefined;
         var minutes = 0;
         var seconds = 0;
-        var color = 'black';
-        var d = {};
+        var color = 'black'
 
         var service = {
             data: getData(),
@@ -19,9 +18,12 @@
         return service;
 
         function getData() {
-                d.sec = seconds,
-                d.min = minutes,
-                d.col = color
+            var d = {
+                sec: seconds,
+                min: minutes,
+                col: color
+            };
+
             return d;
         };
 
@@ -45,7 +47,6 @@
                 else {
                     color = 'black'
                 }
-                console.log(minutes, seconds);
                 getData();
             }, 1000);
         };
