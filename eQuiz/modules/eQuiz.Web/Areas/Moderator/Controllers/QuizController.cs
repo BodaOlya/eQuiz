@@ -179,9 +179,15 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         {
             if (quiz.Id != 0)
             {
+                quiz.QuizStateId = quiz.QuizState.Id;
+                quiz.QuizState = null;
+                if(quiz.UserGroup != null)
+                {
+                    quiz.GroupId = quiz.UserGroup.Id;
+                    quiz.UserGroup = null;
+                }
                 _repository.Update<Quiz>(quiz);
                 _repository.Update<QuizBlock>(block);
-
             }
             else
             {
