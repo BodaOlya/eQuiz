@@ -386,6 +386,7 @@
                         checkedAnswersDirty: false
                     };
                 });
+                vm.isQuestionsFormValidBackup = true;
                 vm.hideLoading();
             });
         }
