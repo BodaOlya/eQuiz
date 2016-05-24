@@ -39,7 +39,7 @@
                 currVal.student = currVal.student.toString();
                 currVal.userGroup = currVal.userGroup.toString();
                 currVal.quizzes = currVal.quizzes.toString();
-            });
+            }); // Converts received data to string values
             vm.groupList = GetUniquePropertyValues(vm.students, 'userGroup'); // Property user group needs to be changed manualy    
             generatePredicate();
         };
