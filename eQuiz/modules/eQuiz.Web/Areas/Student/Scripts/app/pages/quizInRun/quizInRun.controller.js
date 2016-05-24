@@ -50,7 +50,7 @@
                 if (isUserWantFinish) {
                     $scope.passedQuiz.FinishDate = new Date(Date.now());
 
-                    console.log(JSON.stringify($scope.passedQuiz));
+                    console.log($scope.passedQuiz);
 
                     var passedQuiz = $scope.passedQuiz;
                     quizService.sendUserResult(passedQuiz)

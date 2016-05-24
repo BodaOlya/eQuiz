@@ -22,7 +22,7 @@
                 </li>
                 <li ng-repeat="answer in quizQuestions[currentQuestion].Answers" ng-if="quizQuestions[currentQuestion].IsAutomatic">
                     <label>
-                        <input type="radio"  name="answersGroup" value="{{answer.Id}}" ng-click="setUserChoice(currentQuestion, quizQuestions[currentQuestion].Id, answer.Id, quizQuestions[currentQuestion].IsAutomatic, quizQuestions[currentQuestion].QuizBlock)"> {{answer.Text}}
+                        <input type="radio" ng-model="passedQuiz.UserAnswers[currentQuestion].AnswerId"  name="answersGroup" value="{{answer.Id}}" ng-click="setUserChoice(currentQuestion, quizQuestions[currentQuestion].Id, answer.Id, quizQuestions[currentQuestion].IsAutomatic, quizQuestions[currentQuestion].QuizBlock)"> {{answer.Text}}
                     </label>
                 </li>  
             </ul>
