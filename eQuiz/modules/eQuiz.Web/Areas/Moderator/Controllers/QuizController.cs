@@ -51,25 +51,8 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         [HttpGet]
         public ActionResult IsNameUnique(string name, int? id)
         {
-            bool exists = true;
-
-            if (id != null)
-            {
-                var quiz = _repository.GetSingle<Quiz>(q => q.Name == name);
-                if (quiz == null)
-                {
-                    exists = false;
-                }
-                else if (quiz.Id == (int)id)
-                {
-                    exists = false;
-                }
-            }
-            else
-            {
-                exists = _repository.Exists<Quiz>(q => q.Name == name);
-            }
-            return Json(!exists, JsonRequestBehavior.AllowGet);
+            var result = ValidateQuizName(name, id);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Get(int id)
@@ -120,7 +103,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetQuizzesPage(int currentPage = 1, int quizzesPerPage = 3, string predicate = "Name", 
+        public ActionResult GetQuizzesPage(int currentPage = 1, int quizzesPerPage = 3, string predicate = "Name",
                                             bool reverse = false, string searchText = null)
         {
             IEnumerable<QuizListModel> quizzesList = null;
@@ -143,7 +126,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                                          StateName = quizState.Name
                                      }).Where(item => (searchText == null || item.Name.Contains(searchText)) &&
                                              (item.StateName == "Opened" || item.StateName == "Draft" || item.StateName == "Scheduled"))
-                                             .OrderBy(q => q.Name);                
+                                             .OrderBy(q => q.Name);
 
                 quizzesTotal = quizzesList.Count();
 
@@ -177,11 +160,17 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         [HttpPost]
         public ActionResult Save(Quiz quiz, QuizBlock block)
         {
+            var errors = ValidateQuiz(quiz, block);
+            if (errors != null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Invalid data");
+            }
+
             if (quiz.Id != 0)
             {
                 quiz.QuizStateId = quiz.QuizState.Id;
                 quiz.QuizState = null;
-                if(quiz.UserGroup != null)
+                if (quiz.UserGroup != null)
                 {
                     quiz.GroupId = quiz.UserGroup.Id;
                     quiz.UserGroup = null;
@@ -209,7 +198,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
             return Content(data, "application/json");
         }
-        
+
         public ActionResult DeleteQuizById(int? id)
         {
             if (id == null)
@@ -242,13 +231,13 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                     {
                         _repository.Delete<int, UserAnswer>("Id", userAnswer.Id);
                     }
-                    
+
                     _repository.Delete<int, QuizPassQuestion>("Id", quizPassQuestion.Id);
                 }
 
                 _repository.Delete<int?, QuizBlock>("Id", quizBlock.Id);
             }
-            
+
             var quizPasses = _repository.Get<QuizPass>(qp => qp.QuizId == id);
 
             foreach (var quizPass in quizPasses)
@@ -274,29 +263,53 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             foreach (var quizVariant in quizVariants)
             {
                 _repository.Delete<int?, QuizVariant>("Id", quizVariant.Id);
-            }           
-            
+            }
+
             _repository.Delete<int?, Quiz>("Id", id);
 
             return RedirectToAction("Index", "Quiz");
         }
 
+        private bool ValidateQuizName(string name, int? id)
+        {
+            bool exists = true;
+
+            if (id != null)
+            {
+                var quiz = _repository.GetSingle<Quiz>(q => q.Name == name);
+                if (quiz == null)
+                {
+                    exists = false;
+                }
+                else if (quiz.Id == (int)id)
+                {
+                    exists = false;
+                }
+            }
+            else
+            {
+                exists = _repository.Exists<Quiz>(q => q.Name == name);
+            }
+
+            return !exists;
+        }
+
         [NonAction]
-        private string[] ValidateQuiz(Quiz quiz, QuizBlock block)
+        private IEnumerable<string> ValidateQuiz(Quiz quiz, QuizBlock block)
         {
             var errorMessages = new List<string>();
 
-            if(quiz.Name == null)
+            if (quiz.Name == null)
             {
                 errorMessages.Add("There is no quiz name");
             }
 
-            if(_repository.Exists<Quiz>(q => q.Name == quiz.Name))
+            if (!ValidateQuizName(quiz.Name, quiz.Id))
             {
                 errorMessages.Add("Quiz name is not unique");
             }
 
-            if(block.QuestionCount == null)
+            if (block.QuestionCount == null)
             {
                 errorMessages.Add("There is no question quantity");
             }
@@ -305,12 +318,12 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 errorMessages.Add("Question quantity should be greater then 0");
             }
 
-            if (!_repository.Exists<Quiz>(q => q.QuizTypeId == quiz.QuizTypeId))
+            if (!_repository.Exists<QuizType>(q => q.Id == quiz.QuizTypeId))
             {
                 errorMessages.Add("There is no such quiz type in database");
             }
 
-            if(quiz.QuizState == null)
+            if (quiz.QuizState == null)
             {
                 if (quiz.StartDate != null)
                 {
@@ -324,12 +337,12 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 {
                     errorMessages.Add("There is time limit but state isnt Scheduled");
                 }
-                if (quiz.UserGroup != null)
-                {
-                    errorMessages.Add("There is user group selected but state isnt Scheduled");
-                }
+                //if (quiz.UserGroup != null) UPDATE DB
+                //{
+                //    errorMessages.Add("There is user group selected but state isnt Scheduled");
+                //}
             }
-            else if(quiz.QuizState.Name == "Scheduled")
+            else if (quiz.QuizState.Name == "Scheduled")
             {
                 if (quiz.StartDate == null)
                 {
@@ -365,19 +378,19 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                     errorMessages.Add("There is no user group selected");
                 }
 
-                if (!_repository.Exists<Quiz>(q => q.UserGroup == quiz.UserGroup))
+                if (!_repository.Exists<UserGroup>(q => q.Id == quiz.UserGroup.Id))
                 {
                     errorMessages.Add("There is no such user group in the database");
                 }
             }
 
-            return errorMessages.Count > 0 ? errorMessages.ToArray() : null;
+            return errorMessages.Count > 0 ? errorMessages : null;
         }
 
         [HttpGet]
         public ActionResult QuizInfo(int id = 1)
         {
-            var quiz = _repository.GetByKey<int, Quiz>("Id", id);            
+            var quiz = _repository.GetByKey<int, Quiz>("Id", id);
             var userGroup = _repository.GetSingle<UserGroup>(ug => ug.Id == quiz.GroupId);
             var quizType = _repository.GetSingle<QuizType>(qt => qt.Id == quiz.QuizTypeId);
             var quizState = _repository.GetSingle<QuizState>(qs => qs.Id == quiz.QuizStateId);
@@ -411,7 +424,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             foreach (var quizQuestion in quizQuestions)
             {
                 var question = _repository.GetSingle<Question>(q => q.Id == quizQuestion.QuestionId);
-                                
+
                 var questionType = _repository.GetSingle<QuestionType>(qt => qt.Id == question.QuestionTypeId);
 
                 var questionAnswers = _repository.Get<QuestionAnswer>(qa => qa.QuestionId == question.Id);
