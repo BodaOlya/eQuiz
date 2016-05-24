@@ -156,7 +156,7 @@
         }
 
         vm.setLink = function (studentId) {
-            vm.link += studentId + '/Profile';
+            vm.link += studentId.Id + '/Profile';
         };
     };
 
