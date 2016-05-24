@@ -46,7 +46,8 @@ namespace eQuiz.Repositories.Concrete
 
         public void AttachModified<TEntity>(TEntity entity) where TEntity : class
         {
-            EFDbContext.Set<TEntity>().Attach(entity);            
+            EFDbContext.Set<TEntity>().Attach(entity);
+            EFDbContext.Entry(entity).State = EntityState.Modified;
         }
 
         public void InsertEach<TEntity>(IEnumerable<TEntity> entitys) where TEntity : class
