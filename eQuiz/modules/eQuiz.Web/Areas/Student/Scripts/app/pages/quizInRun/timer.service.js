@@ -6,7 +6,8 @@
         var stop = undefined;
         var minutes = 0;
         var seconds = 0;
-        var color = 'black'
+        var color = 'black';
+        var d = {};
 
         var service = {
             data: getData(),
@@ -18,12 +19,9 @@
         return service;
 
         function getData() {
-            var d = {
-                sec: seconds,
-                min: minutes,
-                col: color
-            };
-
+            d.sec = seconds,
+            d.min = minutes,
+            d.col = color
             return d;
         };
 
@@ -32,7 +30,7 @@
                 return;
             minutes = duration;
             stop = $interval(function () {
-                
+
                 if (seconds > 0) {
                     seconds--;
                 } else if (minutes > 0) {
@@ -47,10 +45,11 @@
                 else {
                     color = 'black'
                 }
+                console.log(minutes, seconds);
                 getData();
             }, 1000);
         };
-            
+
         function stopTimer() {
             if (angular.isDefined(stop)) {
                 $interval.cancel(stop);
