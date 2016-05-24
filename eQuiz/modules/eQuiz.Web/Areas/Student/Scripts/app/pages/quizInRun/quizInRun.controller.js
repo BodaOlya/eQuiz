@@ -64,8 +64,11 @@
             $location.path("/Dashboard");
         };
         //FINISH BUTTON
-        $scope.finishQuiz = function () {
-
+        $scope.finishQuiz = function (index, questionId, isAutomatic, quizBlock, answerText) {
+            if (!$scope.quizQuestions[index].isAutomatic) {
+                $scope.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, answerText);
+            }
+            
             var isUserWantFinish = confirm("A you sure want to finish the  quiz?");
 
             if (isUserWantFinish) {

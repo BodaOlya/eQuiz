@@ -42,7 +42,7 @@
                 </td>
                 <td class="empty"></td>
                 <td>
-                    <input type="button" value="Finish" ng-click="finishQuiz();">
+                    <input type="button" value="Finish" ng-click="finishQuiz(currentQuestion, quizQuestions[currentQuestion].Id, quizQuestions[currentQuestion].IsAutomatic, quizQuestions[currentQuestion].QuizBlock, passedQuiz.UserAnswers[currentQuestion].AnswerText);">
                 </td>
                 <td class="empty"></td>
             </tr>
