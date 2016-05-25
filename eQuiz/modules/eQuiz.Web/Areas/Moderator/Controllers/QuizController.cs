@@ -55,7 +55,8 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             var result = ValidateQuizName(name, id);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
+        
+        [HttpGet]
         public ActionResult Get(int id)
         {
             Quiz quiz = _repository.GetSingle<Quiz>(q => q.Id == id, r => r.UserGroup, s => s.QuizState);
@@ -69,6 +70,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
         public ActionResult GetQuizzesForCopy()
         {
             IEnumerable<Quiz> quizzes = _repository.Get<Quiz>(q => q.QuizState.Name != "Draft"  && q.QuizState.Name != "Archived", q => q.QuizState);
@@ -78,6 +80,25 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             foreach(var quiz in quizzes)
             {
                 minQuizzes.Add(GetQuizForSerialization(quiz));
+            }
+
+            return Json(minQuizzes, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult GetOpenQuizzes()
+        {
+            var quizzes = _repository.Get<Quiz>(q => q.QuizState.Name == "Opened", q => q.QuizState);
+
+            var minQuizzes = new ArrayList();
+
+            foreach(var quiz in quizzes)
+            {
+                minQuizzes.Add(new
+                {
+                    Id = quiz.Id,
+                    Name = quiz.Name
+                });
             }
 
             return Json(minQuizzes, JsonRequestBehavior.AllowGet);
@@ -197,6 +218,18 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             var result = new { quiz = minQuiz, block = minQuizBlock };
 
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult Schedule()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Schedule(Quiz quiz)
+        {
+            return null;
         }
 
         [HttpGet]

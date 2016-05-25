@@ -1,9 +1,9 @@
 ﻿(function () {
     angular.module("equizModule")
            .controller("QuizController", QuizController);
-    QuizController.$inject = ['$scope', 'quizService', 'userGroupService', '$location', 'questionService', '$timeout'];
+    QuizController.$inject = ['$scope', 'quizService', '$location', 'questionService', '$timeout'];
 
-    function QuizController($scope, quizService, userGroupService, $location, questionService, $timeout) {
+    function QuizController($scope, quizService, $location, questionService, $timeout) {
         var vm = this;
         vm.loadingVisible = false;
         vm.errorMessageVisible = false;
@@ -15,7 +15,6 @@
         vm.saveCanExecute = saveCanExecute;
         vm.model = {
             quiz: { QuizTypeId: 1, DurationHours: 0, DurationMinutes: 0 },
-            userGroups: [],
             states: [],
             quizzesForCopy: [],
             quizBlock: { QuestionCount: 0 },
@@ -87,10 +86,6 @@
                 vm.model.states = data.data;
             });
 
-            userGroupService.get().then(function (data) {
-                vm.model.userGroups = data.data;
-            });
-
             questionService.getQuestionTypes().then(function (response) {
                 vm.model.questionTypes = response.data;
             });
@@ -153,10 +148,6 @@
             }
 
             function saveQuiz() {
-                if (vm.model.quiz.QuizState.Name == 'Scheduled') {
-                    vm.model.quiz.TimeLimitMinutes = vm.model.quiz.DurationHours * 60 + vm.model.quiz.DurationMinutes;
-                    vm.model.quiz.EndDate = new Date(vm.model.quiz.StartDate.getTime() + vm.model.quiz.TimeLimitMinutes * 60000);
-                }
                 quizService.save({ quiz: vm.model.quiz, block: vm.model.quizBlock }).then(function (data) {
                     vm.model.quiz = data.data.quiz;
                     vm.model.quiz.StartDate = new Date(vm.model.quiz.StartDate);

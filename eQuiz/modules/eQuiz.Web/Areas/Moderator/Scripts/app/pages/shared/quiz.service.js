@@ -4,32 +4,23 @@
 
     quizService.$inject = ['$http'];
     function quizService($http) {
-        quiz = {};
 
         return {
             save: save,
-            quiz: quiz,
             get: get,
             isNameUnique: isNameUnique,
             getStates: getStates,
-            getQuizzesForCopy: getQuizzesForCopy
+            getQuizzesForCopy: getQuizzesForCopy,
+            getOpenQuizzes: getOpenQuizzes,
+            schedule: schedule
         }
 
         function get(id) {
-            var promise = $http.get("/moderator/quiz/get?id=" + id.toString());
-            promise.then(function (data) {
-                quiz.Id = data.data.quiz.Id;
-                quizBlock = data.data.quizBlock;
-            });
-            return promise;
+            return $http.get("/moderator/quiz/get?id=" + id.toString());
         }
 
         function save(quiz) {
-            var promise = $http.post("/quiz/save", quiz);
-            promise.then(function (data) {
-                quiz.Id = data.data.quiz.Id;
-            });
-            return promise;
+            return $http.post("/quiz/save", quiz);
         }
 
         function isNameUnique(name, id) {
@@ -45,8 +36,16 @@
             return $http.get("/quiz/GetQuizzesForCopy");
         }
 
+        function getOpenQuizzes() {
+            return $http.get("/quiz/GetOpenQuizzes");
+        }
+
         function getStates() {
             return $http.get("/quiz/GetStates");
+        }
+
+        function schedule(quiz) {
+            return $http.post("/quiz/Schedule", quiz);
         }
     }
 })();
