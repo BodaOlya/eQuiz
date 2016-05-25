@@ -59,7 +59,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 var quiz = context.Quizs.FirstOrDefault(x => x.Id == id);
                 var quizState = context.QuizStates.FirstOrDefault(state => state.Id == quiz.QuizStateId).Name;
                 var quizBlock = context.QuizBlocks.First(x => x.QuizId == id);
-                if(quizBlock.QuestionCount != questions.Length && quizState != "Draft")
+                if (quizBlock.QuestionCount != questions.Length && quizState != "Draft")
                 {
                     return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Not enough question had created.");
                 }
@@ -223,7 +223,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                         var questionTags = context.QuestionTags.Where(x => x.QuestionId == questionId).ToList();
                         foreach (var item in questionTags)
                         {
-                            context.QuestionTags.Remove(item); 
+                            context.QuestionTags.Remove(item);
                         }
                     }
                 }
@@ -260,7 +260,6 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             }
         }
 
-        [NonAction]
         private IEnumerable<string> QuestionsValidate(int quizId, Question[] questions, Answer[][] answers, Tag[][] tags)
         {
             var errorMessages = new List<string>();
@@ -295,54 +294,47 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             var isAllAnswersHaveText = true;
             var isExistsCheckedAnswerForAllQuestions = true;
 
-            try
+            for (var i = 0; i < questions.Length; i++)
             {
-                for (var i = 0; i < questions.Length; i++)
+                if (string.IsNullOrEmpty(questions[i].QuestionText))
                 {
-                    if (string.IsNullOrEmpty(questions[i].QuestionText))
+                    isAllQuestionsHaveText = false;
+                }
+                if (questions[i].QuestionTypeId == 2 || questions[i].QuestionTypeId == 3)
+                {
+                    if (answers[i] == null || answers[i].Length == 0)
                     {
-                        isAllQuestionsHaveText = false;
+                        isExistsAnswers = false;
+                        isExistsCheckedAnswerForAllQuestions = false;
                     }
-                    if (questions[i].QuestionTypeId == 2 || questions[i].QuestionTypeId == 3)
+                    else
                     {
-                        if (answers[i] == null || answers[i].Length == 0)
+                        var chechedCount = 0;
+                        for (var j = 0; j < answers[i].Length; j++)
                         {
-                            isExistsAnswers = false;
+                            if (answers[i][j] == null)
+                            {
+                                isExistsAnswers = false;
+                            }
+                            else
+                            {
+                                if (string.IsNullOrEmpty(answers[i][j].AnswerText))
+                                {
+                                    isAllAnswersHaveText = false;
+                                }
+                                chechedCount = (bool)answers[i][j].IsRight ? chechedCount + 1 : chechedCount;
+                            }
+                        }
+                        if (questions[i].QuestionTypeId == 2 && chechedCount != 1)
+                        {
                             isExistsCheckedAnswerForAllQuestions = false;
                         }
-                        else
+                        if (questions[i].QuestionTypeId == 3 && chechedCount < 1)
                         {
-                            var chechedCount = 0;
-                            for (var j = 0; j < answers[i].Length; j++)
-                            {
-                                if (answers[i][j] == null)
-                                {
-                                    isExistsAnswers = false;
-                                }
-                                else
-                                {
-                                    if (string.IsNullOrEmpty(answers[i][j].AnswerText))
-                                    {
-                                        isAllAnswersHaveText = false;
-                                    }
-                                    chechedCount = (bool)answers[i][j].IsRight ? chechedCount + 1 : chechedCount;
-                                }
-                            }
-                            if (questions[i].QuestionTypeId == 2 && chechedCount != 1)
-                            {
-                                isExistsCheckedAnswerForAllQuestions = false;
-                            }
-                            if (questions[i].QuestionTypeId == 3 && chechedCount < 1)
-                            {
-                                isExistsCheckedAnswerForAllQuestions = false;
-                            }
+                            isExistsCheckedAnswerForAllQuestions = false;
                         }
                     }
                 }
-            }
-            catch(Exception e)
-            {
-                errorMessages.Add("Some internal error");
             }
 
             if (!isAllQuestionsHaveText)
@@ -376,68 +368,68 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             int quizId = 0;
             //using (var context = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
             //{
-                //var quiz = context.Quizs.Where(x => x.Id == id).FirstOrDefault();  //check if exists
-                var quiz = _repository.GetSingle<Quiz>(q => q.Id == id);
-                if (quiz == null)
+            //var quiz = context.Quizs.Where(x => x.Id == id).FirstOrDefault();  //check if exists
+            var quiz = _repository.GetSingle<Quiz>(q => q.Id == id);
+            if (quiz == null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Quiz is not found");
+            }
+
+            // var quizState = context.QuizStates.FirstOrDefault(state => state.Id == quiz.QuizStateId).Name;
+            var quizState = _repository.GetSingle<QuizState>(qs => qs.Id == quiz.QuizStateId).Name;
+
+            if (quizState != "Archived")
+            {
+                quizId = quiz.Id;
+                //var quizBlockIds = context.QuizBlocks.Where(b => b.QuizId == quizId).Select(b => b.Id).ToList();
+                //var quizQuestios = context.QuizQuestions.Where(x => quizBlockIds.Contains(x.QuizBlockId)).OrderBy(x => x.QuestionOrder).ToList();
+                var quizBlockIds = _repository.Get<QuizBlock>(qb => qb.Id == quizId).Select(qb => qb.Id).ToList();
+                var quizQuestios = _repository.Get<QuizQuestion>(qq => quizBlockIds.Contains(qq.QuizBlockId)).ToList();
+
+                foreach (var quizQuestion in quizQuestios)
                 {
-                    return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Quiz is not found");
+                    // questions.Add(context.Questions.Where(q => q.Id == quizQuestion.QuestionId).Include(q => q.QuestionAnswers).Include(q => q.QuestionTags).First());
+                    questions.Add(_repository.GetSingle<Question>(q => q.Id == quizQuestion.QuestionId, q => q.QuestionAnswers, q => q.QuestionTags));
+
                 }
 
-                // var quizState = context.QuizStates.FirstOrDefault(state => state.Id == quiz.QuizStateId).Name;
-                var quizState = _repository.GetSingle<QuizState>(qs=>qs.Id==quiz.QuizStateId).Name;
-
-                if (quizState != "Archived")
+                answers = new List<List<Answer>>();
+                foreach (var item in questions)
                 {
-                    quizId = quiz.Id;
-                    //var quizBlockIds = context.QuizBlocks.Where(b => b.QuizId == quizId).Select(b => b.Id).ToList();
-                    //var quizQuestios = context.QuizQuestions.Where(x => quizBlockIds.Contains(x.QuizBlockId)).OrderBy(x => x.QuestionOrder).ToList();
-                    var quizBlockIds = _repository.Get<QuizBlock>(qb => qb.Id == quizId).Select(qb=>qb.Id).ToList();
-                    var quizQuestios = _repository.Get<QuizQuestion>(qq => quizBlockIds.Contains(qq.QuizBlockId)).ToList();
-
-                    foreach (var quizQuestion in quizQuestios)
+                    // var questionAnswers = context.QuestionAnswers.Where(x => x.QuestionId == item.Id).Include("Answer").ToList();
+                    var questionAnswers = _repository.Get<QuestionAnswer>(x => x.QuestionId == item.Id, x => x.Answer).ToList();
+                    var answerStorage = new List<Answer>();
+                    foreach (var answer in questionAnswers)
                     {
-                        // questions.Add(context.Questions.Where(q => q.Id == quizQuestion.QuestionId).Include(q => q.QuestionAnswers).Include(q => q.QuestionTags).First());
-                        questions.Add(_repository.GetSingle<Question>(q => q.Id == quizQuestion.QuestionId, q => q.QuestionAnswers, q => q.QuestionTags));
-
+                        answerStorage.Add(answer.Answer);
                     }
-
-                    answers = new List<List<Answer>>();
-                    foreach (var item in questions)
-                    {
-                        // var questionAnswers = context.QuestionAnswers.Where(x => x.QuestionId == item.Id).Include("Answer").ToList();
-                        var questionAnswers = _repository.Get<QuestionAnswer>(x => x.QuestionId == item.Id, x=>x.Answer).ToList();
-                        var answerStorage = new List<Answer>();
-                        foreach (var answer in questionAnswers)
-                        {
-                            answerStorage.Add(answer.Answer);
-                        }
-                        answers.Add(answerStorage);
-                    }
-
-                    tags = new List<List<Tag>>();
-                    foreach (var item in questions)
-                    {
-                       // var questionTags = context.QuestionTags.Where(x => x.QuestionId == item.Id).Include("Tag").ToList();
-                        var questionTags = _repository.Get<QuestionTag>(x => x.QuestionId == item.Id, x=>x.Tag).ToList();
-
-                        var tagStorage = new List<Tag>();
-                        foreach (var tag in questionTags)
-                        {
-                            tagStorage.Add(tag.Tag);
-                        }
-                        tags.Add(tagStorage);
-                    }
-
+                    answers.Add(answerStorage);
                 }
-                var data = JsonConvert.SerializeObject(new { questions = questions, answers = answers, id = quizId, tags = tags }, Formatting.None,
-                                                        new JsonSerializerSettings()
-                                                        {
-                                                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                                                        });
 
-                return Content(data, "application/json");
+                tags = new List<List<Tag>>();
+                foreach (var item in questions)
+                {
+                    // var questionTags = context.QuestionTags.Where(x => x.QuestionId == item.Id).Include("Tag").ToList();
+                    var questionTags = _repository.Get<QuestionTag>(x => x.QuestionId == item.Id, x => x.Tag).ToList();
 
-           // }
+                    var tagStorage = new List<Tag>();
+                    foreach (var tag in questionTags)
+                    {
+                        tagStorage.Add(tag.Tag);
+                    }
+                    tags.Add(tagStorage);
+                }
+
+            }
+            var data = JsonConvert.SerializeObject(new { questions = questions, answers = answers, id = quizId, tags = tags }, Formatting.None,
+                                                    new JsonSerializerSettings()
+                                                    {
+                                                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                                    });
+
+            return Content(data, "application/json");
+
+            // }
         }
     }
 }

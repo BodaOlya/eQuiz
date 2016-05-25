@@ -5,6 +5,7 @@ using eQuiz.Web.Areas.Moderator.Models;
 using eQuiz.Web.Code;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -58,30 +59,28 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         public ActionResult Get(int id)
         {
             Quiz quiz = _repository.GetSingle<Quiz>(q => q.Id == id, r => r.UserGroup, s => s.QuizState);
-            quiz.UserGroup.Quizs = null;
-            quiz.QuizState.Quizs = null;
             QuizBlock block = _repository.GetSingle<QuizBlock>(b => b.QuizId == id);
 
-            var data = JsonConvert.SerializeObject(new { quiz = quiz, block = block }, Formatting.None,
-                                                    new JsonSerializerSettings()
-                                                    {
-                                                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                                                    });
+            var minQuiz = GetQuizForSerialization(quiz);
+            var minQuizBlock = GetQuizBlockForSerialization(block);
 
-            return Content(data, "application/json");
+            var result = new { quiz = minQuiz, block = minQuizBlock };
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetQuizzesForCopy()
         {
-            IEnumerable<Quiz> quizzes = _repository.Get<Quiz>(q => q.QuizState.Name != "Draft", q => q.QuizState);
+            IEnumerable<Quiz> quizzes = _repository.Get<Quiz>(q => q.QuizState.Name != "Draft"  && q.QuizState.Name != "Archived", q => q.QuizState);
 
-            var data = JsonConvert.SerializeObject(quizzes, Formatting.None,
-                                                   new JsonSerializerSettings()
-                                                   {
-                                                       ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                                                   });
+            var minQuizzes = new ArrayList();
 
-            return Content(data, "application/json");
+            foreach(var quiz in quizzes)
+            {
+                minQuizzes.Add(GetQuizForSerialization(quiz));
+            }
+
+            return Json(minQuizzes, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetStates()
@@ -93,13 +92,14 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             states.Add(_repository.GetSingle<QuizState>(s => s.Name == "Scheduled"));
             states.Add(_repository.GetSingle<QuizState>(s => s.Name == "Archived"));
 
-            var data = JsonConvert.SerializeObject(states, Formatting.None,
-                                                  new JsonSerializerSettings()
-                                                  {
-                                                      ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                                                  });
+            var minStates = new ArrayList();
 
-            return Content(data, "application/json");
+            foreach(var state in states)
+            {
+                minStates.Add(GetQuizStateForSerialization(state));
+            }
+
+            return Json(minStates, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -192,18 +192,82 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             quiz.QuizState = _repository.GetSingle<QuizState>(q => q.Id == quiz.QuizStateId);
             quiz.UserGroup = _repository.GetSingle<UserGroup>(g => g.Id == quiz.GroupId);
 
-            var data = JsonConvert.SerializeObject(new { quiz = quiz, block = block }, Formatting.None,
-                                                    new JsonSerializerSettings()
-                                                    {
-                                                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                                                    });
+            var minQuiz = GetQuizForSerialization(quiz);
+            var minQuizBlock = GetQuizBlockForSerialization(block);
+            var result = new { quiz = minQuiz, block = minQuizBlock };
 
-            return Content(data, "application/json");
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult QuizPreview(int id)
+        {
+            var quiz = _repository.GetSingle<Quiz>(q => q.Id == id);
+
+            if (quiz == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+
+            var userGroup = _repository.GetSingle<UserGroup>(ug => ug.Id == quiz.GroupId);
+            var quizType = _repository.GetSingle<QuizType>(qt => qt.Id == quiz.QuizTypeId);
+            var quizState = _repository.GetSingle<QuizState>(qs => qs.Id == quiz.QuizStateId);
+
+            var quizPreviewModel = new QuizPreviewModel();
+
+            quizPreviewModel.Id = quiz.Id;
+            quizPreviewModel.Type = quizType.TypeName;
+            quizPreviewModel.Name = quiz.Name;
+            quizPreviewModel.Descriprtion = quiz.Description;
+            quizPreviewModel.StartDate = quiz.StartDate;
+            quizPreviewModel.EndDate = quiz.EndDate;
+            quizPreviewModel.TimeLimitMinutes = quiz.TimeLimitMinutes;
+            quizPreviewModel.InternetAccess = quiz.InternetAccess;
+            quizPreviewModel.Group = userGroup.Name;
+            quizPreviewModel.State = quizState.Name;
+
+            var quizBlock = _repository.GetSingle<QuizBlock>(qb => qb.QuizId == id);
+            var quizTopic = _repository.GetSingle<Topic>(t => t.Id == quizBlock.TopicId);
+
+            quizPreviewModel.Topic = quizTopic.Name;
+            quizPreviewModel.IsRandom = quizBlock.IsRandom;
+            quizPreviewModel.QuestionMinComplexity = quizBlock.QuestionMinComplexity;
+            quizPreviewModel.QuestionMaxComplexity = quizBlock.QuestionMaxComplexity;
+            quizPreviewModel.QuestionCount = quizBlock.QuestionCount;
+
+            var quizQuestions = _repository.Get<QuizQuestion>(qq => qq.QuizBlockId == quizBlock.Id);
+
+            quizPreviewModel.Questions = new List<QuestionInfo>();
+
+            foreach (var quizQuestion in quizQuestions)
+            {
+                var question = _repository.GetSingle<Question>(q => q.Id == quizQuestion.QuestionId);
+
+                var questionType = _repository.GetSingle<QuestionType>(qt => qt.Id == question.QuestionTypeId);
+
+                var questionAnswers = _repository.Get<QuestionAnswer>(qa => qa.QuestionId == question.Id);
+
+                var answers = questionAnswers.Select(questionAnswer => _repository.GetSingle<Answer>(a => a.Id == questionAnswer.AnswerId)).ToList();
+
+                var questionInfo = new QuestionInfo
+                {
+                    Answers = answers,
+                    QuestionComplexity = question.QuestionComplexity,
+                    QuestionScore = quizQuestion.QuestionScore,
+                    QuestionOrder = quizQuestion.QuestionOrder,
+                    Type = questionType.TypeName,
+                    Text = question.QuestionText
+                };
+
+                quizPreviewModel.Questions.Add(questionInfo);
+            }
+
+            return View(quizPreviewModel);
         }
 
         [HttpPost]
         public ActionResult DeleteQuizById(int id)
-        {            
+        {
             var quizBlocks = _repository.Get<QuizBlock>(qb => qb.QuizId == id);
 
             foreach (var quizBlock in quizBlocks)
@@ -265,6 +329,10 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return result;
         }
 
+        #endregion
+
+        #region Helpers
+
         private bool ValidateQuizName(string name, int? id)
         {
             bool exists = true;
@@ -289,7 +357,59 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return !exists;
         }
 
-        [NonAction]
+        private object GetQuizForSerialization(Quiz quiz)
+        {
+            var minUserGroup = quiz.UserGroup != null ? GetUserGroupForSerialization(quiz.UserGroup) : null;
+            var minQuizState = GetQuizStateForSerialization(quiz.QuizState);
+
+            var minQuiz = new
+            {
+                Id = quiz.Id,
+                Name = quiz.Name,
+                QuizTypeId = quiz.QuizTypeId,
+                StartDate = quiz.StartDate != null ? ((DateTime)quiz.StartDate).ToString("yyyy-MM-ddTHH:mm:ss") : null,
+                EndDate = quiz.EndDate != null ? ((DateTime)quiz.EndDate).ToString("yyyy-MM-ddTHH:mm:ss") : null,
+                TimeLimitMinutes = quiz.TimeLimitMinutes,
+                UserGroup = minUserGroup,
+                QuizState = minQuizState
+            };
+
+            return minQuiz;
+        }
+
+        private object GetQuizBlockForSerialization(QuizBlock block)
+        {
+            var minQuizBlock = new
+            {
+                Id = block.Id,
+                QuestionCount = block.QuestionCount
+            };
+
+            return minQuizBlock;
+        }
+
+        private object GetQuizStateForSerialization(QuizState state)
+        {
+            var minState = new
+            {
+                Id = state.Id,
+                Name = state.Name
+            };
+
+            return minState;
+        }
+
+        private object GetUserGroupForSerialization(UserGroup group)
+        {
+            var minGroup = new
+            {
+                Id = group.Id,
+                Name = group.Name
+            };
+
+            return minGroup;
+        }
+
         private IEnumerable<string> ValidateQuiz(Quiz quiz, QuizBlock block)
         {
             var errorMessages = new List<string>();
@@ -380,72 +500,6 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             }
 
             return errorMessages.Count > 0 ? errorMessages : null;
-        }
-
-        [HttpGet]
-        public ActionResult QuizPreview(int id)
-        {            
-            var quiz = _repository.GetSingle<Quiz>(q => q.Id == id);
-
-            if (quiz == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
-
-            var userGroup = _repository.GetSingle<UserGroup>(ug => ug.Id == quiz.GroupId);
-            var quizType = _repository.GetSingle<QuizType>(qt => qt.Id == quiz.QuizTypeId);
-            var quizState = _repository.GetSingle<QuizState>(qs => qs.Id == quiz.QuizStateId);
-
-            var quizPreviewModel = new QuizPreviewModel();
-
-            quizPreviewModel.Id = quiz.Id;
-            quizPreviewModel.Type = quizType.TypeName;
-            quizPreviewModel.Name = quiz.Name;
-            quizPreviewModel.Descriprtion = quiz.Description;
-            quizPreviewModel.StartDate = quiz.StartDate;
-            quizPreviewModel.EndDate = quiz.EndDate;
-            quizPreviewModel.TimeLimitMinutes = quiz.TimeLimitMinutes;
-            quizPreviewModel.InternetAccess = quiz.InternetAccess;
-            quizPreviewModel.Group = userGroup.Name;
-            quizPreviewModel.State = quizState.Name;
-
-            var quizBlock = _repository.GetSingle<QuizBlock>(qb => qb.QuizId == id);
-            var quizTopic = _repository.GetSingle<Topic>(t => t.Id == quizBlock.TopicId);
-
-            quizPreviewModel.Topic = quizTopic.Name;
-            quizPreviewModel.IsRandom = quizBlock.IsRandom;
-            quizPreviewModel.QuestionMinComplexity = quizBlock.QuestionMinComplexity;
-            quizPreviewModel.QuestionMaxComplexity = quizBlock.QuestionMaxComplexity;
-            quizPreviewModel.QuestionCount = quizBlock.QuestionCount;
-
-            var quizQuestions = _repository.Get<QuizQuestion>(qq => qq.QuizBlockId == quizBlock.Id);
-
-            quizPreviewModel.Questions = new List<QuestionInfo>();
-
-            foreach (var quizQuestion in quizQuestions)
-            {
-                var question = _repository.GetSingle<Question>(q => q.Id == quizQuestion.QuestionId);
-
-                var questionType = _repository.GetSingle<QuestionType>(qt => qt.Id == question.QuestionTypeId);
-
-                var questionAnswers = _repository.Get<QuestionAnswer>(qa => qa.QuestionId == question.Id);
-
-                var answers = questionAnswers.Select(questionAnswer => _repository.GetSingle<Answer>(a => a.Id == questionAnswer.AnswerId)).ToList();
-
-                var questionInfo = new QuestionInfo
-                {
-                    Answers = answers,
-                    QuestionComplexity = question.QuestionComplexity,
-                    QuestionScore = quizQuestion.QuestionScore,
-                    QuestionOrder = quizQuestion.QuestionOrder,
-                    Type = questionType.TypeName,
-                    Text = question.QuestionText
-                };
-
-                quizPreviewModel.Questions.Add(questionInfo);
-            }
-
-            return View(quizPreviewModel);
         }
 
         #endregion
