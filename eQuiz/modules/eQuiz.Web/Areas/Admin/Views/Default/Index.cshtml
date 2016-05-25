@@ -4,7 +4,7 @@
 
 @section HeadScripts
 {
-    <base href="/Admin/Default/" />
+    <base href="/Admin/Default/Index/" />
 }
 
 <div ng-app="equizModule">
@@ -21,7 +21,10 @@
                     <label style="text-decoration:solid; font-size:20px; float:right">
                         Full Name
                     </label>
-</div>
+            </div>
+            <div data-loading class="cssload-container">
+                <div class="cssload-speeding-wheel"></div>
+            </div> 
             <div ng-view></div>
         </div>
 </div>
@@ -29,7 +32,7 @@
 @section FootScripts
 {
     <script src="~/Areas/Admin/Scripts/shared/routing.js"></script>
-
+    <script src="~/Areas/Admin/Scripts/shared/loading-screen.directive.js"></script>
     <script src="~/Areas/Admin/Scripts/review/group.filter.js"></script>
     <script src="~/Areas/Admin/Scripts/review/highlight.filter.js"></script>
     <script src="~/Areas/Admin/Scripts/review/start-from.filter.js"></script>

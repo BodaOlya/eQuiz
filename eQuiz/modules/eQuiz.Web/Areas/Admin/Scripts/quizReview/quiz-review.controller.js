@@ -3,9 +3,9 @@
         .module("equizModule")
         .controller('QuizReviewController', quizReviewController);
 
-    quizReviewController.$inject = ['$scope', 'quizReviewDataService', '$routeParams'];
+    quizReviewController.$inject = ['$scope', 'quizReviewDataService', '$location'];
 
-    function quizReviewController($scope, quizReviewDataService, $routeParams) {
+    function quizReviewController($scope, quizReviewDataService, $location) {
         var vm = this;
         vm.passed = 0;
         vm.notPassed = 0;
@@ -38,7 +38,7 @@
         function activate() {
             vm.student = quizReviewDataService.getStudent();
             vm.group = quizReviewDataService.getGroup();
-            vm.quiz = quizReviewDataService.getQuiz($routeParams.quizId);
+            vm.quiz = quizReviewDataService.getQuiz($location.search().Id);
 
             vm.countStats();
         };
