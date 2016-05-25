@@ -140,7 +140,6 @@
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\userGroup.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\show-error.directive.js" />
     <Content Include="Areas\Moderator\Scripts\libs\custom-pagination\custom-pagination.js" />
-    <Content Include="Areas\Moderator\Styles\bootstrap.css" />
     <Content Include="Areas\Moderator\Styles\equiz-temp.css" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.controller.js" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.service.js" />
@@ -205,7 +204,6 @@
     <Content Include="Areas\Moderator\Views\Quiz\Edit.cshtml" />
     <Content Include="Areas\Moderator\Views\Shared\_Header.cshtml" />
     <Content Include="Areas\Moderator\Views\Quiz\Index.cshtml" />
-    <Content Include="Areas\Moderator\Styles\bootstrap.css.map" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\unique-quiz-name.directive.js" />
     <Content Include="connections.config" />
     <Content Include="Areas\Admin\Views\Default\Index.cshtml" />
