@@ -148,7 +148,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                     {
                         UserTextAnswer userTextAnswerToInsert = new UserTextAnswer
                         {
-                            //Also must be QuizPassQuestionId
+                            QuizPassQuestionId = lastQuizPassQuestionIdentity,
                             AnswerText = userAnswer.AnswerText,
                             AnswerTime = userAnswer.AnswerTime
                         };
