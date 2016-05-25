@@ -1,4 +1,4 @@
-﻿<div class="tab" novalidate>
+﻿<div class="tab" ng-show="vm.tab=='questions'" novalidate>
     <ng-form name="vm.model.questionsForm">
         <div ng-form="oneQuestionForm" ng-repeat="question in vm.model.questions track by $index">
             <div class="row" show-error>
