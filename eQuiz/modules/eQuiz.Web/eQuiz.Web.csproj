@@ -178,7 +178,7 @@
     <Compile Include="Areas\Student\Controllers\AccountController.cs" />
     <Compile Include="Areas\Student\Controllers\DefaultController.cs" />
     <Compile Include="Areas\Student\Models\QuizResultModel.cs" />
-    <Compile Include="Areas\Student\Models\UserAnswer.cs" />
+    <Compile Include="Areas\Student\Models\UserAnswerResult.cs" />
     <Compile Include="Areas\Student\StudentAreaRegistration.cs" />
     <Compile Include="AutofacModule.cs" />
     <Compile Include="Code\BaseController.cs" />
