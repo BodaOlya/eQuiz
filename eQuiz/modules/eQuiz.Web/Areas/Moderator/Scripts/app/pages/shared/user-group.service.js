@@ -16,12 +16,12 @@
 
         function getGroup(id) {
             var promise = $http.get("/moderator/usergroup/getusergroup?id=" + id.toString());
-            promise.then(populateResponse);
+            promise.then(function (data) {
+                group = data.data.group;
+                users = data.data.users;
+            });
             return promise;
         };
-
-        function populateResponse(response) {
-            return response.data;
-        };
+        
     };
 })();
