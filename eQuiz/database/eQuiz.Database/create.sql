@@ -235,6 +235,7 @@ CREATE TABLE [dbo].[tblUserToUserGroup]
 CREATE TABLE [dbo].[tblUserTextAnswer]
 (
 	[Id] [INT] NOT NULL IDENTITY(1, 1),
+	[QuizPassQuestionId] [INT] NOT NULL,
 	[AnswerTime] [DATETIME] NOT NULL,
 	[AnswerText] [NVARCHAR](MAX) NOT NULL,
 	CONSTRAINT [PK_tblUserTextAnswer_Id] PRIMARY KEY ([Id]) 
@@ -298,7 +299,7 @@ ALTER TABLE [dbo].[tblUserToUserGroup] ADD  CONSTRAINT [FK_tblUserToUserGroup_tb
 
 ALTER TABLE [dbo].[tblUserToUserGroup] ADD  CONSTRAINT [FK_tblUserToUserGroup_tblUser] FOREIGN KEY([UserId]) REFERENCES [dbo].[tblUser] ([Id]);
 
---ALTER TABLE [dbo].[tblUserTextAnswer] ADD  CONSTRAINT [FK_tblUserTextAnswer_tblQuizPassQuestion] FOREIGN KEY([QuizPassQuestionId]) REFERENCES [dbo].[tblQuizPassQuestion] ([Id]);
+ALTER TABLE [dbo].[tblUserTextAnswer] ADD  CONSTRAINT [FK_tblUserTextAnswer_tblQuizPassQuestion] FOREIGN KEY([QuizPassQuestionId]) REFERENCES [dbo].[tblQuizPassQuestion] ([Id]);
 
 ALTER TABLE [dbo].[tblQuestionAnswer] ADD  CONSTRAINT [FK_tblQuestionAnswer_tblAnswer] FOREIGN KEY([AnswerId]) REFERENCES [dbo].[tblAnswer] ([Id]); ---------------
 
