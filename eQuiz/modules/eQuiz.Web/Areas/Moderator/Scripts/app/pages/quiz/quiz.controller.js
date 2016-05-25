@@ -8,6 +8,7 @@
         vm.loadingVisible = false;
         vm.errorMessageVisible = false;
         vm.successMessageVisible = false;
+        vm.isStateEditable = true;
         vm.tab = 'quiz';
         vm.save = save;
         vm.switchTab = switchTab;
@@ -43,21 +44,24 @@
         vm.isDirtyAnswerCount = isDirtyAnswerCount;
         vm.isDirtyAnswerChecked = isDirtyAnswerChecked;
         vm.isQuestionsFormValid = isQuestionsFormValid;
-        vm.isQuestionsFormValidBackup = false;
 
         vm.toggleQuizzesForCopy = toggleQuizzesForCopy;
         vm.quizzesForCopyVisible = false;
         vm.getQuestionsCopy = getQuestionsCopy;
         vm.selectQuizCopy = selectQuizCopy;
         vm.selectedQuizCopy = { Id: 0, Name: 'New' };
+        vm.showLoading = showLoading;
+        vm.hideLoading = hideLoading;
 
         activate();
 
         function activate() {
             if ($location.search().id) {
+                vm.showLoading();
                 vm.getQuestions($location.search().id);
                 quizService.get($location.search().id).then(function (data) {
                     vm.model.quiz = data.data.quiz;
+                    vm.isStateEditable = vm.model.quiz.QuizState.Name != 'Scheduled';
                     vm.model.quiz.StartDate = new Date(vm.model.quiz.StartDate);
                     vm.model.quiz.DurationMinutes = vm.model.quiz.TimeLimitMinutes % 60;
                     vm.model.quiz.DurationHours = (vm.model.quiz.TimeLimitMinutes - vm.model.quiz.TimeLimitMinutes % 60) / 60;
@@ -110,18 +114,12 @@
             vm.quizzesForCopyVisible = !vm.quizzesForCopyVisible;
         }
 
-        function setForm(form) {
-            if (!vm.model.quizForm) {
-                vm.model.quizForm = form;
-            }
-        }
-
         function saveCanExecute() {
             if (vm.quizForm) {
                 var res = vm.quizForm.$valid && vm.isQuestionsFormValid();
                 return vm.quizForm.$valid && vm.isQuestionsFormValid();
             }
-            return !vm.isQuestionsFormValid();
+            return false;
         }
 
         function switchTab(tab) {
@@ -155,7 +153,10 @@
             }
 
             function saveQuiz() {
-                vm.model.quiz.TimeLimitMinutes = vm.model.quiz.DurationHours * 60 + vm.model.quiz.DurationMinutes;
+                if (vm.model.quiz.QuizState.Name == 'Scheduled') {
+                    vm.model.quiz.TimeLimitMinutes = vm.model.quiz.DurationHours * 60 + vm.model.quiz.DurationMinutes;
+                    vm.model.quiz.EndDate = new Date(vm.model.quiz.StartDate.getTime() + vm.model.quiz.TimeLimitMinutes * 60000);
+                }
                 quizService.save({ quiz: vm.model.quiz, block: vm.model.quizBlock }).then(function (data) {
                     vm.model.quiz = data.data.quiz;
                     vm.model.quiz.StartDate = new Date(vm.model.quiz.StartDate);
@@ -180,12 +181,6 @@
                 $timeout(function () {
                     vm.errorMessageVisible = false;
                 }, 4000);
-            }
-            function showLoading() {
-                vm.loadingVisible = true;
-            }
-            function hideLoading() {
-                vm.loadingVisible = false;
             }
         }
 
@@ -212,6 +207,13 @@
             form.$setValidity("No answers", true);
             form.$setValidity("Only one correct answer", true);
             form.$setValidity("At least one correct answer", true);
+        }
+
+        function showLoading() {
+            vm.loadingVisible = true;
+        }
+        function hideLoading() {
+            vm.loadingVisible = false;
         }
 
         function addNewQuestion() {
@@ -380,10 +382,12 @@
                         checkedAnswersDirty: false
                     };
                 });
+                vm.hideLoading();
             });
         }
 
         function getQuestionsCopy(quizId) {
+            vm.showLoading();
             questionService.getQuestionsCopy(quizId).then(function (response) {
                 var modelFromServer = response.data;
 
@@ -404,7 +408,7 @@
                     };
                 });
                 vm.model.quizBlock.QuestionCount = vm.model.questions.length;
-                vm.isQuestionsFormValidBackup = true;
+                vm.hideLoading();
             });
         }
 
@@ -449,9 +453,9 @@
                 if (!vm.model.quiz.QuizState || vm.model.quiz.QuizState.Name != 'Draft') {
                     questionCountValid = (vm.model.questions.length == vm.model.quizBlock.QuestionCount);
                 }
-                vm.isQuestionsFormValidBackup = vm.model.questionsForm.$valid && questionCountValid;
+                return vm.model.questionsForm.$valid && questionCountValid;
             }
-            return vm.isQuestionsFormValidBackup;
+            return false;
         }
     }
 })();

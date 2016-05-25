@@ -51,25 +51,8 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         [HttpGet]
         public ActionResult IsNameUnique(string name, int? id)
         {
-            bool exists = true;
-
-            if (id != null)
-            {
-                var quiz = _repository.GetSingle<Quiz>(q => q.Name == name);
-                if (quiz == null)
-                {
-                    exists = false;
-                }
-                else if (quiz.Id == (int)id)
-                {
-                    exists = false;
-                }
-            }
-            else
-            {
-                exists = _repository.Exists<Quiz>(q => q.Name == name);
-            }
-            return Json(!exists, JsonRequestBehavior.AllowGet);
+            var result = ValidateQuizName(name, id);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Get(int id)
@@ -120,26 +103,30 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetQuizzesPage(int currentPage = 1, int quizzesPerPage = 3, string predicate = "Name", bool reverse = false)
+        public ActionResult GetQuizzesPage(int currentPage = 1, int quizzesPerPage = 3, string predicate = "Name",
+                                            bool reverse = false, string searchText = null)
         {
             IEnumerable<QuizListModel> quizzesList = null;
             var quizzesTotal = 0;
 
             using (var context = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
             {
-                quizzesList = context.Quizs.Join(context.QuizBlocks,
-                    quiz => quiz.Id,
-                    quizBlock => quizBlock.QuizId,
-                    (quiz, quizBlock) =>
-                        new QuizListModel
-                        {
-                            Id = quiz.Id,
-                            Name = quiz.Name,
-                            CountOfQuestions = quizBlock.QuestionCount,
-                            StartDate = quiz.StartDate,
-                            Duration = quiz.TimeLimitMinutes,
-                            Active = false
-                        }).OrderBy(q => q.Name);
+                //TODO : edit using repositories
+                quizzesList = (from quiz in context.Quizs
+                               join quizBlock in context.QuizBlocks on quiz.Id equals quizBlock.QuizId
+                               join quizState in context.QuizStates on quiz.QuizStateId equals quizState.Id
+                               select
+                                     new QuizListModel
+                                     {
+                                         Id = quiz.Id,
+                                         Name = quiz.Name,
+                                         CountOfQuestions = quizBlock.QuestionCount,
+                                         StartDate = quiz.StartDate,
+                                         Duration = quiz.TimeLimitMinutes,
+                                         StateName = quizState.Name
+                                     }).Where(item => (searchText == null || item.Name.Contains(searchText)) &&
+                                             (item.StateName == "Opened" || item.StateName == "Draft" || item.StateName == "Scheduled"))
+                                             .OrderBy(q => q.Name);
 
                 quizzesTotal = quizzesList.Count();
 
@@ -154,8 +141,8 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                     case "StartDate":
                         quizzesList = reverse ? quizzesList.OrderByDescending(q => q.StartDate) : quizzesList.OrderBy(q => q.StartDate);
                         break;
-                    case "Active":
-                        quizzesList = reverse ? quizzesList.OrderByDescending(q => q.Active) : quizzesList.OrderBy(q => q.Active);
+                    case "StateName":
+                        quizzesList = reverse ? quizzesList.OrderByDescending(q => q.StateName) : quizzesList.OrderBy(q => q.StateName);
                         break;
                     case "Duration":
                         quizzesList = reverse ? quizzesList.OrderByDescending(q => q.Duration) : quizzesList.OrderBy(q => q.Duration);
@@ -173,68 +160,38 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         [HttpPost]
         public ActionResult Save(Quiz quiz, QuizBlock block)
         {
+            var errors = ValidateQuiz(quiz, block);
+            if (errors != null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Invalid data");
+            }
+
             if (quiz.Id != 0)
             {
-                //using (eQuizEntities model = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
-                //{
-                //    var updateQuiz = model.Quizs.FirstOrDefault(q => q.Id == quiz.Id);
-                //    if (updateQuiz == null)
-                //    {
-                //        return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Quiz not found");
-                //    }
-
-                //    var updateBlock = model.QuizBlocks.FirstOrDefault(q => q.Id == quiz.Id);
-                //    if (updateBlock == null)
-                //    {
-                //        return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "QuizBlock not found");
-                //    }
-
-                //    updateQuiz.Name = quiz.Name;
-                //    updateQuiz.QuizTypeId = quiz.QuizTypeId;
-                //    updateQuiz.StartDate = quiz.StartDate;
-                //    updateQuiz.EndDate = quiz.EndDate;
-                //    updateQuiz.TimeLimitMinutes = quiz.TimeLimitMinutes;
-                //    updateQuiz.GroupId = quiz.GroupId;
-
-                //    updateBlock.QuestionCount = block.QuestionCount;
-
-                //    model.SaveChanges();
-                //    quiz = updateQuiz;
-                //    quiz.UserGroup = model.UserGroups.FirstOrDefault(g => g.Id == quiz.GroupId);
-                //    block = updateBlock;
-                //}
-
+                quiz.QuizStateId = quiz.QuizState.Id;
+                quiz.QuizState = null;
+                if (quiz.UserGroup != null)
+                {
+                    quiz.GroupId = quiz.UserGroup.Id;
+                    quiz.UserGroup = null;
+                }
                 _repository.Update<Quiz>(quiz);
                 _repository.Update<QuizBlock>(block);
-
             }
             else
             {
-                //block.TopicId = 1;
-                //block.Quiz = quiz;
-
-                //using (eQuizEntities model = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
-                //{
-                //    quiz.UserGroup = model.UserGroups.Where(g => g.Id == quiz.UserGroup.Id).First();
-                //    model.Quizs.Add(quiz);
-                //    model.QuizBlocks.Add(block);
-                //    //  model.QuizVariants.Add(new QuizVariant() { QuizId = quiz.Id });   UPDATE DB
-                //    model.SaveChanges();
-                //}
-
-
-                //    //  model.QuizVariants.Add(new QuizVariant() { QuizId = quiz.Id });   UPDATE DB
-                //temp
                 quiz.QuizStateId = quiz.QuizState.Id;
                 quiz.QuizState = null;
                 quiz.GroupId = 1; // UPDATE DB
-                //
                 _repository.Insert<Quiz>(quiz);
                 block.TopicId = 1;
                 block.QuizId = quiz.Id;
                 _repository.Insert<QuizBlock>(block);
                 _repository.Insert<QuizVariant>(new QuizVariant() { QuizId = quiz.Id });
             }
+            quiz.QuizState = _repository.GetSingle<QuizState>(q => q.Id == quiz.QuizStateId);
+            quiz.UserGroup = _repository.GetSingle<UserGroup>(g => g.Id == quiz.GroupId);
+
             var data = JsonConvert.SerializeObject(new { quiz = quiz, block = block }, Formatting.None,
                                                     new JsonSerializerSettings()
                                                     {
@@ -308,7 +265,32 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return result;
         }
 
-        private string[] ValidateQuiz(Quiz quiz, QuizBlock block)
+        private bool ValidateQuizName(string name, int? id)
+        {
+            bool exists = true;
+
+            if (id != null)
+            {
+                var quiz = _repository.GetSingle<Quiz>(q => q.Name == name);
+                if (quiz == null)
+                {
+                    exists = false;
+                }
+                else if (quiz.Id == (int)id)
+                {
+                    exists = false;
+                }
+            }
+            else
+            {
+                exists = _repository.Exists<Quiz>(q => q.Name == name);
+            }
+
+            return !exists;
+        }
+
+        [NonAction]
+        private IEnumerable<string> ValidateQuiz(Quiz quiz, QuizBlock block)
         {
             var errorMessages = new List<string>();
 
@@ -317,7 +299,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 errorMessages.Add("There is no quiz name");
             }
 
-            if (_repository.Exists<Quiz>(q => q.Name == quiz.Name))
+            if (!ValidateQuizName(quiz.Name, quiz.Id))
             {
                 errorMessages.Add("Quiz name is not unique");
             }
@@ -326,58 +308,78 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             {
                 errorMessages.Add("There is no question quantity");
             }
-
-            if (block.QuestionCount <= 0)
+            else if (block.QuestionCount <= 0)
             {
                 errorMessages.Add("Question quantity should be greater then 0");
             }
 
-            if (quiz.StartDate == null)
-            {
-                errorMessages.Add("There is no start date");
-            }
-
-            if (quiz.StartDate <= DateTime.Now)
-            {
-                errorMessages.Add("Start date should be greater then current date");
-            }
-
-            if (quiz.EndDate == null)
-            {
-                errorMessages.Add("There is no end date");
-            }
-
-            if (quiz.EndDate <= DateTime.Now)
-            {
-                errorMessages.Add("End date should be greater then current date");
-            }
-
-            if (quiz.TimeLimitMinutes == null)
-            {
-                errorMessages.Add("There is no time limit");
-            }
-
-            if (quiz.TimeLimitMinutes <= 0)
-            {
-                errorMessages.Add("Time limit should be greater then 0");
-            }
-
-            if (quiz.UserGroup == null)
-            {
-                errorMessages.Add("There is no user group selected");
-            }
-
-            if (!_repository.Exists<Quiz>(q => q.UserGroup == quiz.UserGroup))
-            {
-                errorMessages.Add("There is no such user group in the database");
-            }
-
-            if (!_repository.Exists<Quiz>(q => q.QuizTypeId == quiz.QuizTypeId))
+            if (!_repository.Exists<QuizType>(q => q.Id == quiz.QuizTypeId))
             {
                 errorMessages.Add("There is no such quiz type in database");
             }
 
-            return errorMessages.Count > 0 ? errorMessages.ToArray() : null;
+            if (quiz.QuizState == null)
+            {
+                if (quiz.StartDate != null)
+                {
+                    errorMessages.Add("There is start date but state isnt Scheduled");
+                }
+                if (quiz.EndDate != null)
+                {
+                    errorMessages.Add("There is end date but state isnt Scheduled");
+                }
+                if (quiz.TimeLimitMinutes != null)
+                {
+                    errorMessages.Add("There is time limit but state isnt Scheduled");
+                }
+                //if (quiz.UserGroup != null) UPDATE DB
+                //{
+                //    errorMessages.Add("There is user group selected but state isnt Scheduled");
+                //}
+            }
+            else if (quiz.QuizState.Name == "Scheduled")
+            {
+                if (quiz.StartDate == null)
+                {
+                    errorMessages.Add("There is no start date");
+                }
+
+                if (quiz.StartDate <= DateTime.Now)
+                {
+                    errorMessages.Add("Start date should be greater then current date");
+                }
+
+                if (quiz.EndDate == null)
+                {
+                    errorMessages.Add("There is no end date");
+                }
+
+                if (quiz.EndDate <= DateTime.Now)
+                {
+                    errorMessages.Add("End date should be greater then current date");
+                }
+
+                if (quiz.TimeLimitMinutes == null)
+                {
+                    errorMessages.Add("There is no time limit");
+                }
+                else if (quiz.TimeLimitMinutes <= 0)
+                {
+                    errorMessages.Add("Time limit should be greater then 0");
+                }
+
+                if (quiz.UserGroup == null)
+                {
+                    errorMessages.Add("There is no user group selected");
+                }
+
+                if (!_repository.Exists<UserGroup>(q => q.Id == quiz.UserGroup.Id))
+                {
+                    errorMessages.Add("There is no such user group in the database");
+                }
+            }
+
+            return errorMessages.Count > 0 ? errorMessages : null;
         }
 
         [HttpGet]

@@ -35,6 +35,12 @@
 
         function activate() {
             vm.students = studentsList;
+            vm.students.forEach(function (currVal, index, array) {
+                currVal.id = currVal.id.Id.toString();
+                currVal.student = currVal.student.toString();
+                currVal.userGroup = currVal.userGroup.toString();
+                currVal.quizzes = currVal.quizzes.toString();
+            }); // Converts received data to string values
             vm.groupList = GetUniquePropertyValues(vm.students, 'userGroup'); // Property user group needs to be changed manualy    
             generatePredicate();
         };
@@ -151,7 +157,7 @@
         }
 
         vm.setLink = function (studentId) {
-            vm.link += studentId + '/Profile';
+            vm.link += studentId.Id + '/Profile';
         };
     };
 

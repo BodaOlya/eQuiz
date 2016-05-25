@@ -127,14 +127,11 @@
     <Content Include="Areas\Admin\Styles\bootstrap-combined.css" />
     <Content Include="Areas\Admin\Styles\equiz-temp.css" />
     <Content Include="Areas\Admin\Scripts\review.html" />
-    <Content Include="Areas\Moderator\Scripts\app\pages\quiz-preview\quizPreview.controller.js" />
-    <Content Include="Areas\Moderator\Scripts\app\pages\quiz-preview\quizPreview.service.js" />
-    <Content Include="Areas\Moderator\Scripts\app\pages\quizzesList\quizzes.controller.js" />
-    <Content Include="Areas\Moderator\Scripts\app\pages\quizzesList\quizzes.filters.js" />
-    <Content Include="Areas\Moderator\Scripts\app\pages\quizzesList\quizzes.service.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quizzes-list\quizzes.controller.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quizzes-list\quizzes.filters.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quizzes-list\quizzes.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\question.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\questions.html" />
-    <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.config.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.controller.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.html" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.module.js" />
@@ -142,14 +139,14 @@
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\show-time-span-error.directive.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\userGroup.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\show-error.directive.js" />
-    <Content Include="Areas\Moderator\Scripts\libs\uib-paging\ui-bootstrap-custom-1.3.2.min.js" />
-    <Content Include="Areas\Moderator\Scripts\libs\uib-paging\ui-bootstrap-custom-tpls-1.3.2.min.js" />
+    <Content Include="Areas\Moderator\Scripts\libs\custom-pagination\custom-pagination.js" />
     <Content Include="Areas\Moderator\Styles\bootstrap.css" />
     <Content Include="Areas\Moderator\Styles\equiz-temp.css" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.controller.js" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.service.js" />
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\quizInRun.controller.js" />
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\quizInRun.service.js" />
+    <Content Include="Areas\Student\Scripts\app\pages\quizInRun\timer.service.js" />
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\trackUserResult.service.js" />
     <Content Include="Areas\Student\Scripts\routeConfig.js" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.html" />
@@ -253,7 +250,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57194</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

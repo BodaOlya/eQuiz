@@ -1,7 +1,7 @@
 ﻿<div>
     <div>
-        <div id="timerContainer" data-ng-init="start()">
-            <span id="timer" ng-style="myStyle">{{minutes}}</span>:<span id="timer" ng-style="myStyle">{{timer_1}}</span>
+        <div id="timerContainer" data-ng-init="startTimer()">
+            <span id="timer" ng-style="myStyle">{{time}}</span>
         </div>
         <nav id="quizNav">
             <table>
@@ -22,7 +22,7 @@
                 </li>
                 <li ng-repeat="answer in quizQuestions[currentQuestion].Answers" ng-if="quizQuestions[currentQuestion].IsAutomatic">
                     <label>
-                        <input type="radio"  name="answersGroup" value="{{answer.Id}}" ng-click="setUserChoice(currentQuestion, quizQuestions[currentQuestion].Id, answer.Id, quizQuestions[currentQuestion].IsAutomatic, quizQuestions[currentQuestion].QuizBlock)"> {{answer.Text}}
+                        <input type="radio" ng-model="passedQuiz.UserAnswers[currentQuestion].AnswerId"  name="answersGroup" value="{{answer.Id}}" ng-click="setUserChoice(currentQuestion, quizQuestions[currentQuestion].Id, answer.Id, quizQuestions[currentQuestion].IsAutomatic, quizQuestions[currentQuestion].QuizBlock)"> {{answer.Text}}
                     </label>
                 </li>  
             </ul>
@@ -42,7 +42,7 @@
                 </td>
                 <td class="empty"></td>
                 <td>
-                    <input type="button" value="Finish" ng-click="finishQuiz();">
+                    <input type="button" value="Finish" ng-click="finishQuiz(currentQuestion, quizQuestions[currentQuestion].Id, quizQuestions[currentQuestion].IsAutomatic, quizQuestions[currentQuestion].QuizBlock, passedQuiz.UserAnswers[currentQuestion].AnswerText);">
                 </td>
                 <td class="empty"></td>
             </tr>

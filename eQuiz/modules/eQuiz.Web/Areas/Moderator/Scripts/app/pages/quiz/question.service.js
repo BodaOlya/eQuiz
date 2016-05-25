@@ -40,8 +40,10 @@
                 data.data.questions.forEach(function(item, i, array){
                     item.Id = 0;
                 });
-                data.data.answers.forEach(function(item, i, array){
-                    item.Id = 0;
+                data.data.answers.forEach(function (item, i, array) {
+                    item.forEach(function (innerItem, j, innerArray) {
+                        innerItem.Id = 0;
+                    });
                 });
                 data.data.tags.forEach(function(item, i, array){
                     item.forEach(function(innerItem, j, innerArray){

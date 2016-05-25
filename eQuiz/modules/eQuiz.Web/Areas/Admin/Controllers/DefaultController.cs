@@ -15,19 +15,8 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpGet]
-        public JsonResult GetStudentsList()
-        {
-            var res = new List<object>();
-
-            res.Add(new { id = 1, student = "Ben Gann", userGroup = "Student", quizzes = ".Net" });
-
-            return Json(res, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
-       
-        public JsonResult GetStudentComments()
+        [HttpGet]       
+        public JsonResult GetStudentComments(int id)
         {
             var studentComments = new List<object>();
 
