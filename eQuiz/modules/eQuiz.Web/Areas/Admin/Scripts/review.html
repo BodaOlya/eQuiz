@@ -36,7 +36,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="c in rc.contents = ((rc.searchFiltered = (rc.students | groupFilter:rc.selectedGroup | filter: {student:rc.search})) | startFrom: rc.tablePage*rc.resultsPerPage | limitTo:rc.resultsPerPage)" style="height: 50px">
-                    <td><a href="{{rc.link}}" class="link" ng-click="rc.setLink(c.id);" ng-bind-html="c.student | highlight: rc.search">{{c.student}}</a></td>
+                    <td><a href="Student?Id={{c.id}}#Profile" class="link" ng-bind-html="c.student | highlight: rc.search">{{c.student}}</a></td>
                     <td>{{c.userGroup}}</td>
                     <td>{{c.quizzes}}</td>
                 </tr>

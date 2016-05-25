@@ -36,6 +36,7 @@
         function activate() {
             vm.students = studentsList;
             vm.students.forEach(function (currVal, index, array) {
+                currVal.id = currVal.id.Id.toString();
                 currVal.student = currVal.student.toString();
                 currVal.userGroup = currVal.userGroup.toString();
                 currVal.quizzes = currVal.quizzes.toString();

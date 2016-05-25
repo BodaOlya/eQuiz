@@ -1,17 +1,15 @@
 ﻿(function (angular) {
     angular.module('equizModule').controller('StudentController', StudentController);
 
-    StudentController.$inject = ['$scope', '$filter', 'studentDataService', '$routeParams'/*, 'studentInfo', 'studentQuizzes', 'studentComments'*/];
+    StudentController.$inject = ['$scope', '$filter', 'studentDataService', '$routeParams', 'studentInfo', 'studentQuizzes', 'studentComments', '$location'];
 
-    function StudentController($scope, $filter, studentDataService, $routeParams/*, studentInfo, studentQuizzes, studentComments*/) {
+    function StudentController($scope, $filter, studentDataService, $routeParams, studentInfo, studentQuizzes, studentComments, $location) {
         var vm = this;
 
-        vm.studentInfo = {};//studentInfo;
-        vm.studentQuizzes = [];//studentQuizzes;
-        vm.studentComments = [];//studentComments;
-        activate1();
-        activate2();
-        activate3();
+        vm.studentInfo = studentInfo;
+        vm.studentQuizzes = studentQuizzes;
+        vm.studentComments = studentComments;
+
         vm.studentQuizzesHeaders = [
         {
             name: 'Name',
@@ -37,7 +35,7 @@
         ];
         vm.myPredicate = null;
         vm.newComment = {}; // Represents a new comment
-        vm.currentTab = $routeParams.tabId;
+        vm.currentTab = $location.hash();
         vm.link = "";
         vm.newCommentFrame = false; // Indicates whether new comment tab is shown
         vm.modelChanged = false; // Indicates whether data in the model was changed
@@ -50,27 +48,22 @@
 
  
 
-        function activate1() {
-            return studentDataService.getStudentInfo($routeParams.studentId).then(function (response) {
+        function activate() {
+            return studentDataService.getStudentInfo($location.search().Id).then(function (response) {
                 vm.studentInfo = response.data;
                 return vm.studentInfo;
-            });}
-        function activate2() {
-            return studentDataService.getStudentQuizzes($routeParams.studentId).then(function (response) {
+            });
+            return studentDataService.getStudentQuizzes($location.search().Id).then(function (response) {
                 vm.studentQuizzes = response.data;
                 return vm.studentQuizzes;
-            });}
-        function activate3() {
-            return studentDataService.getStudentComments($routeParams.studentId).then(function (response) {
-                vm.studentComments = response.data;
-                return vm.studentComments;
-            });}
-            //while (vm.studentInfo == undefined || vm.studentQuizzes == undefined || vm.studentComments == undefined)
-            //{
-            //    ;;
-            //}
-            generatePredicate();
+            });
+            return studentDataService.getStudentComments($location.search().Id).then(function (response) {
+                    vm.studentComments = response.data;
+                    return vm.studentComments;
+                });
 
+                generatePredicate();
+            }
         vm.studentQuizzes = sortByDate(vm.studentQuizzes);
         vm.studentComments = sortByDate(vm.studentComments);
         vm.numberOfPages = function () {
@@ -196,8 +189,8 @@
             vm.link = '/Admin/Default/Index/Quiz/Review/' + quizId;
         };
 
-        vm.setLink = function () {
-            vm.link = '/Admin/Default/Index/Student/' + $routeParams.studentId + '/' + vm.currentTab;
+        vm.setLink = function (tab) {
+            vm.currentTab = tab;
         };
 
         function sortByDate(array) {
