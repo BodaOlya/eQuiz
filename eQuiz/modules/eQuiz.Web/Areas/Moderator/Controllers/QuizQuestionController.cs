@@ -28,6 +28,9 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         }
 
         #endregion
+
+        #region Web Actions
+
         public ActionResult Index()
         {
             return View();
@@ -36,13 +39,16 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         [HttpGet]
         public ActionResult GetQuestionTypes()
         {
-            //using (var context = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
-            //{
-            //    var typesList = context.QuestionTypes.OrderBy(x => x.TypeName).ToList();
-            //    return Json(typesList, JsonRequestBehavior.AllowGet);
-            //}
             var questionTypes = _repository.Get<QuestionType>().ToList();
-            return Json(questionTypes, JsonRequestBehavior.AllowGet);
+
+            var minQuestionTypes = new ArrayList();
+
+            foreach (var type in questionTypes)
+            {
+                minQuestionTypes.Add(GetQuestionTypeForSerialization(type));
+            }
+
+            return Json(minQuestionTypes, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -233,6 +239,78 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return RedirectToAction("Get", new { id = id });
         }
 
+        public ActionResult Get(int id)
+        {
+            List<Question> questions = new List<Question>();
+            List<ArrayList> tags = new List<ArrayList>();
+            List<ArrayList> answers = new List<ArrayList>();
+            int quizId = 0;
+
+            var quiz = _repository.GetSingle<Quiz>(q => q.Id == id);
+            if (quiz == null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Quiz is not found");
+            }
+
+            var quizState = _repository.GetSingle<QuizState>(qs => qs.Id == quiz.QuizStateId).Name;
+
+            if (quizState != "Archived")
+            {
+                quizId = quiz.Id;
+                var quizBlockIds = _repository.Get<QuizBlock>(qb => qb.Id == quizId).Select(qb => qb.Id).ToList();
+                var quizQuestios = _repository.Get<QuizQuestion>(qq => quizBlockIds.Contains(qq.QuizBlockId)).ToList();
+
+                foreach (var quizQuestion in quizQuestios)
+                {
+                    questions.Add(_repository.GetSingle<Question>(q => q.Id == quizQuestion.QuestionId, q => q.QuestionAnswers, q => q.QuestionTags));
+
+                }
+
+                foreach (var item in questions)
+                {
+                    var questionAnswers = _repository.Get<QuestionAnswer>(x => x.QuestionId == item.Id, x => x.Answer).ToList();
+                    var answerStorage = new ArrayList();
+                    foreach (var answer in questionAnswers)
+                    {
+                        var tempAnswer = GetAnswerForSerialization(answer.Answer);
+                        answerStorage.Add(tempAnswer);
+                    }
+                    answers.Add(answerStorage);
+                }
+
+                foreach (var item in questions)
+                {
+                    // var questionTags = context.QuestionTags.Where(x => x.QuestionId == item.Id).Include("Tag").ToList();
+                    var questionTags = _repository.Get<QuestionTag>(x => x.QuestionId == item.Id, x => x.Tag).ToList();
+
+                    var tagStorage = new ArrayList();
+                    foreach (var tag in questionTags)
+                    {
+                        var tempTag = GetTagForSerialization(tag.Tag);
+                        tagStorage.Add(tempTag);
+                    }
+                    tags.Add(tagStorage);
+                }
+
+            }
+            var returnQuestion = new ArrayList();
+            foreach (var question in questions)
+            {
+                var tempQuestion = GetQuestionForSerialization(question);
+                returnQuestion.Add(tempQuestion);
+            }
+            var data = JsonConvert.SerializeObject(new { questions = returnQuestion, answers = answers, id = quizId, tags = tags }, Formatting.None,
+                                                    new JsonSerializerSettings()
+                                                    {
+                                                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                                    });
+
+            return Content(data, "application/json");
+        }
+        #endregion
+
+        #region Helpers
+
         private void DeleteQuestions(int quizId, Question[] questions)
         {
             var quiz = _repository.GetSingle<Quiz>(x => x.Id == quizId);
@@ -361,75 +439,6 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return errorMessages.Count > 0 ? errorMessages.ToArray() : null;
         }
 
-        public ActionResult Get(int id)
-        {
-            List<Question> questions = new List<Question>();
-            List<ArrayList> tags = new List<ArrayList>();
-            List<ArrayList> answers = new List<ArrayList>();
-            int quizId = 0;
-
-            var quiz = _repository.GetSingle<Quiz>(q => q.Id == id);
-            if (quiz == null)
-            {
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Quiz is not found");
-            }
-
-            var quizState = _repository.GetSingle<QuizState>(qs => qs.Id == quiz.QuizStateId).Name;
-
-            if (quizState != "Archived")
-            {
-                quizId = quiz.Id;
-                var quizBlockIds = _repository.Get<QuizBlock>(qb => qb.Id == quizId).Select(qb => qb.Id).ToList();
-                var quizQuestios = _repository.Get<QuizQuestion>(qq => quizBlockIds.Contains(qq.QuizBlockId)).ToList();
-
-                foreach (var quizQuestion in quizQuestios)
-                {
-                    questions.Add(_repository.GetSingle<Question>(q => q.Id == quizQuestion.QuestionId, q => q.QuestionAnswers, q => q.QuestionTags));
-
-                }
-
-                foreach (var item in questions)
-                {
-                    var questionAnswers = _repository.Get<QuestionAnswer>(x => x.QuestionId == item.Id, x => x.Answer).ToList();
-                    var answerStorage = new ArrayList();
-                    foreach (var answer in questionAnswers)
-                    {
-                        var tempAnswer = GetAnswerForSerialization(answer.Answer);
-                        answerStorage.Add(tempAnswer);
-                    }
-                    answers.Add(answerStorage);
-                }
-
-                foreach (var item in questions)
-                {
-                    // var questionTags = context.QuestionTags.Where(x => x.QuestionId == item.Id).Include("Tag").ToList();
-                    var questionTags = _repository.Get<QuestionTag>(x => x.QuestionId == item.Id, x => x.Tag).ToList();
-
-                    var tagStorage = new ArrayList();
-                    foreach (var tag in questionTags)
-                    {
-                        var tempTag = GetTagForSerialization(tag.Tag);
-                        tagStorage.Add(tempTag);
-                    }
-                    tags.Add(tagStorage);
-                }
-
-            }
-            var returnQuestion = new ArrayList();
-            foreach (var question in questions)
-            {
-                var tempQuestion = GetQuestionForSerialization(question);
-                returnQuestion.Add(tempQuestion);
-            }
-            var data = JsonConvert.SerializeObject(new { questions = returnQuestion, answers = answers, id = quizId, tags = tags }, Formatting.None,
-                                                    new JsonSerializerSettings()
-                                                    {
-                                                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                                                    });
-
-            return Content(data, "application/json");
-        }
-
         private object GetAnswerForSerialization(Answer answer)
         {
             var minAnswer = new
@@ -469,5 +478,19 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
             return minTag;
         }
+
+        private object GetQuestionTypeForSerialization(QuestionType type)
+        {
+            var minType = new
+            {
+                Id = type.Id,
+                TypeName = type.TypeName,
+                IsAutomatic = type.IsAutomatic
+            };
+
+            return minType;
+        }
+
+        #endregion
     }
 }
