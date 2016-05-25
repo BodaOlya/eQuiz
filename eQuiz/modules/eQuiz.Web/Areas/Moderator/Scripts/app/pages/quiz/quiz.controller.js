@@ -153,8 +153,10 @@
             }
 
             function saveQuiz() {
-                vm.model.quiz.TimeLimitMinutes = vm.model.quiz.DurationHours * 60 + vm.model.quiz.DurationMinutes;
-                vm.model.quiz.EndDate = new Date(vm.model.quiz.StartDate.getTime() + vm.model.quiz.TimeLimitMinutes * 60000);
+                if (vm.model.quiz.QuizState.Name == 'Scheduled') {
+                    vm.model.quiz.TimeLimitMinutes = vm.model.quiz.DurationHours * 60 + vm.model.quiz.DurationMinutes;
+                    vm.model.quiz.EndDate = new Date(vm.model.quiz.StartDate.getTime() + vm.model.quiz.TimeLimitMinutes * 60000);
+                }
                 quizService.save({ quiz: vm.model.quiz, block: vm.model.quizBlock }).then(function (data) {
                     vm.model.quiz = data.data.quiz;
                     vm.model.quiz.StartDate = new Date(vm.model.quiz.StartDate);

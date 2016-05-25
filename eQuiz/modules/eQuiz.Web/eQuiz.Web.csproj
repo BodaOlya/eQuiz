@@ -132,7 +132,6 @@
     <Content Include="Areas\Moderator\Scripts\app\pages\quizzes-list\quizzes.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\question.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\questions.html" />
-    <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.config.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.controller.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.html" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.module.js" />

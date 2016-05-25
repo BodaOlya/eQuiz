@@ -183,13 +183,15 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 quiz.QuizStateId = quiz.QuizState.Id;
                 quiz.QuizState = null;
                 quiz.GroupId = 1; // UPDATE DB
-                //
                 _repository.Insert<Quiz>(quiz);
                 block.TopicId = 1;
                 block.QuizId = quiz.Id;
                 _repository.Insert<QuizBlock>(block);
                 _repository.Insert<QuizVariant>(new QuizVariant() { QuizId = quiz.Id });
             }
+            quiz.QuizState = _repository.GetSingle<QuizState>(q => q.Id == quiz.QuizStateId);
+            quiz.UserGroup = _repository.GetSingle<UserGroup>(g => g.Id == quiz.GroupId);
+
             var data = JsonConvert.SerializeObject(new { quiz = quiz, block = block }, Formatting.None,
                                                     new JsonSerializerSettings()
                                                     {
