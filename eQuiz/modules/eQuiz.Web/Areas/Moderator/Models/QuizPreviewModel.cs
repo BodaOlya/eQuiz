@@ -7,7 +7,7 @@ using eQuiz.Entities;
 
 namespace eQuiz.Web.Areas.Moderator.Models
 {
-    public class QuizInfoModel
+    public class QuizPreviewModel
     {
         public int Id { get; set; }
         public string Type { get; set; }

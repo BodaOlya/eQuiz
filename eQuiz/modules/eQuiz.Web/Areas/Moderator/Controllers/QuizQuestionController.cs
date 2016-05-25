@@ -48,10 +48,10 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         [HttpPost]
         public ActionResult Save(int id, Question[] questions, Answer[][] answers, Tag[][] tags)
         {
-            string[] errors = QuestionsValidation(id, questions, answers, tags);
+            IEnumerable<string> errors = QuestionsValidate(id, questions, answers, tags);
             if (errors != null)
             {
-                string mergedErrors = string.Join(". ", errors);
+                string mergedErrors = string.Join(". ", errors.ToArray());
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, mergedErrors);
             }
             using (var context = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
@@ -260,7 +260,8 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             }
         }
 
-        private string[] QuestionsValidation(int quizId, Question[] questions, Answer[][] answers, Tag[][] tags)
+        [NonAction]
+        private IEnumerable<string> QuestionsValidate(int quizId, Question[] questions, Answer[][] answers, Tag[][] tags)
         {
             var errorMessages = new List<string>();
 

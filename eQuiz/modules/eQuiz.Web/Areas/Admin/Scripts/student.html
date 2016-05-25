@@ -2,9 +2,9 @@
     <h2>{{sc.studentInfo.firstName + ' ' + sc.studentInfo.lastName}}</h2>
     <div>
         <ul class="tabLabels">
-            <li><a href="{{sc.link}}" ng-click="sc.currentTab='Profile'; sc.setLink();" ng-class="sc.currentTab=='Profile'&&'selected'">Profile</a></li>
-            <li><a href="{{sc.link}}" ng-click="sc.currentTab='Quizzes'; sc.setLink();" ng-class="sc.currentTab=='Quizzes'&&'selected'">Quizzes ({{sc.getPassedQuizzes()}})</a></li>
-            <li><a href="{{sc.link}}" ng-click="sc.currentTab='Comments'; sc.setLink();" ng-class="sc.currentTab=='Comments'&&'selected'">Comments ({{sc.studentComments.length}})</a></li>
+            <li><a href="#Profile" ng-class="sc.currentTab=='Profile'&&'selected'">Profile</a></li>
+            <li><a href="#Quizzes" ng-class="sc.currentTab=='Quizzes'&&'selected'">Quizzes ({{sc.getPassedQuizzes()}})</a></li>
+            <li><a href="#Comments" ng-class="sc.currentTab=='Comments'&&'selected'">Comments ({{sc.studentComments.length}})</a></li>
         </ul>
     </div>
 
@@ -43,7 +43,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="q in sc.studentQuizzes | startFrom: sc.tablePage*sc.resultsPerPage | limitTo:sc.resultsPerPage" style="height: 50px">
-                        <td><a href="{{sc.link}}" class="link" ng-click="sc.setQuizLink(q.id)">{{q.name}}</a></td>
+                        <td><a href="Quiz?Id={{q.id}}" class="link" ng-click="sc.setQuizLink(q.id)">{{q.name}}</a></td>
                         <td>{{q.state}}</td>
                         <td>{{q.questions}}</td>
                         <td>{{q.verificationType}}</td>

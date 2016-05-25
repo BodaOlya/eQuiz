@@ -132,7 +132,6 @@
     <Content Include="Areas\Moderator\Scripts\app\pages\quizzes-list\quizzes.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\question.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\questions.html" />
-    <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.config.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.controller.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.html" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.module.js" />
@@ -142,7 +141,6 @@
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\show-error.directive.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\user-group\user-group.controller.js" />
     <Content Include="Areas\Moderator\Scripts\libs\custom-pagination\custom-pagination.js" />
-    <Content Include="Areas\Moderator\Styles\bootstrap.css" />
     <Content Include="Areas\Moderator\Styles\equiz-temp.css" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.controller.js" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.service.js" />
@@ -173,7 +171,7 @@
     <Compile Include="Areas\Moderator\Controllers\QuizController.cs" />
     <Compile Include="Areas\Moderator\Controllers\QuizQuestionController.cs" />
     <Compile Include="Areas\Moderator\Controllers\UserGroupController.cs" />
-    <Compile Include="Areas\Moderator\Models\QuizInfoModel.cs" />
+    <Compile Include="Areas\Moderator\Models\QuizPreviewModel.cs" />
     <Compile Include="Areas\Moderator\Models\QuizListModel.cs" />
     <Compile Include="Areas\Moderator\ModeratorAreaRegistration.cs" />
     <Compile Include="Areas\Student\Controllers\AccountController.cs" />
@@ -207,11 +205,10 @@
     <Content Include="Areas\Moderator\Views\Quiz\Edit.cshtml" />
     <Content Include="Areas\Moderator\Views\Shared\_Header.cshtml" />
     <Content Include="Areas\Moderator\Views\Quiz\Index.cshtml" />
-    <Content Include="Areas\Moderator\Styles\bootstrap.css.map" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\unique-quiz-name.directive.js" />
     <Content Include="connections.config" />
     <Content Include="Areas\Admin\Views\Default\Index.cshtml" />
-    <None Include="Areas\Moderator\Views\Quiz\QuizInfo.cshtml" />
+    <None Include="Areas\Moderator\Views\Quiz\QuizPreview.cshtml" />
     <Content Include="Areas\Moderator\Views\UserGroup\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
