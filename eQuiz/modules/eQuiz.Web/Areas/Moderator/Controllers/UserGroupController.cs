@@ -3,6 +3,7 @@ using eQuiz.Repositories.Abstract;
 using eQuiz.Web.Code;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -29,14 +30,17 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
         public ActionResult Get()
         {
-            UserGroup[] groups = null;
-            using (eQuizEntities model = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
+            IEnumerable<UserGroup> groups = _repository.Get<UserGroup>();
+            var minGroups = new ArrayList();
+
+            foreach (var group in groups)
             {
-                groups = model.UserGroups.ToArray();
-                return Json(groups, JsonRequestBehavior.AllowGet);
+                minGroups.Add(GetUserGroupForSerialization(group));
             }
-            
+
+            return Json(minGroups, JsonRequestBehavior.AllowGet);
         }
+
 
         public ActionResult Edit()
         {
@@ -49,22 +53,49 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             List<User> users = new List<User>();
             var group = _repository.GetSingle<UserGroup>(g => g.Id == id);
             var groupUsers = _repository.Get<UserToUserGroup>(g => g.GroupId == id).ToList();
-                        
-            foreach(var user in groupUsers)
+
+            var minGroups = new ArrayList();
+            var minUsers = new ArrayList();
+
+            var minGroup = GetUserGroupForSerialization(group);
+
+            foreach (var user in groupUsers)
             {
                 users.Add(_repository.GetSingle<User>(u => u.Id == user.UserId));
             }
 
+            foreach (var user in users)
+            {
+                minUsers.Add(GetUsersForSerialization(user));
+            }
 
-            var data = JsonConvert.SerializeObject(new { group = group, users = users }, Formatting.None,
-                                                    new JsonSerializerSettings()
-                                                    {
-                                                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                                                    });
+            var result = new { group = minGroup, users = minUsers };
 
-
-            return Content(data, "application/json");
-
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+        private object GetUserGroupForSerialization(UserGroup group)
+        {
+            var minGroup = new
+            {
+                Id = group.Id,
+                Name = group.Name
+            };
+
+            return minGroup;
+        }
+        private object GetUsersForSerialization(User user)
+         {           
+             var minUser = new
+             {
+                 Id = user.Id,
+                 LastName = user.LastName,
+                 FirstName = user.FirstName,
+                 FatheName = user.FatheName,
+                 Email = user.Email                 
+             };
+
+            return minUser;
+         }
     }
 }
