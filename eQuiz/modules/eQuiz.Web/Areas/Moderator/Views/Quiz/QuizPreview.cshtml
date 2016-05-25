@@ -1,13 +1,13 @@
-﻿@model eQuiz.Web.Areas.Moderator.Models.QuizInfoModel
+﻿@model eQuiz.Web.Areas.Moderator.Models.QuizPreviewModel
 @{
     Layout = "~/Views/Shared/Layout.cshtml";
 }
 
 <div align="center">
     <h2>@Model.Name</h2>
-    <p>
+    <p ng-controller="QuizPreviewController as qpc">
         <a href="/moderator/quiz/edit/#/quiz?id=@Model.Id">Edit</a>
-        <a href="/moderator/quiz/DeleteQuizById?id=@Model.Id">Delete</a>
+        <a href="" ng-click="qpc.deleteQuiz(@Model.Id)">Delete</a>
     </p>
     <p>
         <i>@Model.Descriprtion</i>
@@ -149,6 +149,12 @@
         </table>
     }
 </div>
+
+@section FootScripts{
+<script src="~/Areas/Moderator/Scripts/app/pages/quiz-preview/quizPreview.module.js"></script>
+<script src="~/Areas/Moderator/Scripts/app/pages/quiz-preview/quizPreview.service.js"></script>
+<script src="~/Areas/Moderator/Scripts/app/pages/quiz-preview/quizPreview.controller.js"></script>
+}
 
 @section HeadStyles{
 

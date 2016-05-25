@@ -29,7 +29,7 @@
                     <ul class="dropdown-menu" ng-show="vm.quizzesForCopyVisible">
                         <li ng-repeat="item in vm.model.quizzesForCopy track by item.Id">
                             <a href="" ng-click="vm.isEditingEnabled() && vm.selectQuizCopy(item)">{{item.Name}}</a>
-                            <a ng-show="item.Name != 'New'" href="/Moderator/Quiz/QuizInfo?id={{item.Id}}" class="float-right" target="_blank">View</a>
+                            <a ng-show="item.Name != 'New'" href="/Moderator/Quiz/QuizPreview?id={{item.Id}}" class="float-right" target="_blank">View</a>
                         </li>
                     </ul>
                 </div>

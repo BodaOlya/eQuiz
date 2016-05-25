@@ -243,20 +243,11 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
             return Content(data, "application/json");
         }
-        
-        public ActionResult DeleteQuizById(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
 
+        [HttpPost]
+        public ActionResult DeleteQuizById(int id)
+        {            
             var quizBlocks = _repository.Get<QuizBlock>(qb => qb.QuizId == id);
-
-            if (!quizBlocks.Any())
-            {
-                return HttpNotFound();
-            }
 
             foreach (var quizBlock in quizBlocks)
             {
@@ -276,13 +267,13 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                     {
                         _repository.Delete<int, UserAnswer>("Id", userAnswer.Id);
                     }
-                    
+
                     _repository.Delete<int, QuizPassQuestion>("Id", quizPassQuestion.Id);
                 }
 
                 _repository.Delete<int?, QuizBlock>("Id", quizBlock.Id);
             }
-            
+
             var quizPasses = _repository.Get<QuizPass>(qp => qp.QuizId == id);
 
             foreach (var quizPass in quizPasses)
@@ -308,28 +299,30 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             foreach (var quizVariant in quizVariants)
             {
                 _repository.Delete<int?, QuizVariant>("Id", quizVariant.Id);
-            }           
-            
+            }
+
             _repository.Delete<int?, Quiz>("Id", id);
 
-            return RedirectToAction("Index", "Quiz");
+            var result = Json(new HttpStatusCodeResult(HttpStatusCode.OK));
+
+            return result;
         }
 
         private string[] ValidateQuiz(Quiz quiz, QuizBlock block)
         {
             var errorMessages = new List<string>();
 
-            if(quiz.Name == null)
+            if (quiz.Name == null)
             {
                 errorMessages.Add("There is no quiz name");
             }
 
-            if(_repository.Exists<Quiz>(q => q.Name == quiz.Name))
+            if (_repository.Exists<Quiz>(q => q.Name == quiz.Name))
             {
                 errorMessages.Add("Quiz name is not unique");
             }
 
-            if(block.QuestionCount == null)
+            if (block.QuestionCount == null)
             {
                 errorMessages.Add("There is no question quantity");
             }
@@ -388,43 +381,49 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         }
 
         [HttpGet]
-        public ActionResult QuizInfo(int id = 1)
-        {
-            var quiz = _repository.GetByKey<int, Quiz>("Id", id);            
+        public ActionResult QuizPreview(int id)
+        {            
+            var quiz = _repository.GetSingle<Quiz>(q => q.Id == id);
+
+            if (quiz == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+
             var userGroup = _repository.GetSingle<UserGroup>(ug => ug.Id == quiz.GroupId);
             var quizType = _repository.GetSingle<QuizType>(qt => qt.Id == quiz.QuizTypeId);
             var quizState = _repository.GetSingle<QuizState>(qs => qs.Id == quiz.QuizStateId);
 
-            var quizInfoModel = new QuizInfoModel();
+            var quizPreviewModel = new QuizPreviewModel();
 
-            quizInfoModel.Id = quiz.Id;
-            quizInfoModel.Type = quizType.TypeName;
-            quizInfoModel.Name = quiz.Name;
-            quizInfoModel.Descriprtion = quiz.Description;
-            quizInfoModel.StartDate = quiz.StartDate;
-            quizInfoModel.EndDate = quiz.EndDate;
-            quizInfoModel.TimeLimitMinutes = quiz.TimeLimitMinutes;
-            quizInfoModel.InternetAccess = quiz.InternetAccess;
-            quizInfoModel.Group = userGroup.Name;
-            quizInfoModel.State = quizState.Name;
+            quizPreviewModel.Id = quiz.Id;
+            quizPreviewModel.Type = quizType.TypeName;
+            quizPreviewModel.Name = quiz.Name;
+            quizPreviewModel.Descriprtion = quiz.Description;
+            quizPreviewModel.StartDate = quiz.StartDate;
+            quizPreviewModel.EndDate = quiz.EndDate;
+            quizPreviewModel.TimeLimitMinutes = quiz.TimeLimitMinutes;
+            quizPreviewModel.InternetAccess = quiz.InternetAccess;
+            quizPreviewModel.Group = userGroup.Name;
+            quizPreviewModel.State = quizState.Name;
 
             var quizBlock = _repository.GetSingle<QuizBlock>(qb => qb.QuizId == id);
             var quizTopic = _repository.GetSingle<Topic>(t => t.Id == quizBlock.TopicId);
 
-            quizInfoModel.Topic = quizTopic.Name;
-            quizInfoModel.IsRandom = quizBlock.IsRandom;
-            quizInfoModel.QuestionMinComplexity = quizBlock.QuestionMinComplexity;
-            quizInfoModel.QuestionMaxComplexity = quizBlock.QuestionMaxComplexity;
-            quizInfoModel.QuestionCount = quizBlock.QuestionCount;
+            quizPreviewModel.Topic = quizTopic.Name;
+            quizPreviewModel.IsRandom = quizBlock.IsRandom;
+            quizPreviewModel.QuestionMinComplexity = quizBlock.QuestionMinComplexity;
+            quizPreviewModel.QuestionMaxComplexity = quizBlock.QuestionMaxComplexity;
+            quizPreviewModel.QuestionCount = quizBlock.QuestionCount;
 
             var quizQuestions = _repository.Get<QuizQuestion>(qq => qq.QuizBlockId == quizBlock.Id);
 
-            quizInfoModel.Questions = new List<QuestionInfo>();
+            quizPreviewModel.Questions = new List<QuestionInfo>();
 
             foreach (var quizQuestion in quizQuestions)
             {
                 var question = _repository.GetSingle<Question>(q => q.Id == quizQuestion.QuestionId);
-                                
+
                 var questionType = _repository.GetSingle<QuestionType>(qt => qt.Id == question.QuestionTypeId);
 
                 var questionAnswers = _repository.Get<QuestionAnswer>(qa => qa.QuestionId == question.Id);
@@ -441,10 +440,10 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                     Text = question.QuestionText
                 };
 
-                quizInfoModel.Questions.Add(questionInfo);
+                quizPreviewModel.Questions.Add(questionInfo);
             }
 
-            return View(quizInfoModel);
+            return View(quizPreviewModel);
         }
 
         #endregion
