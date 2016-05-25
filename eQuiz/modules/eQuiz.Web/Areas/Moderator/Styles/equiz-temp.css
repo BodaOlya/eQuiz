@@ -234,6 +234,35 @@ thead, th, td {
     color: deepskyblue;
 }
 
+.user-group {
+    margin-left: 40px;
+}
+
+.user-group h2{
+    font-size: 2em;
+    margin-bottom: 40px;
+    font-weight: bold;    
+}
+
+.user-group-name label{
+    font-size: 1em;
+}
+
+.user-group input {
+   width: 20em; 
+   margin-bottom:20px;   
+}
+
+.ug-import label {
+    font-size: 1em;    
+}
+
+.ug-import a{
+    font-size: 1em;
+    color: deepskyblue;
+}
+
+
 /*--------Styles form pagination--------*/
 
 .pagination {
