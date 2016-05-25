@@ -138,8 +138,9 @@
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.module.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\show-time-span-error.directive.js" />
-    <Content Include="Areas\Moderator\Scripts\app\pages\quiz\userGroup.service.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\shared\user-group.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\show-error.directive.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\user-group\user-group.controller.js" />
     <Content Include="Areas\Moderator\Scripts\libs\custom-pagination\custom-pagination.js" />
     <Content Include="Areas\Moderator\Styles\bootstrap.css" />
     <Content Include="Areas\Moderator\Styles\equiz-temp.css" />
@@ -211,6 +212,7 @@
     <Content Include="connections.config" />
     <Content Include="Areas\Admin\Views\Default\Index.cshtml" />
     <None Include="Areas\Moderator\Views\Quiz\QuizInfo.cshtml" />
+    <Content Include="Areas\Moderator\Views\UserGroup\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -224,7 +226,6 @@
     <Folder Include="Areas\Admin\Views\Review\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Areas\Moderator\Views\QuizQuestion\" />
-    <Folder Include="Areas\Moderator\Views\UserGroup\" />
     <Folder Include="Areas\Student\Scripts\libs\" />
     <Folder Include="Areas\Student\Views\Shared\" />
     <Folder Include="Models\" />
