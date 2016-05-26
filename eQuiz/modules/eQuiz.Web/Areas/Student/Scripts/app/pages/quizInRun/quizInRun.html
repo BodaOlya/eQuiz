@@ -1,5 +1,7 @@
 ﻿<div>
-    <div ng-if="isLoading"><span id="loadingMessage">Loading...</span></div>
+    <div ng-if="isLoading">
+        <span id="loadingMessage">Loading...</span>
+    </div>
     <div ng-if="!isLoading">
         <div id="timerContainer" data-ng-init="startTimer()">
             <span id="timer" ng-style="myStyle">{{time}}</span>
@@ -23,9 +25,9 @@
                 </li>
                 <li ng-repeat="answer in quizQuestions[currentQuestion].Answers" ng-if="quizQuestions[currentQuestion].IsAutomatic">
                     <label>
-                        <input type="radio" ng-model="passedQuiz.UserAnswers[currentQuestion].AnswerId"  name="answersGroup" value="{{answer.Id}}" ng-click="setUserChoice(currentQuestion, quizQuestions[currentQuestion].Id, answer.Id, quizQuestions[currentQuestion].IsAutomatic, quizQuestions[currentQuestion].QuizBlock, quizQuestions[currentQuestion].QuestionOrder)"> {{answer.Text}}
+                        <input type="radio" ng-model="passedQuiz.UserAnswers[currentQuestion].AnswerId" name="answersGroup" value="{{answer.Id}}" ng-click="setUserChoice(currentQuestion, quizQuestions[currentQuestion].Id, answer.Id, quizQuestions[currentQuestion].IsAutomatic, quizQuestions[currentQuestion].QuizBlock, quizQuestions[currentQuestion].QuestionOrder)"> {{answer.Text}}
                     </label>
-                </li>  
+                </li>
             </ul>
             <textarea rows="{{windowHeight * 20 | number}}" ng-if="!quizQuestions[currentQuestion].IsAutomatic" id="fieldForText" ng-model="passedQuiz.UserAnswers[currentQuestion].AnswerText"></textarea>
         </div>

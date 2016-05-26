@@ -1,5 +1,8 @@
 ﻿<div id='content'>
-    <table id='quizzesTable'>
+    <div ng-if="isLoading">
+        <span id="loadingMessage">Loading...</span>
+    </div>
+    <table id='quizzesTable' ng-if="!isLoading">
         <thead>
             <tr>
                 <th><h2>Quizzes</h2></th>
