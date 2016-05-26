@@ -320,11 +320,14 @@
 
                 var tagArray = [];
                 for (var j = 0; j < vm.model.tags[i].length; j++) {
-                    tagArray.push({
-                        Id: 0,
-                        Name: vm.model.tags[i][j],
-                        QuestionTags: null
-                    });
+                    var secondElementIndex = vm.model.tags[i].slice(0, j).indexOf(vm.model.tags[i][j]);
+                    if (secondElementIndex == -1) {
+                        tagArray.push({
+                            Id: 0,
+                            Name: vm.model.tags[i][j],
+                            QuestionTags: null
+                        });
+                    }
                 }
                 if (tagArray.length == 0) {
                     tagArray.push(null);
