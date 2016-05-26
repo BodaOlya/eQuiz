@@ -79,7 +79,11 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
             foreach (var quiz in quizzes)
             {
-                minQuizzes.Add(GetQuizForSerialization(quiz));
+                minQuizzes.Add(new
+                {
+                    Id = quiz.Id,
+                    Name = quiz.Name
+                });
             }
 
             return Json(minQuizzes, JsonRequestBehavior.AllowGet);
@@ -551,13 +555,13 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         {
             var errorMessages = new List<string>();
 
-            var selectedQuiz = _repository.GetSingle<Quiz>(q => q.Id == quiz.Id, q=>q.QuizState);
+            var selectedQuiz = _repository.GetSingle<Quiz>(q => q.Id == quiz.Id, q => q.QuizState);
 
-            if(selectedQuiz == null)
+            if (selectedQuiz == null)
             {
                 errorMessages.Add("There is no such quiz");
             }
-            else if(selectedQuiz.QuizState.Name != "Opened")
+            else if (selectedQuiz.QuizState.Name != "Opened")
             {
                 errorMessages.Add("Selected quiz cannot be applied");
             }
