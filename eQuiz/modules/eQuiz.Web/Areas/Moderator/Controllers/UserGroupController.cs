@@ -97,5 +97,103 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
             return minUser;
          }
+        public ActionResult Create()
+        {
+            return RedirectToAction("Edit");
+        }
+
+        [HttpPost]
+        public ActionResult Save(UserGroup userGroup, User[] users)
+        {
+            if (userGroup == null || users == null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "No data to save");
+            }
+            int userGroupId = userGroup.Id;
+            if (userGroupId != 0)
+            {
+                var existedUserGroup = _repository.GetSingle<UserGroup>(x => x.Id == userGroupId);
+                if (existedUserGroup == null)
+                {
+                    return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "UserGroup is not found");
+                }
+                userGroupId = existedUserGroup.Id;
+                existedUserGroup.Name = userGroup.Name;
+                _repository.Update<UserGroup>(existedUserGroup);
+                DeleteUsersFromGroupIfExist(userGroupId, users);
+            }
+            else
+            {
+                _repository.Insert<UserGroup>(userGroup);
+                var id = _repository.GetSingle<UserGroup>(g => g.Name == userGroup.Name).Id;
+                userGroupId = id;
+                AddUsersToGroup(userGroupId, users);
+            }
+
+            return RedirectToAction("GetUserGroup", new { id = userGroupId });
+        }
+
+        private void AddUsersToGroup(int userGroupId, User[] users)
+        {
+            for (var i = 0; i < users.Length; i++)
+            {
+                var currentUser = users[i];
+                var currentUserEmail = users[i].Email;
+                var existedUser = _repository.GetSingle<User>(u => u.Email == currentUserEmail);
+                if (existedUser != null)
+                {
+                    _repository.Insert<UserToUserGroup>(new UserToUserGroup { UserId = existedUser.Id, GroupId = userGroupId });
+                }
+                else
+                {
+                    _repository.Insert<User>(currentUser);
+                    var currentUserId = _repository.GetSingle<User>(x => x.Email == currentUser.Email).Id;
+                    _repository.Insert<UserToUserGroup>(new UserToUserGroup { UserId = currentUserId, GroupId = userGroupId });
+
+                }
+            }
+        }
+
+        private void DeleteUsersFromGroupIfExist(int userGroupId, User[] users)
+        {
+            var usersFromUserGroup = _repository.Get<UserToUserGroup>(x => x.GroupId == userGroupId);
+            for (var i = 0; i < users.Length; i++)
+            {
+                int currentUserId = users[i].Id;
+                UserToUserGroup matchedUser = _repository.GetSingle<UserToUserGroup>(u => u.UserId == currentUserId);
+                if (matchedUser != null)
+                {
+                    UserToUserGroup userFromList = usersFromUserGroup.Where(u => u.Id == matchedUser.Id).FirstOrDefault();
+                    if (userFromList != null)
+                    {
+                        usersFromUserGroup.Remove(userFromList);
+                    }
+                }
+                else
+                {
+                    var currentUser = users[i];
+                    var userEmail = users[i].Email;
+                    var existedUser = _repository.GetSingle<User>(u => u.Email == userEmail);
+                    if (existedUser != null)
+                    {
+                        _repository.Insert<UserToUserGroup>(new UserToUserGroup { UserId = existedUser.Id, GroupId = userGroupId });
+                    }
+                    else
+                    {
+                        _repository.Insert<User>(currentUser);
+                        var userId = _repository.GetSingle<User>(x => x.Email == currentUser.Email).Id;
+                        _repository.Insert<UserToUserGroup>(new UserToUserGroup { UserId = userId, GroupId = userGroupId });
+
+                    }
+                }
+            }
+            if (usersFromUserGroup != null)
+            {
+                foreach (var item in usersFromUserGroup)
+                {
+                    _repository.Delete<int, UserToUserGroup>("Id", item.Id);
+                }
+            }
+        }
     }
 }
