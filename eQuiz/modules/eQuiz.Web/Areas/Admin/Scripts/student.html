@@ -43,7 +43,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="q in sc.studentQuizzes | startFrom: sc.tablePage*sc.resultsPerPage | limitTo:sc.resultsPerPage" style="height: 50px">
-                        <td><a href="Index/Quiz?Id={{q.id}}" class="link" ng-click="sc.setQuizLink(q.id)">{{q.name}}</a></td>
+                        <td><a href="Index/Quiz?Student={{sc.studentInfo.id}}&Quiz={{q.id}}" class="link" ng-click="sc.setQuizLink(q.id)">{{q.name}}</a></td>
                         <td>{{q.state}}</td>
                         <td>{{q.questions}}</td>
                         <td>{{q.verificationType}}</td>

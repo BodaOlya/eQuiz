@@ -17,25 +17,43 @@
                 })
                 .when('/Index/Quiz', {
                     templateUrl: '/Areas/Admin/Scripts/quiz-review.html',
-                    controller: 'QuizReviewController'
+                    controller: 'QuizReviewController',
+                    controllerAs: 'ReviewCtrl',
+                    resolve: {
+                        student: function (quizReviewDataService, $location) {
+                            return quizReviewDataService.getStudent($location.search().Student).then(function (respond) {
+                                return respond.data;
+                            })
+                        },
+                        //group: function (quizReviewDataService, $location) {
+                        //    return quizReviewDataService.getGroup($location.search().Quiz).then(function (respond) {
+                        //        return respond.data;
+                        //    })
+                        //},
+                        //quiz: function (quizReviewDataService, $location) {
+                        //    return quizReviewDataService.getQuiz($location.search().Quiz).then(function (respond) {
+                        //        return respond.data;
+                        //    })
+                        //}
+                    }
                 })
                 .when('/Index/Student', {
                     templateUrl: '/Areas/Admin/Scripts/student.html',
                     controller: 'StudentController',
                     controllerAs: 'sc',
                     resolve: {
-                        studentInfo: function ($route, studentDataService, $location) {
+                        studentInfo: function (studentDataService, $location) {
                             var Id = $location.search().Id;
                             return studentDataService.getStudentInfo(Id).then(function (respond) {
                                 return respond.data;
                             })
                         },
-                        studentQuizzes: function ($route, studentDataService, $location) {
+                        studentQuizzes: function (studentDataService, $location) {
                             return studentDataService.getStudentQuizzes($location.search().Id).then(function (respond) {
                                 return respond.data;
                             })
                         },
-                        studentComments: function ($route, studentDataService, $location) {
+                        studentComments: function (studentDataService, $location) {
                             return studentDataService.getStudentComments($location.search().Id).then(function (respond) {
                                 return respond.data;
                             })

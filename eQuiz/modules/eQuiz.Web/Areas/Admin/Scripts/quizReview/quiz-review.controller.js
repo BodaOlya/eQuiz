@@ -3,16 +3,19 @@
         .module("equizModule")
         .controller('QuizReviewController', quizReviewController);
 
-    quizReviewController.$inject = ['$scope', 'quizReviewDataService', '$location'];
+    quizReviewController.$inject = ['$scope', 'quizReviewDataService', '$location', 'student' /*'group', 'quiz'*/];
 
-    function quizReviewController($scope, quizReviewDataService, $location) {
+    function quizReviewController($scope, quizReviewDataService, $location, student /*group, quiz*/) {
         var vm = this;
         vm.passed = 0;
         vm.notPassed = 0;
         vm.inVerification = 0;
         vm.saveIsDisabled = true;
         vm.isFinalized = false;
-
+        vm.student = student;
+        vm.group = quizReviewDataService.getGroup($location.search().Student);
+        vm.quiz = quizReviewDataService.getQuiz($location.search().Quiz);
+        console.log(student);
         vm.selectedStatuses = [];
         vm.statusList = [{ id: 0, name: "In Verification" }, { id: 1, name: "Passed" }, { id: 2, name: "Not Passed" }];
 
@@ -36,14 +39,12 @@
         }
 
         function activate() {
-            vm.student = quizReviewDataService.getStudent();
-            vm.group = quizReviewDataService.getGroup();
-            vm.quiz = quizReviewDataService.getQuiz($location.search().Id);
+            vm.student = quizReviewDataService.getStudent($location.search().Student);
+            vm.group = quizReviewDataService.getGroup($location.search().Student);
+            vm.quiz = quizReviewDataService.getQuiz($location.search().Quiz);
 
             vm.countStats();
         };
-
-        activate();
 
         vm.setQuestionStatus = function (id, status) {
             if (!vm.isFinalized) {

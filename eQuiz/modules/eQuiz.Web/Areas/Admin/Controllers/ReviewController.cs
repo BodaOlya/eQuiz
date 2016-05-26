@@ -88,6 +88,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                 id = student.Id,
                 firstName = student.FirstName,
                 lastName = student.LastName,
+                fatherName = student.FatheName,
                 phone = student.Phone,
                 email = student.Email,
                 userGroup = gr
@@ -100,10 +101,9 @@ namespace eQuiz.Web.Areas.Admin.Controllers
         public JsonResult GetStudentQuizzes(int id)
         {
             var result = new List<object>();
-
             var quizzes = _repository.Get<Quiz>();
             var userQuizzes = _repository.Get<QuizPass>(qp => qp.UserId == id);
-
+            
             var query = from q in quizzes
                         join uq in userQuizzes on q.Id equals uq.QuizId
                         where uq.UserId == id

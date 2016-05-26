@@ -18,12 +18,12 @@
 
         return service;
 
-        function getStudentAjax() {
-            var promise = {
-                first_name: "Paul",
-                last_name: "Dema",
-                parent_name: "Michael"
-            };
+        function getStudentAjax(studentId) {
+            var promise = $http({
+                url: '/Admin/Review/GetStudentInfo',
+                method: "GET",
+                params: { id: studentId }
+            });
             return promise;
         }
 
