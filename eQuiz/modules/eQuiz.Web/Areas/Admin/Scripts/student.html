@@ -10,7 +10,7 @@
 
     <div id="tabContainer">
         <div id="profileTab" ng-show="sc.currentTab=='Profile'">
-            <form name='profileInfo' style="width:auto; max-width:500px" novalidate>
+            <form name='profileInfo' style="width:auto; max-width:700px" novalidate>
                 <div style="float:left; position:relative; margin-right:40px">
                     <label>First Name</label>
                     <input type="text" name="firstName" ng-model="sc.studentInfo.firstName" ng-change="sc.modelChanged = true;" required /><br /><br />
@@ -19,11 +19,11 @@
                     <label>Phone</label>
                     <input type="tel" name="phone" ng-model="sc.studentInfo.phone" ng-change="sc.modelChanged = true;" required /><br /><br />
                 </div>
-                <div style="float:right; position:relative">
+                <div position:relative">
                     <label>E-Mail</label>
-                    <input type="email" ng-model="sc.studentInfo.email" readonly /><br /><br />
+                    <input type="text" style="width:{{(sc.studentInfo.userGroup.toString().length) * 7}}px" ng-model="sc.studentInfo.email" readonly /><br /><br />
                     <label>User group</label>
-                    <input type="text" ng-model="sc.studentInfo.userGroup" readonly /><br /><br />
+                    <input type="text" style="width:{{(sc.studentInfo.userGroup.toString().length) * 7}}px" ng-model="sc.studentInfo.userGroup" readonly /><br /><br />
                 </div>
             </form>
         </div>
@@ -43,7 +43,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="q in sc.studentQuizzes | startFrom: sc.tablePage*sc.resultsPerPage | limitTo:sc.resultsPerPage" style="height: 50px">
-                        <td><a href="Quiz?Id={{q.id}}" class="link" ng-click="sc.setQuizLink(q.id)">{{q.name}}</a></td>
+                        <td><a href="Index/Quiz?Id={{q.id}}" class="link" ng-click="sc.setQuizLink(q.id)">{{q.name}}</a></td>
                         <td>{{q.state}}</td>
                         <td>{{q.questions}}</td>
                         <td>{{q.verificationType}}</td>

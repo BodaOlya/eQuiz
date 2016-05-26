@@ -3,7 +3,7 @@
         .module('equizModule', ['ngRoute'])
         .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
             $routeProvider
-                .when('/List', {
+                .when('/', {
                     templateUrl: '/Areas/Admin/Scripts/review.html',
                     controller: 'ReviewController',
                     controllerAs: 'rc',
@@ -15,11 +15,11 @@
                         }
                     }
                 })
-                .when('/Quiz', {
+                .when('/Index/Quiz', {
                     templateUrl: '/Areas/Admin/Scripts/quiz-review.html',
                     controller: 'QuizReviewController'
                 })
-                .when('/Student', {
+                .when('/Index/Student', {
                     templateUrl: '/Areas/Admin/Scripts/student.html',
                     controller: 'StudentController',
                     controllerAs: 'sc',
@@ -42,7 +42,7 @@
                         }
                     } 
                 })
-                .otherwise({ redirectTo: '/List' });
+                .otherwise({ redirectTo: '/' });
 
             $locationProvider.html5Mode(true);
         }]);
