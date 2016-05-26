@@ -5,7 +5,7 @@ using System.Web;
 
 namespace eQuiz.Web.Areas.Student.Models
 {
-    public class UserAnswer
+    public class UserAnswerResult
     {
         public int QuestionId { get; set; }
         public int? AnswerId { get; set; }

@@ -1,9 +1,9 @@
 ﻿(function () {
     angular.module("equizModule")
            .controller("QuizController", QuizController);
-    QuizController.$inject = ['$scope', 'quizService', 'userGroupService', '$location', 'questionService', '$timeout'];
+    QuizController.$inject = ['$scope', 'quizService', '$location', 'questionService', '$timeout'];
 
-    function QuizController($scope, quizService, userGroupService, $location, questionService, $timeout) {
+    function QuizController($scope, quizService, $location, questionService, $timeout) {
         var vm = this;
         vm.loadingVisible = false;
         vm.errorMessageVisible = false;
@@ -15,7 +15,6 @@
         vm.saveCanExecute = saveCanExecute;
         vm.model = {
             quiz: { QuizTypeId: 1, DurationHours: 0, DurationMinutes: 0 },
-            userGroups: [],
             states: [],
             quizzesForCopy: [],
             quizBlock: { QuestionCount: 0 },
@@ -44,7 +43,6 @@
         vm.isDirtyAnswerCount = isDirtyAnswerCount;
         vm.isDirtyAnswerChecked = isDirtyAnswerChecked;
         vm.isQuestionsFormValid = isQuestionsFormValid;
-        vm.isQuestionsFormValidBackup = false;
 
         vm.toggleQuizzesForCopy = toggleQuizzesForCopy;
         vm.quizzesForCopyVisible = false;
@@ -88,10 +86,6 @@
                 vm.model.states = data.data;
             });
 
-            userGroupService.get().then(function (data) {
-                vm.model.userGroups = data.data;
-            });
-
             questionService.getQuestionTypes().then(function (response) {
                 vm.model.questionTypes = response.data;
             });
@@ -115,18 +109,12 @@
             vm.quizzesForCopyVisible = !vm.quizzesForCopyVisible;
         }
 
-        function setForm(form) {
-            if (!vm.model.quizForm) {
-                vm.model.quizForm = form;
-            }
-        }
-
         function saveCanExecute() {
             if (vm.quizForm) {
                 var res = vm.quizForm.$valid && vm.isQuestionsFormValid();
                 return vm.quizForm.$valid && vm.isQuestionsFormValid();
             }
-            return !vm.isQuestionsFormValid();
+            return false;
         }
 
         function switchTab(tab) {
@@ -160,8 +148,6 @@
             }
 
             function saveQuiz() {
-                vm.model.quiz.TimeLimitMinutes = vm.model.quiz.DurationHours * 60 + vm.model.quiz.DurationMinutes;
-                vm.model.quiz.EndDate = new Date(vm.model.quiz.StartDate.getTime() + vm.model.quiz.TimeLimitMinutes * 60000);
                 quizService.save({ quiz: vm.model.quiz, block: vm.model.quizBlock }).then(function (data) {
                     vm.model.quiz = data.data.quiz;
                     vm.model.quiz.StartDate = new Date(vm.model.quiz.StartDate);
@@ -387,7 +373,6 @@
                         checkedAnswersDirty: false
                     };
                 });
-                vm.isQuestionsFormValidBackup = true;
                 vm.hideLoading();
             });
         }
@@ -414,7 +399,6 @@
                     };
                 });
                 vm.model.quizBlock.QuestionCount = vm.model.questions.length;
-                vm.isQuestionsFormValidBackup = true;
                 vm.hideLoading();
             });
         }
@@ -460,9 +444,9 @@
                 if (!vm.model.quiz.QuizState || vm.model.quiz.QuizState.Name != 'Draft') {
                     questionCountValid = (vm.model.questions.length == vm.model.quizBlock.QuestionCount);
                 }
-                vm.isQuestionsFormValidBackup = vm.model.questionsForm.$valid && questionCountValid;
+                return vm.model.questionsForm.$valid && questionCountValid;
             }
-            return vm.isQuestionsFormValidBackup;
+            return false;
         }
     }
 })();

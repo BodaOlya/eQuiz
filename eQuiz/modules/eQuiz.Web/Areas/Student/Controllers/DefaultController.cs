@@ -103,11 +103,61 @@ namespace eQuiz.Web.Areas.Student.Controllers
         }
 
 
-        public ActionResult InsertQuizResult(QuizResultModel passedQuiz)
+        public void InsertQuizResult(QuizResultModel passedQuiz)
         {
-            return null;
-        }
+            QuizPass quizPassToInsert = new QuizPass
+            {
+                QuizId = passedQuiz.QuizId,
+                UserId = 1,
+                StartTime = passedQuiz.StartDate,
+                FinishTime = passedQuiz.FinishDate
+            };
+            _repository.Insert<QuizPass>(quizPassToInsert);
 
+            var lastQuizPassIdentity = quizPassToInsert.Id;
+
+            foreach(var userAnswer in passedQuiz.UserAnswers)
+            {
+                if(userAnswer != null)
+                {
+                    QuizPassQuestion quizPassQuestionToInsert = new QuizPassQuestion
+                    {
+                        QuizPassId = lastQuizPassIdentity,
+                        QuestionId = userAnswer.QuestionId,
+                        QuizBlockId = userAnswer.QuizBlock,
+                        //Remade GetQuestionsByQuizId method to send questionOrder property on the client
+                        QuestionOrder = 1
+                    };
+
+                    _repository.Insert<QuizPassQuestion>(quizPassQuestionToInsert);
+
+                    var lastQuizPassQuestionIdentity = quizPassQuestionToInsert.Id;
+
+                    if (userAnswer.IsAutomatic)
+                    {
+                        UserAnswer userAnswerToInsert = new UserAnswer
+                        {
+                            QuizPassQuestionId = lastQuizPassQuestionIdentity,
+                            AnswerId = (int)userAnswer.AnswerId,
+                            AnswerTime = userAnswer.AnswerTime
+                        };
+
+                        _repository.Insert<UserAnswer>(userAnswerToInsert);
+                    }
+                    else
+                    {
+                        UserTextAnswer userTextAnswerToInsert = new UserTextAnswer
+                        {
+                            QuizPassQuestionId = lastQuizPassQuestionIdentity,
+                            AnswerText = userAnswer.AnswerText,
+                            AnswerTime = userAnswer.AnswerTime
+                        };
+
+                        _repository.Insert<UserTextAnswer>(userTextAnswerToInsert);
+                    }
+                }
+            }
+        }
         #endregion
     }
 }   

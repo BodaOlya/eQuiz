@@ -33,7 +33,7 @@
         };
 
         function setTextAnswers(index, questionId, isAutomatic, quizBlock, answerText) {
-            if (!isAutomatic && answerText != "") {
+            if (!isAutomatic && answerText != null) {
                 var UserAnswer = {
                     QuestionId: questionId, AnswerId: null, AnswerText: answerText, AnswerTime: new Date(Date.now()), IsAutomatic: isAutomatic, QuizBlock: quizBlock
                 };

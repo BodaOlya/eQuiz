@@ -24,7 +24,9 @@
 
 
         $scope.setCurrentQuestion = function (currentQuestionId, index, questionId, isAutomatic, quizBlock, answerText) {
+
             $scope.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, answerText);
+
 
             if (currentQuestionId < $scope.quizQuestions.length && currentQuestionId >= 0) {
                 $scope.currentQuestion = currentQuestionId;
@@ -68,7 +70,7 @@
             if (!$scope.quizQuestions[index].isAutomatic) {
                 $scope.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, answerText);
             }
-            
+
             var isUserWantFinish = confirm("A you sure want to finish the  quiz?");
 
             if (isUserWantFinish) {

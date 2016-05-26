@@ -12,7 +12,10 @@
             <button class="tab-navigation-button" ng-class="{active : vm.tab=='quiz'}" ng-click="vm.switchTab('quiz')">Quiz</button>
             <button class="tab-navigation-button" ng-class="{active : vm.tab=='questions'}" ng-click="vm.switchTab('questions')">Questions ({{vm.model.questions.length}}/{{vm.model.quizBlock.QuestionCount}})</button>
         </div>
-        <div ng-view class="tab-container"><p>{{quizForm}}</p></div>
+        <div class="tab-container">
+            <ng-include src="'/Areas/Moderator/Scripts/app/pages/quiz/quiz.html'"></ng-include>
+            <ng-include src="'/Areas/Moderator/Scripts/app/pages/quiz/questions.html'"></ng-include>
+        </div>
 
         <div class="row">
             <div class="col-sm-2 col-sm-offset-4">
@@ -55,21 +58,16 @@
 </div>
 
 @section FootScripts{
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.js"></script>
     <script src="~/Scripts/app/shared/equiz.module.js"></script>
-    <script src="~/Areas/Moderator/Scripts/app/pages/quiz/quiz.config.js"></script>
-    <script src="~/Areas/Moderator/Scripts/app/pages/quiz/quiz.service.js"></script>
-    <script src="~/Areas/Moderator/Scripts/app/pages/quiz/userGroup.service.js"></script>
+    <script src="~/Areas/Moderator/Scripts/app/pages/shared/quiz.service.js"></script>
     <script src="~/Areas/Moderator/Scripts/app/pages/quiz/quiz.controller.js"></script>
     <script src="~/Areas/Moderator/Scripts/app/pages/quiz/question.service.js"></script>
-    <script src="~/Areas/Moderator/Scripts/app/pages/quiz/show-error.directive.js"></script>
+    <script src="~/Areas/Moderator/Scripts/app/pages/shared/show-error.directive.js"></script>
     <script src="~/Areas/Moderator/Scripts/app/pages/quiz/unique-quiz-name.directive.js"></script>
-    <script src="~/Areas/Moderator/Scripts/app/pages/quiz/show-time-span-error.directive.js"></script>
 }
 
 @section HeadStyles{
 
-    <link href="~/Areas/Moderator/Styles/bootstrap.css" rel="stylesheet" />
     <link href="~/Areas/Moderator/Styles/equiz-temp.css" rel="stylesheet" />
 }
 

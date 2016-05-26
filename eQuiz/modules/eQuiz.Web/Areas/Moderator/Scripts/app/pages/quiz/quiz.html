@@ -1,4 +1,4 @@
-﻿<div class="tab">
+﻿<div class="tab" ng-show="vm.tab=='quiz'">
     <ng-form name="vm.quizForm">
         <div class="row" unique-quiz-name>
             <div class="col-sm-2 col-md-2">
@@ -29,7 +29,7 @@
                     <ul class="dropdown-menu" ng-show="vm.quizzesForCopyVisible">
                         <li ng-repeat="item in vm.model.quizzesForCopy track by item.Id">
                             <a href="" ng-click="vm.isEditingEnabled() && vm.selectQuizCopy(item)">{{item.Name}}</a>
-                            <a ng-show="item.Name != 'New'" href="/Moderator/Quiz/QuizInfo?id={{item.Id}}" class="float-right" target="_blank">View</a>
+                            <a ng-show="item.Name != 'New'" href="/Moderator/Quiz/QuizPreview?id={{item.Id}}" class="float-right" target="_blank">View</a>
                         </li>
                     </ul>
                 </div>
@@ -69,61 +69,44 @@
                 </p>
             </div>
             <div class="col-sm-4 col-md-4">
-                <select required class="form-control" name="state" ng-disabled="!vm.isStateEditable" ng-options="item as item.Name for item in vm.model.states track by item.Id" ng-model="vm.model.quiz.QuizState"></select>
+                <select required class="form-control" name="state" ng-disabled="!vm.isStateEditable" ng-options="item as item.Name disable when item.Name == 'Scheduled' for item in vm.model.states track by item.Id" ng-model="vm.model.quiz.QuizState"></select>
                 <div ng-messages="vm.quizForm.state.$error" class="help-block hide">
                     <p ng-message="required">State is required</p>
                 </div>
             </div>
         </div>
         <div class="quiz-schedule" ng-show="vm.model.quiz.QuizState && vm.model.quiz.QuizState.Name == 'Scheduled'">
-            <div class="row" show-error>
+            <div class="row">
                 <div class="col-sm-2 col-md-2">
                     <p class="control-label">
                         Start
                     </p>
                 </div>
                 <div class="col-sm-4 col-md-4">
-                    <input class="form-control" type="datetime-local" ng-required="vm.model.quiz.QuizState && vm.model.quiz.QuizState.Name == 'Scheduled'" ng-model="vm.model.quiz.StartDate" name="startDate" />
-                    <div ng-messages="vm.quizForm.startDate.$error" class="help-block hide">
-                        <p ng-message="datetimelocal">Start date is required</p>
-                        <p ng-message="required">Start date is required</p>
-                    </div>
+                    <input class="form-control" type="datetime-local" ng-model="vm.model.quiz.StartDate" disabled />
                 </div>
             </div>
-            <div class="row" show-time-span-error>
+            <div class="row">
                 <div class="col-sm-2 col-md-2">
                     <p class="control-label">
                         Duration
                     </p>
                 </div>
                 <div class="col-sm-4 col-md-4">
-                    <input class="form-control small inline-block" type="number" max="24" min="0" ng-model="vm.model.quiz.DurationHours" name="durationHours" ng-required="vm.model.quiz.QuizState && vm.model.quiz.QuizState.Name == 'Scheduled'" />
+                    <input class="form-control small inline-block" type="number" max="24" min="0" ng-model="vm.model.quiz.DurationHours" name="durationHours" disabled />
                     <div class="inline-block">h</div>
-                    <input class="form-control small inline-block" type="number" max="60" min="0" ng-model="vm.model.quiz.DurationMinutes" name="durationMinutes" ng-required="vm.model.quiz.QuizState && vm.model.quiz.QuizState.Name == 'Scheduled'" />
+                    <input class="form-control small inline-block" type="number" max="60" min="0" ng-model="vm.model.quiz.DurationMinutes" name="durationMinutes" disabled />
                     <div class="inline-block">min</div>
-                    <div ng-messages="vm.quizForm.durationHours.$error" class="help-block hide">
-                        <p ng-message="required">Hours are required</p>
-                        <p ng-message="min">Value can not be less then 0</p>
-                        <p ng-message="max">Value can not be greater then 24</p>
-                    </div>
-                    <div ng-messages="vm.quizForm.durationMinutes.$error" class="help-block hide">
-                        <p ng-message="required">Minutes are required</p>
-                        <p ng-message="min">Value can not be less then 0</p>
-                        <p ng-message="max">Value can not be greater then 60</p>
-                    </div>
                 </div>
             </div>
-            <div class="row" show-error>
+            <div class="row">
                 <div class="col-sm-2 col-md-2">
                     <p class="control-label">
                         User group
                     </p>
                 </div>
                 <div class="col-sm-4 col-md-4">
-                    <select ng-required="vm.model.quiz.QuizState && vm.model.quiz.QuizState.Name == 'Scheduled'" class="form-control" name="userGroup" ng-options="item as item.Name for item in vm.model.userGroups track by item.Id" ng-model="vm.model.quiz.UserGroup"></select>
-                    <div ng-messages="vm.quizForm.userGroup.$error" class="help-block hide">
-                        <p ng-message="required">User group is required</p>
-                    </div>
+                    <input class="form-control" type="text" ng-model="vm.model.quiz.UserGroup.Name" disabled/>
                 </div>
             </div>
         </div>

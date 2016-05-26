@@ -1,4 +1,5 @@
-﻿ALTER TABLE [dbo].[tblFacebookUser] DROP CONSTRAINT [FK_tblFacebookUser_tblUser];
+﻿
+ALTER TABLE [dbo].[tblFacebookUser] DROP CONSTRAINT [FK_tblFacebookUser_tblUser];
 
 ALTER TABLE [dbo].[tblQuestionAnswer] DROP CONSTRAINT [FK_tblQuestionAnswer_tblQuestion];
 
@@ -56,7 +57,7 @@ ALTER TABLE [dbo].[tblUserToUserGroup] DROP CONSTRAINT [FK_tblUserToUserGroup_tb
 
 ALTER TABLE [dbo].[tblUserToUserGroup] DROP CONSTRAINT [FK_tblUserToUserGroup_tblUser];
 
---ALTER TABLE [dbo].[tblUserTextAnswer] DROP CONSTRAINT [FK_tblUserTextAnswer_tblQuizPassQuestion];
+ALTER TABLE [dbo].[tblUserTextAnswer] DROP CONSTRAINT [FK_tblUserTextAnswer_tblQuizPassQuestion];
 
 DROP TABLE [tblUserTextAnswer];
  
