@@ -43,7 +43,9 @@
             saveQuiz();
 
             function saveQuiz() {
-                vm.model.quiz.TimeLimitMinutes = vm.model.quiz.DurationHours * 60 + vm.model.quiz.DurationMinutes;
+                vm.model.quiz.UserGroup = vm.model.userGroup;
+                vm.model.quiz.StartDate = vm.model.startDate;
+                vm.model.quiz.TimeLimitMinutes = vm.model.durationHours * 60 + vm.model.durationMinutes;
                 vm.model.quiz.EndDate = new Date(vm.model.quiz.StartDate.getTime() + vm.model.quiz.TimeLimitMinutes * 60000);
                 quizService.schedule(vm.model.quiz).then(function (data) {
                     showSuccess(data.data);

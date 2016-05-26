@@ -181,16 +181,18 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         [HttpPost]
         public ActionResult Save(Quiz quiz, QuizBlock block)
         {
-            var errors = ValidateQuiz(quiz, block);
-            if (errors != null)
+            var errorMessages = ValidateQuiz(quiz, block);
+            if (errorMessages != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Invalid data");
+                var errorMessage = string.Format("Invalid data: \n{0}", string.Concat(errorMessages));
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "");
             }
 
             if (quiz.Id != 0)
             {
                 quiz.QuizStateId = quiz.QuizState.Id;
                 quiz.QuizState = null;
+                block.Quiz = null;
                 if (quiz.UserGroup != null)
                 {
                     quiz.GroupId = quiz.UserGroup.Id;
@@ -229,6 +231,14 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         [HttpPost]
         public ActionResult Schedule(Quiz quiz)
         {
+            var errorMessages = ValidateSchedule(quiz);
+            if (errorMessages != null)
+            {
+                var errorMessage = string.Format("Invalid data: {0}", string.Concat(errorMessages));
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, errorMessage);
+            }
+
+
             var copy = _repository.GetSingle<Quiz>(q => q.Id == quiz.Id);
             var sheduledStateId = _repository.GetSingle<QuizState>(q => q.Name == "Scheduled").Id;
             var newQuiz = new Quiz()
@@ -246,7 +256,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             var questions = _repository.Get<QuizQuestion>(q => q.QuizBlockId == quizBlock.Id, q => q.Question).Select(q => q.Question);
             var questionAnswers = new List<QuestionAnswer>();
             var questionTags = new List<QuestionTag>();
-            foreach(var question in questions)
+            foreach (var question in questions)
             {
                 var currrentAnswers = _repository.Get<QuestionAnswer>(q => q.QuestionId == question.Id, q => q.Answer);
                 questionAnswers.AddRange(currrentAnswers);
@@ -267,29 +277,29 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
             _repository.Insert<QuizBlock>(newQuizBlock);
 
-            foreach(var question in quizQuestions)
+            foreach (var question in quizQuestions)
             {
                 question.Question = questions.FirstOrDefault(q => q.Id == question.QuestionId);
             }
 
-            foreach(var answer in questionAnswers)
+            foreach (var answer in questionAnswers)
             {
                 answer.Question = questions.FirstOrDefault(q => q.Id == answer.QuestionId);
             }
 
-            foreach(var tag in questionTags)
+            foreach (var tag in questionTags)
             {
                 tag.Question = questions.FirstOrDefault(q => q.Id == tag.QuestionId);
             }
 
-            foreach(var question in questions)
+            foreach (var question in questions)
             {
                 question.QuizPassQuestions = null;
                 question.QuizQuestions = null;
                 _repository.Insert(question);
             }
 
-            foreach(var question in quizQuestions)
+            foreach (var question in quizQuestions)
             {
                 question.QuizBlockId = newQuizBlock.Id;
                 question.QuestionId = question.Question.Id;
@@ -297,24 +307,24 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 _repository.Insert<QuizQuestion>(question);
             }
 
-            foreach(var answer in questionAnswers)
+            foreach (var answer in questionAnswers)
             {
                 answer.Answer = answers.FirstOrDefault(a => a.Id == answer.AnswerId);
             }
 
-            foreach(var answer in answers)
+            foreach (var answer in answers)
             {
                 _repository.Insert<Answer>(answer);
             }
 
-            foreach(var answer in questionAnswers)
+            foreach (var answer in questionAnswers)
             {
                 answer.Answer = null;
                 answer.Question = null;
                 _repository.Insert<QuestionAnswer>(answer);
             }
 
-            foreach(var tag in questionTags)
+            foreach (var tag in questionTags)
             {
                 tag.QuestionId = tag.Question.Id;
                 tag.Question = null;
@@ -507,6 +517,8 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             var minQuizBlock = new
             {
                 Id = block.Id,
+                QuizId = block.QuizId,
+                TopicId = block.TopicId,
                 QuestionCount = block.QuestionCount
             };
 
@@ -533,6 +545,63 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             };
 
             return minGroup;
+        }
+
+        private IEnumerable<string> ValidateSchedule(Quiz quiz)
+        {
+            var errorMessages = new List<string>();
+
+            var selectedQuiz = _repository.GetSingle<Quiz>(q => q.Id == quiz.Id, q=>q.QuizState);
+
+            if(selectedQuiz == null)
+            {
+                errorMessages.Add("There is no such quiz");
+            }
+            else if(selectedQuiz.QuizState.Name != "Opened")
+            {
+                errorMessages.Add("Selected quiz cannot be applied");
+            }
+
+            if (quiz.StartDate == null)
+            {
+                errorMessages.Add("There is no start date");
+            }
+
+            if (quiz.StartDate <= DateTime.Now)
+            {
+                errorMessages.Add("Start date should be greater then current date");
+            }
+
+            if (quiz.EndDate == null)
+            {
+                errorMessages.Add("There is no end date");
+            }
+
+            if (quiz.EndDate <= DateTime.Now)
+            {
+                errorMessages.Add("End date should be greater then current date");
+            }
+
+            if (quiz.TimeLimitMinutes == null)
+            {
+                errorMessages.Add("There is no time limit");
+            }
+            else if ((byte)quiz.TimeLimitMinutes <= 0)
+            {
+                errorMessages.Add("Time limit should be greater then 0");
+            }
+
+            if (quiz.UserGroup == null)
+            {
+                errorMessages.Add("There is no user group selected");
+            }
+            else if (!_repository.Exists<UserGroup>(q => q.Id == quiz.UserGroup.Id))
+            {
+                errorMessages.Add("There is no such user group in the database");
+            }
+
+
+            return errorMessages.Count > 0 ? errorMessages : null;
         }
 
         private IEnumerable<string> ValidateQuiz(Quiz quiz, QuizBlock block)
@@ -582,47 +651,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 //    errorMessages.Add("There is user group selected but state isnt Scheduled");
                 //}
             }
-            else if (quiz.QuizState.Name == "Scheduled")
-            {
-                if (quiz.StartDate == null)
-                {
-                    errorMessages.Add("There is no start date");
-                }
 
-                if (quiz.StartDate <= DateTime.Now)
-                {
-                    errorMessages.Add("Start date should be greater then current date");
-                }
-
-                if (quiz.EndDate == null)
-                {
-                    errorMessages.Add("There is no end date");
-                }
-
-                if (quiz.EndDate <= DateTime.Now)
-                {
-                    errorMessages.Add("End date should be greater then current date");
-                }
-
-                if (quiz.TimeLimitMinutes == null)
-                {
-                    errorMessages.Add("There is no time limit");
-                }
-                else if (quiz.TimeLimitMinutes <= 0)
-                {
-                    errorMessages.Add("Time limit should be greater then 0");
-                }
-
-                if (quiz.UserGroup == null)
-                {
-                    errorMessages.Add("There is no user group selected");
-                }
-
-                if (!_repository.Exists<UserGroup>(q => q.Id == quiz.UserGroup.Id))
-                {
-                    errorMessages.Add("There is no such user group in the database");
-                }
-            }
 
             return errorMessages.Count > 0 ? errorMessages : null;
         }
