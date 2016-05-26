@@ -126,6 +126,8 @@
     <Content Include="Areas\Admin\Styles\bootstrap-combined.css" />
     <Content Include="Areas\Admin\Styles\equiz-temp.css" />
     <Content Include="Areas\Admin\Scripts\review.html" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quiz-preview\quizPreview.controller.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quiz-preview\quizPreview.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz-schedule\quiz.controller.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quizzes-list\quizzes.controller.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quizzes-list\quizzes.filters.js" />
