@@ -28,6 +28,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
         #endregion
 
+        #region Web Actions
         public ActionResult Get()
         {
             IEnumerable<UserGroup> groups = _repository.Get<UserGroup>();
@@ -97,6 +98,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
             return minUser;
          }
+
         public ActionResult Create()
         {
             return RedirectToAction("Edit");
@@ -195,5 +197,6 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 }
             }
         }
+        #endregion
     }
 }

@@ -7,7 +7,8 @@
 
         return {
             get: get,
-            getGroup: getGroup
+            getGroup: getGroup,
+            save: save
         };
 
         function get() {
@@ -23,5 +24,8 @@
             return promise;
         };
         
+        function save(data) {
+            return $http.post('/moderator/usergroup/save', data);
+        };
     };
 })();

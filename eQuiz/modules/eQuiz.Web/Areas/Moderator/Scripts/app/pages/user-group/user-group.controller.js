@@ -15,7 +15,8 @@
 
         vm.sortBy = sortBy;
         vm.showOrderArrow = showOrderArrow;
-        //vm.save = save;
+        vm.deleteUser = deleteUser;
+        vm.save = save;
 
         activate();
 
@@ -42,6 +43,19 @@
             return '';
         };
 
+        function deleteUser(user) {
+            var userIndex = vm.users.indexOf(user);
+            console.log(user);
+            console.log(userIndex);
+            vm.users.splice(userIndex, 1);
+        };
+
+        function save() {
+            userGroupService.save({ userGroup: vm.group, users: vm.users }).then(function (data) {
+                vm.group = data.data.group;
+                vm.users = data.data.users
+            });
+        };
     };
 
 })(angular)
