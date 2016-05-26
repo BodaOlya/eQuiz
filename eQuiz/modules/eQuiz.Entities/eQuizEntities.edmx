@@ -75,7 +75,7 @@
           <Property Name="EndDate" Type="smalldatetime" />
           <Property Name="TimeLimitMinutes" Type="smallint" />
           <Property Name="InternetAccess" Type="bit" Nullable="false" />
-          <Property Name="GroupId" Type="int" Nullable="false" />
+          <Property Name="GroupId" Type="int" />
         </EntityType>
         <EntityType Name="tblQuizBlock">
           <Key>
@@ -309,7 +309,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_tblQuiz_tblGroup">
-          <End Role="tblUserGroup" Type="Self.tblUserGroup" Multiplicity="1" />
+          <End Role="tblUserGroup" Type="Self.tblUserGroup" Multiplicity="0..1" />
           <End Role="tblQuiz" Type="Self.tblQuiz" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tblUserGroup">
@@ -774,7 +774,7 @@
           <Property Name="EndDate" Type="DateTime" Precision="0" />
           <Property Name="TimeLimitMinutes" Type="Int16" />
           <Property Name="InternetAccess" Type="Boolean" Nullable="false" />
-          <Property Name="GroupId" Type="Int32" Nullable="false" />
+          <Property Name="GroupId" Type="Int32" />
           <NavigationProperty Name="UserGroup" Relationship="Self.FK_tblQuiz_tblGroup" FromRole="tblQuiz" ToRole="tblUserGroup" />
           <NavigationProperty Name="QuizType" Relationship="Self.FK_tblQuiz_tblQuizType" FromRole="tblQuiz" ToRole="tblQuizType" />
           <NavigationProperty Name="QuizBlocks" Relationship="Self.FK_tblQuizBlock_tblQuiz" FromRole="tblQuiz" ToRole="tblQuizBlock" />
@@ -1046,7 +1046,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_tblQuiz_tblGroup">
-          <End Role="tblUserGroup" Type="eQuizModel.UserGroup" Multiplicity="1" />
+          <End Role="tblUserGroup" Type="eQuizModel.UserGroup" Multiplicity="0..1" />
           <End Role="tblQuiz" Type="eQuizModel.Quiz" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tblUserGroup">
