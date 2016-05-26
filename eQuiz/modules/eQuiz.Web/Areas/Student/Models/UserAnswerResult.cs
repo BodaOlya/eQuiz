@@ -12,6 +12,7 @@ namespace eQuiz.Web.Areas.Student.Models
         public string AnswerText { get; set; }
         public bool IsAutomatic { get; set; }
         public int QuizBlock { get; set; }
+        public short QuestionOrder { get; set; }
         public DateTime AnswerTime { get; set; }
     }
 }

@@ -1,5 +1,11 @@
 ﻿<div id='content'>
-    <table id='quizzesTable'>
+    <!--<div ng-if="isLoading">
+        <span id="loadingMessage">Loading...</span>
+    </div>-->
+    <div class="cssload-container" ng-if="isLoading">
+        <div class="cssload-whirlpool"></div>
+    </div>
+    <table id='quizzesTable' ng-if="!isLoading">
         <thead>
             <tr>
                 <th><h2>Quizzes</h2></th>

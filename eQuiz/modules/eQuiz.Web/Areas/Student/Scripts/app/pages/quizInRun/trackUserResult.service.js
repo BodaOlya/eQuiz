@@ -23,19 +23,19 @@
         };
         
 
-        function setAnswers(index, questionId, answerId, isAutomatic, quizBlock) {
+        function setAnswers(index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
             if (isAutomatic) {
                 var UserAnswer = {
-                    QuestionId: questionId, AnswerId: answerId, AnswerText: null, AnswerTime: new Date(Date.now()), IsAutomatic: isAutomatic, QuizBlock: quizBlock
+                    QuestionId: questionId, AnswerId: answerId, AnswerText: null, AnswerTime: new Date(Date.now()), IsAutomatic: isAutomatic, QuizBlock: quizBlock, QuestionOrder: questionOrder
                 };
                 service.passedQuiz.UserAnswers[index] = UserAnswer;
             }
         };
 
-        function setTextAnswers(index, questionId, isAutomatic, quizBlock, answerText) {
+        function setTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
             if (!isAutomatic && answerText != null) {
                 var UserAnswer = {
-                    QuestionId: questionId, AnswerId: null, AnswerText: answerText, AnswerTime: new Date(Date.now()), IsAutomatic: isAutomatic, QuizBlock: quizBlock
+                    QuestionId: questionId, AnswerId: null, AnswerText: answerText, AnswerTime: new Date(Date.now()), IsAutomatic: isAutomatic, QuizBlock: quizBlock, QuestionOrder: questionOrder
                 };
                 service.passedQuiz.UserAnswers[index] = UserAnswer;
             }

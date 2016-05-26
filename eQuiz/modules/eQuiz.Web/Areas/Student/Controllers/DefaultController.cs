@@ -94,9 +94,10 @@ namespace eQuiz.Web.Areas.Student.Controllers
                                              Text = answer.AnswerText,
                                              Id = answer.Id
                                          },
-                               QuizBlock = quizQuestion.QuizBlockId
+                               QuizBlock = quizQuestion.QuizBlockId,
+                               QuestionOrder = quizQuestion.QuestionOrder
                            };
-            var quizInfoList = quizInfo.ToList();
+            var quizInfoList = quizInfo.OrderBy(q => q.QuestionOrder).ToList();
 
             return Json(quizInfoList, JsonRequestBehavior.AllowGet);
 
@@ -126,7 +127,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                         QuestionId = userAnswer.QuestionId,
                         QuizBlockId = userAnswer.QuizBlock,
                         //Remade GetQuestionsByQuizId method to send questionOrder property on the client
-                        QuestionOrder = 1
+                        QuestionOrder = userAnswer.QuestionOrder
                     };
 
                     _repository.Insert<QuizPassQuestion>(quizPassQuestionToInsert);

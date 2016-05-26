@@ -12,6 +12,8 @@
         $scope.passedQuiz.QuizId = $scope.quizId;
         $scope.windowHeight = $window.innerHeight;
 
+        $scope.isLoading = false;
+
         //Timer Data
         $scope.tSeconds = 0;
         $scope.tMinutes = $scope.quizDuration;
@@ -23,16 +25,16 @@
         var stop;
 
 
-        $scope.setCurrentQuestion = function (currentQuestionId, index, questionId, isAutomatic, quizBlock, answerText) {
-
-            $scope.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, answerText);
-
+        $scope.setCurrentQuestion = function (currentQuestionId, index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
+            $scope.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
 
             if (currentQuestionId < $scope.quizQuestions.length && currentQuestionId >= 0) {
                 $scope.currentQuestion = currentQuestionId;
             }
 
         };
+
+        $scope.isLoading = true;
 
         getQuestionById($scope.quizId);
 
@@ -42,15 +44,16 @@
                     console.log(response.data);
                     $scope.quizQuestions = response.data;
                     $scope.passedQuiz.StartDate = new Date(Date.now());
+                    $scope.isLoading = false;
                 });
         };
 
-        $scope.setUserChoice = function (index, questionId, answerId, isAutomatic, quizBlock) {
-            trackUserResultService.setUserAnswers(index, questionId, answerId, isAutomatic, quizBlock);
+        $scope.setUserChoice = function (index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
+            trackUserResultService.setUserAnswers(index, questionId, answerId, isAutomatic, quizBlock, questionOrder);
         };
 
-        $scope.setUserTextAnswers = function (index, questionId, isAutomatic, quizBlock, answerText) {
-            trackUserResultService.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, answerText);
+        $scope.setUserTextAnswers = function (index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
+            trackUserResultService.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
         };
 
         $scope.sendDataToServer = function () {
@@ -66,9 +69,9 @@
             $location.path("/Dashboard");
         };
         //FINISH BUTTON
-        $scope.finishQuiz = function (index, questionId, isAutomatic, quizBlock, answerText) {
+        $scope.finishQuiz = function (index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
             if (!$scope.quizQuestions[index].isAutomatic) {
-                $scope.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, answerText);
+                $scope.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
             }
 
             var isUserWantFinish = confirm("A you sure want to finish the  quiz?");
