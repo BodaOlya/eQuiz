@@ -30,7 +30,7 @@ namespace eQuiz.Entities
         public Nullable<System.DateTime> EndDate { get; set; }
         public Nullable<short> TimeLimitMinutes { get; set; }
         public bool InternetAccess { get; set; }
-        public int GroupId { get; set; }
+        public Nullable<int> GroupId { get; set; }
         public int QuizStateId { get; set; }
     
         public virtual UserGroup UserGroup { get; set; }

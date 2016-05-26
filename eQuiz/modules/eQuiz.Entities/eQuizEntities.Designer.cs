@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\Projects\EPAM .NET IT LAB\eQuiz\eQuiz\eQuiz\modules\eQuiz.Entities\eQuizEntities.edmx'. 
+﻿// T4 code generation is enabled for model 'D:\Docs\.NET IT Lab\.NET IT Lab 2015 - 2 - Nov\TeamProject\eQuiz\src\eQuiz\eQuiz\modules\eQuiz.Entities\eQuizEntities.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
