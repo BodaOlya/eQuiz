@@ -92,7 +92,7 @@ CREATE TABLE [dbo].[tblQuiz]
 	[EndDate] [SMALLDATETIME] NULL,
 	[TimeLimitMinutes] [SMALLINT] NULL,
 	[InternetAccess] [BIT] NOT NULL,
-	[GroupId] [INT] NOT NULL,
+	[GroupId] [INT] NULL,
 	CONSTRAINT [PK_tblQuiz_Id] PRIMARY KEY ([Id]),
 	CONSTRAINT [UK_tblQuiz_Name] UNIQUE ([Name]),
 	CONSTRAINT [CK_tblQuiz_StartDate_EndDate] CHECK ([StartDate] <= [EndDate])
