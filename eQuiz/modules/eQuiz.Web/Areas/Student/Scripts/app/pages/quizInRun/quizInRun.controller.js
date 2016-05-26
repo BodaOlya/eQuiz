@@ -12,6 +12,8 @@
         $scope.passedQuiz.QuizId = $scope.quizId;
         $scope.windowHeight = $window.innerHeight;
 
+        $scope.isLoading = false;
+
         //Timer Data
         $scope.tSeconds = 0;
         $scope.tMinutes = $scope.quizDuration;
@@ -32,6 +34,8 @@
 
         };
 
+        $scope.isLoading = true;
+
         getQuestionById($scope.quizId);
 
         function getQuestionById(questionId) {
@@ -40,6 +44,7 @@
                     console.log(response.data);
                     $scope.quizQuestions = response.data;
                     $scope.passedQuiz.StartDate = new Date(Date.now());
+                    $scope.isLoading = false;
                 });
         };
 
