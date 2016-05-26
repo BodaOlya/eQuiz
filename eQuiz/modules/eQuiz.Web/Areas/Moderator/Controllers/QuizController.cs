@@ -209,7 +209,6 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             {
                 quiz.QuizStateId = quiz.QuizState.Id;
                 quiz.QuizState = null;
-                quiz.GroupId = 1; // UPDATE DB
                 _repository.Insert<Quiz>(quiz);
                 block.TopicId = 1;
                 block.QuizId = quiz.Id;
