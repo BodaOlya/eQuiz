@@ -97,7 +97,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                                QuizBlock = quizQuestion.QuizBlockId,
                                QuestionOrder = quizQuestion.QuestionOrder
                            };
-            var quizInfoList = quizInfo.ToList();
+            var quizInfoList = quizInfo.OrderBy(q => q.QuestionOrder).ToList();
 
             return Json(quizInfoList, JsonRequestBehavior.AllowGet);
 
