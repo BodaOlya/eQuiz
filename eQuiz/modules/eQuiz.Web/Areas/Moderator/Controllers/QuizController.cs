@@ -361,7 +361,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             quizPreviewModel.EndDate = quiz.EndDate;
             quizPreviewModel.TimeLimitMinutes = quiz.TimeLimitMinutes;
             quizPreviewModel.InternetAccess = quiz.InternetAccess;
-            quizPreviewModel.Group = userGroup.Name;
+            quizPreviewModel.Group = userGroup != null ? userGroup.Name : "Not assigned";            
             quizPreviewModel.State = quizState.Name;
 
             var quizBlock = _repository.GetSingle<QuizBlock>(qb => qb.QuizId == id);
