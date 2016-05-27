@@ -60,6 +60,10 @@
                         }
                     } 
                 })
+                .when('/Index/Details', {
+                    templateUrl: '/Areas/Admin/Scripts/quiz-details.html',
+                    controller: 'QuizDetailsController'
+                })
                 .otherwise({ redirectTo: '/' });
 
             $locationProvider.html5Mode(true);
