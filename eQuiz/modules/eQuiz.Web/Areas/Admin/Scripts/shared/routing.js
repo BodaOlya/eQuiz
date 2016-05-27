@@ -64,6 +64,11 @@
                     templateUrl: '/Areas/Admin/Scripts/quiz-details.html',
                     controller: 'QuizDetailsController'
                 })
+                .when('/Index/Quizzes', {
+                    templateUrl: '/Areas/Admin/Scripts/quizzes.html',
+                    controller: 'QuizzesController',
+                    controllerAs: 'qc'
+                })
                 .otherwise({ redirectTo: '/' });
 
             $locationProvider.html5Mode(true);

@@ -116,6 +116,9 @@
     <Content Include="Areas\Admin\Scripts\quizReview\question-status.filter.js" />
     <Content Include="Areas\Admin\Scripts\quizReview\quiz-review-data.service.js" />
     <Content Include="Areas\Admin\Scripts\quizReview\quiz-review.controller.js" />
+    <Content Include="Areas\Admin\Scripts\quizzes.html" />
+    <Content Include="Areas\Admin\Scripts\quizzes\quizzes-data.service.js" />
+    <Content Include="Areas\Admin\Scripts\quizzes\quizzes.controller.js" />
     <Content Include="Areas\Admin\Scripts\review\group.filter.js" />
     <Content Include="Areas\Admin\Scripts\review\highlight.filter.js" />
     <Content Include="Areas\Admin\Scripts\review\review.controller.js" />
@@ -211,7 +214,9 @@
     <Content Include="Areas\Moderator\Views\Shared\_Header.cshtml" />
     <Content Include="Areas\Moderator\Views\Quiz\Index.cshtml" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\unique-quiz-name.directive.js" />
-    <Content Include="connections.config" />
+    <Content Include="connections.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Areas\Admin\Views\Default\Index.cshtml" />
     <None Include="Areas\Moderator\Views\Quiz\QuizPreview.cshtml" />
     <Content Include="Areas\Moderator\Views\UserGroup\Edit.cshtml" />
