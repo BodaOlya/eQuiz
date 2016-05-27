@@ -150,6 +150,10 @@
     <Content Include="Areas\Moderator\Styles\equiz-temp.css" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.controller.js" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.service.js" />
+    <Content Include="Areas\Student\Scripts\app\pages\quizInRun\customAlert.controller.js" />
+    <Content Include="Areas\Student\Scripts\app\pages\quizInRun\customAlert.html" />
+    <Content Include="Areas\Student\Scripts\app\pages\quizInRun\customConfirm.controller.js" />
+    <Content Include="Areas\Student\Scripts\app\pages\quizInRun\customConfirm.html" />
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\quizInRun.controller.js" />
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\quizInRun.service.js" />
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\timer.service.js" />

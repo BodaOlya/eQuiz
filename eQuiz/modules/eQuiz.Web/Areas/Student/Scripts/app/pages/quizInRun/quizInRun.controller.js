@@ -2,8 +2,8 @@
 (function (angular) {
     var equizModule = angular.module("equizModule");
 
-    equizModule.controller("quizInRunCtrl", ["$scope", "quizService", "trackUserResultService", "$routeParams", "$interval", "$window", "$location",
-    function ($scope, quizService, trackUserResultService, $routeParams, $interval, $window, $location) {
+    equizModule.controller("quizInRunCtrl", ["$scope", "quizService", "trackUserResultService", "$routeParams", "$interval", "$window", "$location", "$uibModal",
+    function ($scope, quizService, trackUserResultService, $routeParams, $interval, $window, $location, $uibModal) {
         $scope.quizQuestions = null;
         $scope.quizId = parseInt($routeParams.id);
         $scope.quizDuration = $routeParams.dura;
@@ -31,7 +31,6 @@
             if (currentQuestionId < $scope.quizQuestions.length && currentQuestionId >= 0) {
                 $scope.currentQuestion = currentQuestionId;
             }
-
         };
 
         $scope.isLoading = true;
@@ -64,22 +63,60 @@
             quizService.sendUserResult(passedQuiz)
                 .success(function (data) {
                     console.log("OK");
-                });
-
-            $location.path("/Dashboard");
+                });     
         };
+
+        //Custom confirm function
+        var openPopUpConfirm = function () {
+
+            var modalInstance = $uibModal.open({
+                animation: false,
+                templateUrl: '/Areas/Student/Scripts/app/pages/quizInRun/customConfirm.html',
+                controller: 'confirmCtrl',
+                size: 'sm'
+            });
+
+            modalInstance.result.then(function () {
+                $scope.sendDataToServer();
+                $scope.resetTimer();
+                $location.path("/Dashboard");
+            }, function () {
+                return;
+            });
+        };
+        //Custom alert function
+        var openPopUpAlert = function () {
+
+            var modalInstance = $uibModal.open({
+                animation: false,
+                templateUrl: '/Areas/Student/Scripts/app/pages/quizInRun/customAlert.html',
+                controller: 'alertCtrl',
+                size: 'sm'
+            });
+
+            modalInstance.result.then(function () {
+                $location.path("/Dashboard");
+                //!!!!!!!!!!
+                //$scope.sendDataToServer();
+                //$scope.resetTimer();
+            });
+        };
+
+
         //FINISH BUTTON
         $scope.finishQuiz = function (index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
             if (!$scope.quizQuestions[index].isAutomatic) {
                 $scope.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
             }
 
-            var isUserWantFinish = confirm("A you sure want to finish the  quiz?");
+            openPopUpConfirm();
 
-            if (isUserWantFinish) {
-                $scope.sendDataToServer();
-            }
-            $scope.resetTimer();
+            //var isUserWantFinish = confirm("A you sure want to finish the  quiz?");
+
+            //if (isUserWantFinish) {
+            //    $scope.sendDataToServer();
+            //}
+            //$scope.resetTimer();
         };
 
         $scope.$watch(function () {
@@ -151,8 +188,7 @@
         $scope.endQuiz = function () {
             $scope.sendDataToServer();
             $scope.resetTimer();
-            alert("Time is up. Your result was sended to server");
-
+            openPopUpAlert();
         };
 
         $scope.$on('$destroy', function () {
