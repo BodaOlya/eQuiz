@@ -12,7 +12,8 @@
             getStates: getStates,
             getQuizzesForCopy: getQuizzesForCopy,
             getOpenQuizzes: getOpenQuizzes,
-            schedule: schedule
+            schedule: schedule,
+            deleteQuiz: deleteQuiz
         }
 
         function get(id) {
@@ -46,6 +47,10 @@
 
         function schedule(quiz) {
             return $http.post("/quiz/Schedule", quiz);
+        }
+
+        function deleteQuiz(id) {
+            return $http.post("/moderator/quiz/DeleteQuizById?id=" + id.toString());
         }
     }
 })();

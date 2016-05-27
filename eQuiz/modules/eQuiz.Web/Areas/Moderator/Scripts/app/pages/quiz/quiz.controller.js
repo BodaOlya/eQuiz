@@ -8,6 +8,8 @@
         vm.loadingVisible = false;
         vm.errorMessageVisible = false;
         vm.successMessageVisible = false;
+        vm.showSuccess = showSuccess;
+        vm.showError = showError;
         vm.isStateEditable = true;
         vm.tab = 'quiz';
         vm.save = save;
@@ -51,6 +53,8 @@
         vm.selectedQuizCopy = { Id: 0, Name: 'New' };
         vm.showLoading = showLoading;
         vm.hideLoading = hideLoading;
+        vm.deleteQuiz = deleteQuiz;
+        vm.deleteCanExecute = deleteCanExecute;
 
         activate();
 
@@ -127,7 +131,7 @@
         }
 
         function save() {
-            showLoading();
+            vm.showLoading();
             saveQuiz();
 
             function saveQuestions() {
@@ -139,11 +143,11 @@
                     vm.model.questions = model.questions;
                     vm.model.answers = model.answers;
                     vm.model.tags = model.tags;
-                    hideLoading();
-                    showSuccess();
+                    vm.hideLoading();
+                    vm.showSuccess();
                 }, function (response) {
-                    hideLoading();
-                    showError();
+                    vm.hideLoading();
+                    vm.showError();
                 });
             }
 
@@ -156,25 +160,26 @@
                     vm.model.quizBlock = data.data.block;
                     saveQuestions();
                 }, function (data) {
-                    hideLoading();
-                    showError();
+                    vm.hideLoading();
+                    vm.showError();
                 });
             }
 
-            function showSuccess() {
-                vm.successMessageVisible = true;
-                $timeout(function () {
-                    vm.successMessageVisible = false;
-                }, 4000);
-            }
-            function showError() {
-                vm.errorMessageVisible = true;
-                $timeout(function () {
-                    vm.errorMessageVisible = false;
-                }, 4000);
-            }
+
         }
 
+        function showSuccess() {
+            vm.successMessageVisible = true;
+            $timeout(function () {
+                vm.successMessageVisible = false;
+            }, 4000);
+        }
+        function showError() {
+            vm.errorMessageVisible = true;
+            $timeout(function () {
+                vm.errorMessageVisible = false;
+            }, 4000);
+        }
 
         function setQuestionType(question, typeId, form) {
             question.QuestionTypeId = typeId;
@@ -450,6 +455,21 @@
                 return vm.model.questionsForm.$valid && questionCountValid;
             }
             return false;
+        }
+
+        function deleteQuiz() {
+            vm.showLoading();
+            quizService.deleteQuiz(vm.model.quiz.Id).then(function () {
+                vm.showSuccess();
+                window.location.href = '/modelrator/quiz';
+            }, function () {
+                vm.showError();
+                vm.hideLoading();
+            });
+        }
+
+        function deleteCanExecute() {
+            return vm.model.quiz.Id && vm.model.quiz.QuizState && vm.model.quiz.QuizState.Name == 'Scheduled';
         }
     }
 })();

@@ -18,8 +18,11 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-2 col-sm-offset-4">
+            <div class="col-sm-2 col-sm-offset-3">
                 <button class="btn btn-default form-control lightgray" ng-click="vm.save()" ng-disabled="!vm.saveCanExecute()">Save</button>
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-default form-control lightgray" ng-click="vm.deleteQuiz()" ng-disabled="!vm.deleteCanExecute()">Delete</button>
             </div>
             <div class="col-sm-2">
                 @Html.ActionLink(linkText: "Cancel", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-default lightgray" })
