@@ -16,7 +16,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="item in qc.content = (qc.quizzesFiltered = (qc.quizzes | filter: {quiz_name:qc.search}) | startFrom: qc.tablePage*qc.resultsPerPage | limitTo:qc.resultsPerPage)" style="height: 50px">
-                    <td><a href="/Index/Details" ng-bind-html="item.quiz_name | highlight: qc.search">{{item.quiz_name}}</a></td>
+                    <td><a href="Index/Details" ng-bind-html="item.quiz_name | highlight: qc.search">{{item.quiz_name}}</a></td>
                     <td>{{item.group_name}}</td>
                     <td>{{item.questions_amount}}</td>
                     <td>{{item.students_amount}}</td>
@@ -29,7 +29,7 @@
     <div layout="row">
         <span>
             Rows on the page:
-            <select style="margin:5px" ng-model="qc.resultsPerPage" ng-options="p for p in qc.resultsCount"></select>
+            <select style="margin:5px" ng-model="qc.resultsPerPage" ng-options="p for p in qc.resultsCount" ng-change="qc.paginationChanged()"></select>
             <span ng-show="qc.numberOfPages() &gt; 1">
                 <button ng-disabled="qc.tablePage==0" ng-click="qc.tablePage=qc.tablePage-1">Previous page</button>
                 <span ng-repeat="i in qc.getNumber(qc.numberOfPages()) track by $index">
