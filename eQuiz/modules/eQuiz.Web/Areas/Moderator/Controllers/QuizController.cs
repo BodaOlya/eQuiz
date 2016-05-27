@@ -437,7 +437,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
             foreach (var quizPass in quizPasses)
             {
-                var quizPassQuestions = _repository.Get<QuizPassQuestion>(qpq => qpq.QuizBlockId == quizPass.Id);
+                var quizPassQuestions = _repository.Get<QuizPassQuestion>(qpq => qpq.QuizPassId == quizPass.Id);
                 foreach (var quizPassQuestion in quizPassQuestions)
                 {
                     var userAnswers = _repository.Get<UserAnswer>(ua => ua.QuizPassQuestionId == quizPassQuestion.Id);
@@ -445,6 +445,13 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                     foreach (var userAnswer in userAnswers)
                     {
                         _repository.Delete<int, UserAnswer>("Id", userAnswer.Id);
+                    }                    
+
+                    var userTextAnswers = _repository.Get<UserTextAnswer>(ua => ua.QuizPassQuestionId == quizPassQuestion.Id);
+
+                    foreach (var userTextAnswer in userTextAnswers)
+                    {
+                        _repository.Delete<int, UserTextAnswer>("Id", userTextAnswer.Id);
                     }
 
                     _repository.Delete<int, QuizPassQuestion>("Id", quizPassQuestion.Id);

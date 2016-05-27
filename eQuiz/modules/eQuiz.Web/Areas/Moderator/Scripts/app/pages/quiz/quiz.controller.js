@@ -461,7 +461,7 @@
             vm.showLoading();
             quizService.deleteQuiz(vm.model.quiz.Id).then(function () {
                 vm.showSuccess();
-                window.location.href = '/modelrator/quiz';
+                window.location.href = '/moderator/quiz';
             }, function () {
                 vm.showError();
                 vm.hideLoading();
