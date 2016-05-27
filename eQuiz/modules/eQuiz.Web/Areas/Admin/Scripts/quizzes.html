@@ -16,7 +16,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="item in qc.content = (qc.quizzesFiltered = (qc.quizzes | filter: {quiz_name:qc.search}) | startFrom: qc.tablePage*qc.resultsPerPage | limitTo:qc.resultsPerPage)" style="height: 50px">
-                    <td><a href="/Index/Details" ng-bind-html="item.quiz_name | highlight: qc.search">{{item.quiz_name}}</a></td>
+                    <td><a href="Index/Details" ng-bind-html="item.quiz_name | highlight: qc.search">{{item.quiz_name}}</a></td>
                     <td>{{item.group_name}}</td>
                     <td>{{item.questions_amount}}</td>
                     <td>{{item.students_amount}}</td>
