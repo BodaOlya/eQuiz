@@ -7,6 +7,7 @@
         var vm = this;
         vm.loadingVisible = false;
         vm.errorMessageVisible = false;
+        vm.successMessageVisible = false;
         vm.save = save;
         vm.saveCanExecute = saveCanExecute;
         vm.model = {
@@ -48,15 +49,19 @@
                 vm.model.quiz.TimeLimitMinutes = vm.model.durationHours * 60 + vm.model.durationMinutes;
                 vm.model.quiz.EndDate = new Date(vm.model.quiz.StartDate.getTime() + vm.model.quiz.TimeLimitMinutes * 60000);
                 quizService.schedule(vm.model.quiz).then(function (data) {
-                    showSuccess(data.data);
+                    showSuccess();
                 }, function (data) {
                     hideLoading();
                     showError();
                 });
             }
 
-            function showSuccess(id) {
-                window.location.href = '/moderator/quiz/quizpreview?id=' + id.toString();
+            function showSuccess() {
+                vm.successMessageVisible = true;
+                $timeout(function () {
+                    window.location.href = '/moderator/quiz';
+                }, 2000);
+                
             }
             function showError() {
                 vm.errorMessageVisible = true;
