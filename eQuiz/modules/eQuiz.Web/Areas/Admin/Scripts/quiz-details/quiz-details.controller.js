@@ -12,6 +12,9 @@
 
         vm.search = ''; // Represents search field on the form
         vm.myPredicate = null;
+        vm.resultsPerPage = 10;
+        vm.resultsCount = [10, 25, 50, 100];
+        vm.tablePage = 0;
         vm.linkToProfile = "Index/Student?Id=";
         vm.linkToQuizRewiew = "Index/Student?Id=";
 
@@ -59,7 +62,7 @@
                         item = '+student';
                         break;
                     case 1:
-                        item = '+score';
+                        item = '+studentScore';
                         break;
                     case 2:
                         item = '+quizStatus';
@@ -100,6 +103,18 @@
 
         vm.setLinkToQuiz = function (studentId) {
             vm.linkToQuizRewiew += studentId + "#Quizzes";
+        };
+
+        vm.numberOfPages = function () {
+            return Math.ceil(vm.studentsFiltered.length / vm.resultsPerPage);
+        };
+
+        vm.getNumber = function (num) {
+            return new Array(num);
+        };
+
+        vm.goToPage = function (page) {
+            vm.tablePage = page;
         };
     };
 })(angular);
