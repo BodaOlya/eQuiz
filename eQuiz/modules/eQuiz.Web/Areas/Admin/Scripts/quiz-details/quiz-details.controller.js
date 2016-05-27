@@ -12,8 +12,8 @@
 
         vm.search = ''; // Represents search field on the form
         vm.myPredicate = null;
-        vm.linkToProfile = "/Admin/Default/Index/Student/";
-        vm.linkToQuizRewiew = "/Admin/Default/Index/Student/";
+        vm.linkToProfile = "Index/Student?Id=";
+        vm.linkToQuizRewiew = "Index/Student?Id=";
 
         vm.headers = [
             {
@@ -95,11 +95,11 @@
         }; // Orders the data based on the specified predicate
 
         vm.setLink = function (studentId) {
-            vm.linkToProfile += studentId + '/Profile';
+            vm.linkToProfile += studentId + "#Profile";
         };
 
         vm.setLinkToQuiz = function (studentId) {
-            vm.linkToQuizRewiew += studentId + '/Profile';
+            vm.linkToQuizRewiew += studentId + "#Quizzes";
         };
     };
 })(angular);
