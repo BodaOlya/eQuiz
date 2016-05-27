@@ -39,6 +39,9 @@
                 };
                 service.passedQuiz.UserAnswers[index] = UserAnswer;
             }
+            else if (!isAutomatic && answerText === "") {
+                service.passedQuiz.UserAnswers[index] = null;
+            }
         };
     });
 })(angular);
