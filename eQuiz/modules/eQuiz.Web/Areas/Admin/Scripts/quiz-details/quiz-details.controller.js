@@ -23,15 +23,11 @@
             }, {
                 name: 'Score',
                 field: 'score',
-                predicateIndex: 4
+                predicateIndex: 1
             }, {
                 name: 'Quiz Status',
                 field: 'quizStatus',
                 predicateIndex: 2
-            }, {
-                name: 'Questions Details',
-                field: 'questionsDetails',
-                predicateIndex: 3
             }
         ];
         vm.students = [];
@@ -46,7 +42,7 @@
         activate();
 
         function generatePredicate() {
-            vm.myPredicate = [null, null, null, null, null];
+            vm.myPredicate = [null, null, null];
         }; // Generates empty predicates that are used for ordering
 
         function clearPredicatesExcept(index) {
@@ -62,14 +58,11 @@
                     case 0:
                         item = '+student';
                         break;
-                    case 4:
+                    case 1:
                         item = '+score';
                         break;
                     case 2:
                         item = '+quizStatus';
-                        break;
-                    case 3:
-                        item = '+questionsDetails';
                         break;
                 }
                 vm.myPredicate[index] = item;
