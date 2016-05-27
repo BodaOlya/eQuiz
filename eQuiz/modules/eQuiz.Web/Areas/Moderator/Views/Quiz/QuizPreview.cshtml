@@ -1,13 +1,14 @@
 ﻿@model eQuiz.Web.Areas.Moderator.Models.QuizPreviewModel
 @{
     Layout = "~/Views/Shared/Layout.cshtml";
+    ViewBag.showButton = !Model.State.Equals("Scheduled");
 }
 
 <div align="center">
     <h2>@Model.Name</h2>
-    <p ng-controller="QuizPreviewController as qpc">
+    <p ng-controller="QuizController as qc">
         <a href="/moderator/quiz/edit/#/quiz?id=@Model.Id">Edit</a>
-        <a href="" ng-click="qpc.deleteQuiz(@Model.Id)">Delete</a>
+        <a href="" ng-show="@ViewBag.showButton" ng-click="qc.model.quiz.Id=@Model.Id; qc.deleteQuiz()">Delete</a>
     </p>
     <p>
         <i>@Model.Descriprtion</i>
@@ -151,8 +152,12 @@
 </div>
 
 @section FootScripts{
-    <script src="~/Areas/Moderator/Scripts/app/pages/quiz-preview/quizPreview.service.js"></script>
-    <script src="~/Areas/Moderator/Scripts/app/pages/quiz-preview/quizPreview.controller.js"></script>
+    <script src="~/Scripts/app/shared/equiz.module.js"></script>
+    <script src="~/Areas/Moderator/Scripts/app/pages/shared/quiz.service.js"></script>
+    <script src="~/Areas/Moderator/Scripts/app/pages/quiz/quiz.controller.js"></script>
+    <script src="~/Areas/Moderator/Scripts/app/pages/quiz/question.service.js"></script>
+    <script src="~/Areas/Moderator/Scripts/app/pages/shared/show-error.directive.js"></script>
+    <script src="~/Areas/Moderator/Scripts/app/pages/quiz/unique-quiz-name.directive.js"></script>
 }
 
 @section HeadStyles{    
