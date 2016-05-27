@@ -112,5 +112,9 @@
         vm.goToPage = function (page) {
             vm.tablePage = page;
         };
+
+        vm.paginationChanged = function () {
+            vm.tablePage = 0;
+        }
     }
 })(angular);

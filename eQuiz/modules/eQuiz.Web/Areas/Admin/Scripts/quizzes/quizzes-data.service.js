@@ -4,7 +4,9 @@
         .module("equizModule")
         .factory("quizzesDataService", quizzesDataService);
 
-    function quizzesDataService() {
+    quizzesDataService.$inject = ["$http"];
+
+    function quizzesDataService($http) {
 
         var service = {            
             getQuizzes: getQuizzesAjax,
@@ -141,6 +143,9 @@
                     verification_type: 'Manual'
                 }
             ];
+
+            //var promise = $http.get('/Admin/Quizzes/GetQuizzesList');
+            //debugger;
             return promise;
         }
     }
