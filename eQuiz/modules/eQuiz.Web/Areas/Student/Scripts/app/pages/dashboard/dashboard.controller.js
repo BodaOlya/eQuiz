@@ -2,7 +2,7 @@
 (function (angular) {
     var equizModule = angular.module("equizModule");
 
-    equizModule.controller("dashboardCtrl", ["$scope", "$http", "dashboardService", function ($scope, $http, dashboardService) {
+    equizModule.controller("dashboardCtrl", ["$scope", "dashboardService", function ($scope, dashboardService) {
         $scope.allQuizes = null;
 
         $scope.isLoading = true;

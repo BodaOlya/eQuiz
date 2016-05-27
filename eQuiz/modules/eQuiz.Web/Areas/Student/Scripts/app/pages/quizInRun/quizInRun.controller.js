@@ -96,9 +96,6 @@
 
             modalInstance.result.then(function () {
                 $location.path("/Dashboard");
-                //!!!!!!!!!!
-                //$scope.sendDataToServer();
-                //$scope.resetTimer();
             });
         };
 
@@ -110,13 +107,6 @@
             }
 
             openPopUpConfirm();
-
-            //var isUserWantFinish = confirm("A you sure want to finish the  quiz?");
-
-            //if (isUserWantFinish) {
-            //    $scope.sendDataToServer();
-            //}
-            //$scope.resetTimer();
         };
 
         $scope.$watch(function () {
