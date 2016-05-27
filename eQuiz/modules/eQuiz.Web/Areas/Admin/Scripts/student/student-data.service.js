@@ -46,9 +46,8 @@
         }
 
         function saveProfileInfo(id, firstName, lastName, phone) {
-            var promise = $http.post("/Main/SaveStudentInfo",[id, firstName, lastName, phone]);
-            //var promise = $http.post("/Main/SaveStudentComments", studentComments);
-            //return promise;
+            var promise = $http.post("/Admin/Review/UpdateUserInfo", { Id: id, firstName: firstName, lastName: lastName, phone: phone });
+            return promise;
         }
     }
 

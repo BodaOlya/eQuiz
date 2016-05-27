@@ -47,7 +47,7 @@
         <div layout="row">
             <span>
                 Rows on the page:
-                <select style="margin:5px" ng-model="rc.resultsPerPage" ng-options="p for p in rc.resultsCount"></select>
+                <select style="margin:5px" ng-model="rc.resultsPerPage" ng-change="rc.tablePage=0" ng-options="p for p in rc.resultsCount"></select>
                 <span ng-show="rc.numberOfPages() &gt; 1">
                     <button ng-disabled="rc.tablePage==0" ng-click="rc.tablePage=rc.tablePage-1">Previous page</button>
                     <span ng-repeat="i in rc.getNumber(rc.numberOfPages()) track by $index">

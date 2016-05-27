@@ -55,7 +55,7 @@
             <div layout="row">
                 <span>
                     Rows on the page:
-                    <select class="md-primary" ng-model="sc.resultsPerPage" ng-options="p for p in sc.resultsCount"></select>
+                    <select class="md-primary" ng-model="sc.resultsPerPage" ng-change="sc.tablePage=0" ng-options="p for p in sc.resultsCount"></select>
                 </span>
                 <span ng-show="sc.numberOfPages() &gt; 1">
                     <button ng-disabled="sc.tablePage==0" ng-click="sc.tablePage=sc.tablePage-1">Previous page</button>

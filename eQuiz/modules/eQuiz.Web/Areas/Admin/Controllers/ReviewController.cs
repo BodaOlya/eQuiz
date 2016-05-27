@@ -126,12 +126,86 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+   /*     public JsonResult GetStudentComments(int id)
+        {
+            var result = new List<object>();
+            var comments = _repository.Get<UserComment>(com => com.UserId == id);
+
+            var query = from c in comments
+                        select new
+                        {
+                            id = c.Id,
+                            adminId = c.Name,
+                            commentTime = c.CommentTime,
+                            commentText = c.CommentText
+                        };
+
+            foreach (var item in query)
+            {
+                result.Add(item);
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }*/
+
+        [HttpGet]
+        public JsonResult GetQuiz(int studentId, int quizId)
+        {
+            var quizInfo = new List<object>();
+            var quizQuestions = new List<object>();
+            var quizzes = _repository.Get<Quiz>();
+            var quizPass = _repository.Get<QuizPass>(qp => qp.UserId == studentId && qp.QuizId == quizId);
+            var quizPassId = quizPass[0].Id;
+            var query = from q in quizzes
+                        join qp in quizPass on q.Id equals qp.QuizId
+                        select new
+                        {
+                            id = qp.Id,
+                            name = q.Name,
+                            startDate = q.StartDate,
+                            endDate = q.EndDate,
+                            finishTime = qp.FinishTime
+                        };
+
+            foreach (var item in query)
+            {
+                quizInfo.Add(item);
+            }
+
+            var quizPassQuestions = _repository.Get<QuizPassQuestion>(qpq => qpq.QuizPassId == quizPassId);
+            var questions = _repository.Get<Question>();
+            var questionAnswers = _repository.Get<QuestionAnswer>();
+            var userAnswers = _repository.Get<UserAnswer>();
+            var questionTypes = _repository.Get<QuestionType>();
+
+            var query2 = from qpq in quizPassQuestions
+                        join q in questions on qpq.QuestionId equals q.Id
+                        join qa in questionAnswers on qpq.QuestionId equals qa.QuestionId
+                        join ua in userAnswers on qpq.QuestionId equals ua.QuizPassQuestionId
+                        join qt in questionTypes on qpq.QuestionId equals qt.Id
+                        select new
+                        {
+                            id = q.Id,
+                            question = q.QuestionText,
+                            answer = qa.Answer.AnswerText,
+                            questionStatus = 0,
+                            questionType = qt.TypeName
+                        };
+
+            foreach (var item in query)
+            {
+                quizQuestions.Add(item);
+            }
+            quizInfo.Add(quizQuestions);
+            return Json(quizInfo, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
-        public void UpdateUserInfo(int id, string name, string surname, string phone)
+        public void UpdateUserInfo(int id, string firstName, string lastName, string phone)
         {
             var user = _repository.GetSingle<User>(u => u.Id == id);
-            user.FirstName = name;
-            user.LastName = surname;
+            user.FirstName = firstName;
+            user.LastName = lastName;
             user.Phone = phone;
 
             _repository.Update<User>(user);
