@@ -164,6 +164,8 @@
     <Content Include="Scripts\libs\angularjs\angular-route.js" />
     <Content Include="Scripts\libs\angularjs\angular.js" />
     <Content Include="Scripts\libs\angularjs\angular.min.js" />
+    <Content Include="Scripts\libs\angularjs\ui-bootstrap-tpls-1.3.3.js" />
+    <Content Include="Styles\bootstrap.css" />
     <Content Include="Styles\equiz-temp.css" />
     <Content Include="Web.config" />
   </ItemGroup>
