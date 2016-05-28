@@ -17,11 +17,18 @@
 
 
         function getQuizAjax(quizId) {
-            var promise = {
-                quizName: "Theory",
-                groupName: ".Net",
-                quizScore: 10
-            };
+            //var promise = {
+            //    quizName: "Theory",
+            //    groupName: ".Net",
+            //    quizScore: 10
+            //};
+            
+            var promise = $http({
+                url: '/Admin/Details/GetQuiz',
+                method: "GET",
+                params: { id: quizId }
+            });
+
             return promise;
         };
 

@@ -3,9 +3,9 @@
         .module('equizModule')
         .controller('QuizDetailsController', quizDetailsController);
 
-    quizDetailsController.$inject = ['$scope', '$filter', 'quizDetailsDataService'];
+    quizDetailsController.$inject = ['$scope', '$filter', 'quizDetailsDataService', 'quizInfo'];
 
-    function quizDetailsController($scope, $filter, quizDetailsDataService) {
+    function quizDetailsController($scope, $filter, quizDetailsDataService, quizInfo) {
         var vm = this;
 
         var orderBy = $filter('orderBy');
@@ -38,7 +38,7 @@
 
         function activate() {
             vm.students = quizDetailsDataService.getQuizPasses(1);
-            vm.quizInfo = quizDetailsDataService.getQuiz(1);
+            vm.quizInfo = quizInfo;//quizDetailsDataService.getQuiz(1);
             generatePredicate();
         };
 

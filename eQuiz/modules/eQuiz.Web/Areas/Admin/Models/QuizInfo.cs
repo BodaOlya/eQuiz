@@ -22,7 +22,7 @@ namespace eQuiz.Web.Areas.Admin.Models
             {
                 return new StringBuilder($"Combined [a: {autoQuestionCount}; m: {overallCount - autoQuestionCount}]").ToString();
             }
-            else if (autoQuestionCount == 20)
+            else if (autoQuestionCount == overallCount)
             {
                 return "Auto";
             }
