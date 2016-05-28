@@ -174,11 +174,12 @@
         };
 
         vm.addComment = function () {
-            vm.newComment.date = (new Date().toLocaleDateString());
-            vm.studentComments.push(vm.newComment);
-            vm.modelChanged = true;
-            vm.toggleNewCommentFrame();
-            vm.studentComments = sortByDate(vm.studentComments);
+            studentDataService.addComment(vm.studentInfo.id, 1, vm.newComment);
+            //vm.newComment.date = (new Date().toLocaleDateString());
+            //vm.studentComments.push(vm.newComment);
+            //vm.modelChanged = true;
+            //vm.toggleNewCommentFrame();
+            //vm.studentComments = sortByDate(vm.studentComments);
         };
 
         vm.validationCheck = function () {

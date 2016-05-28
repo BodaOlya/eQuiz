@@ -21,7 +21,7 @@
             var promise = $http({
                 url: '/Admin/Student/GetStudentInfo',
                 method: "GET",
-                params: {id: studentId}
+                params: { id: studentId }
             });
             return promise;
         }
@@ -36,7 +36,13 @@
         }
 
         function addComment(studentId, adminId, commentText) {
-             
+            var promise = $http({
+                url: '/Admin/Student/AddComment',
+                method: "POST",
+                params: {studentId: studentId, adminId: adminId, comment: commentText}
+            });
+
+            return promise;
         }
 
         function getStudentComments(studentId) {
@@ -53,7 +59,7 @@
             var promise = $http({
                 url: '/Admin/Student/UpdateUserInfo',
                 method: "POST",
-                params: {id: id, firstName: firstName, lastName: lastName, phone: phone}
+                params: { id: id, firstName: firstName, lastName: lastName, phone: phone }
             });
             //var promise = $http.post("/Admin/Student/UpdateUserInfo", { Id: id, firstName: firstName, lastName: lastName, phone: phone });
             return promise;
