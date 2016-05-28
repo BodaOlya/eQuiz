@@ -35,6 +35,10 @@
             return promise;
         }
 
+        function addComment(studentId, adminId, commentText) {
+             
+        }
+
         function getStudentComments(studentId) {
             var promise = $http({
                 url: '/Admin/Student/GetStudentComments',
@@ -46,7 +50,12 @@
         }
 
         function saveProfileInfo(id, firstName, lastName, phone) {
-            var promise = $http.post("/Admin/Student/UpdateUserInfo", { Id: id, firstName: firstName, lastName: lastName, phone: phone });
+            var promise = $http({
+                url: '/Admin/Student/UpdateUserInfo',
+                method: "POST",
+                params: {id: id, firstName: firstName, lastName: lastName, phone: phone}
+            });
+            //var promise = $http.post("/Admin/Student/UpdateUserInfo", { Id: id, firstName: firstName, lastName: lastName, phone: phone });
             return promise;
         }
     }

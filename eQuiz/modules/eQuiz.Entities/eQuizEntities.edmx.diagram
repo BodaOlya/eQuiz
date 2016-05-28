@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="0b635835e46d46fb8a280aaf6c27e7cf" Name="Diagram1">
+      <Diagram DiagramId="0b635835e46d46fb8a280aaf6c27e7cf" Name="Diagram1" ZoomLevel="78">
         <EntityTypeShape EntityType="eQuizModel.FacebookUser" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
         <EntityTypeShape EntityType="eQuizModel.Question" Width="1.5" PointX="6" PointY="22.125" IsExpanded="true" />
         <EntityTypeShape EntityType="eQuizModel.QuestionAnswer" Width="1.875" PointX="8.25" PointY="3.625" IsExpanded="true" />
@@ -20,7 +20,7 @@
         <EntityTypeShape EntityType="eQuizModel.QuizVariant" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="eQuizModel.Tag" Width="1.5" PointX="6" PointY="18.875" IsExpanded="true" />
         <EntityTypeShape EntityType="eQuizModel.Topic" Width="1.5" PointX="3.75" PointY="24" IsExpanded="true" />
-        <EntityTypeShape EntityType="eQuizModel.User" Width="1.5" PointX="0.75" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="eQuizModel.User" Width="1.5" PointX="0.75" PointY="7" IsExpanded="true" />
         <EntityTypeShape EntityType="eQuizModel.UserAnswer" Width="1.5" PointX="10.5" PointY="7.625" IsExpanded="true" />
         <EntityTypeShape EntityType="eQuizModel.UserAnswerScore" Width="1.5" PointX="3" PointY="14.25" IsExpanded="true" />
         <EntityTypeShape EntityType="eQuizModel.UserGroup" Width="1.5" PointX="3.75" PointY="1.875" IsExpanded="true" />

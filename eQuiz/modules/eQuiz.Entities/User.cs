@@ -22,7 +22,7 @@ namespace eQuiz.Entities
             this.QuizPassScores = new HashSet<QuizPassScore>();
             this.UserAnswerScores = new HashSet<UserAnswerScore>();
             this.UserToUserGroups = new HashSet<UserToUserGroup>();
-            this.tblUserComments = new HashSet<UserComment>();
+            this.UserComments = new HashSet<UserComment>();
         }
     
         public int Id { get; set; }
@@ -45,5 +45,7 @@ namespace eQuiz.Entities
         public virtual ICollection<UserAnswerScore> UserAnswerScores { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserToUserGroup> UserToUserGroups { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserComment> UserComments { get; set; }
     }
 }

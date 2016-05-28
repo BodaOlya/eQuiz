@@ -950,8 +950,7 @@
           <NavigationProperty Name="QuizPassScores" Relationship="Self.FK_tblQuizPassScore_tblUser" FromRole="tblUser" ToRole="tblQuizPassScore" />
           <NavigationProperty Name="UserAnswerScores" Relationship="Self.FK_tblUserAnswerScore_tblUser" FromRole="tblUser" ToRole="tblUserAnswerScore" />
           <NavigationProperty Name="UserToUserGroups" Relationship="Self.FK_tblUserToUserGroup_tblUser" FromRole="tblUser" ToRole="tblUserToUserGroup" />
-          <NavigationProperty Name="tblUserComments" Relationship="eQuizModel.FK_tblUserComment_AdminId_tblUser" FromRole="User" ToRole="tblUserComment" />
-          <NavigationProperty Name="tblUserComments1" Relationship="eQuizModel.FK_tblUserComment_UserId_tblUser" FromRole="User" ToRole="tblUserComment" />
+          <NavigationProperty Name="UserComments" Relationship="eQuizModel.FK_tblUserComment_AdminId_tblUser" FromRole="User" ToRole="tblUserComment" />
         </EntityType>
         <EntityType Name="UserAnswer">
           <Key>
@@ -1530,7 +1529,7 @@
           <Property Name="AdminId" Type="Int32" Nullable="false" />
           <Property Name="CommentTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CommentText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="tblUser" Relationship="eQuizModel.FK_tblUserComment_AdminId_tblUser" FromRole="tblUserComment" ToRole="User" />
+          <NavigationProperty Name="Users" Relationship="eQuizModel.FK_tblUserComment_AdminId_tblUser" FromRole="tblUserComment" ToRole="User" />
         </EntityType>
         <Association Name="FK_tblUserComment_AdminId_tblUser">
           <End Type="eQuizModel.User" Role="User" Multiplicity="1" />

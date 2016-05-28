@@ -91,20 +91,39 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
         public JsonResult GetStudentComments(int id)
         {
             var result = new List<object>();
             var comments = _repository.Get<UserComment>(com => com.UserId == id);
             var user = _repository.GetSingle<User>(u => u.Id == id);
-            
 
+            var query = from c in comments
+                        select new
+                        {
+                            date = c.CommentTime,
+                            author = "Admin",
+                            text = c.CommentText
+                        };
 
-            //foreach (var item in query)
-            //{
-            //    result.Add(item);
-            //}
+            foreach (var item in query)
+            {
+                result.Add(item);
+            }
 
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public void AddComment(int studentId, int adminId, string comment)
+        {
+            var comm = new UserComment();
+            comm.UserId = studentId;
+            comm.AdminId = adminId;
+            comm.CommentText = comment;
+            comm.CommentTime = DateTime.Now;
+
+            _repository.Insert<UserComment>(comm);
         }
 
         [HttpGet]

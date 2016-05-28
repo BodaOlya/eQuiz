@@ -20,6 +20,6 @@ namespace eQuiz.Entities
         public System.DateTime CommentTime { get; set; }
         public string CommentText { get; set; }
     
-        public virtual User tblUser { get; set; }
+        public virtual User Users { get; set; }
     }
 }
