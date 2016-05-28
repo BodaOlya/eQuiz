@@ -33,15 +33,17 @@ namespace eQuiz.Web.Areas.Admin.Controllers
         {
             var res = new List<object>();
 
-            var quizPasses = _repository.Get<QuizPass>(qp => qp.Id == id);
+            var quizPasses = _repository.Get<QuizPass>();
             var users = _repository.Get<User>();
 
             var query = from u in users
                         join qp in quizPasses on u.Id equals qp.UserId
+                        group new { u, qp } by u.Id into changed
                         select new
                         {
-                            id = u.Id,
-                            student = u.FirstName + " " + u.LastName,
+                            id = changed.Key,
+                            student = changed.Select(ch => ch.u.FirstName + " " + ch.u.LastName).Distinct(),
+                            //student = u.FirstName + " " + u.LastName,
                             studentScore = 0,
                             quizStatus = "Not Passed",
                             questionDetails = "{ passed: 0, notPassed: 10, inVerification: 0 }"
