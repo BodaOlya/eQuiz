@@ -24,7 +24,7 @@
             //};
             
             var promise = $http({
-                url: '/Admin/Details/GetQuiz',
+                url: '/Admin/QuizDetails/GetQuiz',
                 method: "GET",
                 params: { id: quizId }
             });

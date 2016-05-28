@@ -20,7 +20,7 @@
 
         function getStudentAjax(studentId) {
             var promise = $http({
-                url: '/Admin/Review/GetStudentInfo',
+                url: '/Admin/Student/GetStudentInfo',
                 method: "GET",
                 params: { id: studentId }
             });

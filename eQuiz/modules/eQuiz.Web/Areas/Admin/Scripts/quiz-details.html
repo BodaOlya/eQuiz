@@ -1,7 +1,7 @@
 ﻿<div>
     <br />
 
-    <label style="text-decoration:solid; font-size:18px; float:left">{{qc.quizInfo.quizName}}, {{qc.quizInfo.groupName}}</label>
+    <label style="text-decoration:solid; font-size:18px; float:left">{{qc.quizInfo[0].quizName}}, {{qc.quizInfo[0].groupName}}</label>
     <br />
     <br />
     <label>Search</label>
@@ -27,7 +27,7 @@
             <tbody>
                 <tr ng-repeat="c in qc.contents = (qc.studentsFiltered = (qc.students | filter: {student:qc.search}) | startFrom: qc.tablePage*qc.resultsPerPage | limitTo:qc.resultsPerPage)" style="height: 50px">
                     <td><a href="{{qc.linkToProfile}}" class="link" ng-click="qc.setLink(c.id);" ng-bind-html="c.student | highlight: qc.search">{{c.student}}</a></td>
-                    <td>{{c.studentScore}} / {{qc.quizInfo.quizScore}} </td>
+                    <td>{{c.studentScore}} / {{qc.quizInfo[0].quizScore}} </td>
                     <td>{{c.quizStatus}}</td>
                     <td>
                         <a href="{{qc.linkToQuizRewiew}}" class="link" ng-click="qc.setLinkToQuiz(c.id);">

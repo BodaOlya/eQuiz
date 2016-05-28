@@ -1,4 +1,5 @@
-﻿using eQuiz.Repositories.Abstract;
+﻿using eQuiz.Entities;
+using eQuiz.Repositories.Abstract;
 using eQuiz.Web.Code;
 using System;
 using System.Collections.Generic;
@@ -30,14 +31,52 @@ namespace eQuiz.Web.Areas.Admin.Controllers
         [HttpGet]
         public JsonResult GetQuizPasses(int id)
         {
+            var result = new List<object>();
+
+ 
+
             return Json(null, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public JsonResult GetQuiz(int id)
         {
-            return Json(null, JsonRequestBehavior.AllowGet);
+            var result = new List<object>();
+
+            var quizzPasses = _repository.Get<QuizPass>();
+            var quizPassScore = _repository.Get<QuizPassScore>();
+            var quiz = _repository.Get<Quiz>();            
+            var ugroup = _repository.Get<UserGroup>();
+            var qblock = _repository.Get<QuizBlock>();
+
+            var query = from q in quiz                        
+                        join ug in ugroup on q.GroupId equals ug.Id                        
+                        join qp in quizzPasses on q.Id equals qp.QuizId
+                        join qps in quizPassScore on qp.Id equals qps.Id
+                        where q.Id == id
+                        select new
+                        {
+                            quizName = q.Name,
+                            groupName = ug.Name,
+                            quizScore = qps.PassScore                           
+                        };
+
+            foreach(var item in query)
+            {
+                result.Add(item);
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         #endregion
+
+        [HttpGet]
+        public JsonResult GetQuizStudents(int quizId)
+        {
+            var quizPasses = _repository.Get<QuizPass>(qp => qp.Id == quizId);
+            var users = _repository.Get<User>();
+
+            return Json(null, JsonRequestBehavior.AllowGet);
+        }
     }
 }
