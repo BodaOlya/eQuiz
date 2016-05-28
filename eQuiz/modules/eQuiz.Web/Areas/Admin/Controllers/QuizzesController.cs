@@ -66,22 +66,37 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                                     studentAmount = grouped.Select(item => item.u.Id).Count()
                                 };
 
-            var query = from passq in quizPass
-                        join q in quiz on passq.QuizId equals q.Id
+            //var query = from passq in quizPass
+            //            join q in quiz on passq.QuizId equals q.Id
+            //            join ug in userGroup on q.GroupId equals ug.Id
+            //            join qb in quizBlock on q.Id equals qb.QuizId
+            //            join aq in autoQuestions on passq.QuizId equals aq.QuizId
+            //            join sa in studentAmount on ug.Id equals sa.groupId.Id
+            //            select new
+            //            {
+            //                id = passq.Id,
+            //                quiz_name = q.Name,
+            //                group_name = ug.Name,
+            //                questions_amount = qb.QuestionCount,
+            //                students_amount = sa.studentAmount,
+            //                verification_type = QuizInfo.SetVerificationType(aq.IsAutomatic, (int)qb.QuestionCount)
+            //            }; 
+
+            var query = from q in quiz
                         join ug in userGroup on q.GroupId equals ug.Id
                         join qb in quizBlock on q.Id equals qb.QuizId
-                        join aq in autoQuestions on passq.QuizId equals aq.QuizId
+                        join aq in autoQuestions on q.Id equals aq.QuizId
                         join sa in studentAmount on ug.Id equals sa.groupId.Id
                         select new
                         {
-                            id = passq.Id,
+                            id = q.Id,
                             quiz_name = q.Name,
                             group_name = ug.Name,
                             questions_amount = qb.QuestionCount,
                             students_amount = sa.studentAmount,
                             verification_type = QuizInfo.SetVerificationType(aq.IsAutomatic, (int)qb.QuestionCount)
-                        }; 
-           
+                        };
+
 
             foreach (var item in query)
             {
