@@ -41,9 +41,14 @@
             quizService.getQuestionsById(questionId)
                 .then(function (response) {
                     console.log(response.data);
-                    $scope.quizQuestions = response.data;
-                    $scope.passedQuiz.StartDate = new Date(Date.now());
-                    $scope.isLoading = false;
+                    if (response.data.length === 0) {
+                        $location.path("/Dashboard");
+                    }
+                    else {
+                        $scope.quizQuestions = response.data;
+                        $scope.passedQuiz.StartDate = new Date(Date.now());
+                        $scope.isLoading = false;
+                    }
                 });
         };
 
