@@ -40,7 +40,6 @@
         function getQuestionById(questionId, duration ) {
             quizService.getQuestionsById(questionId, duration)
                 .then(function (response) {
-                    console.log(response.data);
                     if (response.data.length === 0) {
                         $location.path("/Dashboard");
                     }
@@ -63,11 +62,9 @@
         $scope.sendDataToServer = function () {
 
             $scope.passedQuiz.FinishDate = new Date(Date.now());
-            console.log($scope.passedQuiz);
             var passedQuiz = $scope.passedQuiz;
             quizService.sendUserResult(passedQuiz)
                 .success(function (data) {
-                    console.log("OK");
                 });     
         };
 
