@@ -233,8 +233,8 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                             context.QuestionTags.Remove(item);
                         }
                     }
+                    context.SaveChanges();
                 }
-                context.SaveChanges();
             }
             return RedirectToAction("Get", new { id = id });
         }
