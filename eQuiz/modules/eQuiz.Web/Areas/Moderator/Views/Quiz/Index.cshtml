@@ -40,6 +40,9 @@
                         <a href="#" ng-click="q.sortBy('StateName')">
                             {{q.showOrderArrow('StateName')}}Status
                         </a>
+                        <select ng-model="q.pagingInfo.selectedStatus" ng-change="q.changedValue(q.pagingInfo.selectedStatus)">
+                            <option ng-repeat="status in q.statuses">{{status}}</option>
+                        </select>
                     </th>
                 </tr>
             </thead>
