@@ -73,6 +73,18 @@
                         }
                     }
                 })
+                //.when('/Index/Details', {
+                //    templateUrl: '/Areas/Admin/Scripts/quiz-details.html',
+                //    controller: 'QuizDetailsController',
+                //    controllerAs: 'qc',
+                //    resolve: {
+                //        quizInfo: function (quizDetailsDataService, $location) {
+                //            return quizDetailsDataService.getQuizPasses($location.search().Id).then(function (respond) {
+                //                return respond.data;
+                //            })
+                //        }
+                //    }
+                //})
                 .when('/Index/Quizzes', {
                     templateUrl: '/Areas/Admin/Scripts/quizzes.html',
                     controller: 'QuizzesController',
