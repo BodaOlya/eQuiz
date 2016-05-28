@@ -38,6 +38,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
 
             var query = from u in users
                         join qp in quizPasses on u.Id equals qp.UserId
+                        where qp.QuizId == id
                         group new { u, qp } by u.Id into changed
                         select new
                         {
