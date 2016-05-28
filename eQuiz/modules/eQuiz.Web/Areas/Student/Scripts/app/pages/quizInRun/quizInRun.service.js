@@ -10,11 +10,11 @@
 
         return service;
 
-        function getQuestionsByIdAjax(questionId) {
+        function getQuestionsByIdAjax(questionId, duration) {
             var promise = $http({
                 method: "GET",
                 url: "GetQuestionsByQuizId",
-                params: { id: questionId }
+                params: { id: questionId, duration: duration }
 
             });
 

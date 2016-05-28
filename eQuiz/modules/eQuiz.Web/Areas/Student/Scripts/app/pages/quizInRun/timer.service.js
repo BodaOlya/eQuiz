@@ -45,7 +45,6 @@
                 else {
                     color = 'black'
                 }
-                console.log(minutes, seconds);
                 getData();
             }, 1000);
         };
