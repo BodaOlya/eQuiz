@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using eQuiz.Web.Areas.Admin.Models;
 
 namespace eQuiz.Web.Areas.Admin.Controllers
 {
@@ -66,21 +67,48 @@ namespace eQuiz.Web.Areas.Admin.Controllers
         public JsonResult GetStudentQuizzes(int id)
         {
             var result = new List<object>();
+            var types = new List<object>();
+
             var quizzes = _repository.Get<Quiz>();
             var userQuizzes = _repository.Get<QuizPass>(qp => qp.UserId == id);
             var quizBlocks = _repository.Get<QuizBlock>();
+            var quizQuestions = _repository.Get<QuizQuestion>();
+            var questions = _repository.Get<Question>();
+            var questionTypes = _repository.Get<QuestionType>();
+
+            var autoQuestions = from qz in quizzes
+                           join qb in quizBlocks on qz.Id equals qb.QuizId
+                           join qq in quizQuestions on qb.Id equals qq.QuizBlockId
+                           join q in questions on qq.QuestionId equals q.Id
+                           join qt in questionTypes on q.QuestionTypeId equals qt.Id
+                           where qt.IsAutomatic
+                           group new { qz, qt } by qz.Id into grouped
+                           select new QuestionsAuto
+                           {
+                               QuizId = grouped.Key,
+                               IsAutomatic = grouped.Select(q => q.qt.IsAutomatic).Count()
+                           };
+
+            foreach (var item in autoQuestions)
+            {
+                types.Add(item);
+            }
+
+            //var countTypes = from g in getTypes
+
 
             var query = from q in quizzes
                         join uq in userQuizzes on q.Id equals uq.QuizId
                         join qb in quizBlocks on q.Id equals qb.QuizId
+                        join aq in autoQuestions on q.Id equals aq.QuizId 
                         where uq.UserId == id
-                        select new
+                        select new QuizInfo
                         {
                             id = q.Id,
                             name = q.Name,
                             state = "Passed",
-                            questions = qb.QuestionCount,
-                            verificationType = "Hasn't be here",
+                            questions = (int)qb.QuestionCount,
+                            verificationType = QuizInfo.SetVerificationType(aq.IsAutomatic, (int)qb.QuestionCount),
                             otherDetails = q.Description,
                             date = uq.FinishTime
                         };
