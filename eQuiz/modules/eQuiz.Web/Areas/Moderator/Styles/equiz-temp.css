@@ -865,7 +865,7 @@ input[type=number].small {
 }
 
 button.active {
-    background-color: lightgray;
+    background-color: lightgray !important;
 }
 
 .moderator-top-header li {
