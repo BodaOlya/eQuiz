@@ -9,6 +9,7 @@
     function studentDataService($http) {
 
         var service = {
+            addComment:addComment,
             getStudentInfo: getStudentInfo,
             getStudentQuizzes: getStudentQuizzes,
             getStudentComments: getStudentComments,
