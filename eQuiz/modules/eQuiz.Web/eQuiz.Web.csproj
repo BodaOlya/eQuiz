@@ -178,6 +178,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\DefaultController.cs" />
+    <Compile Include="Areas\Admin\Controllers\QuizDetailsController.cs" />
     <Compile Include="Areas\Admin\Controllers\QuizzesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReviewController.cs" />
     <Compile Include="Areas\Admin\Controllers\StudentController.cs" />
@@ -237,6 +238,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\QuizDetails\" />
     <Folder Include="Areas\Admin\Views\Quizzes\" />
     <Folder Include="Areas\Admin\Views\Review\" />
     <Folder Include="Areas\Admin\Views\Shared\" />

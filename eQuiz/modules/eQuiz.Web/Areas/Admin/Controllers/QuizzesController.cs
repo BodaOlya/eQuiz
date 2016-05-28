@@ -48,10 +48,10 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                         {
                             quiz_name = grouped.Select(item => item.q.Name).Distinct(),
                             group_name = grouped.Select(item => item.ug.Name).Distinct(),
-                            questions_amount = grouped.Select(item => item.qb.QuestionCount).Distinct()
+                            questions_amount = grouped.Select(item => item.qb.QuestionCount).Distinct(),
                         };
 
-            result.Add(new { quiz_name = "Quiz1", group_name = "Group1", questions_amount = 20, students_amount = 10, verification_type = "Auto" });
+            //result.Add(new { quiz_name = "Quiz1", group_name = "Group1", questions_amount = 20, students_amount = 10, verification_type = "Auto" });
 
             foreach (var item in query)
             {
