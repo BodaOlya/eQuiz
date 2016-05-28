@@ -156,7 +156,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                                         StartDate = quiz.StartDate,
                                         Duration = quiz.TimeLimitMinutes,
                                         StateName = quizState.Name
-                                    }).Where(item => (searchText == null || item.Name.Contains(searchText)) &&
+                                    }).Where(item => (searchText == null || item.Name.ToLower().Contains(searchText.ToLower())) &&
                                             (item.StateName == "Opened" || item.StateName == "Draft" || item.StateName == "Scheduled") &&
                                             (selectedStatus == null || item.StateName == selectedStatus))
                                             .OrderBy(q => q.Name);
