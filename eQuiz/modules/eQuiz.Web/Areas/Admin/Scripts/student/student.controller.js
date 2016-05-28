@@ -44,14 +44,6 @@
         vm.tablePage = 0;
         vm.resultsPerPage = 10;
 
-        function refreshComments()
-        {
-            return studentDataService.getStudentComments($location.search().Id).then(function (response) {
-                vm.studentComments = response.data;
-                return vm.studentComments;
-            });
-        }
-
         function activate() {
             studentDataService.getStudentInfo($location.search().Id).then(function (response) {
                 vm.studentInfo = response.data;
@@ -66,7 +58,8 @@
                     return vm.studentComments;
                 });
 
-                generatePredicate();
+            generatePredicate();
+            
             }
         vm.studentQuizzes = sortByDate(vm.studentQuizzes);
         vm.studentComments = sortByDate(vm.studentComments);
@@ -178,10 +171,9 @@
         };
 
         vm.addComment = function () {
-            studentDataService.addComment(vm.studentInfo.id, 1, vm.newComment.text);
-            vm.toggleNewCommentFrame();
-            $route.reload();
-           // vm.studentComments = sortByDate(vm.studentComments);
+                studentDataService.addComment(vm.studentInfo.id, 1, vm.newComment.text).then(activate);
+                vm.toggleNewCommentFrame();
+                vm.studentComments = sortByDate(vm.studentComments);
         };
 
         vm.validationCheck = function () {
@@ -190,10 +182,6 @@
 
         vm.setQuizLink = function (quizId) {
             vm.link = '/Admin/Default/Index/Quiz/Review/' + quizId;
-        };
-
-        vm.setLink = function (tab) {
-            vm.currentTab = tab;
         };
 
         function sortByDate(array) {
