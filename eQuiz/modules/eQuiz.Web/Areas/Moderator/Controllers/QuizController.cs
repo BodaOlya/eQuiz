@@ -129,10 +129,16 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
         [HttpGet]
         public ActionResult GetQuizzesPage(int currentPage = 1, int quizzesPerPage = 3, string predicate = "Name",
-                                            bool reverse = false, string searchText = null)
+                                            bool reverse = false, string searchText = null, string selectedStatus = null)
         {
             IEnumerable<QuizListModel> quizzesList = null;
             var quizzesTotal = 0;
+
+            if (selectedStatus == "All")
+            {
+                selectedStatus = null;
+            }
+
 
             using (var context = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
             {
@@ -150,7 +156,8 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                                          Duration = quiz.TimeLimitMinutes,
                                          StateName = quizState.Name
                                      }).Where(item => (searchText == null || item.Name.Contains(searchText)) &&
-                                             (item.StateName == "Opened" || item.StateName == "Draft" || item.StateName == "Scheduled"))
+                                             (item.StateName == "Opened" || item.StateName == "Draft" || item.StateName == "Scheduled") &&
+                                             (selectedStatus == null || item.StateName == selectedStatus))
                                              .OrderBy(q => q.Name);
 
                 quizzesTotal = quizzesList.Count();
