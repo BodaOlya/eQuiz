@@ -65,39 +65,28 @@ namespace eQuiz.Web.Areas.Student.Controllers
         }
 
         public ActionResult GetQuestionsByQuizId(int id, int duration)
-        {
-            var listQuizes = _repository.Get<Quiz>();
-            var listQuestions = _repository.Get<Question>();
-            var listQuestionTypes = _repository.Get<QuestionType>();
-            var listQuizQuestions = _repository.Get<QuizQuestion>();
-            var listQuizVariants = _repository.Get<QuizVariant>();
-            var listQuestionAnswers = _repository.Get<QuestionAnswer>();
-            var listAnswers = _repository.Get<Answer>();
+        {  
+            var quizInfo = _repository.Get<QuizQuestion>(q => q.QuizVariant.QuizId == id,
+                                                             q => q.Question,
+                                                             q => q.Question.QuestionType,
+                                                             q => q.Question.QuestionAnswers);
 
-            var quizInfo = from quiz in listQuizes
-                           join variant in listQuizVariants on quiz.Id equals variant.QuizId
-                           join quizQuestion in listQuizQuestions on variant.Id equals quizQuestion.QuizVariantId
-                           join question in listQuestions on quizQuestion.QuestionId equals question.Id
-                           join questionType in listQuestionTypes on question.QuestionTypeId equals questionType.Id
-
-                           where quiz.Id == id && quiz.TimeLimitMinutes == duration
-                           select new
-                           {
-                               Id = question.Id,
-                               Text = question.QuestionText,
-                               IsAutomatic = questionType.IsAutomatic,
-                               Answers = from questAnswer in listQuestionAnswers
-                                         join answer in listAnswers on questAnswer.AnswerId equals answer.Id
-                                         where questAnswer.QuestionId == question.Id
-                                         select new
-                                         {
-                                             Text = answer.AnswerText,
-                                             Id = answer.Id
-                                         },
-                               QuizBlock = quizQuestion.QuizBlockId,
-                               QuestionOrder = quizQuestion.QuestionOrder
-                           };
-            var quizInfoList = quizInfo.OrderBy(q => q.QuestionOrder).ToList();
+            var quizInfoList = quizInfo
+                                        .Select(q => new
+                                        {
+                                            Id = q.Question.Id,
+                                            Text = q.Question.QuestionText,
+                                            IsAutomatic = q.Question.QuestionType.IsAutomatic,
+                                            Answers = q.Question.QuestionAnswers.Select(a => new
+                                            {
+                                                Id = a.Id,
+                                                Text = _repository.GetSingle<Answer>(ans => ans.Id == a.Id).AnswerText
+                                            }),
+                                            QuizBlock = q.QuizBlockId,
+                                            QuestionOrder = q.QuestionOrder
+                                        })
+                                        .OrderBy(q => q.QuestionOrder)
+                                        .ToList();
 
             return Json(quizInfoList, JsonRequestBehavior.AllowGet);
 
