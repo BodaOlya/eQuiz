@@ -16,8 +16,8 @@
         vm.resultsCount = [10, 25, 50, 100];
         vm.tablePage = 0;
         vm.linkToProfile = "Index/Student?Id=";
-        vm.linkToQuizRewiew = "Index/Student?Id=";
-
+        vm.linkToQuizRewiew = "Index/Student?Id=";        
+        
         vm.headers = [
             {
                 name: 'Student',
@@ -39,6 +39,7 @@
         function activate() {
             vm.students = quizDetailsDataService.getQuizPasses(1);
             vm.quizInfo = quizInfo;//quizDetailsDataService.getQuiz(1);
+            
             generatePredicate();
         };
 
