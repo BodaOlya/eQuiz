@@ -312,17 +312,22 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
             foreach (var answer in questionAnswers)
             {
+
                 answer.Answer = answers.FirstOrDefault(a => a.Id == answer.AnswerId);
             }
 
             foreach (var answer in answers)
             {
+                answer.QuestionAnswers = null;
+                answer.UserAnswers = null;
                 _repository.Insert<Answer>(answer);
             }
 
             foreach (var answer in questionAnswers)
             {
+                answer.AnswerId = answer.Answer.Id;
                 answer.Answer = null;
+                answer.QuestionId = answer.Question.Id;
                 answer.Question = null;
                 _repository.Insert<QuestionAnswer>(answer);
             }
