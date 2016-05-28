@@ -139,53 +139,54 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 selectedStatus = null;
             }
 
+            var quizzes = _repository.Get<Quiz>();
+            var quizBlocks = _repository.Get<QuizBlock>();
+            var quizStates = _repository.Get<QuizState>();
+            
+            //TODO : add method to repository for paging
+            quizzesList = (from quiz in quizzes
+                            join quizBlock in quizBlocks on quiz.Id equals quizBlock.QuizId
+                            join quizState in quizStates on quiz.QuizStateId equals quizState.Id
+                            select
+                                    new QuizListModel
+                                    {
+                                        Id = quiz.Id,
+                                        Name = quiz.Name,
+                                        CountOfQuestions = quizBlock.QuestionCount,
+                                        StartDate = quiz.StartDate,
+                                        Duration = quiz.TimeLimitMinutes,
+                                        StateName = quizState.Name
+                                    }).Where(item => (searchText == null || item.Name.Contains(searchText)) &&
+                                            (item.StateName == "Opened" || item.StateName == "Draft" || item.StateName == "Scheduled") &&
+                                            (selectedStatus == null || item.StateName == selectedStatus))
+                                            .OrderBy(q => q.Name);
 
-            using (var context = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
+            quizzesTotal = quizzesList.Count();
+
+            switch (predicate)
             {
-                //TODO : edit using repositories
-                quizzesList = (from quiz in context.Quizs
-                               join quizBlock in context.QuizBlocks on quiz.Id equals quizBlock.QuizId
-                               join quizState in context.QuizStates on quiz.QuizStateId equals quizState.Id
-                               select
-                                     new QuizListModel
-                                     {
-                                         Id = quiz.Id,
-                                         Name = quiz.Name,
-                                         CountOfQuestions = quizBlock.QuestionCount,
-                                         StartDate = quiz.StartDate,
-                                         Duration = quiz.TimeLimitMinutes,
-                                         StateName = quizState.Name
-                                     }).Where(item => (searchText == null || item.Name.Contains(searchText)) &&
-                                             (item.StateName == "Opened" || item.StateName == "Draft" || item.StateName == "Scheduled") &&
-                                             (selectedStatus == null || item.StateName == selectedStatus))
-                                             .OrderBy(q => q.Name);
-
-                quizzesTotal = quizzesList.Count();
-
-                switch (predicate)
-                {
-                    case "Name":
-                        quizzesList = reverse ? quizzesList.OrderByDescending(q => q.Name) : quizzesList.OrderBy(q => q.Name);
-                        break;
-                    case "CountOfQuestions":
-                        quizzesList = reverse ? quizzesList.OrderByDescending(q => q.CountOfQuestions) : quizzesList.OrderBy(q => q.CountOfQuestions);
-                        break;
-                    case "StartDate":
-                        quizzesList = reverse ? quizzesList.OrderByDescending(q => q.StartDate) : quizzesList.OrderBy(q => q.StartDate);
-                        break;
-                    case "StateName":
-                        quizzesList = reverse ? quizzesList.OrderByDescending(q => q.StateName) : quizzesList.OrderBy(q => q.StateName);
-                        break;
-                    case "Duration":
-                        quizzesList = reverse ? quizzesList.OrderByDescending(q => q.Duration) : quizzesList.OrderBy(q => q.Duration);
-                        break;
-                    default:
-                        quizzesList = reverse ? quizzesList.OrderByDescending(q => q.Name) : quizzesList.OrderBy(q => q.Name);
-                        break;
-                }
-
-                quizzesList = quizzesList.Skip((currentPage - 1) * quizzesPerPage).Take(quizzesPerPage).ToList();
+                case "Name":
+                    quizzesList = reverse ? quizzesList.OrderByDescending(q => q.Name) : quizzesList.OrderBy(q => q.Name);
+                    break;
+                case "CountOfQuestions":
+                    quizzesList = reverse ? quizzesList.OrderByDescending(q => q.CountOfQuestions) : quizzesList.OrderBy(q => q.CountOfQuestions);
+                    break;
+                case "StartDate":
+                    quizzesList = reverse ? quizzesList.OrderByDescending(q => q.StartDate) : quizzesList.OrderBy(q => q.StartDate);
+                    break;
+                case "StateName":
+                    quizzesList = reverse ? quizzesList.OrderByDescending(q => q.StateName) : quizzesList.OrderBy(q => q.StateName);
+                    break;
+                case "Duration":
+                    quizzesList = reverse ? quizzesList.OrderByDescending(q => q.Duration) : quizzesList.OrderBy(q => q.Duration);
+                    break;
+                default:
+                    quizzesList = reverse ? quizzesList.OrderByDescending(q => q.Name) : quizzesList.OrderBy(q => q.Name);
+                    break;
             }
+
+            quizzesList = quizzesList.Skip((currentPage - 1) * quizzesPerPage).Take(quizzesPerPage).ToList();
+            
             return Json(new { Quizzes = quizzesList, QuizzesTotal = quizzesTotal }, JsonRequestBehavior.AllowGet);
         }
 
