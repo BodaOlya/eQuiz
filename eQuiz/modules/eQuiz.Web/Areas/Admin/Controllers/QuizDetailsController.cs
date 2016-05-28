@@ -44,19 +44,21 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var result = new List<object>();
 
             var quizzPasses = _repository.Get<QuizPass>();
+            var quizPassScore = _repository.Get<QuizPassScore>();
             var quiz = _repository.Get<Quiz>();            
             var ugroup = _repository.Get<UserGroup>();
             var qblock = _repository.Get<QuizBlock>();
 
             var query = from q in quiz                        
-                        join ug in ugroup on q.GroupId equals ug.Id
-                        join qb in qblock on q.Id equals qb.QuizId
+                        join ug in ugroup on q.GroupId equals ug.Id                        
+                        join qp in quizzPasses on q.Id equals qp.QuizId
+                        join qps in quizPassScore on qp.Id equals qps.Id
                         where q.Id == id
                         select new
                         {
                             quizName = q.Name,
                             groupName = ug.Name,
-                            quizScore = qb.QuestionCount                            
+                            quizScore = qps.PassScore                           
                         };
 
             foreach(var item in query)
