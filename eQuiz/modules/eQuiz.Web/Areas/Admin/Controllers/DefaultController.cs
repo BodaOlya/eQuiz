@@ -14,26 +14,6 @@ namespace eQuiz.Web.Areas.Admin.Controllers
         {
             return View();
         }
-
-        [HttpGet]       
-        public JsonResult GetStudentComments(int id)
-        {
-            var studentComments = new List<object>();
-
-            studentComments.Add(new
-            {
-                date = "15.04.2016",
-                author = "Volodymyr",
-                text = "Responsible, initiative student with excellent knowledge of necessary frameworks"
-            });
-            studentComments.Add(new
-            {
-                date = "03.05.2016",
-                author = "Ivan",
-                text = "Demonstrates deep theoretical knowledge"
-            });
-
-            return Json(studentComments, JsonRequestBehavior.AllowGet);
-        }
+        
     }
 }
