@@ -66,11 +66,17 @@
                     controller: 'QuizDetailsController',
                     controllerAs: 'qc',
                     resolve: {
+                        quizStudents: function (quizDetailsDataService, $location) {
+                            return quizDetailsDataService.getQuizPasses($location.search().Id).then(function (respond) {
+                                return respond.data;
+                            })
+                        },
                         quizInfo: function (quizDetailsDataService, $location) {
                             return quizDetailsDataService.getQuiz($location.search().Id).then(function (respond) {
                                 return respond.data;
                             })
                         }
+
                     }
                 })
                 //.when('/Index/Details', {

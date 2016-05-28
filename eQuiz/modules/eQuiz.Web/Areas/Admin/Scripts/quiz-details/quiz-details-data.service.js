@@ -17,11 +17,6 @@
 
 
         function getQuizAjax(quizId) {
-            //var promise = {
-            //    quizName: "Theory",
-            //    groupName: ".Net",
-            //    quizScore: 10
-            //};
             
             var promise = $http({
                 url: '/Admin/QuizDetails/GetQuiz',
@@ -33,42 +28,42 @@
         };
 
         function getQuizPassesAjax(quizId) {
-            var promise = [
-                {
-                    id: 1,
-                    student: "First Student",
-                    studentScore: 0,
-                    quizStatus: "Not Passed",
-                    questionDetails: { passed: 0, notPassed: 10, inVerification: 0 }
-                },
-                {
-                    id: 1,
-                    student: "Second Student",
-                    studentScore: 2,
-                    quizStatus: "In Verification",
-                    questionDetails: { passed: 0, notPassed: 0, inVerification: 10 }
-                },
-                {
-                    id: 1,
-                    student: "Third Student",
-                    studentScore: 3,
-                    quizStatus: "In Verification",
-                    questionDetails: { passed: 0, notPassed: 0, inVerification: 10 }
-                },
-                {
-                    id: 1,
-                    student: "Fifth Student",
-                    studentScore: 5,
-                    quizStatus: "In Verification",
-                    questionDetails: { passed: 0, notPassed: 0, inVerification: 10 }
-                }
-            ];
+            //var promise = [
+            //    {
+            //        id: 1,
+            //        student: "First Student",
+            //        studentScore: 0,
+            //        quizStatus: "Not Passed",
+            //        questionDetails: { passed: 0, notPassed: 10, inVerification: 0 }
+            //    },
+            //    {
+            //        id: 1,
+            //        student: "Second Student",
+            //        studentScore: 2,
+            //        quizStatus: "In Verification",
+            //        questionDetails: { passed: 0, notPassed: 0, inVerification: 10 }
+            //    },
+            //    {
+            //        id: 1,
+            //        student: "Third Student",
+            //        studentScore: 3,
+            //        quizStatus: "In Verification",
+            //        questionDetails: { passed: 0, notPassed: 0, inVerification: 10 }
+            //    },
+            //    {
+            //        id: 1,
+            //        student: "Fifth Student",
+            //        studentScore: 5,
+            //        quizStatus: "In Verification",
+            //        questionDetails: { passed: 0, notPassed: 0, inVerification: 10 }
+            //    }
+            //];
 
-            //var promise = $http({
-            //    url: '/Admin/QuizDetails/GetQuizStudents',
-            //    method: "GET",
-            //    params: { quizId: quizId }
-            //});
+            var promise = $http({
+                url: '/Admin/QuizDetails/GetQuizPasses',
+                method: "GET",
+                params: { id: quizId }
+            });
             return promise;
         };
 

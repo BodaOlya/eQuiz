@@ -31,11 +31,28 @@ namespace eQuiz.Web.Areas.Admin.Controllers
         [HttpGet]
         public JsonResult GetQuizPasses(int id)
         {
-            var result = new List<object>();
+            var res = new List<object>();
 
+            var quizPasses = _repository.Get<QuizPass>(qp => qp.Id == id);
+            var users = _repository.Get<User>();
 
+            var query = from u in users
+                        join qp in quizPasses on u.Id equals qp.UserId
+                        select new
+                        {
+                            id = u.Id,
+                            student = u.FirstName + " " + u.LastName,
+                            studentScore = 0,
+                            quizStatus = "Not Passed",
+                            questionDetails = "{ passed: 0, notPassed: 10, inVerification: 0 }"
+                        };
 
-            return Json(null, JsonRequestBehavior.AllowGet);
+            foreach (var item in query)
+            {
+                res.Add(item);
+            }
+
+            return Json(res, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -68,7 +85,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        #endregion
+        
 
         [HttpGet]
         public JsonResult GetQuizStudents(int quizId)
@@ -94,7 +111,9 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                 res.Add(item);
             }
 
-            return Json(null, JsonRequestBehavior.AllowGet);
+            return Json(res, JsonRequestBehavior.AllowGet);
         }
+
+        #endregion
     }
 }
