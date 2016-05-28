@@ -6,7 +6,7 @@
     function ($scope, quizService, trackUserResultService, $routeParams, $interval, $window, $location, $uibModal) {
         $scope.quizQuestions = null;
         $scope.quizId = parseInt($routeParams.id);
-        $scope.quizDuration = $routeParams.dura;
+        $scope.quizDuration = $routeParams.duration;
         $scope.currentQuestion = 0;
         $scope.passedQuiz = trackUserResultService.passedQuiz;
         $scope.passedQuiz.QuizId = $scope.quizId;
