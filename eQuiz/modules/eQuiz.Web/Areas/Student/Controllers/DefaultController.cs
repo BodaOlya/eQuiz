@@ -66,10 +66,13 @@ namespace eQuiz.Web.Areas.Student.Controllers
 
         public ActionResult GetQuestionsByQuizId(int id, int duration)
         {  
-            var quizInfo = _repository.Get<QuizQuestion>(q => q.QuizVariant.QuizId == id,
+            var quizInfo = _repository.Get<QuizQuestion>(q => q.QuizVariant.QuizId == id && q.QuizBlock.Quiz.TimeLimitMinutes == duration,
                                                              q => q.Question,
                                                              q => q.Question.QuestionType,
-                                                             q => q.Question.QuestionAnswers);
+                                                             q => q.Question.QuestionAnswers,
+                                                             q=>q.QuizBlock.Quiz);
+
+
 
             var quizInfoList = quizInfo
                                         .Select(q => new
