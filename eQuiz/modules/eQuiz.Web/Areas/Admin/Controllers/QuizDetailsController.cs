@@ -67,5 +67,14 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         #endregion
+
+        [HttpGet]
+        public JsonResult GetQuizStudents(int quizId)
+        {
+            var quizPasses = _repository.Get<QuizPass>(qp => qp.Id == quizId);
+            var users = _repository.Get<User>();
+
+            return Json(null, JsonRequestBehavior.AllowGet);
+        }
     }
 }
