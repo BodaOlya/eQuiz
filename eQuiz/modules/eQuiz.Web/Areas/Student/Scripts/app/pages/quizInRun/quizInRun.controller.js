@@ -35,10 +35,10 @@
 
         $scope.isLoading = true;
 
-        getQuestionById($scope.quizId);
+        getQuestionById($scope.quizId, $scope.quizDuration);
 
-        function getQuestionById(questionId) {
-            quizService.getQuestionsById(questionId)
+        function getQuestionById(questionId, duration ) {
+            quizService.getQuestionsById(questionId, duration)
                 .then(function (response) {
                     console.log(response.data);
                     if (response.data.length === 0) {

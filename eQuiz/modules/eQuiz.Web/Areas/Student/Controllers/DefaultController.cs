@@ -64,7 +64,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetQuestionsByQuizId(int id)
+        public ActionResult GetQuestionsByQuizId(int id, int duration)
         {
             var listQuizes = _repository.Get<Quiz>();
             var listQuestions = _repository.Get<Question>();
@@ -80,7 +80,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                            join question in listQuestions on quizQuestion.QuestionId equals question.Id
                            join questionType in listQuestionTypes on question.QuestionTypeId equals questionType.Id
 
-                           where quiz.Id == id
+                           where quiz.Id == id && quiz.TimeLimitMinutes == duration
                            select new
                            {
                                Id = question.Id,
@@ -102,7 +102,6 @@ namespace eQuiz.Web.Areas.Student.Controllers
             return Json(quizInfoList, JsonRequestBehavior.AllowGet);
 
         }
-
 
         public void InsertQuizResult(QuizResultModel passedQuiz)
         {
