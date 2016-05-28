@@ -58,7 +58,8 @@
                                 return respond.data;
                             })
                         }
-                    } 
+                    },
+                    reloadOnSearch: false
                 })
                 .when('/Index/Details', {
                     templateUrl: '/Areas/Admin/Scripts/quiz-details.html',

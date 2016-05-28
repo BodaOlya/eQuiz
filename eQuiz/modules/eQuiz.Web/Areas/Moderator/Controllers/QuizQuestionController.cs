@@ -257,7 +257,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             if (quizState != "Archived")
             {
                 quizId = quiz.Id;
-                var quizBlockIds = _repository.Get<QuizBlock>(qb => qb.Id == quizId).Select(qb => qb.Id).ToList();
+                var quizBlockIds = _repository.Get<QuizBlock>(qb => qb.QuizId == quizId).Select(qb => qb.Id).ToList();
                 var quizQuestios = _repository.Get<QuizQuestion>(qq => quizBlockIds.Contains(qq.QuizBlockId)).ToList();
 
                 foreach (var quizQuestion in quizQuestios)

@@ -156,7 +156,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                                         StartDate = quiz.StartDate,
                                         Duration = quiz.TimeLimitMinutes,
                                         StateName = quizState.Name
-                                    }).Where(item => (searchText == null || item.Name.Contains(searchText)) &&
+                                    }).Where(item => (searchText == null || item.Name.ToLower().Contains(searchText.ToLower())) &&
                                             (item.StateName == "Opened" || item.StateName == "Draft" || item.StateName == "Scheduled") &&
                                             (selectedStatus == null || item.StateName == selectedStatus))
                                             .OrderBy(q => q.Name);
@@ -320,17 +320,22 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
             foreach (var answer in questionAnswers)
             {
+
                 answer.Answer = answers.FirstOrDefault(a => a.Id == answer.AnswerId);
             }
 
             foreach (var answer in answers)
             {
+                answer.QuestionAnswers = null;
+                answer.UserAnswers = null;
                 _repository.Insert<Answer>(answer);
             }
 
             foreach (var answer in questionAnswers)
             {
+                answer.AnswerId = answer.Answer.Id;
                 answer.Answer = null;
+                answer.QuestionId = answer.Question.Id;
                 answer.Question = null;
                 _repository.Insert<QuestionAnswer>(answer);
             }

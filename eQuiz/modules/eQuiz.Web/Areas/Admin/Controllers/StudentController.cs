@@ -131,7 +131,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var query = from c in comments
                         select new
                         {
-                            date = c.CommentTime,
+                            date = c.CommentTime.ToString(),
                             author = "Admin",
                             text = c.CommentText
                         };

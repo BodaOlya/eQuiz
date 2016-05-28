@@ -14,6 +14,8 @@
                 $scope.allQuizes = data;
                 $scope.isLoading = false;
             });
+            
+           
         };
     }]);
 })(angular);
