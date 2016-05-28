@@ -36,7 +36,11 @@ namespace eQuiz.Web.Areas.Admin.Controllers
         [HttpGet]
         public JsonResult GetQuiz(int id)
         {
-            return Json(null, JsonRequestBehavior.AllowGet);
+            var result = new List<object>();
+
+
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         #endregion
     }
