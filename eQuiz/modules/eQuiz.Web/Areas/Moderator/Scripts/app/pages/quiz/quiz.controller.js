@@ -168,6 +168,9 @@
                     vm.model.quiz.DurationMinutes = vm.model.quiz.TimeLimitMinutes % 60;
                     vm.model.quiz.DurationHours = (vm.model.quiz.TimeLimitMinutes - vm.model.quiz.TimeLimitMinutes % 60) / 60;
                     vm.model.quizBlock = data.data.block;
+                    if (!$location.search().id) {
+                        $location.search('id', vm.model.quiz.Id);
+                    }
                     saveQuestions();
                 }, function (data) {
                     vm.hideLoading();
