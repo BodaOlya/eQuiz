@@ -43,6 +43,7 @@ input[type='text'], select {
     border-collapse: separate;
     border-spacing: 0 10px;
     /*border-spacing: 10px;*/
+    text-align:left;
     width: 40%;
     font-size: 14pt;
 }
@@ -361,4 +362,7 @@ input[type="button"] {
     text-align: center;
     width: 350px;
     height: 150px;
+}
+.quiz-table{
+    text-align: left;
 }
