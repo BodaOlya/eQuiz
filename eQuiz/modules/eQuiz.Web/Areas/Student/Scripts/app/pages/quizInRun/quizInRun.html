@@ -12,7 +12,7 @@
         <nav id="quizNav">
             <table>
                 <tr>
-                    <td ng-class="{navQuestionsActive: $index == currentQuestion, navQuestions: $index != currentQuestion}" ng-repeat="question in quizQuestions" ng-click="setCurrentQuestion($index, currentQuestion, quizQuestions[currentQuestion].Id, quizQuestions[currentQuestion].IsAutomatic, quizQuestions[currentQuestion].QuizBlock, quizQuestions[currentQuestion].QuestionOrder, passedQuiz.UserAnswers[currentQuestion].AnswerText)">{{$index + 1}}</td>
+                    <td ng-class="{navQuestionsActive: $index == currentQuestion, navQuestions: $index != currentQuestion}" ng-repeat="question in quizQuestions" ng-click="setCurrentQuestion($index, currentQuestion, quizQuestions[currentQuestion].Id, quizQuestions[currentQuestion].IsAutomatic, quizQuestions[currentQuestion].QuizBlock, quizQuestions[currentQuestion].QuestionOrder, passedQuiz.UserAnswers[currentQuestion].AnswerText)">{{$index < 9 ? '0' + ($index + 1) : $index + 1}}</td>
                     <!--<td class="emptyTdInQuestNav" ng-repeat-end="">--------</td>-->
                 </tr>
                 <tr>
