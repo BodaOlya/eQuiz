@@ -1,9 +1,9 @@
 ﻿(function (angular) {
     angular.module('equizModule').controller('QuizzesController', QuizzesController);
 
-    QuizzesController.$inject = ['$scope', 'quizzesDataService', '$filter'];
+    QuizzesController.$inject = ['$scope', 'quizzesDataService', '$filter', 'quizzesList'];
 
-    function QuizzesController($scope, quizzesDataService, $filter) {
+    function QuizzesController($scope, quizzesDataService, $filter, quizzesList) {
         var vm = this;
         vm.myPredicate = null;
         vm.resultsPerPage = 10;
@@ -35,8 +35,13 @@
         }];
 
         function active() {
-            vm.quizzes = quizzesDataService.getQuizzes();
-            generatePredicate();
+            vm.quizzes = quizzesList;
+            vm.quizzes.forEach(function (currVal, index, array) {
+                currVal.quiz_name = currVal.quiz_name.toString();
+                currVal.group_name = currVal.group_name.toString();
+                currVal.questions_amount = currVal.questions_amount.toString();
+            });
+            generatePredicate();            
         }
 
         active();

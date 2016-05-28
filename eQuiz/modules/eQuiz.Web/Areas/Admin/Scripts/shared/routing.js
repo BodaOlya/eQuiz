@@ -67,7 +67,14 @@
                 .when('/Index/Quizzes', {
                     templateUrl: '/Areas/Admin/Scripts/quizzes.html',
                     controller: 'QuizzesController',
-                    controllerAs: 'qc'
+                    controllerAs: 'qc',
+                    resolve: {
+                        quizzesList: function (quizzesDataService) {
+                            return quizzesDataService.getQuizzes().then(function (respond) {
+                                return respond.data;
+                            })
+                        }
+                    }
                 })
                 .otherwise({ redirectTo: '/' });
 
