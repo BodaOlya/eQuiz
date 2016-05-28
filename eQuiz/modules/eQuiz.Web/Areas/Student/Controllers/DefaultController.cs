@@ -121,41 +121,45 @@ namespace eQuiz.Web.Areas.Student.Controllers
 
                 foreach (var userAnswer in passedQuiz.UserAnswers)
                 {
-                    QuizPassQuestion quizPassQuestionToInsert = new QuizPassQuestion
+                    if (userAnswer != null)
                     {
-                        QuizPassId = lastQuizPassIdentity,
-                        QuestionId = userAnswer.QuestionId,
-                        QuizBlockId = userAnswer.QuizBlock,
-                        //Remade GetQuestionsByQuizId method to send questionOrder property on the client
-                        QuestionOrder = userAnswer.QuestionOrder
-                    };
-
-                    _repository.Insert<QuizPassQuestion>(quizPassQuestionToInsert);
-
-                    var lastQuizPassQuestionIdentity = quizPassQuestionToInsert.Id;
-
-                    if (userAnswer.IsAutomatic)
-                    {
-                        UserAnswer userAnswerToInsert = new UserAnswer
+                        QuizPassQuestion quizPassQuestionToInsert = new QuizPassQuestion
                         {
-                            QuizPassQuestionId = lastQuizPassQuestionIdentity,
-                            AnswerId = (int)userAnswer.AnswerId,
-                            AnswerTime = userAnswer.AnswerTime
+                            QuizPassId = lastQuizPassIdentity,
+                            QuestionId = userAnswer.QuestionId,
+                            QuizBlockId = userAnswer.QuizBlock,
+                            //Remade GetQuestionsByQuizId method to send questionOrder property on the client
+                            QuestionOrder = userAnswer.QuestionOrder
                         };
 
-                        _repository.Insert<UserAnswer>(userAnswerToInsert);
-                    }
-                    else
-                    {
-                        UserTextAnswer userTextAnswerToInsert = new UserTextAnswer
-                        {
-                            QuizPassQuestionId = lastQuizPassQuestionIdentity,
-                            AnswerText = userAnswer.AnswerText,
-                            AnswerTime = userAnswer.AnswerTime
-                        };
+                        _repository.Insert<QuizPassQuestion>(quizPassQuestionToInsert);
 
-                        _repository.Insert<UserTextAnswer>(userTextAnswerToInsert);
+                        var lastQuizPassQuestionIdentity = quizPassQuestionToInsert.Id;
+
+                        if (userAnswer.IsAutomatic)
+                        {
+                            UserAnswer userAnswerToInsert = new UserAnswer
+                            {
+                                QuizPassQuestionId = lastQuizPassQuestionIdentity,
+                                AnswerId = (int)userAnswer.AnswerId,
+                                AnswerTime = userAnswer.AnswerTime
+                            };
+
+                            _repository.Insert<UserAnswer>(userAnswerToInsert);
+                        }
+                        else
+                        {
+                            UserTextAnswer userTextAnswerToInsert = new UserTextAnswer
+                            {
+                                QuizPassQuestionId = lastQuizPassQuestionIdentity,
+                                AnswerText = userAnswer.AnswerText,
+                                AnswerTime = userAnswer.AnswerTime
+                            };
+
+                            _repository.Insert<UserTextAnswer>(userTextAnswerToInsert);
+                        }
                     }
+
                 }
             }
         }
