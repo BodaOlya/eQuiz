@@ -115,11 +115,11 @@ namespace eQuiz.Web.Areas.Student.Controllers
             };
             _repository.Insert<QuizPass>(quizPassToInsert);
 
-            var lastQuizPassIdentity = quizPassToInsert.Id;
-
-            foreach(var userAnswer in passedQuiz.UserAnswers)
+            if (passedQuiz.UserAnswers != null)
             {
-                if(userAnswer != null)
+                var lastQuizPassIdentity = quizPassToInsert.Id;
+
+                foreach (var userAnswer in passedQuiz.UserAnswers)
                 {
                     QuizPassQuestion quizPassQuestionToInsert = new QuizPassQuestion
                     {
@@ -161,4 +161,4 @@ namespace eQuiz.Web.Areas.Student.Controllers
         }
         #endregion
     }
-}   
+}
