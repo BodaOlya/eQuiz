@@ -55,6 +55,8 @@
         vm.hideLoading = hideLoading;
         vm.deleteQuiz = deleteQuiz;
         vm.deleteCanExecute = deleteCanExecute;
+        vm.archiveQuiz = archiveQuiz;
+        vm.archiveQuizCanExecute = archiveQuizCanExecute;
 
         activate();
 
@@ -88,6 +90,11 @@
 
             quizService.getStates().then(function (data) {
                 vm.model.states = data.data;
+                vm.model.archiveState = vm.model.states.filter(function (element, i, array) {
+                    return element.Name == 'Archived';
+                })[0];
+                var index = vm.model.states.indexOf(vm.model.archiveState);
+                vm.model.states.splice(index, 1);
             });
 
             questionService.getQuestionTypes().then(function (response) {
@@ -130,7 +137,7 @@
             }
         }
 
-        function save() {
+        function save(callback) {
             vm.showLoading();
             saveQuiz();
 
@@ -145,6 +152,9 @@
                     vm.model.tags = model.tags;
                     vm.hideLoading();
                     vm.showSuccess();
+                    if (callback) {
+                        callback();
+                    }
                 }, function (response) {
                     vm.hideLoading();
                     vm.showError();
@@ -466,6 +476,21 @@
                 vm.showError();
                 vm.hideLoading();
             });
+        }
+
+        function archiveQuiz() {
+            vm.showLoading();
+            vm.model.quiz.QuizState = vm.model.archiveState;
+            vm.save(function () {
+                showLoading();
+                $timeout(function () {
+                    window.location.href = '/moderator/quiz';
+                }, 2000);                
+            });
+        }
+
+        function archiveQuizCanExecute() {
+            return vm.model.quiz.Id && vm.model.quiz.QuizState && vm.model.quiz.QuizState.Name == 'Opened' && vm.saveCanExecute();
         }
 
         function deleteCanExecute() {

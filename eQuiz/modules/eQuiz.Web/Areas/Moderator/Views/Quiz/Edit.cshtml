@@ -22,7 +22,8 @@
                 <button class="btn btn-default form-control lightgray" ng-click="vm.save()" ng-disabled="!vm.saveCanExecute()">Save</button>
             </div>
             <div class="col-sm-2">
-                <button class="btn btn-default form-control lightgray" ng-click="vm.deleteQuiz()" ng-disabled="!vm.deleteCanExecute()">Delete</button>
+                <button class="btn btn-default form-control lightgray" ng-hide="vm.archiveQuizCanExecute()" ng-click="vm.deleteQuiz()" ng-disabled="!vm.deleteCanExecute()">Delete</button>
+                <button class="btn btn-default form-control lightgray" ng-hide="!vm.archiveQuizCanExecute()" ng-click="vm.archiveQuiz()" ng-disabled="!vm.archiveQuizCanExecute()">Archive</button>
             </div>
             <div class="col-sm-2">
                 @Html.ActionLink(linkText: "Cancel", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-default lightgray" })
