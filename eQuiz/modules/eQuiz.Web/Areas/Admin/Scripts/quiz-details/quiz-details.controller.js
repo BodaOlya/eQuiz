@@ -39,7 +39,13 @@
         function activate() {
             vm.students = quizStudents;
             vm.quizInfo = quizInfo;//quizDetailsDataService.getQuiz(1);
-            
+
+            vm.students.forEach(function (currVal, index, array) {
+                currVal.student = currVal.student.toString();
+                currVal.studentScore = currVal.studentScore.toString();
+                currVal.quizStatus = currVal.quizStatus.toString();
+                currVal.questionDetails = currVal.questionDetails.toString();
+            });
             generatePredicate();
         };
 
