@@ -2,7 +2,7 @@
 
     var app = angular.module('equizModule');
 
-    app.directive('cPagination', ['$parse', 'cPaginationConfig', function($parse, cPaginationConfig) {
+    app.directive('ccPagination', ['$parse', 'cPaginationConfig', function($parse, cPaginationConfig) {
         return {
             scope: {
                 totalItems: '=',
@@ -12,7 +12,7 @@
                 lastText: '@',
                 ngDisabled:'='
             },
-            require: ['cPagination', '?ngModel'],
+            require: ['ccPagination', '?ngModel'],
             controller: 'cPaginationController',
             controllerAs: 'pagination',
             templateUrl: function(element, attrs) {
