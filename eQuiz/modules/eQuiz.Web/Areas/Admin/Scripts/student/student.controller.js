@@ -36,28 +36,32 @@
         vm.myPredicate = null;
         vm.newComment = {}; // Represents a new comment
         vm.currentTab = $location.hash();
-        vm.link = "";
         vm.newCommentFrame = false; // Indicates whether new comment tab is shown
         vm.modelChanged = false; // Indicates whether data in the model was changed
-        vm.activated = false;
 
         var orderBy = $filter('orderBy');
         vm.resultsCount = [10, 25, 50, 100];
         vm.tablePage = 0;
         vm.resultsPerPage = 10;
 
- 
+        function refreshComments()
+        {
+            return studentDataService.getStudentComments($location.search().Id).then(function (response) {
+                vm.studentComments = response.data;
+                return vm.studentComments;
+            });
+        }
 
         function activate() {
-            return studentDataService.getStudentInfo($location.search().Id).then(function (response) {
+            studentDataService.getStudentInfo($location.search().Id).then(function (response) {
                 vm.studentInfo = response.data;
                 return vm.studentInfo;
             });
-            return studentDataService.getStudentQuizzes($location.search().Id).then(function (response) {
+            studentDataService.getStudentQuizzes($location.search().Id).then(function (response) {
                 vm.studentQuizzes = response.data;
                 return vm.studentQuizzes;
             });
-            return studentDataService.getStudentComments($location.search().Id).then(function (response) {
+            studentDataService.getStudentComments($location.search().Id).then(function (response) {
                     vm.studentComments = response.data;
                     return vm.studentComments;
                 });
@@ -158,7 +162,7 @@
         };
 
         vm.saveProfile = function () {
-                studentDataService.saveProfileInfo(vm.studentInfo.id, vm.studentInfo.firstName, vm.studentInfo.lastName, vm.studentInfo.phone)
+            studentDataService.saveProfileInfo(vm.studentInfo.id, vm.studentInfo.firstName, vm.studentInfo.lastName, vm.studentInfo.phone)
                 //Here has popUp be called
             vm.modelChanged = false;
         };
@@ -174,12 +178,10 @@
         };
 
         vm.addComment = function () {
-            studentDataService.addComment(vm.studentInfo.id, 1, vm.newComment);
-            //vm.newComment.date = (new Date().toLocaleDateString());
-            //vm.studentComments.push(vm.newComment);
-            //vm.modelChanged = true;
-            //vm.toggleNewCommentFrame();
-            //vm.studentComments = sortByDate(vm.studentComments);
+            studentDataService.addComment(vm.studentInfo.id, 1, vm.newComment.text);
+            vm.toggleNewCommentFrame();
+            $route.reload();
+           // vm.studentComments = sortByDate(vm.studentComments);
         };
 
         vm.validationCheck = function () {

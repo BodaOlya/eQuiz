@@ -68,16 +68,18 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var result = new List<object>();
             var quizzes = _repository.Get<Quiz>();
             var userQuizzes = _repository.Get<QuizPass>(qp => qp.UserId == id);
+            var quizBlocks = _repository.Get<QuizBlock>();
 
             var query = from q in quizzes
                         join uq in userQuizzes on q.Id equals uq.QuizId
+                        join qb in quizBlocks on q.Id equals qb.QuizId
                         where uq.UserId == id
                         select new
                         {
                             id = q.Id,
                             name = q.Name,
                             state = "Passed",
-                            questions = 20,
+                            questions = qb.QuestionCount,
                             verificationType = "Hasn't be here",
                             otherDetails = q.Description,
                             date = uq.FinishTime
@@ -101,7 +103,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var query = from c in comments
                         select new
                         {
-                            date = c.CommentTime,
+                            date = c.CommentTime.ToString(),
                             author = "Admin",
                             text = c.CommentText
                         };

@@ -35,15 +35,19 @@
 
         $scope.isLoading = true;
 
-        getQuestionById($scope.quizId);
+        getQuestionById($scope.quizId, $scope.quizDuration);
 
-        function getQuestionById(questionId) {
-            quizService.getQuestionsById(questionId)
+        function getQuestionById(questionId, duration ) {
+            quizService.getQuestionsById(questionId, duration)
                 .then(function (response) {
-                    console.log(response.data);
-                    $scope.quizQuestions = response.data;
-                    $scope.passedQuiz.StartDate = new Date(Date.now());
-                    $scope.isLoading = false;
+                    if (response.data.length === 0) {
+                        $location.path("/Dashboard");
+                    }
+                    else {
+                        $scope.quizQuestions = response.data;
+                        $scope.passedQuiz.StartDate = new Date(Date.now());
+                        $scope.isLoading = false;
+                    }
                 });
         };
 
@@ -58,11 +62,9 @@
         $scope.sendDataToServer = function () {
 
             $scope.passedQuiz.FinishDate = new Date(Date.now());
-            console.log($scope.passedQuiz);
             var passedQuiz = $scope.passedQuiz;
             quizService.sendUserResult(passedQuiz)
                 .success(function (data) {
-                    console.log("OK");
                 });     
         };
 

@@ -19,14 +19,15 @@
             predicate: 'Name',
             reverse: false,
             quizzesTotal: 0,
-            searchText : null
+            searchText: null,
+            selectedStatus: 'All'
         };
 
         //functions
         vm.reloadQuizzes = reloadQuizzes;
         vm.sortBy = sortBy;
         vm.showOrderArrow = showOrderArrow;
-        vm.getNumber = getNumber;
+        vm.changedValue = changedValue;
 
         activate();
 
@@ -55,11 +56,13 @@
             return '';
         };
 
-        function getNumber(num) {
-            //TODO
-            num = Math.ceil(vm.pagingInfo.quizzesTotal / num);
-            return new Array(num);
-        };
+        //for dropdown menu
+        vm.statuses = ['All', 'Opened', 'Scheduled', 'Draft'];
+
+        function changedValue(item) {
+            vm.pagingInfo.selectedStatus = item;
+            reloadQuizzes();
+        };        
 
         function errorCallBack(error) {
             console.log('An unexpected error has occured: ' + error.statusText);

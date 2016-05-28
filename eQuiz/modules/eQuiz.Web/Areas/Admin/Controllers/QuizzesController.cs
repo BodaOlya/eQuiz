@@ -38,20 +38,17 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var quizPass = _repository.Get<QuizPass>();
             var user = _repository.Get<User>();
 
-            var query = from q in quiz
-                        join qb in quizBlock on q.Id equals qb.QuizId
+            var query = from passq in quizPass
+                        join q in quiz on passq.QuizId equals q.Id
                         join ug in userGroup on q.GroupId equals ug.Id
-                        join qp in quizPass on q.Id equals qp.QuizId
-                        join u in user on qp.UserId equals u.Id
-                        group new { q, ug, qb } by new { quizName = q.Name, groupName = ug.Name } into grouped
+                        join qb in quizBlock on q.Id equals qb.QuizId                                                
                         select new
                         {
-                            quiz_name = grouped.Select(item => item.q.Name).Distinct(),
-                            group_name = grouped.Select(item => item.ug.Name).Distinct(),
-                            questions_amount = grouped.Select(item => item.qb.QuestionCount).Distinct()
-                        };
-
-            result.Add(new { quiz_name = "Quiz1", group_name = "Group1", questions_amount = 20, students_amount = 10, verification_type = "Auto" });
+                            id = passq.Id,
+                            quiz_name = q.Name,
+                            group_name = ug.Name,
+                            questions_amount = qb.QuestionCount
+                        }; /// only gets first 3 columns
 
             foreach (var item in query)
             {
