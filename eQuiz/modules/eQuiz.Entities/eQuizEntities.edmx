@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="eQuizModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="eQuizModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tblAnswer">
           <Key>
             <PropertyRef Name="Id" />
@@ -199,6 +199,16 @@
           <Property Name="Score" Type="tinyint" Nullable="false" />
           <Property Name="EvaluatedBy" Type="int" Nullable="false" />
           <Property Name="EvaluatedAt" Type="smalldatetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblUserComment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="AdminId" Type="int" Nullable="false" />
+          <Property Name="CommentTime" Type="datetime" Nullable="false" />
+          <Property Name="CommentText" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="tblUserGroup">
           <Key>
@@ -524,6 +534,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblUserComment_AdminId_tblUser">
+          <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
+          <End Role="tblUserComment" Type="Self.tblUserComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblUserComment">
+              <PropertyRef Name="AdminId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUserComment_UserId_tblUser">
+          <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
+          <End Role="tblUserComment" Type="Self.tblUserComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblUserComment">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblUserTextAnswer_tblQuizPassQuestion">
           <End Role="tblQuizPassQuestion" Type="Self.tblQuizPassQuestion" Multiplicity="1" />
           <End Role="tblUserTextAnswer" Type="Self.tblUserTextAnswer" Multiplicity="*" />
@@ -581,6 +615,7 @@
           <EntitySet Name="tblUser" EntityType="Self.tblUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserAnswer" EntityType="Self.tblUserAnswer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserAnswerScore" EntityType="Self.tblUserAnswerScore" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUserComment" EntityType="Self.tblUserComment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserGroup" EntityType="Self.tblUserGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserTextAnswer" EntityType="Self.tblUserTextAnswer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserToUserGroup" EntityType="Self.tblUserToUserGroup" Schema="dbo" store:Type="Tables" />
@@ -683,6 +718,14 @@
           <AssociationSet Name="FK_tblUserAnswerScore_tblUser" Association="Self.FK_tblUserAnswerScore_tblUser">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblUserAnswerScore" EntitySet="tblUserAnswerScore" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserComment_AdminId_tblUser" Association="Self.FK_tblUserComment_AdminId_tblUser">
+            <End Role="tblUser" EntitySet="tblUser" />
+            <End Role="tblUserComment" EntitySet="tblUserComment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserComment_UserId_tblUser" Association="Self.FK_tblUserComment_UserId_tblUser">
+            <End Role="tblUser" EntitySet="tblUser" />
+            <End Role="tblUserComment" EntitySet="tblUserComment" />
           </AssociationSet>
           <AssociationSet Name="FK_tblUserTextAnswer_tblQuizPassQuestion" Association="Self.FK_tblUserTextAnswer_tblQuizPassQuestion">
             <End Role="tblQuizPassQuestion" EntitySet="tblQuizPassQuestion" />
@@ -907,6 +950,8 @@
           <NavigationProperty Name="QuizPassScores" Relationship="Self.FK_tblQuizPassScore_tblUser" FromRole="tblUser" ToRole="tblQuizPassScore" />
           <NavigationProperty Name="UserAnswerScores" Relationship="Self.FK_tblUserAnswerScore_tblUser" FromRole="tblUser" ToRole="tblUserAnswerScore" />
           <NavigationProperty Name="UserToUserGroups" Relationship="Self.FK_tblUserToUserGroup_tblUser" FromRole="tblUser" ToRole="tblUserToUserGroup" />
+          <NavigationProperty Name="tblUserComments" Relationship="eQuizModel.FK_tblUserComment_AdminId_tblUser" FromRole="User" ToRole="tblUserComment" />
+          <NavigationProperty Name="tblUserComments1" Relationship="eQuizModel.FK_tblUserComment_UserId_tblUser" FromRole="User" ToRole="tblUserComment" />
         </EntityType>
         <EntityType Name="UserAnswer">
           <Key>
@@ -1353,6 +1398,15 @@
             <End Role="QuizPassQuestion" EntitySet="QuizPassQuestions" />
             <End Role="UserTextAnswer" EntitySet="UserTextAnswers" />
           </AssociationSet>
+          <EntitySet Name="UserComments" EntityType="eQuizModel.UserComment" />
+          <AssociationSet Name="FK_tblUserComment_AdminId_tblUser" Association="eQuizModel.FK_tblUserComment_AdminId_tblUser">
+            <End Role="User" EntitySet="Users" />
+            <End Role="tblUserComment" EntitySet="UserComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserComment_UserId_tblUser" Association="eQuizModel.FK_tblUserComment_UserId_tblUser">
+            <End Role="User" EntitySet="Users" />
+            <End Role="tblUserComment" EntitySet="UserComments" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="UserTextAnswer">
           <Key>
@@ -1464,6 +1518,41 @@
             </Principal>
             <Dependent Role="UserTextAnswer">
               <PropertyRef Name="QuizPassQuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="UserComment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="AdminId" Type="Int32" Nullable="false" />
+          <Property Name="CommentTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CommentText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblUser" Relationship="eQuizModel.FK_tblUserComment_AdminId_tblUser" FromRole="tblUserComment" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_tblUserComment_AdminId_tblUser">
+          <End Type="eQuizModel.User" Role="User" Multiplicity="1" />
+          <End Type="eQuizModel.UserComment" Role="tblUserComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblUserComment">
+              <PropertyRef Name="AdminId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUserComment_UserId_tblUser">
+          <End Type="eQuizModel.User" Role="User" Multiplicity="1" />
+          <End Type="eQuizModel.UserComment" Role="tblUserComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblUserComment">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1710,6 +1799,17 @@
             <EntityTypeMapping TypeName="eQuizModel.QuizState">
               <MappingFragment StoreEntitySet="tblQuizState">
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserComments">
+            <EntityTypeMapping TypeName="eQuizModel.UserComment">
+              <MappingFragment StoreEntitySet="tblUserComment">
+                <ScalarProperty Name="CommentText" ColumnName="CommentText" />
+                <ScalarProperty Name="CommentTime" ColumnName="CommentTime" />
+                <ScalarProperty Name="AdminId" ColumnName="AdminId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

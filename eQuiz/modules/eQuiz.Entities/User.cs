@@ -22,6 +22,7 @@ namespace eQuiz.Entities
             this.QuizPassScores = new HashSet<QuizPassScore>();
             this.UserAnswerScores = new HashSet<UserAnswerScore>();
             this.UserToUserGroups = new HashSet<UserToUserGroup>();
+            this.tblUserComments = new HashSet<UserComment>();
         }
     
         public int Id { get; set; }

@@ -19,7 +19,7 @@
 
         function getStudentInfo(studentId) {
             var promise = $http({
-                url: '/Admin/Review/GetStudentInfo',
+                url: '/Admin/Student/GetStudentInfo',
                 method: "GET",
                 params: {id: studentId}
             });
@@ -28,7 +28,7 @@
 
         function getStudentQuizzes(studentId) {
             var promise = $http({
-                url: '/Admin/Review/GetStudentQuizzes',
+                url: '/Admin/Student/GetStudentQuizzes',
                 method: "GET",
                 params: { id: studentId }
             });
@@ -37,7 +37,7 @@
 
         function getStudentComments(studentId) {
             var promise = $http({
-                url: '/Admin/Default/GetStudentComments',
+                url: '/Admin/Student/GetStudentComments',
                 method: "GET",
                 params: { id: studentId }
             });
@@ -46,7 +46,7 @@
         }
 
         function saveProfileInfo(id, firstName, lastName, phone) {
-            var promise = $http.post("/Admin/Review/UpdateUserInfo", { Id: id, firstName: firstName, lastName: lastName, phone: phone });
+            var promise = $http.post("/Admin/Student/UpdateUserInfo", { Id: id, firstName: firstName, lastName: lastName, phone: phone });
             return promise;
         }
     }

@@ -180,6 +180,7 @@
     <Compile Include="Areas\Admin\Controllers\DefaultController.cs" />
     <Compile Include="Areas\Admin\Controllers\QuizzesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReviewController.cs" />
+    <Compile Include="Areas\Admin\Controllers\StudentController.cs" />
     <Compile Include="Areas\Moderator\Controllers\DefaultController.cs" />
     <Compile Include="Areas\Moderator\Controllers\QuizController.cs" />
     <Compile Include="Areas\Moderator\Controllers\QuizQuestionController.cs" />
@@ -239,6 +240,7 @@
     <Folder Include="Areas\Admin\Views\Quizzes\" />
     <Folder Include="Areas\Admin\Views\Review\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
+    <Folder Include="Areas\Admin\Views\Student\" />
     <Folder Include="Areas\Moderator\Views\QuizQuestion\" />
     <Folder Include="Areas\Student\Scripts\libs\" />
     <Folder Include="Areas\Student\Views\Shared\" />
