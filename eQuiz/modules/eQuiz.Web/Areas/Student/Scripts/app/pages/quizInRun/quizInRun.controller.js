@@ -71,7 +71,7 @@
 
             var modalInstance = $uibModal.open({
                 animation: false,
-                templateUrl: '/Areas/Student/Scripts/app/pages/quizInRun/customConfirm.html',
+                templateUrl: '/Areas/Student/Scripts/app/pages/confirm/customConfirm.html',
                 controller: 'confirmCtrl',
                 size: 'sm'
             });
@@ -89,7 +89,7 @@
 
             var modalInstance = $uibModal.open({
                 animation: false,
-                templateUrl: '/Areas/Student/Scripts/app/pages/quizInRun/customAlert.html',
+                templateUrl: '/Areas/Student/Scripts/app/pages/alert/customAlert.html',
                 controller: 'alertCtrl',
                 size: 'sm'
             });
