@@ -5,7 +5,7 @@
 }
 
 <div id="container">
-    <div ng-controller="QuizController as vm">
+    <div ng-controller="QuizController as vm" ng-cloak>
         <h2>Create/Edit {{vm.model.quiz.Name}}</h2>
 
         <div>
@@ -31,14 +31,14 @@
         </div>
 
 
-        <div class="loading-background" ng-show="vm.loadingVisible">
+        <div ng-cloak class="loading-background" ng-show="vm.loadingVisible">
             <div class="loading-content">
                 <p>
                     Processing...
                 </p>
             </div>
         </div>
-        <div class="message-container" ng-show="vm.errorMessageVisible">
+        <div ng-cloak class="message-container" ng-show="vm.errorMessageVisible">
             <div class="message-content">
                 <p>
                     Changes have not been saved due to
@@ -48,7 +48,7 @@
                 </p>
             </div>
         </div>
-        <div class="message-container" ng-show="vm.successMessageVisible">
+        <div ng-cloak class="message-container" ng-show="vm.successMessageVisible">
             <div class="message-content">
                 <p>
                     All changes have been
