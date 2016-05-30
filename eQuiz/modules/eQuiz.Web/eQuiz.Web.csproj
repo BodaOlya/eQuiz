@@ -124,6 +124,7 @@
     <Content Include="Areas\Admin\Scripts\review\review.controller.js" />
     <Content Include="Areas\Admin\Scripts\review\review-data.service.js" />
     <Content Include="Areas\Admin\Scripts\review\start-from.filter.js" />
+    <Content Include="Areas\Admin\Scripts\shared\loading-screen.directive.js" />
     <Content Include="Areas\Admin\Scripts\shared\popUp.js" />
     <Content Include="Areas\Admin\Scripts\shared\routing.js" />
     <Content Include="Areas\Admin\Scripts\student\student.controller.js" />
@@ -230,6 +231,7 @@
     <None Include="Areas\Moderator\Views\Quiz\QuizPreview.cshtml" />
     <Content Include="Areas\Moderator\Views\UserGroup\Edit.cshtml" />
     <Content Include="Areas\Moderator\Views\Quiz\Schedule.cshtml" />
+    <None Include="Properties\PublishProfiles\myasp.net.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
