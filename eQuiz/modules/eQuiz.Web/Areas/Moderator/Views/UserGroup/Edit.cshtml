@@ -23,8 +23,9 @@
         <input type="text" ng-model="g.group.Name" value="{{g.group.Name}}"/>
     </div>
     <div class = "ug-import">
-        <label> Students </label>
-        <a href=""> Import from *.csv </a>
+        <label> Students </label>        
+        <label id = "file-link" for = "ug-file-upload"> Import from *.csv </label>
+        <input  type="file" id = "ug-file-upload" />
     </div>
 
     <table class = "table-quizzes">

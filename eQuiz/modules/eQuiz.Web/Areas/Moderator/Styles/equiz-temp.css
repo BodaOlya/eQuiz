@@ -1120,9 +1120,18 @@ thead, th, td {
     font-size: 1em;
 }
 
-.ug-import a {
+.ug-import #file-link {
     font-size: 1em;
     color: deepskyblue;
+    cursor: pointer;    
+}
+
+.ug-import #file-link:hover{
+  text-decoration: underline;
+}
+
+.ug-import input {
+    display: none; 
 }
 
 
