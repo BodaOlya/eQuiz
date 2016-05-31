@@ -12,14 +12,15 @@ namespace eQuiz.Web.Areas.Admin.Models
         public int MaxScore { get; set; }
         public int UserScore { get; set; }
         public string QuestionText { get; set; }
-
+        public int Order { get; set; }
         // Base constructor
-        public QuestionBase (int id, int maxScore, int userScore, string questionText)
+        public QuestionBase (int id, int maxScore, int userScore, string questionText, int order)
         {
             Id = id;
             MaxScore = maxScore;
             UserScore = userScore;
             QuestionText = questionText;
+            Order = order;
         }
     }
 }
