@@ -183,8 +183,11 @@
     <Compile Include="Areas\Admin\Controllers\QuizzesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReviewController.cs" />
     <Compile Include="Areas\Admin\Controllers\StudentController.cs" />
+    <Compile Include="Areas\Admin\Models\IQuestion.cs" />
+    <Compile Include="Areas\Admin\Models\QuestionBase.cs" />
     <Compile Include="Areas\Admin\Models\QuestionsAuto.cs" />
     <Compile Include="Areas\Admin\Models\QuizInfo.cs" />
+    <Compile Include="Areas\Admin\Models\TextQuestion.cs" />
     <Compile Include="Areas\Moderator\Controllers\DefaultController.cs" />
     <Compile Include="Areas\Moderator\Controllers\QuizController.cs" />
     <Compile Include="Areas\Moderator\Controllers\QuizQuestionController.cs" />
