@@ -818,14 +818,14 @@ fieldset[disabled] a.btn {
     color: #777;
 }
 
-    .dropdown-menu > .disabled > a:hover,
-    .dropdown-menu > .disabled > a:focus {
-        text-decoration: none;
-        cursor: not-allowed;
-        background-color: transparent;
-        background-image: none;
-        filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-    }
+.dropdown-menu > .disabled > a:hover,
+.dropdown-menu > .disabled > a:focus {
+    text-decoration: none;
+    cursor: not-allowed;
+    background-color: transparent;
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
 
 .row:before,
 .row:after {
@@ -1064,7 +1064,7 @@ thead, th, td {
 
 .container-quizzes {
     margin: 0 auto;
-    width: 60%;
+    width: 80%;
 }
 
 .table-quizzes {
@@ -1072,12 +1072,12 @@ thead, th, td {
     /*overflow-x:auto;*/
     border-collapse: collapse;
     border: 1px solid black;
-    width: 50%;
+    width: 80%;
 }
 
     .table-quizzes th, td {
         text-align: left;
-        padding: 6px;
+        padding: 10px;
         border: 1px solid black;
     }
 
