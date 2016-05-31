@@ -5,7 +5,7 @@
     <input type="text" ng-model="rc.search" style="width:15em">
 
     <div style="overflow-x:auto;">
-        <table class="reviewTable">
+        <table class="reviewTable" auto-height="{{rc.groupList.length}}">
             <thead>
                 <tr>
                     <th ng-repeat="h in rc.headers">
@@ -13,9 +13,9 @@
                             <span class="sortorder" ng-show="rc.direction(h.predicateIndex) !== null" ng-class="{direction:rc.direction(h.predicateIndex)}"></span>
                             {{h.name}}
                         </a>
-                        <div ng-if="h.field == 'userGroup'" ng-cloak class="btn-group groupBtn" ng-class="{open: open}">
+                        <div ng-if="h.field == 'userGroup'" ng-cloak class="btn-group groupBtn" ng-class="{open: rc.groupListOpened}">
 
-                            <button class="btn dropdown-toggle" ng-click="open=!open">
+                            <button class="btn dropdown-toggle" ng-click="rc.groupListOpened=!rc.groupListOpened">
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu">

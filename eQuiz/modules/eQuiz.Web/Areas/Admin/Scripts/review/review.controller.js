@@ -7,7 +7,7 @@
         var vm = this;
 
         var orderBy = $filter('orderBy');
-
+        vm.groupListOpened = false;
         vm.search = ''; // Represents search field on the form
         vm.myPredicate = null;
         vm.tablePage = 0; // Current table page
