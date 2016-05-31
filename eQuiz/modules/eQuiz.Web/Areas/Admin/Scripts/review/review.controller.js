@@ -114,6 +114,7 @@
 
         $scope.setSelectedGroup = function () { // DONT PUT THIS FUNCTION INTO VM! let it be in scope (because of 'this' in function)
             var id = this.group;
+            
             if (vm.selectedGroup.toString().indexOf(id.toString()) > -1) {
                 for (var i = 0; i < vm.selectedGroup.length; i++) {
                     if (vm.selectedGroup[i] === id) {
@@ -134,7 +135,11 @@
         };
 
         vm.checkAll = function () {
-            vm.selectedGroup = vm.groupList;
+            debugger;
+            for (var i = 0; i < vm.groupList.length; i++) {
+                vm.selectedGroup.push(vm.groupList[i]);
+            }
+           
         };
 
         vm.unCheckAll = function () {
