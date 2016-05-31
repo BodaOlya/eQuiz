@@ -3,7 +3,6 @@
         return {
             restrict: 'A',
             link: function (scope, elem, attrs) {
-                console.log(attrs);
                 elem.css('min-height', (attrs.autoHeight * 10) + 200 + 'px');
             }
         };
