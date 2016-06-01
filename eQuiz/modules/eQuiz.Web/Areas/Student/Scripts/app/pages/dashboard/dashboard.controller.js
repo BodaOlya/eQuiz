@@ -7,6 +7,10 @@
 
         $scope.isLoading = true;
 
+        $scope.setToLocalStorage = function (durationValue) {
+            localStorage.setItem('duration', durationValue)
+        }
+
         activate();
         function activate() {
             var quizPromise = dashboardService.getQuizzes();
