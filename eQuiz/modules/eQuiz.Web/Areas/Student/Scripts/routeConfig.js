@@ -7,7 +7,7 @@
             controller: "dashboardCtrl",
             controllerAs: "dashboardCtrl"
         })
-        .when("/quizInRun/:id/:duration/", {
+        .when("/quizInRun/:id/", {
             templateUrl: "/Areas/Student/Scripts/app/pages/quizInRun/quizInRun.html",
             controller: "quizInRunCtrl",
             controllerAs: "quizCtrl"
