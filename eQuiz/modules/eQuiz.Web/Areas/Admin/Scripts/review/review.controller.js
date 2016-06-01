@@ -15,6 +15,8 @@
         vm.resultsCount = [10, 25, 50, 100]; // Possible numbers of results per page
         vm.selectedGroup = [];
         vm.link = "/Admin/Default/Index/Student/";
+        vm.exportShow = false;
+        vm.contentsToExport = [];
 
         vm.headers = [
     {
@@ -163,6 +165,37 @@
 
         vm.setLink = function (studentId) {
             vm.link += studentId.Id + '/Profile';
+        };
+
+        vm.singleExportToDo = function (student) {
+            if (vm.contentsToExport.indexOf(student) === -1) {
+                return 'Export';
+            };
+            return 'Cancel';
+        };
+
+        vm.addOrRemoveFromExport = function (student) {
+            if (vm.singleExportToDo(student) === 'Cancel') {
+                vm.contentsToExport.splice(vm.contentsToExport.indexOf(student), 1);
+            } else {
+                vm.contentsToExport.push(student);
+            };
+        };
+
+        vm.multipleExportToDo = function () {
+            if (!vm.contentsToExport[0]) {
+                return 'Export All';
+            } else {
+                return 'Cncel All';
+            };
+        };
+
+        vm.addOrRemoveFromExportAll = function (students) {
+            if (!vm.contentsToExport[0]) {
+                vm.contentsToExport = students;
+            } else {
+                vm.contentsToExport = [];
+            };
         };
     };
 

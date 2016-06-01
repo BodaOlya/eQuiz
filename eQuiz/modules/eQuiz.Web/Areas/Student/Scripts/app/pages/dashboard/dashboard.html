@@ -5,10 +5,16 @@
     <div class="cssload-container" ng-if="isLoading">
         <div class="cssload-whirlpool"></div>
     </div>
-    
+
     <table id='quizzesTable' ng-if="!isLoading">
         <caption><h2>Quizzes</h2></caption>
-        <caption style="text-align: left;"><input type="text" ng-model="search" style="width:20em" placeholder="Search by name"></caption>
+        <caption style="text-align: left;">
+            <input type="search" ng-model="search" style="width:20em" placeholder="Search by name">
+            <input type="checkbox" ng-model="checkboxModel.value" ng-false-value="undefined" style="width:15px;height:15px;vertical-align: bottom">
+            <span class="checkboxtext" style="font-size: medium;vertical-align: bottom">
+                Show only active quizzes
+            </span>
+        </caption>
         <thead>
             <tr>
                 <th>Name</th>
@@ -18,7 +24,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="quiz in allQuizes | filter:{ Name: search }" ng-class="{ activeQuiz: quiz.InternetAccess, inactiveQuiz: !quiz.InternetAccess }">
+            <tr ng-repeat="quiz in allQuizes | filter:{ Name: search } | filter:{ InternetAccess: checkboxModel.value}" ng-class="{ activeQuiz: quiz.InternetAccess, inactiveQuiz: !quiz.InternetAccess }">
                 <td>
                     {{quiz.Name}}
                 </td>
@@ -29,7 +35,7 @@
                     {{quiz.TimeLimitMinutes}}
                 </td>
                 <td>
-                    <a href='#/quizInRun/{{quiz.Id}}/{{quiz.TimeLimitMinutes}}' ng-if="quiz.InternetAccess" ng-click="getQuestionById(quiz.Id, quiz.TimeLimitMinutes)">Start</a>
+                    <a href='#/quizInRun/{{quiz.Id}}' ng-if="quiz.InternetAccess" ng-click="setToLocalStorage(quiz.TimeLimitMinutes)">Start</a>
                     <div ng-if="!quiz.InternetAccess">Inactive</div>
                 </td>
             </tr>

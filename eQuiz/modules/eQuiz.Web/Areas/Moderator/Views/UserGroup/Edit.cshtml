@@ -5,7 +5,7 @@
 }
 
 @section HeadStyles
-{    
+{
     <link href="~/Areas/Moderator/Styles/equiz-temp.css" rel="stylesheet" />
 }
 
@@ -20,40 +20,40 @@
 
     <div class="user-group-name">
         <label> Name </label>
-        <input type="text" ng-model="g.group.Name" value="{{g.group.Name}}"/>
+        <input type="text" ng-model="g.group.Name" value="{{g.group.Name}}" />
     </div>
-    <div class = "ug-import">
-        <label> Students </label>        
-        <label id = "file-link" for = "ug-file-upload"> Import from *.csv </label>
-        <input  type="file" id = "ug-file-upload" />
+    <div class="ug-import">
+        <label> Students </label>
+        <label id="file-link" for="ug-file-upload"> Import from *.csv </label>
+        <input type="file" id="ug-file-upload" import-users-from-file callback="g.useImportedData(data)" hidden />
     </div>
 
-    <table class = "table-quizzes">
+    <table class="table-quizzes">
 
         <thead>
             <tr>
-                <th> 
+                <th>
                     <a href="#" ng-click="g.sortBy('LastName')">
                         {{g.showOrderArrow('LastName')}}FullName
-                    </a> 
+                    </a>
                 </th>
-                <th> 
+                <th>
                     <a href="#" ng-click="g.sortBy('Email')">
                         {{g.showOrderArrow('Email')}}E-mail
-                    </a> 
+                    </a>
                 </th>
-                <th> 
+                <th>
                     <a href="#" ng-click="g.sortBy('Delete')">
                         {{g.showOrderArrow('Delete')}}Delete
                     </a>
                 </th>
-            </tr> 
+            </tr>
         </thead>
         <tbody>
-            <tr ng-repeat = "user in g.users | orderBy: g.predicate: g.reverse">
+            <tr ng-repeat="user in g.users | orderBy: g.predicate: g.reverse">
                 <td> {{user.LastName}} {{user.FirstName}} {{user.FatheName}} </td>
                 <td> {{user.Email}}</td>
-                <td> 
+                <td>
                     <a href="#" ng-click="g.deleteUser(user)">Delete</a>
                 </td>
             </tr>
@@ -101,5 +101,6 @@
 
 @section FootScripts{
     <script src="~/Areas/Moderator/Scripts/app/pages/shared/user-group.service.js"></script>
-    <script src="~/Areas/Moderator/Scripts/app/pages/user-group/user-group.controller.js"></script>   
+    <script src="~/Areas/Moderator/Scripts/app/pages/user-group/import-users-from-file.directive.js"></script>
+    <script src="~/Areas/Moderator/Scripts/app/pages/user-group/user-group.controller.js"></script>
 }
