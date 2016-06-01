@@ -9,7 +9,7 @@
 
         var vm = this;
         vm.users = [];
-        
+
         vm.predicate = 'LastName';
         vm.reverse = false;
         vm.errorMessageVisible = false;
@@ -24,6 +24,8 @@
         vm.showError = showError;
         vm.showLoading = showLoading;
         vm.hideLoading = hideLoading;
+        
+        vm.useImportedData = useImportedData;
 
         activate();
 
@@ -38,10 +40,14 @@
             }
         };
 
+        function useImportedData(data) {
+            //TODO            
+            console.log(data);
+        }
 
         function sortBy(predicate) {
             vm.reverse = (vm.predicate === predicate) ? !vm.reverse : false;
-            vm.predicate = predicate;            
+            vm.predicate = predicate;
         };
 
         function showOrderArrow(predicate) {

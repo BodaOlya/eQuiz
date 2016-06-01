@@ -12,7 +12,11 @@
 
     <div class="container-quizzes" ng-controller="QuizzesController as q">
         <label>Search</label>
-        <input type="text" ng-model="q.pagingInfo.searchText" ng-change="q.reloadQuizzes()" style="width:15em; margin-bottom: 10px">
+        <input type="text" ng-model="q.pagingInfo.searchText" ng-change="q.reloadQuizzes()" style="width:12em; margin-bottom: 10px">
+        <label style="margin-left:20px">Select status</label>
+        <select style="height:30px;" ng-model="q.pagingInfo.selectedStatus" ng-change="q.changedValue(q.pagingInfo.selectedStatus)">
+            <option ng-repeat="status in q.statuses">{{status}}</option>
+        </select>
         <table class="table-quizzes">
             <thead>
                 <tr>
@@ -39,10 +43,7 @@
                     <th>
                         <a href="#" ng-click="q.sortBy('StateName')">
                             {{q.showOrderArrow('StateName')}}Status
-                        </a>
-                        <select ng-model="q.pagingInfo.selectedStatus" ng-change="q.changedValue(q.pagingInfo.selectedStatus)">
-                            <option ng-repeat="status in q.statuses">{{status}}</option>
-                        </select>
+                        </a>                        
                     </th>
                 </tr>
             </thead>
