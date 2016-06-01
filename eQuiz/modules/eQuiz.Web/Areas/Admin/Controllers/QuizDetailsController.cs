@@ -45,6 +45,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                             id = changed.Key,
                             student = changed.Select(ch => ch.u.FirstName + " " + ch.u.LastName).Distinct(),
                             //student = u.FirstName + " " + u.LastName,
+                            email = changed.Select(ch => ch.u.Email).Distinct(),
                             studentScore = 0,
                             quizStatus = "Not Passed",
                             questionDetails = "{ passed: 0, notPassed: 10, inVerification: 0 }"

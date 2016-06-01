@@ -1,7 +1,11 @@
 ﻿<div>
     <br />
-
-    <label style="text-decoration:solid; font-size:18px; float:left">{{qc.quizInfo[0].quizName}}, {{qc.quizInfo[0].groupName}}</label>
+    <div layout="row">
+        <label style="text-decoration:solid; font-size:18px; float:left">{{qc.quizInfo[0].quizName}}, {{qc.quizInfo[0].groupName}}</label>
+        <button ng-click="qc.exportShow=!qc.exportShow" style="text-decoration:solid; font-size:20px; float:right">
+            Export
+        </button>
+    </div>
     <br />
     <br />
     <label>Search</label>
@@ -11,6 +15,7 @@
         <table class="reviewTable">
             <thead>
                 <tr>
+                    <th><a href="#" ng-show="qc.exportShow" ng-click="qc.addOrRemoveFromExportAll(qc.contents)">{{qc.multipleExportToDo()}}</a></th>
                     <th ng-repeat="h in qc.headers">
                         <a class="link" href="#" ng-click="qc.refreshPredicate(h.predicateIndex); qc.order(qc.myPredicate[h.predicateIndex],null)">
                             <span class="sortorder" ng-show="qc.direction(h.predicateIndex) !== null" ng-class="{direction:qc.direction(h.predicateIndex)}"></span>
@@ -26,6 +31,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="c in qc.contents = (qc.studentsFiltered = (qc.students | filter: {student:qc.search}) | startFrom: qc.tablePage*qc.resultsPerPage | limitTo:qc.resultsPerPage)" style="height: 50px">
+                    <td><a href="#" ng-show="qc.exportShow" ng-click="qc.addOrRemoveFromExport(c)">{{qc.singleExportToDo(c)}}</a></td>
                     <td><a href="{{qc.linkToProfile}}" class="link" ng-click="qc.setLink(c.id);" ng-bind-html="c.student | highlight: qc.search">{{c.student}}</a></td>
                     <td>{{c.studentScore}} / {{qc.quizInfo[0].quizScore}} </td>
                     <td>{{c.quizStatus}}</td>
@@ -55,5 +61,37 @@
             </span>
             Total: {{qc.quizzesFiltered.length}}
         </span>
+    </div>
+
+    <br />
+
+    <div ng-show="qc.exportShow" style="width:1000px; float:inherit; border:solid">
+        <p style="text-decoration:solid; font-size:20px; margin:5px">Exporting to excel file:</p>
+        <table class="table-bordered" style="border:double; margin:auto">
+            <thead id="headers">
+                <tr>
+                    <th>Student</th>
+                    <th>Email</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="c in qc.contentsToExport">
+                    <td>{{c.student}}</td>
+                    <td>{{c.email}}</td>
+                    <td>{{c.studentScore}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <br />
+        <!--<div style="float: left">
+            <input style="margin:5px 0px 0px 0px" ng-model="qc.excelPath" type="text" name="path" value="" />
+            <br />
+            <button style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Path</button>
+        </div>-->
+        <div style="float: right">
+            <p style="margin:0px 0px 0px 50px">Total for export: {{qc.contentsToExport.length}}</p>
+            <button ng-click="qc.writeTableToExcel()" ng-disabled="qc.multipleExportToDo() === 'Export All'" style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Save</button>
+        </div>
     </div>
 </div>
