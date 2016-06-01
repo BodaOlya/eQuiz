@@ -3,11 +3,15 @@
     <br />
     <label>Search</label>
     <input type="text" ng-model="rc.search" style="width:15em">
+    <button ng-click="rc.exportShow=!rc.exportShow" style="text-decoration:solid; font-size:20px; float:right">
+        Export
+    </button>
 
     <div style="overflow-x:auto;">
         <table class="reviewTable" auto-height="{{rc.groupList.length}}">
             <thead>
                 <tr>
+                    <th><a href="#" ng-show="rc.exportShow" ng-click="rc.addOrRemoveFromExportAll(rc.contents)">{{rc.multipleExportToDo()}}</a></th>
                     <th ng-repeat="h in rc.headers">
                         <a class="link" href="#" ng-click="rc.refreshPredicate(h.predicateIndex); rc.order(rc.myPredicate[h.predicateIndex],null)">
                             <span class="sortorder" ng-show="rc.direction(h.predicateIndex) !== null" ng-class="{direction:rc.direction(h.predicateIndex)}"></span>
@@ -36,6 +40,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="c in rc.contents = ((rc.searchFiltered = (rc.students | groupFilter:rc.selectedGroup | filter: {student:rc.search})) | startFrom: rc.tablePage*rc.resultsPerPage | limitTo:rc.resultsPerPage)" style="height: 50px">
+                    <td><a href="#" ng-show="rc.exportShow" ng-click="rc.addOrRemoveFromExport(c)">{{rc.singleExportToDo(c)}}</a></td>
                     <td><a href="Index/Student?Id={{c.id}}#Profile" class="link" ng-bind-html="c.student | highlight: rc.search">{{c.student}}</a></td>
                     <td>{{c.userGroup}}</td>
                     <td>{{c.quizzes}}</td>
@@ -57,6 +62,32 @@
                 </span>
                 Total: {{rc.searchFiltered.length}}
             </span>
+        </div>
+
+        <br />
+        <br />
+
+        <div ng-show="rc.exportShow" style="width:1000px; float:inherit; border:solid">
+            <p style="text-decoration:solid; font-size:20px; margin:5px">Exporting to excel file:</p>
+            <table class="table-bordered" style="border:double; margin:auto">
+                <thead>
+                    <tr>
+                        <th ng-repeat="h in rc.headers">{{h.name}}</th>
+                        <th>id</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="c in rc.contentsToExport">
+                        <td>{{c.student}}</td>
+                        <td>{{c.userGroup}}</td>
+                        <td>{{c.quizzes}}</td>
+                        <td>{{c.id}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <p style="margin:0px 0px 0px 50px">Total for export: {{rc.contentsToExport.length}}</p>
+            <button ng-disabled="rc.multipleExportToDo() === 'Export All'" style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Save</button>
         </div>
     </div>
 </div>
