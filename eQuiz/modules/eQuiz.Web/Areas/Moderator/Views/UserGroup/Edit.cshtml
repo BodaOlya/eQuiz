@@ -15,7 +15,7 @@
     }
 }
 
-<div ng-controller="UserGroupController as g" class="user-group">
+<div ng-controller="UserGroupController as g" ng-cloak class="user-group">
     <h2> Create new/ Edit {{g.group.Name}}</h2>
 
     <div class="user-group-name">
@@ -23,8 +23,9 @@
         <input type="text" ng-model="g.group.Name" value="{{g.group.Name}}"/>
     </div>
     <div class = "ug-import">
-        <label> Students </label>
-        <a href=""> Import from *.csv </a>
+        <label> Students </label>        
+        <label id = "file-link" for = "ug-file-upload"> Import from *.csv </label>
+        <input  type="file" id = "ug-file-upload" />
     </div>
 
     <table class = "table-quizzes">
@@ -68,14 +69,14 @@
         </div>
     </div>
 
-    <div class="loading-background" ng-show="g.loadingVisible">
+    <div ng-cloak class="loading-background" ng-show="g.loadingVisible">
         <div class="loading-content">
             <p>
                 Processing...
             </p>
         </div>
     </div>
-    <div class="message-container" ng-show="g.errorMessageVisible">
+    <div ng-cloak class="message-container" ng-show="g.errorMessageVisible">
         <div class="message-content">
             <p>
                 Changes have not been saved due to
@@ -85,7 +86,7 @@
             </p>
         </div>
     </div>
-    <div class="message-container" ng-show="g.successMessageVisible">
+    <div ng-cloak class="message-container" ng-show="g.successMessageVisible">
         <div class="message-content">
             <p>
                 All changes have been
