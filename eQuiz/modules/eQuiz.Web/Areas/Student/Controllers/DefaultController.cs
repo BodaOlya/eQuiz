@@ -89,6 +89,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                                             Id = q.Question.Id,
                                             Text = q.Question.QuestionText,
                                             IsAutomatic = q.Question.QuestionType.IsAutomatic,
+                                            QuestionType = q.Question.QuestionType.TypeName,
                                             Answers = q.Question.QuestionAnswers.Select(a => new
                                             {
                                                 Id = a.Id,
