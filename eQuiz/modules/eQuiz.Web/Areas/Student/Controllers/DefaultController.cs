@@ -65,7 +65,16 @@ namespace eQuiz.Web.Areas.Student.Controllers
         }
 
         public ActionResult GetQuestionsByQuizId(int id, int duration)
-        {  
+        {
+            QuizPass quizPassToInsert = new QuizPass
+            {
+                QuizId = id,
+                UserId = 1,
+                StartTime = DateTime.UtcNow,
+                FinishTime = DateTime.UtcNow
+            };
+            _repository.Insert<QuizPass>(quizPassToInsert);
+
             var quizInfo = _repository.Get<QuizQuestion>(q => q.QuizVariant.QuizId == id && q.QuizBlock.Quiz.TimeLimitMinutes == duration,
                                                              q => q.Question,
                                                              q => q.Question.QuestionType,
