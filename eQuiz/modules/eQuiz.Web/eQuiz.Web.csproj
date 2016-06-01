@@ -187,8 +187,8 @@
     <Compile Include="Areas\Admin\Models\QuestionBase.cs" />
     <Compile Include="Areas\Admin\Models\QuestionsAuto.cs" />
     <Compile Include="Areas\Admin\Models\QuizInfo.cs" />
-    <Compile Include="Areas\Admin\Models\SelectOneQuestion.cs" />
     <Compile Include="Areas\Admin\Models\SelectQuestion.cs" />
+    <Compile Include="Areas\Admin\Models\TestAnswer.cs" />
     <Compile Include="Areas\Admin\Models\TextQuestion.cs" />
     <Compile Include="Areas\Moderator\Controllers\DefaultController.cs" />
     <Compile Include="Areas\Moderator\Controllers\QuizController.cs" />
