@@ -36,6 +36,8 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var quizPasses = _repository.Get<QuizPass>();
             var users = _repository.Get<User>();
 
+            Random score = new Random(); // Temporary changes. Must be deleted.
+
             var query = from u in users
                         join qp in quizPasses on u.Id equals qp.UserId
                         where qp.QuizId == id
@@ -46,7 +48,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                             student = changed.Select(ch => ch.u.FirstName + " " + ch.u.LastName).Distinct(),
                             //student = u.FirstName + " " + u.LastName,
                             email = changed.Select(ch => ch.u.Email).Distinct(),
-                            studentScore = 0,
+                            studentScore = score.Next(1, 100),
                             quizStatus = "Not Passed",
                             questionDetails = "{ passed: 0, notPassed: 10, inVerification: 0 }"
                         };
@@ -89,7 +91,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        
+
 
         [HttpGet]
         public JsonResult GetQuizStudents(int quizId)

@@ -8,28 +8,28 @@
 }
 
 <div ng-app="equizModule">
-        <div layout="row" style="padding:10px">
-            <div>
-                <a href="/Admin/Default/Index/">
-                    <button style="text-decoration:solid; font-size:20px" ng-click="lc.GoToReview()">
-                        Students
-                    </button>
-                </a>
-                <a href="/Admin/Default/Index/Quizzes">
-                    <button style="text-decoration:solid; font-size:20px">
-                        Quizzes
-                    </button>
-                </a>
-                        <label style="text-decoration:solid; font-size:20px; float:right">
-                            Full Name
-                        </label>
-            </div>
-
-            <div data-loading class="cssload-container">
-                <div class="cssload-speeding-wheel"></div>
-            </div> 
-            <div ng-view> </div>
+    <div layout="row" style="padding:10px">
+        <div>
+            <a href="/Admin/Default/Index/">
+                <button style="text-decoration:solid; font-size:20px" ng-click="lc.GoToReview()">
+                    Students
+                </button>
+            </a>
+            <a href="/Admin/Default/Index/Quizzes">
+                <button style="text-decoration:solid; font-size:20px">
+                    Quizzes
+                </button>
+            </a>
+            <label style="text-decoration:solid; font-size:20px; float:right">
+                Full Name
+            </label>
         </div>
+
+        <div data-loading class="cssload-container">
+            <div class="cssload-speeding-wheel"></div>
+        </div>
+        <div ng-view> </div>
+    </div>
 </div>
 
 @section FootScripts
@@ -45,6 +45,7 @@
     <script src="~/Areas/Admin/Scripts/quizReview/quiz-review-data.service.js"></script>
     <script src="~/Areas/Admin/Scripts/review/review-data.service.js"></script>
     <script src="~/Areas/Admin/Scripts/student/student-data.service.js"></script>
+    <script src="~/Areas/Admin/Scripts/quiz-details/quiz-details.factory.js"></script>
     <script src="~/Areas/Admin/Scripts/quiz-details/quiz-details-data.service.js"></script>
     <script src="~/Areas/Admin/Scripts/quizzes/quizzes-data.service.js"></script>
 

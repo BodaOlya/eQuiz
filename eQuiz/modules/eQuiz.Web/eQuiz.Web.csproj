@@ -112,6 +112,7 @@
     <Content Include="Areas\Admin\Scripts\quiz-details.html" />
     <Content Include="Areas\Admin\Scripts\quiz-details\quiz-details-data.service.js" />
     <Content Include="Areas\Admin\Scripts\quiz-details\quiz-details.controller.js" />
+    <Content Include="Areas\Admin\Scripts\quiz-details\quiz-details.factory.js" />
     <Content Include="Areas\Admin\Scripts\quiz-review.html" />
     <Content Include="Areas\Admin\Scripts\quizReview\question-status.filter.js" />
     <Content Include="Areas\Admin\Scripts\quizReview\quiz-review-data.service.js" />

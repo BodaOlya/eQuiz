@@ -67,7 +67,7 @@
 
     <div ng-show="qc.exportShow" style="width:1000px; float:inherit; border:solid">
         <p style="text-decoration:solid; font-size:20px; margin:5px">Exporting to excel file:</p>
-        <table class="table-bordered" style="border:double; margin:auto">
+        <table id="exportable" class="table-bordered" style="border:double; margin:auto">
             <thead id="headers">
                 <tr>
                     <th>Student</th>
@@ -76,7 +76,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="c in qc.contentsToExport">
+                <tr ng-repeat="c in qc.contentsToExport | orderBy: 'studentScore'">
                     <td>{{c.student}}</td>
                     <td>{{c.email}}</td>
                     <td>{{c.studentScore}}</td>
@@ -84,14 +84,12 @@
             </tbody>
         </table>
         <br />
-        <!--<div style="float: left">
-            <input style="margin:5px 0px 0px 0px" ng-model="qc.excelPath" type="text" name="path" value="" />
-            <br />
-            <button style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Path</button>
-        </div>-->
+        <div style="float: left">
+            <button ng-click="qc.exportShow=!qc.exportShow" style="margin: 10px 0px 0px 10px ; text-decoration:solid; font-size:20px">Cancel</button>
+        </div>
         <div style="float: right">
             <p style="margin:0px 0px 0px 50px">Total for export: {{qc.contentsToExport.length}}</p>
-            <button ng-click="qc.writeTableToExcel()" ng-disabled="qc.multipleExportToDo() === 'Export All'" style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Save</button>
+            <button ng-click="qc.writeTableToExcel('#exportable')" ng-disabled="qc.multipleExportToDo() === 'Export All'" style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Save</button>
         </div>
     </div>
 </div>

@@ -3,9 +3,9 @@
         .module('equizModule')
         .controller('QuizDetailsController', quizDetailsController);
 
-    quizDetailsController.$inject = ['$scope', '$filter', 'quizDetailsDataService', 'quizInfo', 'quizStudents'];
+    quizDetailsController.$inject = ['$scope', '$filter', 'quizDetailsDataService', 'quizInfo', 'quizStudents', 'Excel', '$timeout'];
 
-    function quizDetailsController($scope, $filter, quizDetailsDataService, quizInfo, quizStudents) {
+    function quizDetailsController($scope, $filter, quizDetailsDataService, quizInfo, quizStudents, Excel, $timeout) {
         var vm = this;
 
         var orderBy = $filter('orderBy');
@@ -16,7 +16,7 @@
         vm.resultsCount = [10, 25, 50, 100];
         vm.tablePage = 0;
         vm.linkToProfile = "Index/Student?Id=";
-        vm.linkToQuizRewiew = "Index/Student?Id=";        
+        vm.linkToQuizRewiew = "Index/Student?Id=";
         vm.contentsToExport = []; // Contains data for exporting into excel file
         vm.excelPath = 'D:/name.xls'; // Default path and name for excel file
 
@@ -150,7 +150,7 @@
             if (!vm.contentsToExport[0]) {
                 return 'Export All';
             } else {
-                return 'Cncel All';
+                return 'Cancel All';
             };
         }; // Says for method below what it must do
 
@@ -163,8 +163,14 @@
         };// Adds/removes students to/from the object vm.contentsToExport,
         // which contains all information, that will be putted into excel file
 
-        vm.writeTableToExcel = function () {
-            console.log('Saving . . .');
+        vm.writeTableToExcel = function (tableId) {
+            var exportHref = Excel.tableToExcel(tableId, 'Sheet1');
+            $timeout(function () {
+                var link = document.createElement('a');
+                link.download = vm.quizInfo[0].quizName + " by " + vm.quizInfo[0].groupName + ".xls";
+                link.href = exportHref;
+                link.click();
+            }, 100);
         }; // Method that
     };
 })(angular);
