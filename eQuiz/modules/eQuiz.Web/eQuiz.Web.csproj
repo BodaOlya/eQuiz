@@ -147,6 +147,7 @@
     <Content Include="Areas\Moderator\Scripts\app\pages\shared\user-group.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\shared\show-error.directive.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\user-group\user-group.controller.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\user-group\import-users-from-file.directive.js" />
     <Content Include="Areas\Moderator\Scripts\libs\custom-pagination\custom-pagination.js" />
     <Content Include="Areas\Moderator\Styles\equiz-temp.css" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.controller.js" />
@@ -183,8 +184,13 @@
     <Compile Include="Areas\Admin\Controllers\QuizzesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReviewController.cs" />
     <Compile Include="Areas\Admin\Controllers\StudentController.cs" />
+    <Compile Include="Areas\Admin\Models\IQuestion.cs" />
+    <Compile Include="Areas\Admin\Models\QuestionBase.cs" />
     <Compile Include="Areas\Admin\Models\QuestionsAuto.cs" />
     <Compile Include="Areas\Admin\Models\QuizInfo.cs" />
+    <Compile Include="Areas\Admin\Models\SelectOneQuestion.cs" />
+    <Compile Include="Areas\Admin\Models\SelectQuestion.cs" />
+    <Compile Include="Areas\Admin\Models\TextQuestion.cs" />
     <Compile Include="Areas\Moderator\Controllers\DefaultController.cs" />
     <Compile Include="Areas\Moderator\Controllers\QuizController.cs" />
     <Compile Include="Areas\Moderator\Controllers\QuizQuestionController.cs" />

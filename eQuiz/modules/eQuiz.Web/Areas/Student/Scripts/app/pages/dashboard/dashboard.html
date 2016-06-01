@@ -5,8 +5,10 @@
     <div class="cssload-container" ng-if="isLoading">
         <div class="cssload-whirlpool"></div>
     </div>
+    
     <table id='quizzesTable' ng-if="!isLoading">
         <caption><h2>Quizzes</h2></caption>
+        <caption style="text-align: left;"><input type="search" ng-model="search" style="width:20em" placeholder="Search by name"></caption>
         <thead>
             <tr>
                 <th>Name</th>
@@ -16,7 +18,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="quiz in allQuizes" ng-class="{ activeQuiz: quiz.InternetAccess, inactiveQuiz: !quiz.InternetAccess }">
+            <tr ng-repeat="quiz in allQuizes | filter:{ Name: search }" ng-class="{ activeQuiz: quiz.InternetAccess, inactiveQuiz: !quiz.InternetAccess }">
                 <td>
                     {{quiz.Name}}
                 </td>
