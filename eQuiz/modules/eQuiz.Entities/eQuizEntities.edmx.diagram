@@ -60,6 +60,9 @@
         <EntityTypeShape EntityType="eQuizModel.UserComment" Width="1.5" PointX="3" PointY="26.75" />
         <AssociationConnector Association="eQuizModel.FK_tblUserComment_AdminId_tblUser" />
         <AssociationConnector Association="eQuizModel.FK_tblUserComment_UserId_tblUser" />
+        <EntityTypeShape EntityType="eQuizModel.QuizEditHistory" Width="1.5" PointX="9" PointY="16" />
+        <AssociationConnector Association="eQuizModel.FK_tblQuizEditHistory_tblQuiz" />
+        <AssociationConnector Association="eQuizModel.FK_tblQuizEditHistory_tblUser" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

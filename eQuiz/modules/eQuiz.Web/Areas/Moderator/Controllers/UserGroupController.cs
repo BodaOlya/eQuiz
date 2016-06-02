@@ -197,6 +197,33 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 }
             }
         }
+        
+        [HttpPost]
+        public ActionResult IsUsersValid(IEnumerable<User> users)
+        {
+            bool isValid = ValidateListOfUsers(users);
+            return Json(isValid, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
+        #region Helpers
+
+        private bool ValidateListOfUsers(IEnumerable<User> users)
+        {
+            foreach (var user in users)
+            {
+                bool correctUserExist = _repository.Exists<User>(u => (u.Email == user.Email) && (u.FirstName == user.FirstName) && (u.LastName == user.LastName));
+
+                if (correctUserExist)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         #endregion
     }
 }
