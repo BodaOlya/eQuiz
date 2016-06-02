@@ -7,12 +7,12 @@ namespace eQuiz.Web.Areas.Admin.Models
 {
     public class SelectQuestion : QuestionBase
     {
-        // I don't give a fuck how to do here, will do at 1.06
         List<TestAnswer> QuestionVariants;
 
         public SelectQuestion(int id, int maxScore, int userScore, string questionText, List<TestAnswer> questionVariants, int order)
             : base(id, maxScore, userScore, questionText, order)
         {
+            base.Type = "Select";
             QuestionVariants = questionVariants;
         }
     }

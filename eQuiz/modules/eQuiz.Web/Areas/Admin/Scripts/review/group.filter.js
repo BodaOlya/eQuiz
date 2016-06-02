@@ -1,5 +1,7 @@
 ﻿(function (angular) {
-    angular.module('equizModule').filter('groupFilter', GroupFilter);
+    angular
+        .module('equizModule')
+        .filter('groupFilter', GroupFilter);
 
     function GroupFilter() {
         return function (data, selectedData) {

@@ -1,5 +1,7 @@
 ﻿(function (angular) {
-    angular.module("equizModule").filter('highlight', HighlightFilter);
+    angular
+        .module("equizModule")
+        .filter('highlight', HighlightFilter);
 
     HighlightFilter.$inject = ['$sce'];
 

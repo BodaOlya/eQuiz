@@ -127,15 +127,8 @@
             return false;
         };
 
-        vm.isChecked = function (group) {
-            if (vm.selectedGroup.toString().indexOf(group.toString()) > -1) {
-                return 'icon-ok pull-right';
-            }
-            return false;
-        };
-
         vm.checkAll = function () {
-            debugger;
+            vm.selectedGroup = [];
             for (var i = 0; i < vm.groupList.length; i++) {
                 vm.selectedGroup.push(vm.groupList[i]);
             }
@@ -164,6 +157,14 @@
         vm.setLink = function (studentId) {
             vm.link += studentId.Id + '/Profile';
         };
+                       
+        vm.checkSymbol = "&#x2714";        
+        vm.toggleDropDownElem = function (group) {            
+            if (vm.selectedGroup.toString().indexOf(group.toString()) > -1) {
+                return false;
+            }
+            return true;        
+        }
     };
 
 })(angular);
