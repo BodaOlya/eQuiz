@@ -98,6 +98,16 @@ CREATE TABLE [dbo].[tblQuiz]
 	CONSTRAINT [CK_tblQuiz_StartDate_EndDate] CHECK ([StartDate] <= [EndDate])
  ); 
 
+ CREATE TABLE [dbo].[tblQuizEditHistory]
+ (
+	[Id] [INT] NOT NULL IDENTITY(1, 1),
+	[QuizId] [INT] NOT NULL,
+	[UserId] [INT] NOT NULL,
+	[StartDate] [DATETIME] NOT NULL,
+	[LastChangeDate] [DATETIME] NOT NULL,
+	CONSTRAINT [PK_tblQuizEditHistory_Id] PRIMARY KEY ([Id])
+ );
+
  CREATE TABLE [dbo].[tblQuizState]
  (
 	[Id] [INT] NOT NULL IDENTITY(1, 1),
@@ -277,6 +287,10 @@ ALTER TABLE [dbo].[tblQuiz] ADD CONSTRAINT [FK_tblQuiz_tblQuizType] FOREIGN KEY(
 ALTER TABLE [dbo].[tblQuiz] ADD CONSTRAINT [FK_tblQuiz_tblGroup] FOREIGN KEY([GroupId]) REFERENCES [dbo].[tblUserGroup] ([Id]);
 
 ALTER TABLE [dbo].[tblQuiz] ADD CONSTRAINT [FK_tblQuiz_tblQuizState] FOREIGN KEY([QuizStateId]) REFERENCES [dbo].[tblQuizState] ([Id]);
+
+ALTER TABLE [dbo].[tblQuizEditHistory] ADD CONSTRAINT [FK_tblQuizEditHistory_tblQuiz] FOREIGN KEY([QuizId]) REFERENCES [dbo].[tblQuiz] ([Id]);
+
+ALTER TABLE [dbo].[tblQuizEditHistory] ADD CONSTRAINT [FK_tblQuizEditHistory_tblUser] FOREIGN KEY([UserId]) REFERENCES [dbo].[tblUser] ([Id]);
 
 ALTER TABLE [dbo].[tblQuizPass] ADD CONSTRAINT [FK_tblQuizPass_tblQuiz] FOREIGN KEY([QuizId]) REFERENCES [dbo].[tblQuiz] ([Id]);
 
