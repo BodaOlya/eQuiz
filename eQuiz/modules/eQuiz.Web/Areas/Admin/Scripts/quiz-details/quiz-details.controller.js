@@ -174,7 +174,6 @@
                     vm.addOrRemoveFromExport(students[i]);
                 };
             };
-            vm.contentsToExport.sort();
         };// Adds/removes students to/from the object vm.contentsToExport,
         // which contains all information, that will be putted into excel file
 

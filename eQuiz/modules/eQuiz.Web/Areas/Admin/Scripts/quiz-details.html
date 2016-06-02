@@ -89,7 +89,7 @@
         </div>
         <div style="float: right">
             <p style="margin:0px 0px 0px 50px">Total for export: {{qc.contentsToExport.length}}</p>
-            <button ng-click="qc.writeTableToExcel('#exportable')" ng-disabled="qc.multipleExportToDo() === 'Export All'" style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Save</button>
+            <button ng-click="qc.writeTableToExcel('#exportable')" ng-disabled="qc.contentsToExport.length === 0" style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Save</button>
         </div>
     </div>
 </div>
