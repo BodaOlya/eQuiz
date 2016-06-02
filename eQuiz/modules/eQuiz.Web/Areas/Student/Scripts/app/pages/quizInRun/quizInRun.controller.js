@@ -51,10 +51,12 @@
                 });
         };
 
-        $scope.setUserChoice = function (index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
+        $scope.setUserSingleChoice = function (index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
             trackUserResultService.setUserAnswers(index, questionId, answerId, isAutomatic, quizBlock, questionOrder);
         };
-
+        $scope.setUserMultipleChoice = function (index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
+            trackUserResultService.setUserMultipleAnswer(index, questionId, answerId, isAutomatic, quizBlock, questionOrder);
+        };
         $scope.setUserTextAnswers = function (index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
             trackUserResultService.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
         };

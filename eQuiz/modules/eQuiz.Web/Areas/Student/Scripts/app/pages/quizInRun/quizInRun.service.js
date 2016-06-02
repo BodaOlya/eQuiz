@@ -5,7 +5,7 @@
     equizModule.factory("quizService", ["$http", function ($http) {
         var service = {
             getQuestionsById: getQuestionsByIdAjax,
-            sendUserResult: sendUserResultAjax 
+            sendUserResult: sendUserResultAjax
         };
 
         return service;
