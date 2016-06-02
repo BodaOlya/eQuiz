@@ -146,20 +146,35 @@
         }; // Adds/removes student to/from the object vm.contentsToExport,
         // which contains all information, that will be putted into excel file
 
-        vm.multipleExportToDo = function () {
-            if (!vm.contentsToExport[0]) {
-                return 'Export All';
-            } else {
-                return 'Cancel All';
+        vm.multipleExportToDo = function (students) {
+            if (students) {
+                for (var i = 0; i < students.length; i++) {
+                    if (vm.contentsToExport.indexOf(students[i]) !== -1) {
+                        return 'Cancel All';
+                    }
+                };
             };
+            return 'Export All';
         }; // Says for method below what it must do
 
         vm.addOrRemoveFromExportAll = function (students) {
-            if (!vm.contentsToExport[0]) {
-                vm.contentsToExport = students;
+            if (vm.multipleExportToDo(students) === 'Cancel All') {
+                var length = vm.contentsToExport.length;
+                for (var i = 0; i < length; i++) {
+                    for (var j = 0; j < students.length; j++) {
+                        if (vm.contentsToExport[i] === students[j]) {
+                            vm.addOrRemoveFromExport(students[j]);
+                            i--;
+                            break;
+                        };
+                    };
+                };
             } else {
-                vm.contentsToExport = [];
+                for (var i = 0; i < students.length; i++) {
+                    vm.addOrRemoveFromExport(students[i]);
+                };
             };
+            vm.contentsToExport.sort();
         };// Adds/removes students to/from the object vm.contentsToExport,
         // which contains all information, that will be putted into excel file
 
