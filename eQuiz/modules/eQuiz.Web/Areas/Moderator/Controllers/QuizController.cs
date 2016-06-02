@@ -21,6 +21,8 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
         private readonly IRepository _repository;
 
+        private const int QuizLockDuration = 2;
+
         #endregion
 
         #region Constructors
@@ -46,18 +48,53 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
         public ActionResult Edit(int? id)
         {
+            var now = DateTime.Now;
+            if (id != null)
+            {
+                var latestEdit = _repository.Get<QuizEditHistory>(q => q.QuizId == id).OrderByDescending(q => q.LastChangeDate).Take(1).FirstOrDefault();
+
+                if (latestEdit != null)
+                {
+                    var endLock = latestEdit.LastChangeDate.AddMinutes(QuizLockDuration);
+                    if (endLock > now) // && USER != latestEdit.User //UPDATE WHEN AUTH
+                    {
+                        var user = _repository.GetSingle<User>(u => u.Id == latestEdit.UserId);
+                        var quiz = _repository.GetSingle<Quiz>(q => q.Id == latestEdit.QuizId);
+                        TempData["UserName"] = string.Format("{0} {1}", user.FirstName, user.LastName);
+                        TempData["Quiz"] = new Quiz()
+                        {
+                            Id = quiz.Id,
+                            Name = quiz.Name
+                        };
+                        TempData["EndLockDate"] = endLock;
+
+                        return RedirectToAction("AccessDenied");
+                    }
+                }
+
+                latestEdit = new QuizEditHistory()
+                {
+                    QuizId = (int)id,
+                    UserId = 1, //UPDATE WHEN AUTH // CURRENT
+                    StartDate = now,
+                    LastChangeDate = now
+                };
+
+                _repository.Insert<QuizEditHistory>(latestEdit);
+            }
+
             return View();
         }
 
         public ActionResult AccessDenied()
         {
-            if(TempData["Quiz"]==null || TempData["User"] == null || (DateTime)TempData["EndLockDate"] == default(DateTime))
+            if (TempData["Quiz"] == null || TempData["UserName"] == null || (DateTime)TempData["EndLockDate"] == default(DateTime))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
 
             ViewBag.Quiz = TempData["Quiz"];
-            ViewBag.User = TempData["User"];
+            ViewBag.UserName = TempData["UserName"];
             ViewBag.EndLockDate = TempData["EndLockDate"];
 
             return View();
@@ -73,7 +110,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         [HttpGet]
         public ActionResult Get(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Id is null");
             }
@@ -161,23 +198,23 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             var quizzes = _repository.Get<Quiz>();
             var quizBlocks = _repository.Get<QuizBlock>();
             var quizStates = _repository.Get<QuizState>();
-            
+
             //TODO : add method to repository for paging
             quizzesList = (from quiz in quizzes
-                            join quizBlock in quizBlocks on quiz.Id equals quizBlock.QuizId
-                            join quizState in quizStates on quiz.QuizStateId equals quizState.Id
-                            select
-                                    new QuizListModel
-                                    {
-                                        Id = quiz.Id,
-                                        Name = quiz.Name,
-                                        CountOfQuestions = quizBlock.QuestionCount,
-                                        StartDate = quiz.StartDate,
-                                        Duration = quiz.TimeLimitMinutes,
-                                        StateName = quizState.Name
-                                    }).Where(item => (searchText == null || item.Name.ToLower().Contains(searchText.ToLower())) &&
-                                            (item.StateName == "Opened" || item.StateName == "Draft" || item.StateName == "Scheduled") &&
-                                            (selectedStatus == null || item.StateName == selectedStatus))
+                           join quizBlock in quizBlocks on quiz.Id equals quizBlock.QuizId
+                           join quizState in quizStates on quiz.QuizStateId equals quizState.Id
+                           select
+                                   new QuizListModel
+                                   {
+                                       Id = quiz.Id,
+                                       Name = quiz.Name,
+                                       CountOfQuestions = quizBlock.QuestionCount,
+                                       StartDate = quiz.StartDate,
+                                       Duration = quiz.TimeLimitMinutes,
+                                       StateName = quizState.Name
+                                   }).Where(item => (searchText == null || item.Name.ToLower().Contains(searchText.ToLower())) &&
+                                           (item.StateName == "Opened" || item.StateName == "Draft" || item.StateName == "Scheduled") &&
+                                           (selectedStatus == null || item.StateName == selectedStatus))
                                             .OrderBy(q => q.Name);
 
             quizzesTotal = quizzesList.Count();
@@ -205,7 +242,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             }
 
             quizzesList = quizzesList.Skip((currentPage - 1) * quizzesPerPage).Take(quizzesPerPage).ToList();
-            
+
             return Json(new { Quizzes = quizzesList, QuizzesTotal = quizzesTotal }, JsonRequestBehavior.AllowGet);
         }
 
@@ -393,7 +430,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             quizPreviewModel.EndDate = quiz.EndDate;
             quizPreviewModel.TimeLimitMinutes = quiz.TimeLimitMinutes;
             quizPreviewModel.InternetAccess = quiz.InternetAccess;
-            quizPreviewModel.Group = userGroup != null ? userGroup.Name : "Not assigned";            
+            quizPreviewModel.Group = userGroup != null ? userGroup.Name : "Not assigned";
             quizPreviewModel.State = quizState.Name;
 
             var quizBlock = _repository.GetSingle<QuizBlock>(qb => qb.QuizId == id);

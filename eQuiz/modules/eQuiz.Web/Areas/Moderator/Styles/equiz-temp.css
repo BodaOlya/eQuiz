@@ -1260,3 +1260,10 @@ thead, th, td {
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
+
+.fullscreen-message{
+    padding: 20px;
+    font-size: 24px;
+    background-color: lightgray;
+    border: 2px solid black;
+}
