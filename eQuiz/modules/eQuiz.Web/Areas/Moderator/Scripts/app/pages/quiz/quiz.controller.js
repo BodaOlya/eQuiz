@@ -1,9 +1,9 @@
 ﻿(function () {
     angular.module("equizModule")
            .controller("QuizController", QuizController);
-    QuizController.$inject = ['$scope', 'quizService', '$location', 'questionService', '$timeout'];
+    QuizController.$inject = ['$scope', 'quizService', '$location', 'questionService', '$timeout', 'mvcLocation'];
 
-    function QuizController($scope, quizService, $location, questionService, $timeout) {
+    function QuizController($scope, quizService, $location, questionService, $timeout, mvcLocation) {
         var vm = this;
         vm.loadingVisible = false;
         vm.errorMessageVisible = false;
@@ -61,10 +61,10 @@
         activate();
 
         function activate() {
-            if ($location.search().id) {
+            if (mvcLocation.search("id")) {
                 vm.showLoading();
-                vm.getQuestions($location.search().id);
-                quizService.get($location.search().id).then(function (data) {
+                vm.getQuestions(mvcLocation.search("id"));
+                quizService.get(mvcLocation.search("id")).then(function (data) {
                     vm.model.quiz = data.data.quiz;
                     vm.isStateEditable = vm.model.quiz.QuizState.Name != 'Scheduled';
                     vm.model.quiz.StartDate = new Date(vm.model.quiz.StartDate);
@@ -168,9 +168,6 @@
                     vm.model.quiz.DurationMinutes = vm.model.quiz.TimeLimitMinutes % 60;
                     vm.model.quiz.DurationHours = (vm.model.quiz.TimeLimitMinutes - vm.model.quiz.TimeLimitMinutes % 60) / 60;
                     vm.model.quizBlock = data.data.block;
-                    if (!$location.search().id) {
-                        $location.search('id', vm.model.quiz.Id);
-                    }
                     saveQuestions();
                 }, function (data) {
                     vm.hideLoading();

@@ -69,17 +69,18 @@ namespace eQuiz.Web.Areas.Student.Controllers
             QuizPass quizPassToInsert = new QuizPass
             {
                 QuizId = id,
-                UserId = 1,
+                UserId = 1,//TODO will be fixed after authentification
                 StartTime = DateTime.UtcNow,
                 FinishTime = DateTime.UtcNow
             };
             _repository.Insert<QuizPass>(quizPassToInsert);
+            TempData["doc"] = quizPassToInsert.Id;
 
             var quizInfo = _repository.Get<QuizQuestion>(q => q.QuizVariant.QuizId == id && q.QuizBlock.Quiz.TimeLimitMinutes == duration,
                                                              q => q.Question,
                                                              q => q.Question.QuestionType,
                                                              q => q.Question.QuestionAnswers,
-                                                             q=>q.QuizBlock.Quiz);
+                                                             q => q.QuizBlock.Quiz);
 
 
 
@@ -114,7 +115,14 @@ namespace eQuiz.Web.Areas.Student.Controllers
                 StartTime = passedQuiz.StartDate,
                 FinishTime = passedQuiz.FinishDate
             };
-            _repository.Insert<QuizPass>(quizPassToInsert);
+            //_repository.Insert<QuizPass>(quizPassToInsert);
+
+            var quiz = _repository.GetSingle<QuizPass>(u => u.Id == (int)TempData["doc"]);
+            quiz.FinishTime = DateTime.UtcNow;
+            quiz.QuizId = passedQuiz.QuizId;
+            quiz.UserId = 1;
+
+            _repository.Update<QuizPass>(quiz);
 
             if (passedQuiz.UserAnswers != null)
             {

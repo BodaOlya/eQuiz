@@ -17,7 +17,7 @@
         }
 
         function get(id) {
-            return $http.get("/moderator/quiz/get?id=" + id.toString());
+            return $http.get("/moderator/quiz/get?id=" + escape(id));
         }
 
         function save(quiz) {
@@ -26,10 +26,10 @@
 
         function isNameUnique(name, id) {
             if (id) {
-                return $http.get("/quiz/IsNameUnique?name=" + name.toString() + "&id=" + id.toString());
+                return $http.get("/quiz/IsNameUnique?name=" + escape(name) + "&id=" + escape(id));
             }
             else {
-                return $http.get("/quiz/IsNameUnique?name=" + name.toString());
+                return $http.get("/quiz/IsNameUnique?name=" + escape(name));
             }
         }
 
@@ -50,7 +50,7 @@
         }
 
         function deleteQuiz(id) {
-            return $http.post("/moderator/quiz/DeleteQuizById?id=" + id.toString());
+            return $http.post("/moderator/quiz/DeleteQuizById?id=" + escape(id));
         }
     }
 })();

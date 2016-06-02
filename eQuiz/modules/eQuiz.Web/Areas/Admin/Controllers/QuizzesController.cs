@@ -106,6 +106,24 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+
+        [HttpGet]
+        public JsonResult GetStudentQuiz(int quizPassId)
+        {
+            List<IQuestion> questions = new List<IQuestion>(); 
+
+            var quizPass = _repository.GetSingle<QuizPass>(qp => qp.Id == quizPassId);
+            var quizId = quizPass.QuizId;
+
+            // Still don't know if I need this
+            var quiz = _repository.GetSingle<Quiz>(q => q.Id == quizId);
+            var quizBlock = _repository.GetSingle<QuizBlock>(qb => qb.QuizId == quizId);
+
+            var quizPassQuestions = _repository.Get<QuizPassQuestion>(qp => qp.QuizPassId == quizPassId);
+
+            return Json(null, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
 
     }
