@@ -22,6 +22,10 @@ ALTER TABLE [dbo].[tblQuiz] DROP CONSTRAINT [FK_tblQuiz_tblGroup];
 
 ALTER TABLE [dbo].[tblQuiz] DROP CONSTRAINT [FK_tblQuiz_tblQuizState];
 
+ALTER TABLE [dbo].[tblQuizEditHistory] DROP CONSTRAINT [FK_tblQuizEditHistory_tblUser];
+
+ALTER TABLE [dbo].[tblQuizEditHistory] DROP CONSTRAINT [FK_tblQuizEditHistory_tblQuiz];
+
 ALTER TABLE [dbo].[tblQuizPass] DROP CONSTRAINT [FK_tblQuizPass_tblQuiz];
 
 ALTER TABLE [dbo].[tblQuizPass]  DROP CONSTRAINT [FK_tblQuizPass_tblUser];
@@ -109,3 +113,5 @@ DROP TABLE [tblQuizState];
 DROP TABLE [tblUserGroup];
  
 DROP TABLE [tblQuizType];
+ 
+DROP TABLE [tblQuizEditHistory];
