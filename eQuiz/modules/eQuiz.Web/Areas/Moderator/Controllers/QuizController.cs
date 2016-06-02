@@ -71,8 +71,13 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         }
 
         [HttpGet]
-        public ActionResult Get(int id)
+        public ActionResult Get(int? id)
         {
+            if(id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Id is null");
+            }
+
             Quiz quiz = _repository.GetSingle<Quiz>(q => q.Id == id, r => r.UserGroup, s => s.QuizState);
             QuizBlock block = _repository.GetSingle<QuizBlock>(b => b.QuizId == id);
 
