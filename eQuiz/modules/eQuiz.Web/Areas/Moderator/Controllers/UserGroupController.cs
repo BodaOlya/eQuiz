@@ -221,6 +221,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 }
                 else
                 {
+                    currentUser.Phone = currentUser.Phone ?? ""; 
                     _repository.Insert<User>(currentUser);
                     var currentUserId = _repository.GetSingle<User>(x => x.Email == currentUser.Email).Id;
                     _repository.Insert<UserToUserGroup>(new UserToUserGroup { UserId = currentUserId, GroupId = userGroupId });

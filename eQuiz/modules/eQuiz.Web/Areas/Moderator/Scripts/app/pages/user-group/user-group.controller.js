@@ -41,8 +41,9 @@
         };
 
         function useImportedData(data) {
-            //TODO            
-            console.log(data);
+            $timeout(function () {
+                vm.users.push.apply(vm.users, data);
+            }, 1000);             
         }
 
         function sortBy(predicate) {
