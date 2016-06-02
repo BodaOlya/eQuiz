@@ -11,6 +11,9 @@
         vm.showSuccess = showSuccess;
         vm.showError = showError;
         vm.isStateEditable = true;
+        vm.isExistingQuestionEnable = false;
+        vm.quizSearch = "";
+        vm.selectedQuizIdForAddQuestion = 0;
         vm.tab = 'quiz';
         vm.save = save;
         vm.switchTab = switchTab;
@@ -19,13 +22,16 @@
             quiz: { QuizTypeId: 1, DurationHours: 0, DurationMinutes: 0 },
             states: [],
             quizzesForCopy: [],
+            quizzesForSearch: [],
             quizBlock: { QuestionCount: 0 },
             questions: [],
             answers: [],
             tags: [],
             orderArray: [],
             questionTypes: [],
-            answersDirty: []
+            answersDirty: [],
+            questionsForAdding: {},
+            checkedQuestions: []
         }
         vm.setQuestionType = setQuestionType;
         vm.addNewQuestion = addNewQuestion;
@@ -45,6 +51,13 @@
         vm.isDirtyAnswerCount = isDirtyAnswerCount;
         vm.isDirtyAnswerChecked = isDirtyAnswerChecked;
         vm.isQuestionsFormValid = isQuestionsFormValid;
+        vm.showAddExistingQuestion = showAddExistingQuestion;
+        vm.setQuizIdForAddQuestion = setQuizIdForAddQuestion;
+        vm.searchTextChange = searchTextChange;
+        vm.closeAddingQuestionWindow = closeAddingQuestionWindow;
+        vm.getQuestionsCopyForAddindQuestion = getQuestionsCopyForAddindQuestion;
+        vm.GetCountSelectedQuestions = GetCountSelectedQuestions;
+        vm.AddExistingQuestions = AddExistingQuestions;
 
         vm.toggleQuizzesForCopy = toggleQuizzesForCopy;
         vm.quizzesForCopyVisible = false;
@@ -85,6 +98,9 @@
 
             quizService.getQuizzesForCopy().then(function (data) {
                 vm.model.quizzesForCopy = data.data;
+                vm.model.quizzesForSearch = vm.model.quizzesForCopy.filter(function (item) {
+                    return item.Id > 0;
+                });
                 vm.model.quizzesForCopy.splice(0, 0, vm.selectedQuizCopy);
             });
 
@@ -495,6 +511,73 @@
 
         function deleteCanExecute() {
             return vm.model.quiz.Id && vm.model.quiz.QuizState && vm.model.quiz.QuizState.Name == 'Scheduled';
+        }
+
+        function showAddExistingQuestion() {
+            vm.isExistingQuestionEnable = true;
+        }
+
+        function setQuizIdForAddQuestion(item) {
+            vm.selectedQuizIdForAddQuestion = item.Id;
+            vm.getQuestionsCopyForAddindQuestion(vm.selectedQuizIdForAddQuestion);
+        }
+
+        function searchTextChange() {
+            vm.selectedQuizIdForAddQuestion = 0;
+            vm.questionsForAdding = {};
+            vm.model.questionsForAdding = {};
+            vm.model.checkedQuestions = [];
+        }
+
+        function closeAddingQuestionWindow() {
+            vm.quizSearch = "";
+            vm.selectedQuizIdForAddQuestion = 0;
+            vm.questionsForAdding = {};
+            vm.isExistingQuestionEnable = false;
+            vm.model.questionsForAdding = {};
+            vm.model.checkedQuestions = [];
+        }
+
+        function getQuestionsCopyForAddindQuestion(quizId) {
+            vm.showLoading();
+            questionService.getQuestionsCopy(quizId).then(function (response) {
+                var modelFromServer = response.data;
+
+                vm.model.questionsForAdding = vm.toViewModel(modelFromServer);
+                vm.model.checkedQuestions = Array.apply(null, Array(vm.model.questionsForAdding.questions.length)).map(function () {
+                    return false;
+                });
+                vm.hideLoading();
+            });
+        }
+
+        function GetCountSelectedQuestions() {
+            return vm.model.checkedQuestions.filter(function (item) {
+                return item;
+            }).length;
+        }
+
+        function AddExistingQuestions() {
+            for (var i = 0; i < vm.model.checkedQuestions.length; i++) {
+                if (vm.model.checkedQuestions[i]) {
+                    vm.model.questions.push(vm.model.questionsForAdding.questions[i]);
+
+                    vm.model.answers.push(vm.model.questionsForAdding.answers[i]);
+
+                    vm.model.tags.push(vm.model.questionsForAdding.tags[i]);
+
+                    vm.model.orderArray.push({
+                        reverse: false,
+                        predicate: ""
+                    });
+
+                    vm.model.answersDirty.push({
+                        countAnswersDirty: false,
+                        checkedAnswersDirty: false
+                    });
+                }
+            }
+            vm.closeAddingQuestionWindow();
         }
     }
 })();

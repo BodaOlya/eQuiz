@@ -142,7 +142,11 @@
         </div>
         <div align="right">
             <a href ng-click="vm.isEditingEnabled() && vm.addNewQuestion()">Add new</a>
-            <a href>Add existing one</a>
+            <a href ng-click="vm.isEditingEnabled() && vm.showAddExistingQuestion()">Add existing one</a>
         </div>
     </ng-form>
+
+    <div ng-show="vm.isExistingQuestionEnable">
+        <ng-include src="'/Areas/Moderator/Scripts/app/pages/quiz/existingQuestions.html'"></ng-include>
+    </div>
 </div>
