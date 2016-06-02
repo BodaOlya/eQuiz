@@ -35,11 +35,29 @@
 
         $scope.isLoading = true;
 
-        getQuestionById($scope.quizId, $scope.quizDuration);
+        function openPopUpRefreshWarning() {
+            var modalInstance = $uibModal.open({
+                animation: false,
+                templateUrl: '/Areas/Student/Scripts/app/pages/refreshWarning/refreshWarning.html',
+                controller: 'refreshWarningCtrl',
+                size: 'sm'
+            });
 
+            modalInstance.result.then(function () {
+                console.log('7');
+            });
+        };
+
+        openPopUpRefreshWarning();
+
+        getQuestionById($scope.quizId, $scope.quizDuration);
+        
         function getQuestionById(questionId, duration ) {
             quizService.getQuestionsById(questionId, duration)
                 .then(function (response) {
+                    if(response.data === "SaveChangeException") {
+                        $location.path("/Dashboard");
+                    }
                     if (response.data.length === 0) {
                         $location.path("/Dashboard");
                     }

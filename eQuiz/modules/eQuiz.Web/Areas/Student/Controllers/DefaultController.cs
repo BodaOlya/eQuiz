@@ -9,6 +9,7 @@ using eQuiz.Repositories.Concrete;
 using eQuiz.Entities;
 using Newtonsoft.Json;
 using eQuiz.Web.Areas.Student.Models;
+using System.Data.Entity.Infrastructure;
 
 namespace eQuiz.Web.Areas.Student.Controllers
 {
@@ -66,43 +67,52 @@ namespace eQuiz.Web.Areas.Student.Controllers
 
         public ActionResult GetQuestionsByQuizId(int id, int duration)
         {
-            QuizPass quizPassToInsert = new QuizPass
+            try
             {
-                QuizId = id,
-                UserId = 1,//TODO will be fixed after authentification
-                StartTime = DateTime.UtcNow,
-                FinishTime = DateTime.UtcNow
-            };
-            _repository.Insert<QuizPass>(quizPassToInsert);
-            TempData["doc"] = quizPassToInsert.Id;
+                QuizPass quizPassToInsert = new QuizPass
+                {
+                    QuizId = id,
+                    UserId = 1,//TODO will be fixed after authentification
+                    StartTime = DateTime.UtcNow,
+                    FinishTime = DateTime.UtcNow
+                };
+                _repository.Insert<QuizPass>(quizPassToInsert);
+                TempData["doc"] = quizPassToInsert.Id;
 
-            var quizInfo = _repository.Get<QuizQuestion>(q => q.QuizVariant.QuizId == id && q.QuizBlock.Quiz.TimeLimitMinutes == duration,
-                                                             q => q.Question,
-                                                             q => q.Question.QuestionType,
-                                                             q => q.Question.QuestionAnswers,
-                                                             q => q.QuizBlock.Quiz);
-
-
-
-            var quizInfoList = quizInfo
-                                        .Select(q => new
-                                        {
-                                            Id = q.Question.Id,
-                                            Text = q.Question.QuestionText,
-                                            IsAutomatic = q.Question.QuestionType.IsAutomatic,
-                                            QuestionType = q.Question.QuestionType.TypeName,
-                                            Answers = q.Question.QuestionAnswers.Select(a => new
+                var quizInfo = _repository.Get<QuizQuestion>(q => q.QuizVariant.QuizId == id && q.QuizBlock.Quiz.TimeLimitMinutes == duration,
+                                                                 q => q.Question,
+                                                                 q => q.Question.QuestionType,
+                                                                 q => q.Question.QuestionAnswers,
+                                                                 q => q.QuizBlock.Quiz);
+                var quizInfoList = quizInfo
+                                            .Select(q => new
                                             {
-                                                Id = a.Id,
-                                                Text = _repository.GetSingle<Answer>(ans => ans.Id == a.Id).AnswerText
-                                            }),
-                                            QuizBlock = q.QuizBlockId,
-                                            QuestionOrder = q.QuestionOrder
-                                        })
-                                        .OrderBy(q => q.QuestionOrder)
-                                        .ToList();
+                                                Id = q.Question.Id,
+                                                Text = q.Question.QuestionText,
+                                                IsAutomatic = q.Question.QuestionType.IsAutomatic,
+                                                QuestionType = q.Question.QuestionType.TypeName,
+                                                Answers = q.Question.QuestionAnswers.Select(a => new
+                                                {
+                                                    Id = a.Id,
+                                                    Text = _repository.GetSingle<Answer>(ans => ans.Id == a.Id).AnswerText
+                                                }),
+                                                QuizBlock = q.QuizBlockId,
+                                                QuestionOrder = q.QuestionOrder
+                                            })
+                                            .OrderBy(q => q.QuestionOrder)
+                                            .ToList();
 
-            return Json(quizInfoList, JsonRequestBehavior.AllowGet);
+                return Json(quizInfoList, JsonRequestBehavior.AllowGet);
+            }
+            catch (DbUpdateException)
+            {
+                return Json("SaveChangeException", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json("Exception", JsonRequestBehavior.AllowGet);
+            }
+           
 
         }
 

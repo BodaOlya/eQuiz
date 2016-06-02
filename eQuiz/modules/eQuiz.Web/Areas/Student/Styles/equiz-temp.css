@@ -363,6 +363,18 @@ input[type="button"] {
     width: 350px;
     height: 150px;
 }
+#refreshWarning {
+    text-align: center;
+    width: 350px;
+    height: 150px;
+}
 .quiz-table{
     text-align: left;
+}
+.search-by-name {
+    width:20em;
+    height:25px;
+    font-size:11pt; 
+    cursor: auto;
+    
 }
