@@ -148,6 +148,8 @@
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz-schedule\show-time-span-error.directive.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\shared\user-group.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\shared\show-error.directive.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\user-groups-list\user-groups.controller.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\user-groups-list\user-groups.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\user-group\user-group.controller.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\user-group\import-users-from-file.directive.js" />
     <Content Include="Areas\Moderator\Scripts\libs\custom-pagination\custom-pagination.js" />
@@ -240,6 +242,7 @@
     <None Include="Areas\Moderator\Views\Quiz\QuizPreview.cshtml" />
     <Content Include="Areas\Moderator\Views\UserGroup\Edit.cshtml" />
     <Content Include="Areas\Moderator\Views\Quiz\Schedule.cshtml" />
+    <Content Include="Areas\Moderator\Views\UserGroup\Index.cshtml" />
     <None Include="Properties\PublishProfiles\myasp.net.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
