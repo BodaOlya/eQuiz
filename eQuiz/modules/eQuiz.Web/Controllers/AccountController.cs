@@ -23,7 +23,7 @@ namespace eQuiz.Web.Controllers
                 case "moderator":
                     return RedirectToAction("Index", "Default", new { area = "Moderator" });
                 case "student":
-                    return RedirectToAction("Index", "Default", new { area = "Student" });                    
+                    return RedirectToAction("Dashboard", "Default", new { area = "Student" });                    
                 case "admin":
                     return RedirectToAction("Index", "Default", new { area = "Admin" });                    
                 default:
