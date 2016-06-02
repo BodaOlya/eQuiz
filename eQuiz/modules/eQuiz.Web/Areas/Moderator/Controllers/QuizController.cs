@@ -44,8 +44,22 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return RedirectToAction("Edit");
         }
 
-        public ActionResult Edit()
+        public ActionResult Edit(int? id)
         {
+            return View();
+        }
+
+        public ActionResult AccessDenied()
+        {
+            if(TempData["Quiz"]==null || TempData["User"] == null || (DateTime)TempData["EndLockDate"] == default(DateTime))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+
+            ViewBag.Quiz = TempData["Quiz"];
+            ViewBag.User = TempData["User"];
+            ViewBag.EndLockDate = TempData["EndLockDate"];
+
             return View();
         }
 
