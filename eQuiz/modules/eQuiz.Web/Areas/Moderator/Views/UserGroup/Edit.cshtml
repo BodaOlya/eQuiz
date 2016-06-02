@@ -34,7 +34,12 @@
             <tr>
                 <th>
                     <a href="#" ng-click="g.sortBy('LastName')">
-                        {{g.showOrderArrow('LastName')}}FullName
+                        {{g.showOrderArrow('LastName')}}LastName
+                    </a>
+                </th>
+                <th>
+                    <a href="#" ng-click="g.sortBy('FirstName')">
+                        {{g.showOrderArrow('FirstName')}}FirstName
                     </a>
                 </th>
                 <th>
@@ -50,11 +55,39 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="user in g.users | orderBy: g.predicate: g.reverse">
-                <td> {{user.LastName}} {{user.FirstName}} {{user.FatheName}} </td>
-                <td> {{user.Email}}</td>
+            <tr ng-form="userForm" ng-repeat="user in g.users | orderBy: g.predicate: g.reverse">
+                <td> 
+                    <div show-error>
+                        <input type="text" ng-model="user.LastName" name="LastName" required  />
+                        <div ng-messages="userForm.LastName.$error" class="error-block">
+                            <p ng-message="required">Last name is required</p>
+                        </div>
+                    </div>
+                </td>
+                <td> 
+                    <div show-error>
+                        <input type="text" ng-model="user.FirstName" name="FirstName" required />
+                        <div ng-messages="userForm.FirstName.$error" class="error-block">
+                            <p ng-message="required">First name is required</p>
+                        </div>
+                    </div>
+                </td>
+                <td> 
+                    <div show-error>
+                        <input type="email" ng-model="user.Email" name="Email" ng-pattern="g.regEx" required /> 
+                        <div ng-messages="userForm.Email.$error" class="error-block">
+                            <p ng-message="required">Email is required</p>
+                            <p ng-message="pattern">Please enter a valid email address</p>
+                        </div>
+                    </div>
+                </td>
                 <td>
                     <a href="#" ng-click="g.deleteUser(user)">Delete</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <a href="#" ng-click="g.addUser()">Add new</a>
                 </td>
             </tr>
         </tbody>

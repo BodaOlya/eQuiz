@@ -1134,6 +1134,11 @@ thead, th, td {
     display: none; 
 }
 
+.user-group .error-block {
+    display: block;
+    color: #a94442;
+}
+
 
 /*--------Styles form pagination--------*/
 

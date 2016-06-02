@@ -15,10 +15,12 @@
         vm.errorMessageVisible = false;
         vm.successMessageVisible = false;
         vm.loadingVisible = false;
+        vm.regEx = /^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
 
         vm.sortBy = sortBy;
         vm.showOrderArrow = showOrderArrow;
         vm.deleteUser = deleteUser;
+        vm.addUser = addUser;
         vm.save = save;
         vm.showSuccess = showSuccess;
         vm.showError = showError;
@@ -62,6 +64,17 @@
             var userIndex = vm.users.indexOf(user);
             vm.users.splice(userIndex, 1);
         };
+
+        function addUser() {
+            vm.users.push(
+                {
+                    Id: 0,
+                    LastName: "",
+                    FirstName: "",
+                    FatheName: "",
+                    Email: ""
+                });
+        }
 
         function save() {
             vm.showLoading();
