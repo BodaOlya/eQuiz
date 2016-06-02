@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Access Denied";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<div id="container">
+    <div class="fullscreen-message">
+        <h1>Access denied</h1>
+        <p>
+            Quiz <b><a href="/moderator/quiz/edit?id=@ViewBag.Quiz.Id">@ViewBag.Quiz.Name</a></b> is being edited by <b>@ViewBag.UserName</b>
+        </p>
+        <p>
+            You will be able to edit quiz not earlier than <b>@ViewBag.EndLockDate</b>
+        </p>
+    </div>
+</div>
+
+@section HeadStyles{
+    <link href="~/Areas/Moderator/Styles/equiz-temp.css" rel="stylesheet" />
+}
+
+@section PageHeader{
+    @{
+        Html.RenderPartial("~/Areas/Moderator/Views/Shared/_Header.cshtml");
+    }
+}

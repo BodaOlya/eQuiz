@@ -125,13 +125,13 @@
     <Content Include="Areas\Admin\Scripts\review\review.controller.js" />
     <Content Include="Areas\Admin\Scripts\review\review-data.service.js" />
     <Content Include="Areas\Admin\Scripts\review\start-from.filter.js" />
+    <Content Include="Areas\Admin\Scripts\review\trustAsHtml.filter.js" />
     <Content Include="Areas\Admin\Scripts\shared\loading-screen.directive.js" />
     <Content Include="Areas\Admin\Scripts\shared\popUp.js" />
     <Content Include="Areas\Admin\Scripts\shared\routing.js" />
     <Content Include="Areas\Admin\Scripts\student\student.controller.js" />
     <Content Include="Areas\Admin\Scripts\student\student-data.service.js" />
     <Content Include="Areas\Admin\Scripts\student.html" />
-    <Content Include="Areas\Admin\Styles\bootstrap-combined.css" />
     <Content Include="Areas\Admin\Styles\equiz-temp.css" />
     <Content Include="Areas\Admin\Scripts\review.html" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz-schedule\quiz.controller.js" />
@@ -143,6 +143,7 @@
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.controller.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.html" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.module.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\shared\mvc-location.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\shared\quiz.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz-schedule\show-time-span-error.directive.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\shared\user-group.service.js" />
@@ -235,6 +236,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Areas\Admin\Views\Default\Index.cshtml" />
+    <Content Include="Areas\Moderator\Views\Quiz\AccessDenied.cshtml" />
     <None Include="Areas\Moderator\Views\Quiz\QuizPreview.cshtml" />
     <Content Include="Areas\Moderator\Views\UserGroup\Edit.cshtml" />
     <Content Include="Areas\Moderator\Views\Quiz\Schedule.cshtml" />

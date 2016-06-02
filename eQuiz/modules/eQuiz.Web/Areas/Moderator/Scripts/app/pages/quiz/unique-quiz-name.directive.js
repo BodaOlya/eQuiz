@@ -2,17 +2,18 @@
     angular.module('equizModule').
     directive('uniqueQuizName', uniqueQuizName);
 
-    uniqueQuizName.$inject = ['quizService', '$location'];
+    uniqueQuizName.$inject = ['quizService'];
 
-    function uniqueQuizName(quizService, $location) {
+    function uniqueQuizName(quizService) {
     	return {
     		restrict: 'A',
     		require: '^form',
     		link: function (scope, element, attributes, formControl) {
     		    var inputElement = element[0].querySelector("[name]");
-    			var inputNgElement = angular.element(inputElement);
+    		    var inputNgElement = angular.element(inputElement);
+    		    var inputIdElement = inputNgElement.next();
     			var inputName = inputNgElement.attr('name');
-    			var messagesBlock = inputNgElement.next();
+    			var messagesBlock = inputIdElement.next();
 
     			function callback(data) {
     			    formControl.name.$setValidity('nonUniqueName', data.data);
@@ -21,8 +22,9 @@
     			}
 
     			inputNgElement.bind('blur', function () {
-    			    if ($location.search().id) {
-    			        quizService.isNameUnique(inputElement.value, $location.search().id).then(function (data) {
+    			    var s = inputIdElement.val();
+    			    if (inputIdElement.val()) {
+    			        quizService.isNameUnique(inputElement.value, inputIdElement.val()).then(function (data) {
     			            callback(data);
     			        });
     			    }

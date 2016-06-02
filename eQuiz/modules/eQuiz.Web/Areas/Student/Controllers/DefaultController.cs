@@ -69,7 +69,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
             QuizPass quizPassToInsert = new QuizPass
             {
                 QuizId = id,
-                UserId = 1,
+                UserId = 1,//TODO will be fixed after authentification
                 StartTime = DateTime.UtcNow,
                 FinishTime = DateTime.UtcNow
             };
@@ -90,6 +90,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                                             Id = q.Question.Id,
                                             Text = q.Question.QuestionText,
                                             IsAutomatic = q.Question.QuestionType.IsAutomatic,
+                                            QuestionType = q.Question.QuestionType.TypeName,
                                             Answers = q.Question.QuestionAnswers.Select(a => new
                                             {
                                                 Id = a.Id,

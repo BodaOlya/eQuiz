@@ -8,7 +8,8 @@
         return {
             get: get,
             getGroup: getGroup,
-            save: save
+            save: save,
+            isUsersValid: isUsersValid
         };
 
         function get() {
@@ -23,7 +24,11 @@
             });
             return promise;
         };
-        
+
+        function isUsersValid(users) {            
+            return $http.post("/moderator/usergroup/IsUsersValid", users);
+        }
+
         function save(data) {
             return $http.post('/moderator/usergroup/save', data);
         };

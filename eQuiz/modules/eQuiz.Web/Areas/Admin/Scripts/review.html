@@ -1,8 +1,22 @@
 ﻿<div>
     <br />
     <br />
-    <label>Search</label>
-    <input type="text" ng-model="rc.search" style="width:15em">
+
+    <div style="display:inline">
+        <label>Search</label>
+        <input type="text" ng-model="rc.search" style="width:15em">
+
+        <div class="dropdown">
+            <button class="dropbtn"> Group Filter &#x25BC </button>
+            <div class="dropdown-content">
+                <a ng-click="rc.checkAll()">&#x2714 Check All</a>
+                <a ng-click="rc.unCheckAll()">&#x2716 Uncheck All</a>
+                <div ng-repeat="group in rc.groupList">
+                    <a ng-click="setSelectedGroup()" ng-model="group"> {{group}} <p ng-class="{dropdownContentElemChecked: rc.toggleDropDownElem(group)}" ng-bind-html="' ' + rc.checkSymbol | trustAsHtml"> </p></a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div style="overflow-x:auto;">
         <table class="reviewTable" auto-height="{{rc.groupList.length}}">
@@ -13,7 +27,7 @@
                             <span class="sortorder" ng-show="rc.direction(h.predicateIndex) !== null" ng-class="{direction:rc.direction(h.predicateIndex)}"></span>
                             {{h.name}}
                         </a>
-                        <div ng-if="h.field == 'userGroup'" ng-cloak class="btn-group groupBtn" ng-class="{open: rc.groupListOpened}">
+                        <!--<div ng-if="h.field == 'userGroup'" ng-cloak class="btn-group groupBtn" ng-class="{open: rc.groupListOpened}">
 
                             <button class="btn dropdown-toggle" ng-click="rc.groupListOpened=!rc.groupListOpened">
                                 <span class="caret"></span>
@@ -30,7 +44,7 @@
                                     <a ng-click="setSelectedGroup()" ng-model="group">{{group}} <span ng-class="rc.isChecked(group)"></span> </a>
                                 </li>
                             </ul>
-                        </div>
+                        </div>-->
                     </th>
                 </tr>
             </thead>
