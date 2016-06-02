@@ -15,8 +15,6 @@
         vm.resultsCount = [10, 25, 50, 100]; // Possible numbers of results per page
         vm.selectedGroup = [];
         vm.link = "/Admin/Default/Index/Student/";
-        vm.exportShow = false;
-        vm.contentsToExport = [];
 
         vm.headers = [
     {
@@ -116,7 +114,7 @@
 
         $scope.setSelectedGroup = function () { // DONT PUT THIS FUNCTION INTO VM! let it be in scope (because of 'this' in function)
             var id = this.group;
-            
+
             if (vm.selectedGroup.toString().indexOf(id.toString()) > -1) {
                 for (var i = 0; i < vm.selectedGroup.length; i++) {
                     if (vm.selectedGroup[i] === id) {
@@ -141,7 +139,7 @@
             for (var i = 0; i < vm.groupList.length; i++) {
                 vm.selectedGroup.push(vm.groupList[i]);
             }
-           
+
         };
 
         vm.unCheckAll = function () {
@@ -165,37 +163,6 @@
 
         vm.setLink = function (studentId) {
             vm.link += studentId.Id + '/Profile';
-        };
-
-        vm.singleExportToDo = function (student) {
-            if (vm.contentsToExport.indexOf(student) === -1) {
-                return 'Export';
-            };
-            return 'Cancel';
-        };
-
-        vm.addOrRemoveFromExport = function (student) {
-            if (vm.singleExportToDo(student) === 'Cancel') {
-                vm.contentsToExport.splice(vm.contentsToExport.indexOf(student), 1);
-            } else {
-                vm.contentsToExport.push(student);
-            };
-        };
-
-        vm.multipleExportToDo = function () {
-            if (!vm.contentsToExport[0]) {
-                return 'Export All';
-            } else {
-                return 'Cncel All';
-            };
-        };
-
-        vm.addOrRemoveFromExportAll = function (students) {
-            if (!vm.contentsToExport[0]) {
-                vm.contentsToExport = students;
-            } else {
-                vm.contentsToExport = [];
-            };
         };
     };
 

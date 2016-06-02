@@ -27,16 +27,19 @@
                             var line = allTextLines[i].split(',');
 
                             data.push({
-                                firstname: line[0],
-                                secondname: line[1],
-                                email: line[2]
+                                FirstName: line[0],
+                                LastName: line[1],
+                                Email: line[2]
                             });
                         }
                         
                         scope.callback({data: data});                        
                     };
 
-                    reader.readAsText(file);
+                    if (file) {
+                         reader.readAsText(file);
+                    }
+                    
                     
                     scope.$apply();
                 });

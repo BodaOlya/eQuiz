@@ -112,6 +112,7 @@
     <Content Include="Areas\Admin\Scripts\quiz-details.html" />
     <Content Include="Areas\Admin\Scripts\quiz-details\quiz-details-data.service.js" />
     <Content Include="Areas\Admin\Scripts\quiz-details\quiz-details.controller.js" />
+    <Content Include="Areas\Admin\Scripts\quiz-details\quiz-details.factory.js" />
     <Content Include="Areas\Admin\Scripts\quiz-review.html" />
     <Content Include="Areas\Admin\Scripts\quizReview\question-status.filter.js" />
     <Content Include="Areas\Admin\Scripts\quizReview\quiz-review-data.service.js" />
@@ -142,6 +143,7 @@
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.controller.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.html" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.module.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\shared\mvc-location.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\shared\quiz.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz-schedule\show-time-span-error.directive.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\shared\user-group.service.js" />
@@ -188,8 +190,8 @@
     <Compile Include="Areas\Admin\Models\QuestionBase.cs" />
     <Compile Include="Areas\Admin\Models\QuestionsAuto.cs" />
     <Compile Include="Areas\Admin\Models\QuizInfo.cs" />
-    <Compile Include="Areas\Admin\Models\SelectOneQuestion.cs" />
     <Compile Include="Areas\Admin\Models\SelectQuestion.cs" />
+    <Compile Include="Areas\Admin\Models\TestAnswer.cs" />
     <Compile Include="Areas\Admin\Models\TextQuestion.cs" />
     <Compile Include="Areas\Moderator\Controllers\DefaultController.cs" />
     <Compile Include="Areas\Moderator\Controllers\QuizController.cs" />
@@ -234,6 +236,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Areas\Admin\Views\Default\Index.cshtml" />
+    <Content Include="Areas\Moderator\Views\Quiz\AccessDenied.cshtml" />
     <None Include="Areas\Moderator\Views\Quiz\QuizPreview.cshtml" />
     <Content Include="Areas\Moderator\Views\UserGroup\Edit.cshtml" />
     <Content Include="Areas\Moderator\Views\Quiz\Schedule.cshtml" />

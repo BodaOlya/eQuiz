@@ -44,8 +44,22 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return RedirectToAction("Edit");
         }
 
-        public ActionResult Edit()
+        public ActionResult Edit(int? id)
         {
+            return View();
+        }
+
+        public ActionResult AccessDenied()
+        {
+            if(TempData["Quiz"]==null || TempData["User"] == null || (DateTime)TempData["EndLockDate"] == default(DateTime))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+
+            ViewBag.Quiz = TempData["Quiz"];
+            ViewBag.User = TempData["User"];
+            ViewBag.EndLockDate = TempData["EndLockDate"];
+
             return View();
         }
 
@@ -57,8 +71,13 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         }
 
         [HttpGet]
-        public ActionResult Get(int id)
+        public ActionResult Get(int? id)
         {
+            if(id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Id is null");
+            }
+
             Quiz quiz = _repository.GetSingle<Quiz>(q => q.Id == id, r => r.UserGroup, s => s.QuizState);
             QuizBlock block = _repository.GetSingle<QuizBlock>(b => b.QuizId == id);
 

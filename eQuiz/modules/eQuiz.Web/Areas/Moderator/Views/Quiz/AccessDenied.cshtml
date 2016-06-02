@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "AccessDenied";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<div class="lightgray">
+    <h2>Access denied</h2>
+    <p>
+        Quiz <b>@ViewBag.Quiz.Name</b> is being edited by <b>@ViewBag.User.Name</b>
+    </p> 
+    <p>
+        You will be able to edit quiz not earlier than <b>@ViewBag.EndLockDate</b>
+    </p>
+</div>

@@ -3,9 +3,9 @@
         .module('equizModule')
         .controller('QuizDetailsController', quizDetailsController);
 
-    quizDetailsController.$inject = ['$scope', '$filter', 'quizDetailsDataService', 'quizInfo', 'quizStudents'];
+    quizDetailsController.$inject = ['$scope', '$filter', 'quizDetailsDataService', 'quizInfo', 'quizStudents', 'Excel', '$timeout'];
 
-    function quizDetailsController($scope, $filter, quizDetailsDataService, quizInfo, quizStudents) {
+    function quizDetailsController($scope, $filter, quizDetailsDataService, quizInfo, quizStudents, Excel, $timeout) {
         var vm = this;
 
         var orderBy = $filter('orderBy');
@@ -16,8 +16,10 @@
         vm.resultsCount = [10, 25, 50, 100];
         vm.tablePage = 0;
         vm.linkToProfile = "Index/Student?Id=";
-        vm.linkToQuizRewiew = "Index/Student?Id=";        
-        
+        vm.linkToQuizRewiew = "Index/Student?Id=";
+        vm.contentsToExport = []; // Contains data for exporting into excel file
+        vm.excelPath = 'D:/name.xls'; // Default path and name for excel file
+
         vm.headers = [
             {
                 name: 'Student',
@@ -42,6 +44,7 @@
 
             vm.students.forEach(function (currVal, index, array) {
                 currVal.student = currVal.student.toString();
+                currVal.email = currVal.email.toString();
                 currVal.studentScore = currVal.studentScore.toString();
                 currVal.quizStatus = currVal.quizStatus.toString();
                 currVal.questionDetails = currVal.questionDetails.toString();
@@ -125,6 +128,49 @@
         };
         vm.paginationChanged = function () {
             vm.tablePage = 0;
-        }
+        };
+        vm.singleExportToDo = function (student) {
+            if (vm.contentsToExport.indexOf(student) === -1) {
+                return 'Export';
+            };
+            return 'Cancel';
+        }; // Says for method below what it must do
+
+        vm.addOrRemoveFromExport = function (student) {
+            if (vm.singleExportToDo(student) === 'Cancel') {
+                vm.contentsToExport.splice(vm.contentsToExport.indexOf(student), 1);
+            } else {
+                vm.contentsToExport.push(student);
+            };
+
+        }; // Adds/removes student to/from the object vm.contentsToExport,
+        // which contains all information, that will be putted into excel file
+
+        vm.multipleExportToDo = function () {
+            if (!vm.contentsToExport[0]) {
+                return 'Export All';
+            } else {
+                return 'Cancel All';
+            };
+        }; // Says for method below what it must do
+
+        vm.addOrRemoveFromExportAll = function (students) {
+            if (!vm.contentsToExport[0]) {
+                vm.contentsToExport = students;
+            } else {
+                vm.contentsToExport = [];
+            };
+        };// Adds/removes students to/from the object vm.contentsToExport,
+        // which contains all information, that will be putted into excel file
+
+        vm.writeTableToExcel = function (tableId) {
+            var exportHref = Excel.tableToExcel(tableId, 'Sheet1');
+            $timeout(function () {
+                var link = document.createElement('a');
+                link.download = vm.quizInfo[0].quizName + " by " + vm.quizInfo[0].groupName + ".xls";
+                link.href = exportHref;
+                link.click();
+            }, 100);
+        }; // Method that
     };
 })(angular);

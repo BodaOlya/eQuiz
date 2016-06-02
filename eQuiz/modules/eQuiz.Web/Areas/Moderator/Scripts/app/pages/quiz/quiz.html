@@ -8,6 +8,7 @@
             </div>
             <div class="col-sm-4 col-md-4">
                 <input class="form-control" type="text" ng-model="vm.model.quiz.Name" ng-disabled="!vm.isEditingEnabled()" required name="name" />
+                <input type="hidden" name="id" value="{{vm.model.quiz.Id}}" />
                 <div ng-messages="vm.quizForm.name.$error" class="help-block hide">
                     <p ng-message="required">Name is required</p>
                     <p ng-message="nonUniqueName">This name is already used</p>
