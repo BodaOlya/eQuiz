@@ -90,6 +90,16 @@
           <Property Name="QuestionMaxComplexity" Type="tinyint" />
           <Property Name="QuestionCount" Type="tinyint" />
         </EntityType>
+        <EntityType Name="tblQuizEditHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuizId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="LastChangeDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="tblQuizPass">
           <Key>
             <PropertyRef Name="Id" />
@@ -378,6 +388,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblQuizEditHistory_tblQuiz">
+          <End Role="tblQuiz" Type="Self.tblQuiz" Multiplicity="1" />
+          <End Role="tblQuizEditHistory" Type="Self.tblQuizEditHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblQuiz">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblQuizEditHistory">
+              <PropertyRef Name="QuizId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblQuizEditHistory_tblUser">
+          <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
+          <End Role="tblQuizEditHistory" Type="Self.tblQuizEditHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblQuizEditHistory">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblQuizPass_tblQuiz">
           <End Role="tblQuiz" Type="Self.tblQuiz" Multiplicity="1" />
           <End Role="tblQuizPass" Type="Self.tblQuizPass" Multiplicity="*" />
@@ -603,6 +637,7 @@
           <EntitySet Name="tblQuestionType" EntityType="Self.tblQuestionType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblQuiz" EntityType="Self.tblQuiz" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblQuizBlock" EntityType="Self.tblQuizBlock" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblQuizEditHistory" EntityType="Self.tblQuizEditHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblQuizPass" EntityType="Self.tblQuizPass" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblQuizPassQuestion" EntityType="Self.tblQuizPassQuestion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblQuizPassScore" EntityType="Self.tblQuizPassScore" Schema="dbo" store:Type="Tables" />
@@ -666,6 +701,14 @@
           <AssociationSet Name="FK_tblQuizBlock_Topic" Association="Self.FK_tblQuizBlock_Topic">
             <End Role="tblTopic" EntitySet="tblTopic" />
             <End Role="tblQuizBlock" EntitySet="tblQuizBlock" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblQuizEditHistory_tblQuiz" Association="Self.FK_tblQuizEditHistory_tblQuiz">
+            <End Role="tblQuiz" EntitySet="tblQuiz" />
+            <End Role="tblQuizEditHistory" EntitySet="tblQuizEditHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblQuizEditHistory_tblUser" Association="Self.FK_tblQuizEditHistory_tblUser">
+            <End Role="tblUser" EntitySet="tblUser" />
+            <End Role="tblQuizEditHistory" EntitySet="tblQuizEditHistory" />
           </AssociationSet>
           <AssociationSet Name="FK_tblQuizPass_tblQuiz" Association="Self.FK_tblQuizPass_tblQuiz">
             <End Role="tblQuiz" EntitySet="tblQuiz" />
@@ -825,6 +868,7 @@
           <NavigationProperty Name="QuizVariants" Relationship="eQuizModel.FK_tblQuizVariant_tblQuiz" FromRole="Quiz" ToRole="QuizVariant" />
           <Property Name="QuizStateId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="QuizState" Relationship="eQuizModel.FK_tblQuiz_tblQuizState" FromRole="Quiz" ToRole="tblQuizState" />
+          <NavigationProperty Name="QuizEditHistories" Relationship="eQuizModel.FK_tblQuizEditHistory_tblQuiz" FromRole="Quiz" ToRole="tblQuizEditHistory" />
         </EntityType>
         <EntityType Name="QuizBlock">
           <Key>
@@ -951,6 +995,7 @@
           <NavigationProperty Name="UserAnswerScores" Relationship="Self.FK_tblUserAnswerScore_tblUser" FromRole="tblUser" ToRole="tblUserAnswerScore" />
           <NavigationProperty Name="UserToUserGroups" Relationship="Self.FK_tblUserToUserGroup_tblUser" FromRole="tblUser" ToRole="tblUserToUserGroup" />
           <NavigationProperty Name="UserComments" Relationship="eQuizModel.FK_tblUserComment_AdminId_tblUser" FromRole="User" ToRole="tblUserComment" />
+          <NavigationProperty Name="QuizEditHistories" Relationship="eQuizModel.FK_tblQuizEditHistory_tblUser" FromRole="User" ToRole="tblQuizEditHistory" />
         </EntityType>
         <EntityType Name="UserAnswer">
           <Key>
@@ -1406,6 +1451,15 @@
             <End Role="User" EntitySet="Users" />
             <End Role="tblUserComment" EntitySet="UserComments" />
           </AssociationSet>
+          <EntitySet Name="QuizEditHistories" EntityType="eQuizModel.QuizEditHistory" />
+          <AssociationSet Name="FK_tblQuizEditHistory_tblQuiz" Association="eQuizModel.FK_tblQuizEditHistory_tblQuiz">
+            <End Role="Quiz" EntitySet="Quizs" />
+            <End Role="tblQuizEditHistory" EntitySet="QuizEditHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblQuizEditHistory_tblUser" Association="eQuizModel.FK_tblQuizEditHistory_tblUser">
+            <End Role="User" EntitySet="Users" />
+            <End Role="tblQuizEditHistory" EntitySet="QuizEditHistories" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="UserTextAnswer">
           <Key>
@@ -1551,6 +1605,42 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="tblUserComment">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="QuizEditHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuizId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastChangeDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Quiz" Relationship="eQuizModel.FK_tblQuizEditHistory_tblQuiz" FromRole="tblQuizEditHistory" ToRole="Quiz" />
+          <NavigationProperty Name="User" Relationship="eQuizModel.FK_tblQuizEditHistory_tblUser" FromRole="tblQuizEditHistory" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_tblQuizEditHistory_tblQuiz">
+          <End Type="eQuizModel.Quiz" Role="Quiz" Multiplicity="1" />
+          <End Type="eQuizModel.QuizEditHistory" Role="tblQuizEditHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quiz">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblQuizEditHistory">
+              <PropertyRef Name="QuizId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblQuizEditHistory_tblUser">
+          <End Type="eQuizModel.User" Role="User" Multiplicity="1" />
+          <End Type="eQuizModel.QuizEditHistory" Role="tblQuizEditHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblQuizEditHistory">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -1809,6 +1899,17 @@
                 <ScalarProperty Name="CommentTime" ColumnName="CommentTime" />
                 <ScalarProperty Name="AdminId" ColumnName="AdminId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuizEditHistories">
+            <EntityTypeMapping TypeName="eQuizModel.QuizEditHistory">
+              <MappingFragment StoreEntitySet="tblQuizEditHistory">
+                <ScalarProperty Name="LastChangeDate" ColumnName="LastChangeDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="QuizId" ColumnName="QuizId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

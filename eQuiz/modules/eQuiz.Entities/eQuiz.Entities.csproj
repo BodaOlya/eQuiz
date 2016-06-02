@@ -92,6 +92,9 @@
     <Compile Include="QuizBlock.cs">
       <DependentUpon>eQuizEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="QuizEditHistory.cs">
+      <DependentUpon>eQuizEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="QuizPass.cs">
       <DependentUpon>eQuizEntities.tt</DependentUpon>
     </Compile>
