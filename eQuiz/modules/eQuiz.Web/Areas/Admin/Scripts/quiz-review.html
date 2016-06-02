@@ -54,7 +54,7 @@
                         <label> State:</label>
                     </div>
 
-                    <div class="btn-group display_inline">
+                    <div class="display_inline">
                         <!-- 0 - in verification, 1 - passed, 2 - not passed -->
                         <button ng-click="ReviewCtrl.setQuestionStatus(item.question_id, 0)" ng-class="{'btn-lightgrey': ReviewCtrl.setButtonColor(item.questionStatus, 0)}" type="button" class="btn btn-primary btn-lightgrey-hover btn-standart">In Verification</button>
                         <button ng-click="ReviewCtrl.setQuestionStatus(item.question_id, 1)" ng-class="{'btn-lightgreen': ReviewCtrl.setButtonColor(item.questionStatus, 1)}" type="button" class="btn btn-primary btn-lightgreen-hover btn-standart">Passed</button>
@@ -77,7 +77,7 @@
                     <label> State:</label>
                 </div>
 
-                <div class="btn-group display_inline">
+                <div class="display_inline">
                     <!-- 0 - in verification, 1 - passed, 2 - not passed -->
                     <button ng-click="ReviewCtrl.setQuestionStatus(item.question_id, 0)" ng-class="{'btn-lightgrey': ReviewCtrl.setButtonColor(item.questionStatus, 0)}" type="button" class="btn btn-primary btn-lightgrey-hover btn-standart">In Verification</button>
                     <button ng-click="ReviewCtrl.setQuestionStatus(item.question_id, 1)" ng-class="{'btn-lightgreen': ReviewCtrl.setButtonColor(item.questionStatus, 1)}" type="button" class="btn btn-primary btn-lightgreen-hover btn-standart">Passed</button>
