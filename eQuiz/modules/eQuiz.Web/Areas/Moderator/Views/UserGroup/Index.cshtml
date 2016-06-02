@@ -52,7 +52,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="ugroups in ug.userGroups">
-                    <td><a ng-href="#">{{ ugroups.Name }}</a></td>
+                    <td><a ng-href="/moderator/usergroup/edit/#/getusergroup?id={{ugroups.Id}}">{{ ugroups.Name }}</a></td>
                     <td>{{ ugroups.CountOfStudents }}</td>
                     <td>{{ ugroups.CountOfQuizzes }}</td>
                     <td>20.06.21</td>
