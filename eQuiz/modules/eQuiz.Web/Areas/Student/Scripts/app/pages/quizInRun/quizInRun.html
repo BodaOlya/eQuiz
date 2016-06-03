@@ -27,10 +27,14 @@
                     <h2>{{quizQuestions[currentQuestion].Text}}</h2>
                 </li>
                 <li ng-repeat="answer in quizQuestions[currentQuestion].Answers" ng-if="quizQuestions[currentQuestion].IsAutomatic">
-                    <label>
-                        <input type="radio" ng-model="passedQuiz.UserAnswers[currentQuestion].AnswerId" name="answersGroup" value="{{answer.Id}}" ng-click="setUserChoice(currentQuestion, quizQuestions[currentQuestion].Id, answer.Id, quizQuestions[currentQuestion].IsAutomatic, quizQuestions[currentQuestion].QuizBlock, quizQuestions[currentQuestion].QuestionOrder)"> {{answer.Text}}
+                    <label ng-if="quizQuestions[currentQuestion].QuestionType == 'Select one'">
+                        <input type="radio" ng-model="passedQuiz.UserAnswers[currentQuestion].AnswerId" name="answersGroup" value="{{answer.Id}}" ng-click="setUserSingleChoice(currentQuestion, quizQuestions[currentQuestion].Id, answer.Id, quizQuestions[currentQuestion].IsAutomatic, quizQuestions[currentQuestion].QuizBlock, quizQuestions[currentQuestion].QuestionOrder)"> {{answer.Text}}
+                    </label>
+                    <label ng-if="quizQuestions[currentQuestion].QuestionType == 'Select many'">
+                        <input type="checkbox" ng-model="passedQuiz.UserAnswers[currentQuestion].Answers[$index]" ng-true-value="{{answer.Id}}" name="answersGroup" ng-false-value="null" ng-click="setUserMultipleChoice(currentQuestion, quizQuestions[currentQuestion].Id, passedQuiz.UserAnswers[currentQuestion].Answers, quizQuestions[currentQuestion].IsAutomatic, quizQuestions[currentQuestion].QuizBlock, quizQuestions[currentQuestion].QuestionOrder)"> {{answer.Text}}
                     </label>
                 </li>
+
             </ul>
             <textarea rows="{{windowHeight * 20 | number}}" ng-if="!quizQuestions[currentQuestion].IsAutomatic" id="fieldForText" ng-model="passedQuiz.UserAnswers[currentQuestion].AnswerText"></textarea>
         </div>

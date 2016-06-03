@@ -6,6 +6,7 @@
         var service = {
             passedQuiz: getPassedQuiz(),
             setUserAnswers: setAnswers,
+            setUserMultipleAnswer: setMultipleAnswer,
             setUserTextAnswers: setTextAnswers
         };
 
@@ -21,12 +22,27 @@
 
             return passedUserQuiz;
         };
-        
+
 
         function setAnswers(index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
             if (isAutomatic) {
                 var UserAnswer = {
-                    QuestionId: questionId, AnswerId: answerId, AnswerText: null, AnswerTime: new Date(Date.now()), IsAutomatic: isAutomatic, QuizBlock: quizBlock, QuestionOrder: questionOrder
+                    QuestionId: questionId, Answers: null, AnswerId: answerId, AnswerText: null, AnswerTime: new Date(Date.now()), IsAutomatic: isAutomatic, QuizBlock: quizBlock, QuestionOrder: questionOrder
+                };
+                service.passedQuiz.UserAnswers[index] = UserAnswer;
+            }
+        };
+        function setMultipleAnswer(index, questionId, answers, isAutomatic, quizBlock, questionOrder) {
+            if (isAutomatic) {
+                var UserAnswer = {
+                    QuestionId: questionId,
+                    Answers: answers,
+                    AnswerId: null,
+                    AnswerText: null,
+                    AnswerTime: new Date(Date.now()),
+                    IsAutomatic: isAutomatic,
+                    QuizBlock: quizBlock,
+                    QuestionOrder: questionOrder
                 };
                 service.passedQuiz.UserAnswers[index] = UserAnswer;
             }
@@ -35,7 +51,7 @@
         function setTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
             if (!isAutomatic && answerText != null && answerText != "") {
                 var UserAnswer = {
-                    QuestionId: questionId, AnswerId: null, AnswerText: answerText, AnswerTime: new Date(Date.now()), IsAutomatic: isAutomatic, QuizBlock: quizBlock, QuestionOrder: questionOrder
+                    QuestionId: questionId, Answers: null, AnswerId: null, AnswerText: answerText, AnswerTime: new Date(Date.now()), IsAutomatic: isAutomatic, QuizBlock: quizBlock, QuestionOrder: questionOrder
                 };
                 service.passedQuiz.UserAnswers[index] = UserAnswer;
             }

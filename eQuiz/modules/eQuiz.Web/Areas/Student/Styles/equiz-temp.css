@@ -363,6 +363,48 @@ input[type="button"] {
     width: 350px;
     height: 150px;
 }
+#refreshWarning {
+    text-align: center;
+    width: 350px;
+    height: 150px;
+}
 .quiz-table{
     text-align: left;
+}
+.search-by-name {
+    width:20em;
+    height:25px;
+    font-size:11pt; 
+    cursor: auto;
+    
+}
+
+/*Pagination*/
+ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+ul.pagination li {
+    display: inline;
+}
+
+ul.pagination li a {
+color: black;
+float: left;
+padding: 8px 16px;
+text-decoration: none;
+transition: background-color .3s;
+border: 1px solid #ddd;
+margin: 0 4px;
+}
+
+ul.pagination li a.active {
+    background-color: #7a7e6e;
+    color: white;
+}
+
+ul.pagination li a:hover:not(.active) {
+    background-color: #ddd;
 }

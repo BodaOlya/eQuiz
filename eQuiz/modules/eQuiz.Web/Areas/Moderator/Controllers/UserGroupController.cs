@@ -29,6 +29,11 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         #endregion
 
         #region Web Actions
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         public ActionResult Get()
         {
             IEnumerable<UserGroup> groups = _repository.Get<UserGroup>();
@@ -75,6 +80,74 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult GetUserGroupsPage(int currentPage = 1, int userGroupsPerPage = 3, string predicate = "Name",
+                                            bool reverse = false, string searchText = null, string selectedStatus = null)
+        {
+            var res = new List<object>();
+
+            var userGroupesTotal = 0;
+
+            if (selectedStatus == "All")
+            {
+                selectedStatus = null;
+            }
+
+            var users = _repository.Get<User>();
+            var userGroups = _repository.Get<UserGroup>();
+            var userToUserGroups = _repository.Get<UserToUserGroup>();
+            var quizzes = _repository.Get<Quiz>();
+
+            var query = (from ug in userGroups
+                         join uug in userToUserGroups on ug.Id equals uug.GroupId
+                         join u in users on uug.UserId equals u.Id into uOuter
+                         from user in uOuter.DefaultIfEmpty()
+                         join q in quizzes on ug.Id equals q.GroupId into qOuter
+                         from quiz in qOuter.DefaultIfEmpty()
+                         group new { ug, user, quiz } by new { ug.Id, ug.Name } into grouped
+                         select new
+                         {
+                             Id = grouped.Key.Id,
+                             Name = grouped.Key.Name,
+                             CountOfStudents = grouped.Where(g => g.user != null).Select(g => g.user.Id).Distinct().Count(),
+                             CountOfQuizzes = grouped.Where(g => g.quiz != null).Select(g => g.quiz.Id).Distinct().Count(),
+                             StateName = "Active"
+                         }).Where(item => (searchText == null || item.Name.ToLower().Contains(searchText.ToLower())) &&
+                                             (item.StateName == "Active" || item.StateName == "Archived" || item.StateName == "Scheduled") &&
+                                             (selectedStatus == null || item.StateName == selectedStatus))
+                                            .OrderBy(q => q.Name);
+
+            userGroupesTotal = query.Count();
+
+            switch (predicate)
+            {
+                case "Name":
+                    query = reverse ? query.OrderByDescending(q => q.Name) : query.OrderBy(q => q.Name);
+                    break;
+                case "CountOfStudents":
+                    query = reverse ? query.OrderByDescending(q => q.CountOfStudents) : query.OrderBy(q => q.CountOfStudents);
+                    break;
+                case "CountOfQuizzes":
+                    query = reverse ? query.OrderByDescending(q => q.CountOfQuizzes) : query.OrderBy(q => q.CountOfQuizzes);
+                    break;
+                //case "CreatedDate":
+                //    query = reverse ? query.OrderByDescending(q => q.CreatedDate) : query.OrderBy(q => q.CreatedDate);
+                //    break;
+                //case "CreatedBy":
+                //    query = reverse ? query.OrderByDescending(q => q.CreatedBy) : query.OrderBy(q => q.CreatedBy);
+                //    break;
+                case "StateName":
+                    query = reverse ? query.OrderByDescending(q => q.StateName) : query.OrderBy(q => q.StateName);
+                    break;
+                default:
+                    query = reverse ? query.OrderByDescending(q => q.Name) : query.OrderBy(q => q.Name);
+                    break;
+            }
+
+            res = query.Skip((currentPage - 1) * userGroupsPerPage).Take(userGroupsPerPage).ToList<object>();
+
+            return Json(new { UserGroups = res, UserGroupsTotal = res.Count }, JsonRequestBehavior.AllowGet);
+        }
+
         private object GetUserGroupForSerialization(UserGroup group)
         {
             var minGroup = new
@@ -86,18 +159,18 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return minGroup;
         }
         private object GetUsersForSerialization(User user)
-         {           
-             var minUser = new
-             {
-                 Id = user.Id,
-                 LastName = user.LastName,
-                 FirstName = user.FirstName,
-                 FatheName = user.FatheName,
-                 Email = user.Email                 
-             };
+        {
+            var minUser = new
+            {
+                Id = user.Id,
+                LastName = user.LastName,
+                FirstName = user.FirstName,
+                FatheName = user.FatheName,
+                Email = user.Email
+            };
 
             return minUser;
-         }
+        }
 
         public ActionResult Create()
         {
@@ -148,6 +221,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 }
                 else
                 {
+                    currentUser.Phone = currentUser.Phone ?? "";
                     _repository.Insert<User>(currentUser);
                     var currentUserId = _repository.GetSingle<User>(x => x.Email == currentUser.Email).Id;
                     _repository.Insert<UserToUserGroup>(new UserToUserGroup { UserId = currentUserId, GroupId = userGroupId });
@@ -197,11 +271,11 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 }
             }
         }
-        
+
         [HttpPost]
-        public ActionResult IsUsersValid(IEnumerable<User> users)
+        public ActionResult IsUserValid(User user)
         {
-            bool isValid = ValidateListOfUsers(users);
+            bool isValid = ValidateUser(user);
             return Json(isValid, JsonRequestBehavior.AllowGet);
         }
 
@@ -209,19 +283,22 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
         #region Helpers
 
-        private bool ValidateListOfUsers(IEnumerable<User> users)
+        private bool ValidateUser(User user)
         {
-            foreach (var user in users)
-            {
-                bool correctUserExist = _repository.Exists<User>(u => (u.Email == user.Email) && (u.FirstName == user.FirstName) && (u.LastName == user.LastName));
+            var userIsValid = false;
 
-                if (correctUserExist)
-                {
-                    return false;
-                }
+            bool userWithEmailAlreadyExists = _repository.Exists<User>(u => u.Email == user.Email);
+
+            if (userWithEmailAlreadyExists)
+            {
+                userIsValid = _repository.Exists<User>(u => (u.Email == user.Email) && (u.FirstName == user.FirstName) && (u.LastName == user.LastName));
+            }
+            else
+            {
+                userIsValid = true;
             }
 
-            return true;
+            return userIsValid;
         }
 
         #endregion

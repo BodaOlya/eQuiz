@@ -15,7 +15,7 @@
         <table class="reviewTable">
             <thead>
                 <tr>
-                    <th><a href="#" ng-show="qc.exportShow" ng-click="qc.addOrRemoveFromExportAll(qc.contents)">{{qc.multipleExportToDo()}}</a></th>
+                    <th><a href="#" ng-show="qc.exportShow" ng-click="qc.addOrRemoveFromExportAll(qc.contents)">{{qc.multipleExportToDo(qc.contents)}}</a></th>
                     <th ng-repeat="h in qc.headers">
                         <a class="link" href="#" ng-click="qc.refreshPredicate(h.predicateIndex); qc.order(qc.myPredicate[h.predicateIndex],null)">
                             <span class="sortorder" ng-show="qc.direction(h.predicateIndex) !== null" ng-class="{direction:qc.direction(h.predicateIndex)}"></span>
@@ -89,7 +89,7 @@
         </div>
         <div style="float: right">
             <p style="margin:0px 0px 0px 50px">Total for export: {{qc.contentsToExport.length}}</p>
-            <button ng-click="qc.writeTableToExcel('#exportable')" ng-disabled="qc.multipleExportToDo() === 'Export All'" style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Save</button>
+            <button ng-click="qc.writeTableToExcel('#exportable')" ng-disabled="qc.contentsToExport.length === 0" style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Save</button>
         </div>
     </div>
 </div>

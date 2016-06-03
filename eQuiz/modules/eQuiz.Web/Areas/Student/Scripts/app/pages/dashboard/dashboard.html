@@ -9,8 +9,8 @@
     <table id='quizzesTable' ng-if="!isLoading">
         <caption><h2>Quizzes</h2></caption>
         <caption style="text-align: left;">
-            <input type="search" ng-model="search" style="width:20em;height:25px;font-size:11pt;" placeholder="Search by name">
-            <input type="checkbox" ng-model="checkboxModel.value" ng-false-value="undefined" style="width:15px;height:15px;vertical-align: bottom">
+            <input type="search" ng-model="search.quizName" ng-change="search(page)" class="search-by-name" placeholder="Search by name">
+            <input type="checkbox" ng-model="search.InternetAccess" ng-change="search(page)" ng-false-value="undefined" style="width:15px;height:15px;vertical-align: bottom">
             <span class="checkboxtext" style="vertical-align: bottom">
                 Show only active quizzes
             </span>
@@ -23,8 +23,8 @@
                 <th></th>
             </tr>
         </thead>
-        <tbody>
-            <tr ng-repeat="quiz in allQuizes | filter:{ Name: search } | filter:{ InternetAccess: checkboxModel.value}" ng-class="{ activeQuiz: quiz.InternetAccess, inactiveQuiz: !quiz.InternetAccess }">
+        <!--| filter:{ Name: search.quizName } | filter:{ InternetAccess: search.InternetAccess}-->
+            <tr ng-repeat="quiz in pagedQuizzes | filter:{ Name: search.quizName } | filter:{ InternetAccess: search.InternetAccess}" ng-class="{ activeQuiz: quiz.InternetAccess, inactiveQuiz: !quiz.InternetAccess }">
                 <td>
                     {{quiz.Name}}
                 </td>
@@ -41,4 +41,7 @@
             </tr>
         </tbody>
     </table>
+    <div ng-if="!isLoading">
+        <quiz-pager page="{{page}}" pages-count="{{pagesCount}}" total-count="{{totalCount}}" search-func="search(page)"></quiz-pager>
+    </div>
 </div>

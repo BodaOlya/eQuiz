@@ -125,19 +125,20 @@
     <Content Include="Areas\Admin\Scripts\review\review.controller.js" />
     <Content Include="Areas\Admin\Scripts\review\review-data.service.js" />
     <Content Include="Areas\Admin\Scripts\review\start-from.filter.js" />
+    <Content Include="Areas\Admin\Scripts\review\trustAsHtml.filter.js" />
     <Content Include="Areas\Admin\Scripts\shared\loading-screen.directive.js" />
     <Content Include="Areas\Admin\Scripts\shared\popUp.js" />
     <Content Include="Areas\Admin\Scripts\shared\routing.js" />
     <Content Include="Areas\Admin\Scripts\student\student.controller.js" />
     <Content Include="Areas\Admin\Scripts\student\student-data.service.js" />
     <Content Include="Areas\Admin\Scripts\student.html" />
-    <Content Include="Areas\Admin\Styles\bootstrap-combined.css" />
     <Content Include="Areas\Admin\Styles\equiz-temp.css" />
     <Content Include="Areas\Admin\Scripts\review.html" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz-schedule\quiz.controller.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quizzes-list\quizzes.controller.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quizzes-list\quizzes.filters.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quizzes-list\quizzes.service.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\quiz\existingQuestions.html" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\question.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\questions.html" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz\quiz.controller.js" />
@@ -148,6 +149,8 @@
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz-schedule\show-time-span-error.directive.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\shared\user-group.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\shared\show-error.directive.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\user-groups-list\user-groups.controller.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\user-groups-list\user-groups.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\user-group\user-group.controller.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\user-group\import-users-from-file.directive.js" />
     <Content Include="Areas\Moderator\Scripts\libs\custom-pagination\custom-pagination.js" />
@@ -162,6 +165,8 @@
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\quizInRun.service.js" />
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\timer.service.js" />
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\trackUserResult.service.js" />
+    <Content Include="Areas\Student\Scripts\app\pages\refreshWarning\refreshWarning.controller.js" />
+    <Content Include="Areas\Student\Scripts\app\pages\refreshWarning\refreshWarning.html" />
     <Content Include="Areas\Student\Scripts\routeConfig.js" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.html" />
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\quizInRun.html" />
@@ -240,6 +245,7 @@
     <None Include="Areas\Moderator\Views\Quiz\QuizPreview.cshtml" />
     <Content Include="Areas\Moderator\Views\UserGroup\Edit.cshtml" />
     <Content Include="Areas\Moderator\Views\Quiz\Schedule.cshtml" />
+    <Content Include="Areas\Moderator\Views\UserGroup\Index.cshtml" />
     <None Include="Properties\PublishProfiles\myasp.net.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -35,11 +35,29 @@
 
         $scope.isLoading = true;
 
-        getQuestionById($scope.quizId, $scope.quizDuration);
+        function openPopUpRefreshWarning() {
+            var modalInstance = $uibModal.open({
+                animation: false,
+                templateUrl: '/Areas/Student/Scripts/app/pages/refreshWarning/refreshWarning.html',
+                controller: 'refreshWarningCtrl',
+                size: 'sm'
+            });
 
+            modalInstance.result.then(function () {
+                console.log('7');
+            });
+        };
+
+        openPopUpRefreshWarning();
+
+        getQuestionById($scope.quizId, $scope.quizDuration);
+        
         function getQuestionById(questionId, duration ) {
             quizService.getQuestionsById(questionId, duration)
                 .then(function (response) {
+                    if(response.data === "SaveChangeException") {
+                        $location.path("/Dashboard");
+                    }
                     if (response.data.length === 0) {
                         $location.path("/Dashboard");
                     }
@@ -51,10 +69,12 @@
                 });
         };
 
-        $scope.setUserChoice = function (index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
+        $scope.setUserSingleChoice = function (index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
             trackUserResultService.setUserAnswers(index, questionId, answerId, isAutomatic, quizBlock, questionOrder);
         };
-
+        $scope.setUserMultipleChoice = function (index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
+            trackUserResultService.setUserMultipleAnswer(index, questionId, answerId, isAutomatic, quizBlock, questionOrder);
+        };
         $scope.setUserTextAnswers = function (index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
             trackUserResultService.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
         };
@@ -63,6 +83,17 @@
 
             $scope.passedQuiz.FinishDate = new Date(Date.now());
             var passedQuiz = $scope.passedQuiz;
+            for (var i in passedQuiz.UserAnswers) {
+                if (passedQuiz.UserAnswers.hasOwnProperty(i)) {
+                    var arr = [];
+                    if (passedQuiz.UserAnswers[i].Answers != undefined || passedQuiz.UserAnswers[i].Answers != null) {
+                        for (var j in passedQuiz.UserAnswers[i].Answers) {
+                            arr.push(passedQuiz.UserAnswers[i].Answers[j]);
+                        }
+                        passedQuiz.UserAnswers[i].Answers = arr;
+                    }
+                }
+            }
             quizService.sendUserResult(passedQuiz)
                 .success(function (data) {
                 });     

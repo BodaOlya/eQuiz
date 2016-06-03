@@ -1,0 +1,40 @@
+﻿<div class="loading-background"></div>
+<div class="existing-question-window">
+    <div align="right">
+        <button href="" class="close-button" ng-click="vm.closeAddingQuestionWindow()">X</button>
+    </div>
+    <div class="existing-question-container">
+        <h2>Add existing question</h2>
+        <div class="row bordered">
+            <div class="col-sm-12 col-md-12">
+                <input type="text" class="form-control" placeholder="Search" ng-change="vm.searchTextChange()" ng-model="vm.quizSearch" />
+            </div>
+        </div>
+        <div class="row bordered">
+            <div class="col-sm-6 col-md-6">
+                <button class="form-control" ng-class="{active: item.Id == vm.selectedQuizIdForAddQuestion}" ng-click="vm.setQuizIdForAddQuestion(item)" ng-repeat="item in vm.model.quizzesForSearch | filter: { Name : vm.model.quiz.Name ? '!' + vm.model.quiz.Name : '' } | filter: { Name : vm.quizSearch } | orderBy:'Name'| limitTo:10">
+                    {{item.Name}}
+                </button>
+            </div>
+        </div>
+        <div class="question-block" ng-show="vm.selectedQuizIdForAddQuestion != 0">
+            <div class="row bordered">
+                <div class="row" ng-repeat="q in vm.model.questionsForAdding.questions track by $index">
+                    <div class="col-sm-1 col-md-1">
+                        <input type="checkbox" class="form-control" ng-model="vm.model.checkedQuestions[$index]" />
+                    </div>
+                    <div class="col-sm-11 col-md-11">
+                        <p class="control-label">
+                            <b>Question {{ $index + 1 }}.</b>  {{q.QuestionText}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row copy-button-container">
+                <div class="col-md-offset-10 col-sm-offset-10 col-md-2 col-sm-2">
+                    <button ng-click="vm.AddExistingQuestions()" ng-disabled="vm.GetCountSelectedQuestions() == 0" class="form-control">Copy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
