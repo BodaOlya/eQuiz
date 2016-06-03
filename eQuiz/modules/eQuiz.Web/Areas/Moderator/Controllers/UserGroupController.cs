@@ -145,7 +145,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
             res = query.Skip((currentPage - 1) * userGroupsPerPage).Take(userGroupsPerPage).ToList<object>();
 
-            return Json(new { UserGroups = res, UserGroupsTotal = res.Count }, JsonRequestBehavior.AllowGet);
+            return Json(new { UserGroups = res, UserGroupsTotal = userGroupesTotal }, JsonRequestBehavior.AllowGet);
         }
 
         private object GetUserGroupForSerialization(UserGroup group)
