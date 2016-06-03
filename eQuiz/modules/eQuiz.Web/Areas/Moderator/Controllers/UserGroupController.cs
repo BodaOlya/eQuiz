@@ -285,8 +285,20 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
         private bool ValidateUser(User user)
         {
-            bool correctUserExist = _repository.Exists<User>(u => (u.Email == user.Email) && (u.FirstName == user.FirstName) && (u.LastName == user.LastName));
-            return !correctUserExist;
+            var userIsValid = false;
+
+            bool userWithEmailAlreadyExists = _repository.Exists<User>(u => u.Email == user.Email);
+
+            if (userWithEmailAlreadyExists)
+            {
+                userIsValid = _repository.Exists<User>(u => (u.Email == user.Email) && (u.FirstName == user.FirstName) && (u.LastName == user.LastName));
+            }
+            else
+            {
+                userIsValid = true;
+            }
+
+            return userIsValid;
         }
 
         #endregion
