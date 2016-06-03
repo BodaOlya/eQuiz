@@ -8,8 +8,9 @@
         $scope.page = 0;
         $scope.pageSize = 7;
         $scope.pagesCount = 1;
-        $scope.search = {};
-        $scope.search.quizName = "";
+        $scope.totalCount = 0;
+        $scope.searchInfo = {};
+        $scope.searchInfo.quizName = "";
 
         $scope.isLoading = true;
 
@@ -19,42 +20,49 @@
 
         activate();
         function activate() {
-            var quizPromise = dashboardService.getQuizzes();
-            quizPromise.success(function (data) {
-                $scope.allQuizzes = data;
+            var _onSuccess = function (value) {
+                $scope.allQuizzes = value.data;
+
                 $scope.isLoading = false;
-            });
+                console.log($scope.allQuizzes);
+                $scope.search(0);
+            };
+            var _onError = function () {
+                $scope.isLoading = false;
+                console.log("Cannot load quizzes list");
+            };
+
+            var quizPromise = dashboardService.getQuizzes();
+            quizPromise.then(_onSuccess, _onError);
         };
 
         $scope.search = function (page) {
             $scope.page = page || 0;
 
-            var _onSuccess = function (value) {
-                $scope.allQuizzes = value.data;
-                $scope.totalCount = $scope.allQuizzes.length;
-                $scope.pagesCount = Math.ceil($scope.totalCount / $scope.pageSize);
-                
-                // ToDo
-                // Filtering and sorting.
-                //var filteredQuizzes = $scope.allQuizzes.filter(function (quiz) { return quiz.Name.indexOf($scope.search.quizName); });
-                $scope.pagedQuizzes = $scope.allQuizzes.slice($scope.page * $scope.pageSize, $scope.page * $scope.pageSize + $scope.pageSize);
-                
+            // Filter by quiz name.
+            var filteredQuizzes = $scope.allQuizzes.filter(
+                function (quiz) {
+                    return quiz.Name.toLowerCase().indexOf($scope.searchInfo.quizName.toLowerCase()) > -1 ? true : false;
+                });
 
-                $scope.isSearching = false;
-                console.log($scope.pagedQuizzes);
-            };
-            var _onError = function () {
-                $scope.isSearching = false;
-                console.log("Cannot load quizzes list");
-            };
+            // Filter by quiz internet access.
+            if ($scope.searchInfo.InternetAccess != undefined) {
+                filteredQuizzes = filteredQuizzes.filter(
+                    function (quiz) {
+                        return quiz.InternetAccess === $scope.searchInfo.InternetAccess ? true : false;
+                    });
+            }
 
-            $scope.isSearching = true;
 
-            dashboardService.getQuizzes()
-                .then(_onSuccess, _onError);
+            $scope.totalCount = filteredQuizzes.length;
+            $scope.pagesCount = Math.ceil($scope.totalCount / $scope.pageSize);
+            if ($scope.totalCount > $scope.page * $scope.pageSize) {
+                $scope.pagedQuizzes = filteredQuizzes.slice($scope.page * $scope.pageSize, $scope.page * $scope.pageSize + $scope.pageSize);
+            }
+            else {
+                $scope.pagedQuizzes = filteredQuizzes;
+            }
         };
-
-        $scope.search();
 
     }]);
 })(angular);
