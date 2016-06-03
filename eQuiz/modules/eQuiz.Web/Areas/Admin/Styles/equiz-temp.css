@@ -1,4 +1,53 @@
-﻿.highlightedText  {
+﻿.notifyPopUpMessage {
+    border:solid;
+    border-color:forestgreen;
+    background-color:lightgreen;
+    width:auto;
+    min-height:60px;
+    margin:10px;
+}
+
+.closePopUp {
+    float:right;
+    border:medium;
+    border-color:darkgreen;
+    font:300;
+    font-family:Arial;
+}
+
+.confirmPopUp {
+    display:block;
+    width:inherit;
+    margin:5px;
+    text-align:center;
+    border:medium;
+    background-color:lightgreen;
+    font-family:Arial;
+    align-content:center;
+}
+
+.buttonPopUp {
+    background-color:lightgreen;
+    border:medium;
+    border-color:darkmagenta;
+    font-size:80%;
+    color:black;
+    font-family:Arial;
+    margin-top:15px;
+    width:30px;
+}
+
+.textPopUp {
+    display:block;
+    font:700;
+    font-family:Arial;
+    margin:5px;
+    text-align:center;
+    width:inherit;
+    height:auto;
+}
+
+.highlightedText  {
     background: lightblue;
 }
 

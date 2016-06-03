@@ -1,14 +1,16 @@
 ﻿(function (angular) {
     angular.module('equizModule').controller('StudentController', StudentController);
 
-    StudentController.$inject = ['$scope', '$filter', 'studentDataService', '$routeParams', 'studentInfo', 'studentQuizzes', 'studentComments', '$location'];
+    StudentController.$inject = ['$scope', '$filter', 'studentDataService', '$routeParams', 'studentInfo', 'studentQuizzes', 'studentComments', '$location', '$timeout'];
 
-    function StudentController($scope, $filter, studentDataService, $routeParams, studentInfo, studentQuizzes, studentComments, $location) {
+    function StudentController($scope, $filter, studentDataService, $routeParams, studentInfo, studentQuizzes, studentComments, $location, $timeout) {
         var vm = this;
 
         vm.studentInfo = studentInfo;
         vm.studentQuizzes = studentQuizzes;
         vm.studentComments = studentComments;
+        $scope.showNotification = false;
+        $scope.showWarning = false;
 
         vm.studentQuizzesHeaders = [
         {
@@ -156,8 +158,9 @@
 
         vm.saveProfile = function () {
             studentDataService.saveProfileInfo(vm.studentInfo.id, vm.studentInfo.firstName, vm.studentInfo.lastName, vm.studentInfo.phone)
-                //Here has popUp be called
             vm.modelChanged = false;
+            $scope.showNotifyPopUp('Profile data was sucessfully saved!')
+            $timeout($scope.closePopUp, 2000);
         };
 
         vm.cancelProfile = function () {
@@ -174,6 +177,9 @@
                 studentDataService.addComment(vm.studentInfo.id, 1, vm.newComment.text).then(activate);
                 vm.toggleNewCommentFrame();
                 vm.studentComments = sortByDate(vm.studentComments);
+                $scope.showNotifyPopUp("New comment was successfully added!");
+                $timeout($scope.closePopUp, 2000);
+                
         };
 
         vm.validationCheck = function () {

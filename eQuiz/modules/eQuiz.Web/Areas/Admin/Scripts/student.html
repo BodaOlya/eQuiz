@@ -1,4 +1,5 @@
 ﻿<div>
+    <div pop-up-window></div>
     <h2>{{sc.studentInfo.firstName + ' ' + sc.studentInfo.lastName}}</h2>
     <div>
         <ul class="tabLabels">
@@ -7,7 +8,7 @@
             <li><a href="#Comments" ng-class="sc.currentTab=='Comments'&&'selected'"ng-click="sc.currentTab='Comments'">Comments ({{sc.studentComments.length}})</a></li>
         </ul>
     </div>
-
+  
     <div id="tabContainer">
         <div id="profileTab" ng-show="sc.currentTab=='Profile'">
             <form name='profileInfo' style="width:auto; max-width:700px" novalidate>
