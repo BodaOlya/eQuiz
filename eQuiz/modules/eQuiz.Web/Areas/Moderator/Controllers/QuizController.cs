@@ -48,55 +48,6 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
         public ActionResult Edit(int? id)
         {
-            var now = DateTime.Now;
-            if (id != null)
-            {
-                var latestEdit = _repository.Get<QuizEditHistory>(q => q.QuizId == id).OrderByDescending(q => q.LastChangeDate).Take(1).FirstOrDefault();
-
-                if (latestEdit != null)
-                {
-                    var endLock = latestEdit.LastChangeDate.AddMinutes(QuizLockDuration);
-                    if (endLock > now) // && USER != latestEdit.User //UPDATE WHEN AUTH
-                    {
-                        var user = _repository.GetSingle<User>(u => u.Id == latestEdit.UserId);
-                        var quiz = _repository.GetSingle<Quiz>(q => q.Id == latestEdit.QuizId);
-                        TempData["UserName"] = string.Format("{0} {1}", user.FirstName, user.LastName);
-                        TempData["Quiz"] = new Quiz()
-                        {
-                            Id = quiz.Id,
-                            Name = quiz.Name
-                        };
-                        TempData["EndLockDate"] = endLock;
-
-                        return RedirectToAction("AccessDenied");
-                    }
-                }
-
-                latestEdit = new QuizEditHistory()
-                {
-                    QuizId = (int)id,
-                    UserId = 1, //UPDATE WHEN AUTH // CURRENT
-                    StartDate = now,
-                    LastChangeDate = now
-                };
-
-                _repository.Insert<QuizEditHistory>(latestEdit);
-            }
-
-            return View();
-        }
-
-        public ActionResult AccessDenied()
-        {
-            if (TempData["Quiz"] == null || TempData["UserName"] == null || (DateTime)TempData["EndLockDate"] == default(DateTime))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
-
-            ViewBag.Quiz = TempData["Quiz"];
-            ViewBag.UserName = TempData["UserName"];
-            ViewBag.EndLockDate = TempData["EndLockDate"];
-
             return View();
         }
 
@@ -114,14 +65,35 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Id is null");
             }
+            var now = DateTime.Now;
+            var locked = false;
+            var latestChange = _repository.Get<QuizEditHistory>(q => q.QuizId == id, q => q.User).OrderByDescending(q => q.LastChangeDate).Take(1).FirstOrDefault();
+
+            if (latestChange != null)
+            {
+                var endLock = latestChange.LastChangeDate.AddMinutes(QuizLockDuration);
+                if (endLock > now) // && USER != latestEdit.User //UPDATE WHEN AUTH
+                {
+                    locked = true;
+                }
+                else
+                {
+                    LockQuiz((int)id, 1, now);
+                }
+            }
+            else
+            {
+                LockQuiz((int)id, 1, now);
+            }
 
             Quiz quiz = _repository.GetSingle<Quiz>(q => q.Id == id, r => r.UserGroup, s => s.QuizState);
             QuizBlock block = _repository.GetSingle<QuizBlock>(b => b.QuizId == id);
 
             var minQuiz = GetQuizForSerialization(quiz);
             var minQuizBlock = GetQuizBlockForSerialization(block);
+            var minLatestChange = GetQuizEditHistoryForSerialization(latestChange);
 
-            var result = new { quiz = minQuiz, block = minQuizBlock };
+            var result = new { quiz = minQuiz, block = minQuizBlock, latestChange = minLatestChange, locked = locked };
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -247,14 +219,16 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         }
 
         [HttpPost]
-        public ActionResult Save(Quiz quiz, QuizBlock block)
+        public ActionResult Save(Quiz quiz, QuizBlock block, QuizEditHistory latestChange)
         {
             var errorMessages = ValidateQuiz(quiz, block);
             if (errorMessages != null)
             {
-                var errorMessage = string.Format("Invalid data: \n{0}", string.Concat(errorMessages));
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "");
+                var errorMessage = string.Format("Invalid data: {0}", string.Concat(errorMessages));
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, errorMessage);
             }
+
+            var now = DateTime.Now;
 
             if (quiz.Id != 0)
             {
@@ -266,6 +240,9 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                     quiz.GroupId = quiz.UserGroup.Id;
                     quiz.UserGroup = null;
                 }
+                latestChange.LastChangeDate = now;
+                latestChange.User = null;
+                _repository.Update<QuizEditHistory>(latestChange);
                 _repository.Update<Quiz>(quiz);
                 _repository.Update<QuizBlock>(block);
             }
@@ -278,15 +255,16 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 block.QuizId = quiz.Id;
                 _repository.Insert<QuizBlock>(block);
                 _repository.Insert<QuizVariant>(new QuizVariant() { QuizId = quiz.Id });
+                LockQuiz(quiz.Id, 1, now);
             }
             quiz.QuizState = _repository.GetSingle<QuizState>(q => q.Id == quiz.QuizStateId);
             quiz.UserGroup = _repository.GetSingle<UserGroup>(g => g.Id == quiz.GroupId);
 
             var minQuiz = GetQuizForSerialization(quiz);
             var minQuizBlock = GetQuizBlockForSerialization(block);
-            var result = new { quiz = minQuiz, block = minQuizBlock };
+            var result = new { quiz = minQuiz, block = minQuizBlock, latestChange = latestChange};
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result);
         }
 
         [HttpGet]
@@ -645,6 +623,25 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return minGroup;
         }
 
+        private object GetQuizEditHistoryForSerialization(QuizEditHistory history)
+        {
+            var minQuizEditHistory = new
+            {
+                Id = history.Id,
+                UserId = history.UserId,
+                QuizId = history.QuizId,
+                StartDate = history.StartDate.ToString("yyyy-MM-ddTHH:mm:ss"),
+                LastChangeDate = history.LastChangeDate.ToString("yyyy-MM-ddTHH:mm:ss"),
+                User = new
+                {
+                    FirstName = history.User.FirstName,
+                    LastName = history.User.LastName
+                }
+            };
+
+            return minQuizEditHistory;
+        }
+
         private IEnumerable<string> ValidateSchedule(Quiz quiz)
         {
             var errorMessages = new List<string>();
@@ -702,6 +699,20 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return errorMessages.Count > 0 ? errorMessages : null;
         }
 
+        private QuizEditHistory LockQuiz(int quizId, int userId, DateTime date)
+        {
+            var latestEdit = new QuizEditHistory()
+            {
+                QuizId = quizId,
+                UserId = userId, 
+                StartDate = date,
+                LastChangeDate = date
+            };
+            _repository.Insert<QuizEditHistory>(latestEdit);
+
+            return latestEdit;
+        }
+
         private IEnumerable<string> ValidateQuiz(Quiz quiz, QuizBlock block)
         {
             var errorMessages = new List<string>();
@@ -744,12 +755,22 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 {
                     errorMessages.Add("There is time limit but state isnt Scheduled");
                 }
-                //if (quiz.UserGroup != null) UPDATE DB
-                //{
-                //    errorMessages.Add("There is user group selected but state isnt Scheduled");
-                //}
+                if (quiz.UserGroup != null)
+                {
+                    errorMessages.Add("There is user group selected but state isnt Scheduled");
+                }
             }
 
+            if(quiz.Id != 0)
+            {
+                var latestEdit = _repository.Get<QuizEditHistory>(q => q.QuizId == quiz.Id, q => q.User).OrderByDescending(q => q.LastChangeDate).Take(1).FirstOrDefault();
+
+                //IF latestEdit USER ID != CURRENT USER.ID ERROR
+                //if (latestEdit.UserId != 123)
+                //{
+                //    errorMessages.Add("Quiz is being edited by another user, refresh page");
+                //}
+            }
 
             return errorMessages.Count > 0 ? errorMessages : null;
         }
