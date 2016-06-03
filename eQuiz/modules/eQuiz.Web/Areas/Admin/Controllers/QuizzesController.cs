@@ -61,7 +61,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                                 join u in user on utg.UserId equals u.Id
                                 group new { ug, u } by new { ug.Id, ug.Name } into grouped
                                 select new
-                                {                                    
+                                {
                                     groupId = grouped.Key,
                                     studentAmount = grouped.Select(item => item.u.Id).Count()
                                 };
@@ -101,7 +101,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             foreach (var item in query)
             {
                 result.Add(item);
-            }           
+            }
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -110,14 +110,14 @@ namespace eQuiz.Web.Areas.Admin.Controllers
         [HttpGet]
         public JsonResult GetStudentQuiz(int quizPassId)
         {
-            List<IQuestion> questionsList = new List<IQuestion>(); 
+            List<IQuestion> questionsList = new List<IQuestion>();
 
             var quizPass = _repository.GetSingle<QuizPass>(qp => qp.Id == quizPassId);
             var quizId = quizPass.QuizId;
 
             // Still don't know if I need this
             var quiz = _repository.GetSingle<Quiz>(q => q.Id == quizId);
-            var quizQuestions = _repository.Get<QuizQuestion>(qq => qq.Id == quizId);
+            var quizQuestions = _repository.Get<QuizQuestion>();
             var quizBlock = _repository.GetSingle<QuizBlock>(qb => qb.QuizId == quizId);
 
             var quizPassQuestions = _repository.Get<QuizPassQuestion>(qp => qp.QuizPassId == quizPassId);
@@ -128,11 +128,11 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var textAnswers = from q in questions
                               join qt in questionTypes on q.QuestionTypeId equals qt.Id
                               join qpq in quizPassQuestions on q.Id equals qpq.QuestionId
-                              join qq in quizQuestions on q.Id equals qq.QuestionId
                               join uta in userTextAnswers on qpq.Id equals uta.QuizPassQuestionId
+                              join qq in quizQuestions on q.Id equals qq.QuestionId
                               where qt.IsAutomatic == false
-                              select new TextQuestion(qpq.Id, qq.QuestionScore, 0, q.QuestionText, uta.AnswerText, "rightAnswer", qq.QuestionOrder);
-            
+                              select new TextQuestion(qpq.Id, qq.QuestionScore, 0, q.QuestionText, uta.AnswerText, "right", qq.QuestionOrder);
+
             foreach (var item in textAnswers)
             {
                 questionsList.Add(item);

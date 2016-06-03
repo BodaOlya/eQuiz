@@ -15,7 +15,7 @@ namespace eQuiz.Web.Areas.Admin.Models
         {
             base.Type = "Text";
             Answer = answer;
-            RightAnswer = answer;
+            RightAnswer = rightAnswer;
         }
     }
 }
