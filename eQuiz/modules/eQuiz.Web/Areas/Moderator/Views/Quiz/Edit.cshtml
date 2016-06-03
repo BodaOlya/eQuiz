@@ -7,7 +7,10 @@
 <div id="container">
     <div ng-controller="QuizController as vm" ng-cloak>
         <h2>Create/Edit {{vm.model.quiz.Name}}</h2>
-
+        <div ng-show="vm.model.locked">
+            <h2>Sorry, this quiz is being edited by {{vm.model.latestChange.User.FirstName}} {{vm.model.latestChange.User.LastName}}</h2>
+            <p>try refreshing page at {{vm.model.EndLockDate}}</p>
+        </div>
         <div>
             <button class="tab-navigation-button" ng-class="{active : vm.tab=='quiz'}" ng-click="vm.switchTab('quiz')">Quiz</button>
             <button class="tab-navigation-button" ng-class="{active : vm.tab=='questions'}" ng-click="vm.switchTab('questions')">Questions ({{vm.model.questions.length}}/{{vm.model.quizBlock.QuestionCount}})</button>
