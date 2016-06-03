@@ -70,6 +70,7 @@
         vm.deleteCanExecute = deleteCanExecute;
         vm.archiveQuiz = archiveQuiz;
         vm.archiveQuizCanExecute = archiveQuizCanExecute;
+        vm.initQuizFromData = initQuizFromData;
 
         activate();
 
@@ -78,17 +79,7 @@
                 vm.showLoading();
                 vm.getQuestions(mvcLocation.search("id"));
                 quizService.get(mvcLocation.search("id")).then(function (data) {
-                    vm.model.quiz = data.data.quiz;
-                    vm.isStateEditable = vm.model.quiz.QuizState.Name != 'Scheduled';
-                    vm.model.quiz.StartDate = new Date(vm.model.quiz.StartDate);
-                    vm.model.quiz.DurationMinutes = vm.model.quiz.TimeLimitMinutes % 60;
-                    vm.model.quiz.DurationHours = (vm.model.quiz.TimeLimitMinutes - vm.model.quiz.TimeLimitMinutes % 60) / 60;
-                    vm.model.quizBlock = data.data.block;
-                    vm.model.latestChange = data.data.latestChange;
-                    vm.model.latestChange.StartDate = new Date(vm.model.latestChange.StartDate);
-                    vm.model.latestChange.LastChangeDate = new Date(vm.model.latestChange.LastChangeDate);
-                    vm.model.locked = data.data.locked;
-                    vm.model.EndLockDate = new Date(vm.model.latestChange.LastChangeDate.getTime() + 2 * 60000).toLocaleString("ru");
+                    vm.initQuizFromData(data);
                 });
             }
 
@@ -142,7 +133,7 @@
         }
 
         function saveCanExecute() {
-            if (vm.model.lock) {
+            if (vm.model.locked) {
                 return false;
             }
             if (vm.model.quiz.QuizState && vm.model.quiz.QuizState.Name == 'Scheduled') {
@@ -190,15 +181,7 @@
 
             function saveQuiz() {
                 quizService.save({ quiz: vm.model.quiz, block: vm.model.quizBlock, latestChange: vm.model.latestChange}).then(function (data) {
-                    vm.model.quiz = data.data.quiz;
-                    vm.model.quiz.StartDate = new Date(vm.model.quiz.StartDate);
-                    vm.model.quiz.DurationMinutes = vm.model.quiz.TimeLimitMinutes % 60;
-                    vm.model.quiz.DurationHours = (vm.model.quiz.TimeLimitMinutes - vm.model.quiz.TimeLimitMinutes % 60) / 60;
-                    vm.model.quizBlock = data.data.block;
-                    vm.model.latestChange = data.data.latestChange;
-                    vm.model.latestChange.StartDate = new Date(vm.model.latestChange.StartDate);
-                    vm.model.latestChange.LastChangeDate = new Date(vm.model.latestChange.LastChangeDate);
-                    vm.model.locked = data.data.locked;
+                    initQuizFromData(data);
                     saveQuestions();
                 }, function (data) {
                     vm.hideLoading();
@@ -207,6 +190,20 @@
             }
 
 
+        }
+
+        function initQuizFromData(data) {
+                    vm.model.quiz = data.data.quiz;
+                    vm.isStateEditable = vm.model.quiz.QuizState.Name != 'Scheduled';
+                    vm.model.quiz.StartDate = new Date(vm.model.quiz.StartDate);
+                    vm.model.quiz.DurationMinutes = vm.model.quiz.TimeLimitMinutes % 60;
+                    vm.model.quiz.DurationHours = (vm.model.quiz.TimeLimitMinutes - vm.model.quiz.TimeLimitMinutes % 60) / 60;
+                    vm.model.quizBlock = data.data.block;
+                    vm.model.latestChange = data.data.latestChange;
+                    vm.model.latestChange.StartDate = new Date(vm.model.latestChange.StartDate);
+                    vm.model.latestChange.LastChangeDate = new Date(vm.model.latestChange.LastChangeDate);
+                    vm.model.locked = data.data.locked;
+                    vm.model.EndLockDate = new Date(vm.model.latestChange.LastChangeDate.getTime() + 2 * 60000).toLocaleString("ru");
         }
 
         function showSuccess() {
@@ -474,7 +471,7 @@
         }
 
         function isEditingEnabled() {
-            if (vm.model.lock) {
+            if (vm.model.locked) {
                 return false;
             }
             return !vm.model.quiz.QuizState || vm.model.quiz.QuizState.Name != 'Scheduled';
@@ -524,14 +521,14 @@
         }
 
         function archiveQuizCanExecute() {
-            if (vm.model.lock) {
+            if (vm.model.locked) {
                 return false;
             }
             return vm.model.quiz.Id && vm.model.quiz.QuizState && vm.model.quiz.QuizState.Name == 'Opened' && vm.saveCanExecute();
         }
 
         function deleteCanExecute() {
-            if (vm.model.lock) {
+            if (vm.model.locked) {
                 return false;
             }
             return vm.model.quiz.Id && vm.model.quiz.QuizState && vm.model.quiz.QuizState.Name == 'Scheduled';

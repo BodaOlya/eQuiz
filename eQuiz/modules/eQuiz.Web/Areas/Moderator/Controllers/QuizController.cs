@@ -255,14 +255,16 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 block.QuizId = quiz.Id;
                 _repository.Insert<QuizBlock>(block);
                 _repository.Insert<QuizVariant>(new QuizVariant() { QuizId = quiz.Id });
-                LockQuiz(quiz.Id, 1, now);
+                latestChange = LockQuiz(quiz.Id, 1, now);
             }
             quiz.QuizState = _repository.GetSingle<QuizState>(q => q.Id == quiz.QuizStateId);
             quiz.UserGroup = _repository.GetSingle<UserGroup>(g => g.Id == quiz.GroupId);
 
             var minQuiz = GetQuizForSerialization(quiz);
             var minQuizBlock = GetQuizBlockForSerialization(block);
-            var result = new { quiz = minQuiz, block = minQuizBlock, latestChange = latestChange};
+            var minLatestChange = GetQuizEditHistoryForSerialization(latestChange);
+
+            var result = new { quiz = minQuiz, block = minQuizBlock, latestChange = minLatestChange };
 
             return Json(result);
         }
@@ -625,6 +627,15 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
         private object GetQuizEditHistoryForSerialization(QuizEditHistory history)
         {
+            object user = null;
+            if (history.User!= null)
+            {
+                user = new
+                {
+                    FirstName = history.User.FirstName,
+                    LastName = history.User.LastName
+                };
+            }
             var minQuizEditHistory = new
             {
                 Id = history.Id,
@@ -632,11 +643,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 QuizId = history.QuizId,
                 StartDate = history.StartDate.ToString("yyyy-MM-ddTHH:mm:ss"),
                 LastChangeDate = history.LastChangeDate.ToString("yyyy-MM-ddTHH:mm:ss"),
-                User = new
-                {
-                    FirstName = history.User.FirstName,
-                    LastName = history.User.LastName
-                }
+                User = user
             };
 
             return minQuizEditHistory;
