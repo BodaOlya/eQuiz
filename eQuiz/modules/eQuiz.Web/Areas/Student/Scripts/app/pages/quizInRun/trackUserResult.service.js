@@ -34,26 +34,17 @@
         };
         function setMultipleAnswer(index, questionId, answers, isAutomatic, quizBlock, questionOrder) {
             if (isAutomatic) {
-                var ansArray = Object.keys(answers).map(function (key) { return answers[key] });
-                var nullFlag = ansArray.every(function (el) {
-                    return el == null;
-                });
-                if (!nullFlag) {
-                    var UserAnswer = {
-                        QuestionId: questionId,
-                        Answers: ansArray,
-                        AnswerId: null,
-                        AnswerText: null,
-                        AnswerTime: new Date(Date.now()),
-                        IsAutomatic: isAutomatic,
-                        QuizBlock: quizBlock,
-                        QuestionOrder: questionOrder
-                    };
-                    service.passedQuiz.UserAnswers[index] = UserAnswer;
-
-                } else {
-                    service.passedQuiz.UserAnswers[index] = null;
-                }
+                var UserAnswer = {
+                    QuestionId: questionId,
+                    Answers: answers,
+                    AnswerId: null,
+                    AnswerText: null,
+                    AnswerTime: new Date(Date.now()),
+                    IsAutomatic: isAutomatic,
+                    QuizBlock: quizBlock,
+                    QuestionOrder: questionOrder
+                };
+                service.passedQuiz.UserAnswers[index] = UserAnswer;
             }
         };
 

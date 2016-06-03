@@ -55,7 +55,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-form="userForm" ng-repeat="user in g.users | orderBy: g.predicate: g.reverse">
+            <tr ng-form="userForm" ng-repeat="user in g.users | orderBy: g.predicate: g.reverse" unique-user-email users="g.users" user="user">
                 <td> 
                     <div show-error>
                         <input type="text" ng-model="user.LastName" name="LastName" required  />
@@ -78,6 +78,7 @@
                         <div ng-messages="userForm.Email.$error" class="error-block">
                             <p ng-message="required">Email is required</p>
                             <p ng-message="pattern">Please enter a valid email address</p>
+                            <p ng-message="repeatedMessage">This email is used by another user</p>
                         </div>
                     </div>
                 </td>

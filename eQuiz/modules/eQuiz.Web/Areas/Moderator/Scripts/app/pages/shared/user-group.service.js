@@ -25,8 +25,8 @@
             return promise;
         };
 
-        function isUsersValid(users) {            
-            return $http.post("/moderator/usergroup/IsUsersValid", users);
+        function isUsersValid(user) {            
+            return $http.post("/moderator/usergroup/IsUserValid", user);
         }
 
         function save(data) {
