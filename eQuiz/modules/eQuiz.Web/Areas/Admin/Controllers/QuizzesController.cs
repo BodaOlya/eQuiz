@@ -110,18 +110,37 @@ namespace eQuiz.Web.Areas.Admin.Controllers
         [HttpGet]
         public JsonResult GetStudentQuiz(int quizPassId)
         {
-            List<IQuestion> questions = new List<IQuestion>(); 
+            List<IQuestion> questionsList = new List<IQuestion>(); 
 
             var quizPass = _repository.GetSingle<QuizPass>(qp => qp.Id == quizPassId);
             var quizId = quizPass.QuizId;
 
             // Still don't know if I need this
             var quiz = _repository.GetSingle<Quiz>(q => q.Id == quizId);
+            var quizQuestions = _repository.Get<QuizQuestion>(qq => qq.Id == quizId);
             var quizBlock = _repository.GetSingle<QuizBlock>(qb => qb.QuizId == quizId);
 
             var quizPassQuestions = _repository.Get<QuizPassQuestion>(qp => qp.QuizPassId == quizPassId);
+            var questions = _repository.Get<Question>();
+            var userTextAnswers = _repository.Get<UserTextAnswer>();
+            var questionTypes = _repository.Get<QuestionType>();
 
-            return Json(null, JsonRequestBehavior.AllowGet);
+            var textAnswers = from q in questions
+                              join qt in questionTypes on q.QuestionTypeId equals qt.Id
+                              join qpq in quizPassQuestions on q.Id equals qpq.QuestionId
+                              join qq in quizQuestions on q.Id equals qq.QuestionId
+                              join uta in userTextAnswers on qpq.Id equals uta.QuizPassQuestionId
+                              where qt.IsAutomatic == false
+                              select new TextQuestion(qpq.Id, qq.QuestionScore, 0, q.QuestionText, uta.AnswerText, "rightAnswer", qq.QuestionOrder);
+            
+            foreach (var item in textAnswers)
+            {
+                questionsList.Add(item);
+            }
+
+            //questionsList.Sort(ql => ql.order);
+
+            return Json(questionsList, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

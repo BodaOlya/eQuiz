@@ -83,6 +83,17 @@
 
             $scope.passedQuiz.FinishDate = new Date(Date.now());
             var passedQuiz = $scope.passedQuiz;
+            for (var i in passedQuiz.UserAnswers) {
+                if (passedQuiz.UserAnswers.hasOwnProperty(i)) {
+                    var arr = [];
+                    if (passedQuiz.UserAnswers[i].Answers != undefined || passedQuiz.UserAnswers[i].Answers != null) {
+                        for (var j in passedQuiz.UserAnswers[i].Answers) {
+                            arr.push(passedQuiz.UserAnswers[i].Answers[j]);
+                        }
+                        passedQuiz.UserAnswers[i].Answers = arr;
+                    }
+                }
+            }
             quizService.sendUserResult(passedQuiz)
                 .success(function (data) {
                 });     

@@ -10,7 +10,9 @@
         vm.successMessageVisible = false;
         vm.showSuccess = showSuccess;
         vm.showError = showError;
-        vm.isStateEditable = true;
+        vm.isExistingQuestionEnable = false;
+        vm.quizSearch = "";
+        vm.selectedQuizIdForAddQuestion = 0;
         vm.tab = 'quiz';
         vm.save = save;
         vm.switchTab = switchTab;
@@ -19,13 +21,16 @@
             quiz: { QuizTypeId: 1, DurationHours: 0, DurationMinutes: 0 },
             states: [],
             quizzesForCopy: [],
+            quizzesForSearch: [],
             quizBlock: { QuestionCount: 0 },
             questions: [],
             answers: [],
             tags: [],
             orderArray: [],
             questionTypes: [],
-            answersDirty: []
+            answersDirty: [],
+            questionsForAdding: {},
+            checkedQuestions: []
         }
         vm.setQuestionType = setQuestionType;
         vm.addNewQuestion = addNewQuestion;
@@ -45,6 +50,13 @@
         vm.isDirtyAnswerCount = isDirtyAnswerCount;
         vm.isDirtyAnswerChecked = isDirtyAnswerChecked;
         vm.isQuestionsFormValid = isQuestionsFormValid;
+        vm.showAddExistingQuestion = showAddExistingQuestion;
+        vm.setQuizIdForAddQuestion = setQuizIdForAddQuestion;
+        vm.searchTextChange = searchTextChange;
+        vm.closeAddingQuestionWindow = closeAddingQuestionWindow;
+        vm.getQuestionsCopyForAddindQuestion = getQuestionsCopyForAddindQuestion;
+        vm.GetCountSelectedQuestions = GetCountSelectedQuestions;
+        vm.AddExistingQuestions = AddExistingQuestions;
 
         vm.toggleQuizzesForCopy = toggleQuizzesForCopy;
         vm.quizzesForCopyVisible = false;
@@ -57,6 +69,7 @@
         vm.deleteCanExecute = deleteCanExecute;
         vm.archiveQuiz = archiveQuiz;
         vm.archiveQuizCanExecute = archiveQuizCanExecute;
+        vm.initQuizFromData = initQuizFromData;
 
         activate();
 
@@ -65,12 +78,7 @@
                 vm.showLoading();
                 vm.getQuestions(mvcLocation.search("id"));
                 quizService.get(mvcLocation.search("id")).then(function (data) {
-                    vm.model.quiz = data.data.quiz;
-                    vm.isStateEditable = vm.model.quiz.QuizState.Name != 'Scheduled';
-                    vm.model.quiz.StartDate = new Date(vm.model.quiz.StartDate);
-                    vm.model.quiz.DurationMinutes = vm.model.quiz.TimeLimitMinutes % 60;
-                    vm.model.quiz.DurationHours = (vm.model.quiz.TimeLimitMinutes - vm.model.quiz.TimeLimitMinutes % 60) / 60;
-                    vm.model.quizBlock = data.data.block;
+                    vm.initQuizFromData(data);
                 });
             }
 
@@ -85,6 +93,9 @@
 
             quizService.getQuizzesForCopy().then(function (data) {
                 vm.model.quizzesForCopy = data.data;
+                vm.model.quizzesForSearch = vm.model.quizzesForCopy.filter(function (item) {
+                    return item.Id > 0;
+                });
                 vm.model.quizzesForCopy.splice(0, 0, vm.selectedQuizCopy);
             });
 
@@ -121,6 +132,12 @@
         }
 
         function saveCanExecute() {
+            if (vm.model.locked) {
+                return false;
+            }
+            if (vm.model.quiz.QuizState && vm.model.quiz.QuizState.Name == 'Scheduled') {
+                return false;
+            }
             if (vm.quizForm) {
                 var res = vm.quizForm.$valid && vm.isQuestionsFormValid();
                 return vm.quizForm.$valid && vm.isQuestionsFormValid();
@@ -162,12 +179,8 @@
             }
 
             function saveQuiz() {
-                quizService.save({ quiz: vm.model.quiz, block: vm.model.quizBlock }).then(function (data) {
-                    vm.model.quiz = data.data.quiz;
-                    vm.model.quiz.StartDate = new Date(vm.model.quiz.StartDate);
-                    vm.model.quiz.DurationMinutes = vm.model.quiz.TimeLimitMinutes % 60;
-                    vm.model.quiz.DurationHours = (vm.model.quiz.TimeLimitMinutes - vm.model.quiz.TimeLimitMinutes % 60) / 60;
-                    vm.model.quizBlock = data.data.block;
+                quizService.save({ quiz: vm.model.quiz, block: vm.model.quizBlock, latestChange: vm.model.latestChange}).then(function (data) {
+                    initQuizFromData(data);
                     saveQuestions();
                 }, function (data) {
                     vm.hideLoading();
@@ -176,6 +189,21 @@
             }
 
 
+        }
+
+        function initQuizFromData(data) {
+                    vm.model.quiz = data.data.quiz;
+                    if (data.data.quiz.StartDate) {
+                        vm.model.quiz.StartDate = new Date(vm.model.quiz.StartDate);
+                    }
+                    vm.model.quiz.DurationMinutes = vm.model.quiz.TimeLimitMinutes % 60;
+                    vm.model.quiz.DurationHours = (vm.model.quiz.TimeLimitMinutes - vm.model.quiz.TimeLimitMinutes % 60) / 60;
+                    vm.model.quizBlock = data.data.block;
+                    vm.model.latestChange = data.data.latestChange;
+                    vm.model.latestChange.StartDate = new Date(vm.model.latestChange.StartDate);
+                    vm.model.latestChange.LastChangeDate = new Date(vm.model.latestChange.LastChangeDate);
+                    vm.model.locked = data.data.locked;
+                    vm.model.EndLockDate = new Date(vm.model.latestChange.LastChangeDate.getTime() + 2 * 60000).toLocaleString("ru");
         }
 
         function showSuccess() {
@@ -443,6 +471,9 @@
         }
 
         function isEditingEnabled() {
+            if (vm.model.locked) {
+                return false;
+            }
             return !vm.model.quiz.QuizState || vm.model.quiz.QuizState.Name != 'Scheduled';
         }
 
@@ -490,11 +521,84 @@
         }
 
         function archiveQuizCanExecute() {
+            if (vm.model.locked) {
+                return false;
+            }
             return vm.model.quiz.Id && vm.model.quiz.QuizState && vm.model.quiz.QuizState.Name == 'Opened' && vm.saveCanExecute();
         }
 
         function deleteCanExecute() {
+            if (vm.model.locked) {
+                return false;
+            }
             return vm.model.quiz.Id && vm.model.quiz.QuizState && vm.model.quiz.QuizState.Name == 'Scheduled';
+        }
+
+        function showAddExistingQuestion() {
+            vm.isExistingQuestionEnable = true;
+        }
+
+        function setQuizIdForAddQuestion(item) {
+            vm.selectedQuizIdForAddQuestion = item.Id;
+            vm.getQuestionsCopyForAddindQuestion(vm.selectedQuizIdForAddQuestion);
+        }
+
+        function searchTextChange() {
+            vm.selectedQuizIdForAddQuestion = 0;
+            vm.questionsForAdding = {};
+            vm.model.questionsForAdding = {};
+            vm.model.checkedQuestions = [];
+        }
+
+        function closeAddingQuestionWindow() {
+            vm.quizSearch = "";
+            vm.selectedQuizIdForAddQuestion = 0;
+            vm.questionsForAdding = {};
+            vm.isExistingQuestionEnable = false;
+            vm.model.questionsForAdding = {};
+            vm.model.checkedQuestions = [];
+        }
+
+        function getQuestionsCopyForAddindQuestion(quizId) {
+            vm.showLoading();
+            questionService.getQuestionsCopy(quizId).then(function (response) {
+                var modelFromServer = response.data;
+
+                vm.model.questionsForAdding = vm.toViewModel(modelFromServer);
+                vm.model.checkedQuestions = Array.apply(null, Array(vm.model.questionsForAdding.questions.length)).map(function () {
+                    return false;
+                });
+                vm.hideLoading();
+            });
+        }
+
+        function GetCountSelectedQuestions() {
+            return vm.model.checkedQuestions.filter(function (item) {
+                return item;
+            }).length;
+        }
+
+        function AddExistingQuestions() {
+            for (var i = 0; i < vm.model.checkedQuestions.length; i++) {
+                if (vm.model.checkedQuestions[i]) {
+                    vm.model.questions.push(vm.model.questionsForAdding.questions[i]);
+
+                    vm.model.answers.push(vm.model.questionsForAdding.answers[i]);
+
+                    vm.model.tags.push(vm.model.questionsForAdding.tags[i]);
+
+                    vm.model.orderArray.push({
+                        reverse: false,
+                        predicate: ""
+                    });
+
+                    vm.model.answersDirty.push({
+                        countAnswersDirty: false,
+                        checkedAnswersDirty: false
+                    });
+                }
+            }
+            vm.closeAddingQuestionWindow();
         }
     }
 })();

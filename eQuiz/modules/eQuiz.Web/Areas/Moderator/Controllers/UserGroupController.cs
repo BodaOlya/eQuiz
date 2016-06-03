@@ -145,7 +145,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
             res = query.Skip((currentPage - 1) * userGroupsPerPage).Take(userGroupsPerPage).ToList<object>();
 
-            return Json(new { UserGroups = res, UserGroupsTotal = res.Count }, JsonRequestBehavior.AllowGet);
+            return Json(new { UserGroups = res, UserGroupsTotal = userGroupesTotal }, JsonRequestBehavior.AllowGet);
         }
 
         private object GetUserGroupForSerialization(UserGroup group)
@@ -159,18 +159,18 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return minGroup;
         }
         private object GetUsersForSerialization(User user)
-         {           
-             var minUser = new
-             {
-                 Id = user.Id,
-                 LastName = user.LastName,
-                 FirstName = user.FirstName,
-                 FatheName = user.FatheName,
-                 Email = user.Email                 
-             };
+        {
+            var minUser = new
+            {
+                Id = user.Id,
+                LastName = user.LastName,
+                FirstName = user.FirstName,
+                FatheName = user.FatheName,
+                Email = user.Email
+            };
 
             return minUser;
-         }
+        }
 
         public ActionResult Create()
         {
@@ -221,7 +221,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 }
                 else
                 {
-                    currentUser.Phone = currentUser.Phone ?? ""; 
+                    currentUser.Phone = currentUser.Phone ?? "";
                     _repository.Insert<User>(currentUser);
                     var currentUserId = _repository.GetSingle<User>(x => x.Email == currentUser.Email).Id;
                     _repository.Insert<UserToUserGroup>(new UserToUserGroup { UserId = currentUserId, GroupId = userGroupId });
@@ -271,11 +271,11 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 }
             }
         }
-        
+
         [HttpPost]
-        public ActionResult IsUsersValid(IEnumerable<User> users)
+        public ActionResult IsUserValid(User user)
         {
-            bool isValid = ValidateListOfUsers(users);
+            bool isValid = ValidateUser(user);
             return Json(isValid, JsonRequestBehavior.AllowGet);
         }
 
@@ -283,19 +283,22 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
         #region Helpers
 
-        private bool ValidateListOfUsers(IEnumerable<User> users)
+        private bool ValidateUser(User user)
         {
-            foreach (var user in users)
-            {
-                bool correctUserExist = _repository.Exists<User>(u => (u.Email == user.Email) && (u.FirstName == user.FirstName) && (u.LastName == user.LastName));
+            var userIsValid = false;
 
-                if (correctUserExist)
-                {
-                    return false;
-                }
+            bool userWithEmailAlreadyExists = _repository.Exists<User>(u => u.Email == user.Email);
+
+            if (userWithEmailAlreadyExists)
+            {
+                userIsValid = _repository.Exists<User>(u => (u.Email == user.Email) && (u.FirstName == user.FirstName) && (u.LastName == user.LastName));
+            }
+            else
+            {
+                userIsValid = true;
             }
 
-            return true;
+            return userIsValid;
         }
 
         #endregion

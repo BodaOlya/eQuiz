@@ -1276,3 +1276,41 @@ thead, th, td {
     background-color: lightgray;
     border: 2px solid black;
 }
+
+.existing-question-window {
+    position: fixed;
+    overflow-y: auto;
+    top: 0px;
+    left: 0px;
+    margin: 1% 10%;
+    z-index: 10000;
+    background-color: white;
+    width: 80%;
+    max-height: 97%;
+}
+
+.existing-question-container {
+    width: 90%;
+    margin: 0 auto 10px auto;
+    padding: 20px;
+}
+
+.bordered{
+    padding: 10px;
+    margin: 0px -10px;
+    border: solid 1px black;
+}
+
+.question-block{
+    margin-top: 30px;
+}
+
+.close-button{
+    position:fixed; 
+    top:4%; 
+    right:12%;
+}
+
+.copy-button-container{
+    margin-top: 20px;
+}

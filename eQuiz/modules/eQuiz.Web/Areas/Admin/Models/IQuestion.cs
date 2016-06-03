@@ -9,5 +9,6 @@ namespace eQuiz.Web.Areas.Admin.Models
     public interface IQuestion
     {
         int Id { get; set; }
+        short? Order { get; set; }
     }
 }
