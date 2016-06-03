@@ -133,12 +133,34 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                               where qt.IsAutomatic == false
                               select new TextQuestion(qpq.Id, qq.QuestionScore, 0, q.QuestionText, uta.AnswerText, "right", qq.QuestionOrder);
 
+
+            // Test data because script's not ready yet
+            List<TestAnswer> ta = new List<TestAnswer>();
+            ta.Add(new TestAnswer(1, "Name 1", true, 1, true));
+            ta.Add(new TestAnswer(2, "Name 2", false, 1, false));
+            ta.Add(new TestAnswer(3, "Name 3", true, 1, false));
+            ta.Add(new TestAnswer(4, "Name 4", false, 1, true));
+
+
+            var testAnswers = from q in questions
+                              join qt in questionTypes on q.QuestionTypeId equals qt.Id
+                              join qpq in quizPassQuestions on q.Id equals qpq.QuestionId
+                              join qq in quizQuestions on q.Id equals qq.QuestionId
+                              where qt.IsAutomatic == true
+                              select new SelectQuestion(qpq.Id, qq.QuestionScore, 0, q.QuestionText, ta, qq.QuestionOrder);
+
+
             foreach (var item in textAnswers)
             {
                 questionsList.Add(item);
             }
 
-            //questionsList.Sort(ql => ql.order);
+            foreach (var item in testAnswers)
+            {
+                questionsList.Add(item);
+            }
+
+            //questionsList.Sort((p, q) => p.Order.HasValue.CompareTo);
 
             return Json(questionsList, JsonRequestBehavior.AllowGet);
         }
