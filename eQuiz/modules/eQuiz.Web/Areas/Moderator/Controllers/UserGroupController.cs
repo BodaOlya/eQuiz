@@ -236,7 +236,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             for (var i = 0; i < users.Length; i++)
             {
                 int currentUserId = users[i].Id;
-                UserToUserGroup matchedUser = _repository.GetSingle<UserToUserGroup>(u => u.UserId == currentUserId);
+                UserToUserGroup matchedUser = _repository.Get<UserToUserGroup>(u => u.UserId == currentUserId).FirstOrDefault();
                 if (matchedUser != null)
                 {
                     UserToUserGroup userFromList = usersFromUserGroup.Where(u => u.Id == matchedUser.Id).FirstOrDefault();
