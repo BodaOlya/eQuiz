@@ -12,7 +12,7 @@
         </div>
         <div class="row bordered">
             <div class="col-sm-6 col-md-6">
-                <button class="form-control" ng-class="{active: item.Id == vm.selectedQuizIdForAddQuestion}" ng-click="vm.setQuizIdForAddQuestion(item)" ng-repeat="item in vm.model.quizzesForSearch | filter: { Name : vm.model.quiz.Name ? '!' + vm.model.quiz.Name : '' } | filter: { Name : vm.quizSearch } | orderBy:'Name'| limitTo:10">
+                <button class="form-control" ng-class="{active: item.Id == vm.selectedQuizIdForAddQuestion}" ng-click="vm.setQuizIdForAddQuestion(item)" ng-repeat="item in vm.model.quizzesForCopy | filter: { Name : vm.model.quiz.Name ? '!' + vm.model.quiz.Name : '', Id: '!0' } | filter: { Name : vm.quizSearch } | orderBy:'Name'| limitTo:10">
                     {{item.Name}}
                 </button>
             </div>
@@ -21,7 +21,7 @@
             <div class="row bordered">
                 <div class="row" ng-repeat="q in vm.model.questionsForAdding.questions track by $index">
                     <div class="col-sm-1 col-md-1">
-                        <input type="checkbox" class="form-control" ng-model="vm.model.checkedQuestions[$index]" />
+                        <input type="checkbox" class="form-control" ng-model="q.checked" />
                     </div>
                     <div class="col-sm-11 col-md-11">
                         <p class="control-label">
