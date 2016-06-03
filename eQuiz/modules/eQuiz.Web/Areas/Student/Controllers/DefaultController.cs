@@ -165,13 +165,16 @@ namespace eQuiz.Web.Areas.Student.Controllers
                             {
                                 foreach (var answerId in userAnswer.Answers)
                                 {
-                                    userAnswerToInsert = new UserAnswer
+                                    if (answerId != null)
                                     {
-                                        QuizPassQuestionId = lastQuizPassQuestionIdentity,
-                                        AnswerId = (int)answerId,
-                                        AnswerTime = userAnswer.AnswerTime
-                                    };
-                                    _repository.Insert<UserAnswer>(userAnswerToInsert);
+                                        userAnswerToInsert = new UserAnswer
+                                        {
+                                            QuizPassQuestionId = lastQuizPassQuestionIdentity,
+                                            AnswerId = (int) answerId,
+                                            AnswerTime = userAnswer.AnswerTime
+                                        };
+                                        _repository.Insert<UserAnswer>(userAnswerToInsert);
+                                    }
                                 }
                             }
 
