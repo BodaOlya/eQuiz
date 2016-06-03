@@ -537,7 +537,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                     _repository.Delete<int, QuizPassQuestion>("Id", quizPassQuestion.Id);
                 }
 
-                _repository.Delete<int?, QuizPass>("Id", quizPass.Id);
+                _repository.Delete<int, QuizPass>("Id", quizPass.Id);
             }
 
             // Deleting QuizVariants dependent to Quiz
@@ -547,8 +547,15 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 _repository.Delete<int?, QuizVariant>("Id", quizVariant.Id);
             }
 
+            // Deleting QuizEditHistories dependent to Quiz
+            var quizEditHistories = _repository.Get<QuizEditHistory>(qeh => qeh.QuizId == id);
+            foreach (var quizEditHistory in quizEditHistories)
+            {
+                _repository.Delete<int, QuizEditHistory>("Id", quizEditHistory.Id);
+            }
+
             // Deleting Quiz
-            _repository.Delete<int?, Quiz>("Id", id);
+            _repository.Delete<int, Quiz>("Id", id);
 
             var result = Json(new HttpStatusCodeResult(HttpStatusCode.OK));
 
