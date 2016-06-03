@@ -51,20 +51,6 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return View();
         }
 
-        public ActionResult AccessDenied()
-        {
-            if (TempData["Quiz"] == null || TempData["UserName"] == null || (DateTime)TempData["EndLockDate"] == default(DateTime))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
-
-            ViewBag.Quiz = TempData["Quiz"];
-            ViewBag.UserName = TempData["UserName"];
-            ViewBag.EndLockDate = TempData["EndLockDate"];
-
-            return View();
-        }
-
         [HttpGet]
         public ActionResult IsNameUnique(string name, int? id)
         {
