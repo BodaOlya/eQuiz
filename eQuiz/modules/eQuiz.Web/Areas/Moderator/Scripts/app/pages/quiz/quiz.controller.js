@@ -10,7 +10,6 @@
         vm.successMessageVisible = false;
         vm.showSuccess = showSuccess;
         vm.showError = showError;
-        vm.isStateEditable = true;
         vm.isExistingQuestionEnable = false;
         vm.quizSearch = "";
         vm.selectedQuizIdForAddQuestion = 0;
@@ -194,8 +193,9 @@
 
         function initQuizFromData(data) {
                     vm.model.quiz = data.data.quiz;
-                    vm.isStateEditable = vm.model.quiz.QuizState.Name != 'Scheduled';
-                    vm.model.quiz.StartDate = new Date(vm.model.quiz.StartDate);
+                    if (data.data.quiz.StartDate) {
+                        vm.model.quiz.StartDate = new Date(vm.model.quiz.StartDate);
+                    }
                     vm.model.quiz.DurationMinutes = vm.model.quiz.TimeLimitMinutes % 60;
                     vm.model.quiz.DurationHours = (vm.model.quiz.TimeLimitMinutes - vm.model.quiz.TimeLimitMinutes % 60) / 60;
                     vm.model.quizBlock = data.data.block;
