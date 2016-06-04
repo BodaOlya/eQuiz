@@ -25,33 +25,33 @@
                     messagesBlock.toggleClass('hide', formControl[inputName].$valid);
                 }
 
-              
+                console.log('user ', scope.user);
 
                 function checkValidAfterAddedUser() {
                     var amountSame = 0;
-                    var isValid = true;
-                    userGroupService.isUsersValid(scope.user.FirstName, scope.user.LastName, scope.user.Email).then(function (data) {
-                        isValid = data.data;
-                    });
-                   
                     for (var i = 0; i < scope.users.length; i++) {
-                        if (scope.users[i].Email == scope.user.Email) {
+                        if (scope.users[i].Email === scope.user.Email) {
                             amountSame++;
                         }
                     }
-                    
-                    if (amountSame > 1 || !isValid) {
-                        callback(false);
-                    } else {
 
-                        callback(true);
-                    }
+                    var isValid = true;
+                    userGroupService.isUserValid(scope.user.FirstName, scope.user.LastName, scope.user.Email).then(function (data) {
+                        isValid = data.data;
+
+                        if (amountSame > 1 || !isValid) {
+                            callback(false);
+                        } else {
+
+                            callback(true);
+                        }
+                    });                                                                               
                 }
                 checkValidAfterAddedUser();
 
-                inputNgElement.bind('blur', function () {
+                inputNgElement.bind('blur', function() {
                     checkValidAfterAddedUser();
-                })
+                });
             }
         }
     }

@@ -9,7 +9,7 @@
             get: get,
             getGroup: getGroup,
             save: save,
-            isUsersValid: isUsersValid
+            isUserValid: isUserValid
         };
 
         function get() {
@@ -25,7 +25,7 @@
             return promise;
         };
 
-        function isUsersValid(firstName, lastName, email) {            
+        function isUserValid(firstName, lastName, email) {            
             return $http.get("/moderator/usergroup/IsUserValid?FirstName=" + escape(firstName) + "&LastName=" + escape(lastName) + "&Email=" + escape(email));
         }
 
