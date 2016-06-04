@@ -6,7 +6,8 @@
         var service = {
             getQuestionsById: getQuestionsByIdAjax,
             sendUserResult: sendUserResultAjax,
-            sendQuestionResult: sendQuestionResultAjax
+            sendQuestionResult: sendQuestionResultAjax,
+            setFinishTime: setFinishTimeAjax
         };
 
         return service;
@@ -33,5 +34,17 @@
 
             return promise;
         };
+
+        function setFinishTimeAjax(quizPassId) {
+            var promise = $http({
+                method: "GET",
+                url: "SetQuizFinishTime",
+                params: { quizPassId: quizPassId }
+            });
+
+            return promise;
+        };
+
+       
     }]);
 })(angular);

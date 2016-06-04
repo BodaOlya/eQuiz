@@ -352,6 +352,13 @@ namespace eQuiz.Web.Areas.Student.Controllers
                 }
             }
         }
+
+        public void SetQuizFinishTime(int quizPassId)
+        {
+            var quizPassWithFinishTime = _repository.GetSingle<QuizPass>(qp => qp.Id == quizPassId);
+            quizPassWithFinishTime.FinishTime = DateTime.UtcNow;
+            _repository.Update<QuizPass>(quizPassWithFinishTime);
+        }
         #endregion
     }
 }
