@@ -2,15 +2,15 @@
     <!--<div ng-if="isLoading">
         <span id="loadingMessage">Loading...</span>
     </div>-->
-    <div class="cssload-container" ng-if="isLoading">
+    <div class="cssload-container" ng-if="dc.isLoading">
         <div class="cssload-whirlpool"></div>
     </div>
 
-    <table id='quizzesTable' ng-if="!isLoading">
+    <table id='quizzesTable' ng-if="!dc.isLoading">
         <caption><h2>Quizzes</h2></caption>
         <caption style="text-align: left;">
-            <input type="search" ng-model="searchInfo.quizName" ng-change="search(page)" class="search-by-name" placeholder="Search by name">
-            <input type="checkbox" ng-model="searchInfo.InternetAccess" ng-change="search(page)" ng-false-value="undefined" style="width:15px;height:15px;vertical-align: bottom">
+            <input type="search" ng-model="dc.searchInfo.quizName" ng-change="dc.search(page)" class="search-by-name" placeholder="Search by name">
+            <input type="checkbox" ng-model="searchInfo.InternetAccess" ng-change="dc.search(page)" ng-false-value="undefined" style="width:15px;height:15px;vertical-align: bottom">
             <span class="checkboxtext" style="vertical-align: bottom">
                 Show only active quizzes
             </span>
@@ -25,7 +25,7 @@
         </thead>
         <!--| filter:{ Name: searchInfo.quizName } | filter:{ InternetAccess: searchInfo.InternetAccess}-->
         <tbody>
-            <tr ng-repeat="quiz in pagedQuizzes" ng-class="{ activeQuiz: quiz.InternetAccess, inactiveQuiz: !quiz.InternetAccess }">
+            <tr ng-repeat="quiz in dc.pagedQuizzes" ng-class="{ activeQuiz: quiz.InternetAccess, inactiveQuiz: !quiz.InternetAccess }">
                 <td>
                     {{quiz.Name}}
                 </td>
@@ -36,13 +36,13 @@
                     {{quiz.TimeLimitMinutes}}
                 </td>
                 <td>
-                    <a href='#/quizInRun/{{quiz.Id}}' ng-if="quiz.InternetAccess" ng-click="setToLocalStorage(quiz.TimeLimitMinutes)">Start</a>
+                    <a href='#/quizInRun/{{quiz.Id}}' ng-if="quiz.InternetAccess" ng-click="dc.setToLocalStorage(quiz.TimeLimitMinutes)">Start</a>
                     <div ng-if="!quiz.InternetAccess">Inactive</div>
                 </td>
             </tr>
         </tbody>
     </table>
-    <div ng-if="!isLoading">
-        <quiz-pager page="{{page}}" pages-count="{{pagesCount}}" total-count="{{totalCount}}" search-func="search(page)"></quiz-pager>
+    <div ng-if="!dc.isLoading">
+        <quiz-pager page="{{dc.page}}" pages-count="{{dc.pagesCount}}" total-count="{{dc.totalCount}}" search-func="dc.search(page)"></quiz-pager>
     </div>
 </div>

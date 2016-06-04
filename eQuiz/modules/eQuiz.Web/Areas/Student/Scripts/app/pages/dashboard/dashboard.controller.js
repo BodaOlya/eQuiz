@@ -1,34 +1,36 @@
-﻿
-(function (angular) {
-    var equizModule = angular.module("equizModule");
+﻿(function (angular) {
+    angular.module("equizModule")
+            .controller("dashboardCtrl", dashboardCtrl);
+    dashboardCtrl.$inject = ['$scope', 'dashboardService'];
 
-    equizModule.controller("dashboardCtrl", ["$scope", "dashboardService", function ($scope, dashboardService) {
-        $scope.allQuizzes = [];
-        $scope.pagedQuizzes = [];
-        $scope.page = 0;
-        $scope.pageSize = 7;
-        $scope.pagesCount = 1;
-        $scope.totalCount = 0;
-        $scope.searchInfo = {};
-        $scope.searchInfo.quizName = "";
+    function dashboardCtrl($scope, dashboardService) {
+        var vm = this;
+        vm.allQuizzes = [];
+        vm.pagedQuizzes = [];
+        vm.page = 0;
+        vm.pageSize = 7;
+        vm.pagesCount = 1;
+        vm.totalCount = 0;
+        vm.searchInfo = {};
+        vm.searchInfo.quizName = "";
 
-        $scope.isLoading = true;
+        vm.isLoading = true;
 
-        $scope.setToLocalStorage = function (durationValue) {
-            localStorage.setItem('duration', durationValue)
+        vm.setToLocalStorage = function (durationValue) {
+            localStorage.setItem('duration', durationValue);
         }
 
         activate();
         function activate() {
             var _onSuccess = function (value) {
-                $scope.allQuizzes = value.data;
+                vm.allQuizzes = value.data;
 
-                $scope.isLoading = false;
-                console.log($scope.allQuizzes);
-                $scope.search(0);
+                vm.isLoading = false;
+                console.log(vm.allQuizzes);
+                vm.search(0);
             };
             var _onError = function () {
-                $scope.isLoading = false;
+                vm.isLoading = false;
                 console.log("Cannot load quizzes list");
             };
 
@@ -36,33 +38,32 @@
             quizPromise.then(_onSuccess, _onError);
         };
 
-        $scope.search = function (page) {
-            $scope.page = page || 0;
+        vm.search = function (page) {
+            vm.page = page || 0;
 
             // Filter by quiz name.
-            var filteredQuizzes = $scope.allQuizzes.filter(
+            var filteredQuizzes = vm.allQuizzes.filter(
                 function (quiz) {
-                    return quiz.Name.toLowerCase().indexOf($scope.searchInfo.quizName.toLowerCase()) > -1 ? true : false;
+                    return quiz.Name.toLowerCase().indexOf(vm.searchInfo.quizName.toLowerCase()) > -1 ? true : false;
                 });
 
             // Filter by quiz internet access.
-            if ($scope.searchInfo.InternetAccess != undefined) {
+            if (vm.searchInfo.InternetAccess != undefined) {
                 filteredQuizzes = filteredQuizzes.filter(
                     function (quiz) {
-                        return quiz.InternetAccess === $scope.searchInfo.InternetAccess ? true : false;
+                        return quiz.InternetAccess === vm.searchInfo.InternetAccess ? true : false;
                     });
             }
 
-
-            $scope.totalCount = filteredQuizzes.length;
-            $scope.pagesCount = Math.ceil($scope.totalCount / $scope.pageSize);
-            if ($scope.totalCount > $scope.page * $scope.pageSize) {
-                $scope.pagedQuizzes = filteredQuizzes.slice($scope.page * $scope.pageSize, $scope.page * $scope.pageSize + $scope.pageSize);
+            vm.totalCount = filteredQuizzes.length;
+            vm.pagesCount = Math.ceil(vm.totalCount / vm.pageSize);
+            if (vm.totalCount > vm.page * vm.pageSize) {
+                vm.pagedQuizzes = filteredQuizzes.slice(vm.page * vm.pageSize, vm.page * vm.pageSize + vm.pageSize);
             }
             else {
-                $scope.pagedQuizzes = filteredQuizzes;
+                vm.pagedQuizzes = filteredQuizzes;
             }
         };
 
-    }]);
+    };
 })(angular);
