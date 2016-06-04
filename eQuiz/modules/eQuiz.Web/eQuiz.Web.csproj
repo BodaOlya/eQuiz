@@ -127,7 +127,7 @@
     <Content Include="Areas\Admin\Scripts\review\start-from.filter.js" />
     <Content Include="Areas\Admin\Scripts\review\trustAsHtml.filter.js" />
     <Content Include="Areas\Admin\Scripts\shared\loading-screen.directive.js" />
-    <Content Include="Areas\Admin\Scripts\shared\popUp.js" />
+    <Content Include="Areas\Admin\Scripts\shared\pop-up-window.directive.js" />
     <Content Include="Areas\Admin\Scripts\shared\routing.js" />
     <Content Include="Areas\Admin\Scripts\student\student.controller.js" />
     <Content Include="Areas\Admin\Scripts\student\student-data.service.js" />
