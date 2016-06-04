@@ -1,12 +1,9 @@
 ﻿(function (angular) {
-    angular.module("equizModule")
-    .controller('alertCtrl',alertCtrl);
-    alertCtrl.$inject = ['$scope', '$uibModalInstance'];
+    var equizModule = angular.module("equizModule");
 
-    function alertCtrl($scope, $uibModalInstance) {
-        var vm = this;
-        vm.ok = function () {
+    equizModule.controller('alertCtrl', ["$scope", "$uibModalInstance", function ($scope, $uibModalInstance) {
+        $scope.ok = function () {
             $uibModalInstance.close(true);
         };
-    };
+    }]);
 })(angular);

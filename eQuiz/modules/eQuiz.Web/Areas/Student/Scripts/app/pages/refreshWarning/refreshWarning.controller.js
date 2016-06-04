@@ -1,12 +1,9 @@
 ﻿(function (angular) {
-    angular.module("equizModule")
-    .controller('refreshWarningCtrl', refreshWarningCtrl);
-    refreshWarningCtrl.$inject =  ["$scope", "$uibModalInstance"];
+    var equizModule = angular.module("equizModule");
 
-    function refreshWarningCtrl($scope, $uibModalInstance) {
-        var vm = this;
-        vm.ok = function () {
+    equizModule.controller('refreshWarningCtrl', ["$scope", "$uibModalInstance", function ($scope, $uibModalInstance) {
+        $scope.ok = function () {
             $uibModalInstance.close(true);
         };
-    };
+    }]);
 })(angular);

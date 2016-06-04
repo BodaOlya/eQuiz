@@ -1,89 +1,82 @@
 ﻿/// <reference path="D:\MyFork_eQuiz\eQuiz\modules\eQuiz.Web\Scripts/libs/angularjs/angular.js" />
 (function (angular) {
-    angular.module("equizModule")
-    .controller('quizInRunCtrl', quizInRunCtrl);
-    quizInRunCtrl.$inject = ["$scope", "quizService", "trackUserResultService", "$routeParams", "$interval", "$window", "$location", "$uibModal"];
+    var equizModule = angular.module("equizModule");
 
-    function quizInRunCtrl($scope, quizService, trackUserResultService, $routeParams, $interval, $window, $location, $uibModal) {
-        var vm = this;
-        vm.quizQuestions = null;
-        vm.quizId = parseInt($routeParams.id);
-        vm.quizDuration = localStorage.getItem('duration');
-        vm.currentQuestion = 0;
-        vm.passedQuiz = trackUserResultService.passedQuiz;
-        vm.passedQuiz.QuizId = vm.quizId;
-        vm.windowHeight = $window.innerHeight;
+    equizModule.controller("quizInRunCtrl", ["$scope", "quizService", "trackUserResultService", "$routeParams", "$interval", "$window", "$location", "$uibModal",
+    function ($scope, quizService, trackUserResultService, $routeParams, $interval, $window, $location, $uibModal) {
+        $scope.quizQuestions = null;
+        $scope.quizId = parseInt($routeParams.id);
+        $scope.quizDuration = localStorage.getItem('duration');
+        $scope.currentQuestion = 0;
+        $scope.passedQuiz = trackUserResultService.passedQuiz;
+        $scope.passedQuiz.QuizId = $scope.quizId;
+        $scope.windowHeight = $window.innerHeight;
 
-        vm.isLoading = false;
+        $scope.isLoading = false;
 
         //Timer Data
-        vm.tSeconds = 0;
-        vm.tMinutes = vm.quizDuration;
+        $scope.tSeconds = 0;
+        $scope.tMinutes = $scope.quizDuration;
 
-        vm.seconds = vm.tSeconds;
-        vm.minutes = vm.tMinutes;
-        vm.myStyle = {};
-        vm.time = vm.minutes + ":0" + vm.seconds;
+        $scope.seconds = $scope.tSeconds;
+        $scope.minutes = $scope.tMinutes;
+        $scope.myStyle = {};
+        $scope.time = $scope.minutes + ":0" + $scope.seconds;
         var stop;
 
 
-        vm.setCurrentQuestion = function (currentQuestionId, index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
-            vm.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
+        $scope.setCurrentQuestion = function (currentQuestionId, index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
+            $scope.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
 
             ////
 
-            if (currentQuestionId < vm.quizQuestions.length && currentQuestionId >= 0) {
-                vm.currentQuestion = currentQuestionId;
+            if (currentQuestionId < $scope.quizQuestions.length && currentQuestionId >= 0) {
+                $scope.currentQuestion = currentQuestionId;
             }
         };
 
-        vm.isLoading = true;
+        $scope.isLoading = true;
 
         function openPopUpRefreshWarning() {
             var modalInstance = $uibModal.open({
                 animation: false,
                 templateUrl: '/Areas/Student/Scripts/app/pages/refreshWarning/refreshWarning.html',
                 controller: 'refreshWarningCtrl',
-                controllerAs: 'rfc',
                 size: 'sm'
             });
-
-            modalInstance.result.then(function () {
-                
-            });
         };
-
-        getQuestionById(vm.quizId, vm.quizDuration);
-
-        function getQuestionById(questionId, duration) {
+  
+        getQuestionById($scope.quizId, $scope.quizDuration);
+        
+        function getQuestionById(questionId, duration ) {
             quizService.getQuestionsById(questionId, duration)
                 .then(function (response) {
                     if (response.data.length === 0 || response.data === "SaveChangeException") {
                         $location.path("/Dashboard");
                     }
                     else {
-                        vm.quizQuestions = response.data;
-                        openPopUpRefreshWarning();
-                        vm.passedQuiz.StartDate = new Date(Date.now());
-                        vm.isLoading = false;
+                        $scope.quizQuestions = response.data;   
+                        //openPopUpRefreshWarning();
+                        $scope.passedQuiz.StartDate = new Date(Date.now());
+                        $scope.isLoading = false;
                     }
                 });
         };
 
-        vm.setUserSingleChoice = function (index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
+        $scope.setUserSingleChoice = function (index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
             trackUserResultService.setUserAnswers(index, questionId, answerId, isAutomatic, quizBlock, questionOrder);
         };
-        vm.setUserMultipleChoice = function (index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
+        $scope.setUserMultipleChoice = function (index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
             trackUserResultService.setUserMultipleAnswer(index, questionId, answerId, isAutomatic, quizBlock, questionOrder);
         };
-        vm.setUserTextAnswers = function (index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
+        $scope.setUserTextAnswers = function (index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
             trackUserResultService.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
         };
 
-        vm.sendDataToServer = function () {
+        $scope.sendDataToServer = function () {
 
-            vm.passedQuiz.FinishDate = new Date(Date.now());
-            var passedQuiz = vm.passedQuiz;
+            $scope.passedQuiz.FinishDate = new Date(Date.now());
+            var passedQuiz = $scope.passedQuiz;
             for (var i in passedQuiz.UserAnswers) {
                 if (passedQuiz.UserAnswers[i] != null && passedQuiz.UserAnswers[i] != undefined) {
                     if (passedQuiz.UserAnswers.hasOwnProperty(i)) {
@@ -99,7 +92,7 @@
             }
             quizService.sendUserResult(passedQuiz)
                 .success(function (data) {
-                });
+                });     
         };
 
         //Custom confirm function
@@ -109,13 +102,12 @@
                 animation: false,
                 templateUrl: '/Areas/Student/Scripts/app/pages/confirm/customConfirm.html',
                 controller: 'confirmCtrl',
-                controllerAs: 'cc',
                 size: 'sm'
             });
 
             modalInstance.result.then(function () {
-                vm.sendDataToServer();
-                vm.resetTimer();
+                $scope.sendDataToServer();
+                $scope.resetTimer();
                 $location.path("/Dashboard");
             }, function () {
                 return;
@@ -128,7 +120,6 @@
                 animation: false,
                 templateUrl: '/Areas/Student/Scripts/app/pages/alert/customAlert.html',
                 controller: 'alertCtrl',
-                controllerAs: 'ac',
                 size: 'sm'
             });
 
@@ -139,9 +130,9 @@
 
 
         //FINISH BUTTON
-        vm.finishQuiz = function (index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
-            if (!vm.quizQuestions[index].isAutomatic) {
-                vm.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
+        $scope.finishQuiz = function (index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
+            if (!$scope.quizQuestions[index].isAutomatic) {
+                $scope.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
             }
 
             openPopUpConfirm();
@@ -150,77 +141,77 @@
         $scope.$watch(function () {
             return $window.innerHeight;
         }, function (value) {
-            vm.windowHeight = value;
+            $scope.windowHeight = value;
         });
 
 
         //Timer Methods
-        vm.startTimer = function () {
+        $scope.startTimer = function () {
             if (angular.isDefined(stop)) return;
 
             stop = $interval(function () {
 
-                if (vm.seconds < 10) {
-                    vm.time = vm.minutes + ":0" + vm.seconds;
+                if ($scope.seconds < 10) {
+                    $scope.time = $scope.minutes + ":0" + $scope.seconds;
                 } else {
-                    vm.time = vm.minutes + ":" + vm.seconds;
+                    $scope.time = $scope.minutes + ":" + $scope.seconds;
                 }
 
-                if (vm.seconds > 0) {
-                    vm.seconds = vm.seconds - 1;
-                } else if (vm.minutes > 0) {
-                    vm.minutes = vm.minutes - 1;
-                    vm.seconds = 59;
+                if ($scope.seconds > 0) {
+                    $scope.seconds = $scope.seconds - 1;
+                } else if ($scope.minutes > 0) {
+                    $scope.minutes = $scope.minutes - 1;
+                    $scope.seconds = 59;
                 } else {
-                    vm.Stop();
+                    $scope.Stop();
                 }
-                if (vm.minutes <= vm.minutes / 10) {
-                    vm.myStyle = {
+                if ($scope.minutes <= $scope.minutes / 10) {
+                    $scope.myStyle = {
                         color: 'red'
                     }
                 } else {
-                    vm.myStyle = {
+                    $scope.myStyle = {
                         color: 'black'
                     }
                 }
-                if (vm.minutes == 0 && vm.seconds == 0) {
-                    vm.endQuiz();
+                if ($scope.minutes == 0 && $scope.seconds == 0) {
+                    $scope.endQuiz();
                 }
             }, 1000);
         };//start timer
 
-        vm.stopTimer = function () {
+        $scope.stopTimer = function () {
             if (angular.isDefined(stop)) {
                 $interval.cancel(stop);
                 stop = undefined;
             }
         };
 
-        vm.resetTimer = function () {
-            vm.stopTimer();
-            if (vm.tSeconds <= 60 && vm.tSeconds > 0) {
-                vm.tSeconds = 0;
+        $scope.resetTimer = function () {
+            $scope.stopTimer();
+            if ($scope.tSeconds <= 60 && $scope.tSeconds > 0) {
+                $scope.tSeconds = 0;
             }
 
-            if (vm.tMinutes > 0) {
-                vm.tMinutes = 0;
+            if ($scope.tMinutes > 0) {
+                $scope.tMinutes = 0;
             }
 
-            vm.seconds = vm.tSeconds;
-            vm.minutes = vm.tMinutes;
-            vm.myStyle = {
+            $scope.seconds = $scope.tSeconds;
+            $scope.minutes = $scope.tMinutes;
+            $scope.myStyle = {
                 color: 'black'
             }
         };
 
-        vm.endQuiz = function () {
-            vm.sendDataToServer();
-            vm.resetTimer();
+        $scope.endQuiz = function () {
+            $scope.sendDataToServer();
+            $scope.resetTimer();
             openPopUpAlert();
         };
 
         $scope.$on('$destroy', function () {
-            vm.stopTimer();
+            $scope.stopTimer();
         });
-    };
+    }]);
 })(angular);
