@@ -28,7 +28,28 @@
         $scope.setCurrentQuestion = function (currentQuestionId, index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
             $scope.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
 
-            ////
+            if ($scope.passedQuiz.UserAnswers[$scope.currentQuestion] !== undefined) {
+                var answers = null;
+                if ($scope.passedQuiz.UserAnswers[$scope.currentQuestion].Answers != undefined && $scope.passedQuiz.UserAnswers[$scope.currentQuestion].Answers != null) {
+                    answers = [];
+                    for (var prop in $scope.passedQuiz.UserAnswers[$scope.currentQuestion].Answers) {
+                        answers.push($scope.passedQuiz.UserAnswers[$scope.currentQuestion].Answers[prop]);
+                    }
+                }
+                var questionResult = {
+                    QuestionId: $scope.quizQuestions[$scope.currentQuestion].Id,
+                    QuestionType: $scope.quizQuestions[$scope.currentQuestion].QuestionType,
+                    QuestionOrder: $scope.quizQuestions[$scope.currentQuestion].QuestionOrder,
+                    QuizBlock: $scope.quizQuestions[$scope.currentQuestion].QuizBlock,
+                    QuizPassId: $scope.quizQuestions[$scope.currentQuestion].QuizPassId,
+                    AnswerId: $scope.passedQuiz.UserAnswers[$scope.currentQuestion].AnswerId,
+                    AnswerText: $scope.passedQuiz.UserAnswers[$scope.currentQuestion].AnswerText,
+                    Answers: answers,
+                    AnswerTime: $scope.passedQuiz.UserAnswers[$scope.currentQuestion].AnswerTime
+                }
+                console.log(JSON.stringify(questionResult));
+                sendQuestionResult(questionResult);
+            }
 
             if (currentQuestionId < $scope.quizQuestions.length && currentQuestionId >= 0) {
                 $scope.currentQuestion = currentQuestionId;
@@ -63,6 +84,10 @@
                 });
         };
 
+        function sendQuestionResult(passedQuestion) {
+            quizService.sendQuestionResult(passedQuestion);
+        };
+
         $scope.setUserSingleChoice = function (index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
             trackUserResultService.setUserAnswers(index, questionId, answerId, isAutomatic, quizBlock, questionOrder);
         };
@@ -90,9 +115,9 @@
                     }
                 }
             }
-            quizService.sendUserResult(passedQuiz)
-                .success(function (data) {
-                });     
+            //quizService.sendUserResult(passedQuiz)
+            //    .success(function (data) {
+            //    });     
         };
 
         //Custom confirm function

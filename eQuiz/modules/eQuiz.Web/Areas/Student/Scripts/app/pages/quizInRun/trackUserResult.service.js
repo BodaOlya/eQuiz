@@ -27,7 +27,14 @@
         function setAnswers(index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
             if (isAutomatic) {
                 var UserAnswer = {
-                    QuestionId: questionId, Answers: null, AnswerId: answerId, AnswerText: null, AnswerTime: new Date(Date.now()), IsAutomatic: isAutomatic, QuizBlock: quizBlock, QuestionOrder: questionOrder
+                    QuestionId: questionId,
+                    Answers: null,
+                    AnswerId: answerId,
+                    AnswerText: null,
+                    AnswerTime: new Date(Date.now()),
+                    IsAutomatic: isAutomatic,
+                    QuizBlock: quizBlock,
+                    QuestionOrder: questionOrder
                 };
                 service.passedQuiz.UserAnswers[index] = UserAnswer;
             }
@@ -45,19 +52,27 @@
                     QuestionOrder: questionOrder
                 };
                 service.passedQuiz.UserAnswers[index] = UserAnswer;
+                console.log(answers);
             }
         };
 
         function setTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
             if (!isAutomatic && answerText != null && answerText != "") {
                 var UserAnswer = {
-                    QuestionId: questionId, Answers: null, AnswerId: null, AnswerText: answerText, AnswerTime: new Date(Date.now()), IsAutomatic: isAutomatic, QuizBlock: quizBlock, QuestionOrder: questionOrder
+                    QuestionId: questionId,
+                    Answers: null,
+                    AnswerId: null,
+                    AnswerText: answerText,
+                    AnswerTime: new Date(Date.now()),
+                    IsAutomatic: isAutomatic,
+                    QuizBlock: quizBlock,
+                    QuestionOrder: questionOrder
                 };
                 service.passedQuiz.UserAnswers[index] = UserAnswer;
             }
-            else if (!isAutomatic && answerText === "") {
-                service.passedQuiz.UserAnswers[index] = null;
-            }
+            //else if (!isAutomatic && answerText === "") {
+            //    service.passedQuiz.UserAnswers[index] = null;
+            //}
         };
     });
 })(angular);

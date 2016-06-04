@@ -208,6 +208,7 @@
     <Compile Include="Areas\Moderator\ModeratorAreaRegistration.cs" />
     <Compile Include="Areas\Student\Controllers\AccountController.cs" />
     <Compile Include="Areas\Student\Controllers\DefaultController.cs" />
+    <Compile Include="Areas\Student\Models\QuestionResultModel.cs" />
     <Compile Include="Areas\Student\Models\QuizResultModel.cs" />
     <Compile Include="Areas\Student\Models\UserAnswerResult.cs" />
     <Compile Include="Areas\Student\StudentAreaRegistration.cs" />
