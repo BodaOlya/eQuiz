@@ -272,10 +272,10 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             }
         }
 
-        [HttpPost]
-        public ActionResult IsUserValid(User user)
+        [HttpGet]
+        public ActionResult IsUserValid(string firstName, string lastName, string email)
         {
-            bool isValid = ValidateUser(user);
+            bool isValid = ValidateUser(firstName, lastName, email);
             return Json(isValid, JsonRequestBehavior.AllowGet);
         }
 
@@ -283,15 +283,15 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
         #region Helpers
 
-        private bool ValidateUser(User user)
+        private bool ValidateUser(string firstName, string lastName, string email)
         {
             var userIsValid = false;
 
-            bool userWithEmailAlreadyExists = _repository.Exists<User>(u => u.Email == user.Email);
+            bool userWithEmailAlreadyExists = _repository.Exists<User>(u => u.Email == email);
 
             if (userWithEmailAlreadyExists)
             {
-                userIsValid = _repository.Exists<User>(u => (u.Email == user.Email) && (u.FirstName == user.FirstName) && (u.LastName == user.LastName));
+                userIsValid = _repository.Exists<User>(u => (u.Email == email) && (u.FirstName == firstName) && (u.LastName == lastName));
             }
             else
             {
