@@ -28,6 +28,8 @@
         $scope.setCurrentQuestion = function (currentQuestionId, index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
             $scope.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
 
+            ////
+
             if (currentQuestionId < $scope.quizQuestions.length && currentQuestionId >= 0) {
                 $scope.currentQuestion = currentQuestionId;
             }
@@ -42,27 +44,19 @@
                 controller: 'refreshWarningCtrl',
                 size: 'sm'
             });
-
-            modalInstance.result.then(function () {
-                console.log('7');
-            });
         };
-
-        openPopUpRefreshWarning();
-
+  
         getQuestionById($scope.quizId, $scope.quizDuration);
         
         function getQuestionById(questionId, duration ) {
             quizService.getQuestionsById(questionId, duration)
                 .then(function (response) {
-                    if(response.data === "SaveChangeException") {
-                        $location.path("/Dashboard");
-                    }
-                    if (response.data.length === 0) {
+                    if (response.data.length === 0 || response.data === "SaveChangeException") {
                         $location.path("/Dashboard");
                     }
                     else {
-                        $scope.quizQuestions = response.data;
+                        $scope.quizQuestions = response.data;   
+                        //openPopUpRefreshWarning();
                         $scope.passedQuiz.StartDate = new Date(Date.now());
                         $scope.isLoading = false;
                     }
