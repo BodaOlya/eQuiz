@@ -28,6 +28,29 @@
         $scope.setCurrentQuestion = function (currentQuestionId, index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
             $scope.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
 
+            if ($scope.passedQuiz.UserAnswers[$scope.currentQuestion] !== undefined) {
+                var answers = null;
+                if ($scope.passedQuiz.UserAnswers[$scope.currentQuestion].Answers != undefined && $scope.passedQuiz.UserAnswers[$scope.currentQuestion].Answers != null) {
+                    answers = [];
+                    for (var prop in $scope.passedQuiz.UserAnswers[$scope.currentQuestion].Answers) {
+                        answers.push($scope.passedQuiz.UserAnswers[$scope.currentQuestion].Answers[prop]);
+                    }
+                }
+                var questionResult = {
+                    QuestionId: $scope.quizQuestions[$scope.currentQuestion].Id,
+                    QuestionType: $scope.quizQuestions[$scope.currentQuestion].QuestionType,
+                    QuestionOrder: $scope.quizQuestions[$scope.currentQuestion].QuestionOrder,
+                    QuizBlock: $scope.quizQuestions[$scope.currentQuestion].QuizBlock,
+                    QuizPassId: $scope.quizQuestions[$scope.currentQuestion].QuizPassId,
+                    AnswerId: $scope.passedQuiz.UserAnswers[$scope.currentQuestion].AnswerId,
+                    AnswerText: $scope.passedQuiz.UserAnswers[$scope.currentQuestion].AnswerText,
+                    Answers: answers,
+                    AnswerTime: $scope.passedQuiz.UserAnswers[$scope.currentQuestion].AnswerTime
+                }
+                console.log(JSON.stringify(questionResult));
+                sendQuestionResult(questionResult);
+            }
+
             if (currentQuestionId < $scope.quizQuestions.length && currentQuestionId >= 0) {
                 $scope.currentQuestion = currentQuestionId;
             }
@@ -42,31 +65,27 @@
                 controller: 'refreshWarningCtrl',
                 size: 'sm'
             });
-
-            modalInstance.result.then(function () {
-                console.log('7');
-            });
         };
-
-        openPopUpRefreshWarning();
-
+  
         getQuestionById($scope.quizId, $scope.quizDuration);
         
         function getQuestionById(questionId, duration ) {
             quizService.getQuestionsById(questionId, duration)
                 .then(function (response) {
-                    if(response.data === "SaveChangeException") {
-                        $location.path("/Dashboard");
-                    }
-                    if (response.data.length === 0) {
+                    if (response.data.length === 0 || response.data === "SaveChangeException") {
                         $location.path("/Dashboard");
                     }
                     else {
-                        $scope.quizQuestions = response.data;
+                        $scope.quizQuestions = response.data;   
+                        //openPopUpRefreshWarning();
                         $scope.passedQuiz.StartDate = new Date(Date.now());
                         $scope.isLoading = false;
                     }
                 });
+        };
+
+        function sendQuestionResult(passedQuestion) {
+            quizService.sendQuestionResult(passedQuestion);
         };
 
         $scope.setUserSingleChoice = function (index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
@@ -84,19 +103,21 @@
             $scope.passedQuiz.FinishDate = new Date(Date.now());
             var passedQuiz = $scope.passedQuiz;
             for (var i in passedQuiz.UserAnswers) {
-                if (passedQuiz.UserAnswers.hasOwnProperty(i)) {
-                    var arr = [];
-                    if (passedQuiz.UserAnswers[i].Answers != undefined || passedQuiz.UserAnswers[i].Answers != null) {
-                        for (var j in passedQuiz.UserAnswers[i].Answers) {
-                            arr.push(passedQuiz.UserAnswers[i].Answers[j]);
+                if (passedQuiz.UserAnswers[i] != null && passedQuiz.UserAnswers[i] != undefined) {
+                    if (passedQuiz.UserAnswers.hasOwnProperty(i)) {
+                        var arr = [];
+                        if (passedQuiz.UserAnswers[i].Answers != undefined || passedQuiz.UserAnswers[i].Answers != null) {
+                            for (var j in passedQuiz.UserAnswers[i].Answers) {
+                                arr.push(passedQuiz.UserAnswers[i].Answers[j]);
+                            }
+                            passedQuiz.UserAnswers[i].Answers = arr;
                         }
-                        passedQuiz.UserAnswers[i].Answers = arr;
                     }
                 }
             }
-            quizService.sendUserResult(passedQuiz)
-                .success(function (data) {
-                });     
+            //quizService.sendUserResult(passedQuiz)
+            //    .success(function (data) {
+            //    });     
         };
 
         //Custom confirm function

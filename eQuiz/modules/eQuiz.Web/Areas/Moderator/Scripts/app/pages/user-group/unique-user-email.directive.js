@@ -1,4 +1,4 @@
-﻿(function () {
+﻿(function (angular) {
     angular
     .module('equizModule')
     .directive('uniqueUserEmail', uniqueUserEmail);
@@ -6,40 +6,53 @@
     uniqueUserEmail.$inject = ['userGroupService'];
     function uniqueUserEmail(userGroupService) {
         return {
-            restrict: 'A',
-            require: '^form',
             scope: {
                 user: '=',
                 users: '='
             },
+            restrict: 'A',
+            require: '^form',
+
             link: function (scope, element, attributes, formControl) {
-                var inputElement = element[2].querySelector("[name]");
+                var inputElement = element[0].querySelector('[name ="Email"]');
                 var inputNgElement = angular.element(inputElement);
                 var inputName = inputNgElement.attr('name');
                 var messagesBlock = inputNgElement.next();
-                console.log("IN DIRECTIVE ", scope.users);
-                alert("gfghfh");
+             
                 function callback(data) {
-                    formControl.name.$setValidity('repeatedMessage', data);
+                    formControl.Email.$setValidity('nonUniqueEmail', data);
                     element.toggleClass('has-error', formControl[inputName].$invalid);
                     messagesBlock.toggleClass('hide', formControl[inputName].$valid);
                 }
 
-                inputNgElement.bind('blur', function () {
-                    var isValid = true;
-                    userGroupService.isUsersValid(user).then(function (data) {
-                        isValid = data.data;
-                    });
-                    for (var i = 0; i < users.length; i++) {
-                        if (users[i].Email === user.Email) {
-                            isValid = false;
+                console.log('user ', scope.user);
+
+                function checkValidAfterAddedUser() {
+                    var amountSame = 0;
+                    for (var i = 0; i < scope.users.length; i++) {
+                        if (scope.users[i].Email === scope.user.Email) {
+                            amountSame++;
                         }
-                        callback(isValid)
                     }
 
-                })
+                    var isValid = true;
+                    userGroupService.isUserValid(scope.user.FirstName, scope.user.LastName, scope.user.Email).then(function (data) {
+                        isValid = data.data;
 
+                        if (amountSame > 1 || !isValid) {
+                            callback(false);
+                        } else {
+
+                            callback(true);
+                        }
+                    });                                                                               
+                }
+                checkValidAfterAddedUser();
+
+                inputNgElement.bind('blur', function() {
+                    checkValidAfterAddedUser();
+                });
             }
         }
     }
-})
+})(angular);

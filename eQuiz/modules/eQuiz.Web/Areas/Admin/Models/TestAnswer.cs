@@ -13,7 +13,7 @@ namespace eQuiz.Web.Areas.Admin.Models
         public int Order { get; set; }
         public bool ChosenByUser { get; set; }
 
-        public TestAnswer (int id, string name, bool isRight, int order, int chosenByUser)
+        public TestAnswer (int id, string name, bool isRight, int order, bool chosenByUser)
         {
             Id = id;
             Name = name;

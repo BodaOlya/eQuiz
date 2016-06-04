@@ -36,7 +36,7 @@ ALTER TABLE [dbo].[tblQuizPassQuestion] DROP CONSTRAINT [FK_tblQuizPassQuestion_
 
 ALTER TABLE [dbo].[tblQuizPassQuestion] DROP CONSTRAINT [FK_tblQuizPassQuestion_tblQuizPass];
 
---ALTER TABLE [dbo].[tblQuizPassScore] DROP CONSTRAINT [FK_tblQuizPassScore_tblQuizPass];
+ALTER TABLE [dbo].[tblQuizPassScore] DROP CONSTRAINT [FK_tblQuizPassScore_tblQuizPass];
 
 ALTER TABLE [dbo].[tblQuizPassScore] DROP CONSTRAINT [FK_tblQuizPassScore_tblUser];
 
@@ -46,13 +46,13 @@ ALTER TABLE [dbo].[tblQuizQuestion] DROP CONSTRAINT [FK_tblQuizQuestion_tblQuizB
 
 ALTER TABLE [dbo].[tblQuizQuestion] DROP CONSTRAINT [FK_tblQuizQuestion_tblQuizVariant];
 
---ALTER TABLE [dbo].[tblQuizVariant] DROP CONSTRAINT [FK_tblQuizVariant_tblQuiz];
+ALTER TABLE [dbo].[tblQuizVariant] DROP CONSTRAINT [FK_tblQuizVariant_tblQuiz];
 
 ALTER TABLE [dbo].[tblUserAnswer] DROP CONSTRAINT [FK_tblUserAnswer_tblAnswer];
 
 ALTER TABLE [dbo].[tblUserAnswer] DROP CONSTRAINT [FK_tblUserAnswer_tblQuizPassQuestion];
 
---ALTER TABLE [dbo].[tblUserAnswerScore] DROP CONSTRAINT [FK_tblUserAnswerScore_tblQuizPassQuestion];
+ALTER TABLE [dbo].[tblUserAnswerScore] DROP CONSTRAINT [FK_tblUserAnswerScore_tblQuizPassQuestion];
 
 ALTER TABLE [dbo].[tblUserAnswerScore] DROP CONSTRAINT [FK_tblUserAnswerScore_tblUser];
 

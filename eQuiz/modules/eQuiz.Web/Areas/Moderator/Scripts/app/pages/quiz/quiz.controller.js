@@ -21,7 +21,6 @@
             quiz: { QuizTypeId: 1, DurationHours: 0, DurationMinutes: 0 },
             states: [],
             quizzesForCopy: [],
-            quizzesForSearch: [],
             quizBlock: { QuestionCount: 0 },
             questions: [],
             answers: [],
@@ -30,7 +29,6 @@
             questionTypes: [],
             answersDirty: [],
             questionsForAdding: {},
-            checkedQuestions: []
         }
         vm.setQuestionType = setQuestionType;
         vm.addNewQuestion = addNewQuestion;
@@ -93,9 +91,6 @@
 
             quizService.getQuizzesForCopy().then(function (data) {
                 vm.model.quizzesForCopy = data.data;
-                vm.model.quizzesForSearch = vm.model.quizzesForCopy.filter(function (item) {
-                    return item.Id > 0;
-                });
                 vm.model.quizzesForCopy.splice(0, 0, vm.selectedQuizCopy);
             });
 
@@ -547,7 +542,6 @@
             vm.selectedQuizIdForAddQuestion = 0;
             vm.questionsForAdding = {};
             vm.model.questionsForAdding = {};
-            vm.model.checkedQuestions = [];
         }
 
         function closeAddingQuestionWindow() {
@@ -556,7 +550,6 @@
             vm.questionsForAdding = {};
             vm.isExistingQuestionEnable = false;
             vm.model.questionsForAdding = {};
-            vm.model.checkedQuestions = [];
         }
 
         function getQuestionsCopyForAddindQuestion(quizId) {
@@ -565,22 +558,25 @@
                 var modelFromServer = response.data;
 
                 vm.model.questionsForAdding = vm.toViewModel(modelFromServer);
-                vm.model.checkedQuestions = Array.apply(null, Array(vm.model.questionsForAdding.questions.length)).map(function () {
-                    return false;
-                });
+                for (var i = 0; i < vm.model.questionsForAdding.questions.length; i++) {
+                    vm.model.questionsForAdding.questions[i].checked = false;
+                }
                 vm.hideLoading();
             });
         }
 
         function GetCountSelectedQuestions() {
-            return vm.model.checkedQuestions.filter(function (item) {
-                return item;
-            }).length;
+            return vm.model.questionsForAdding.questions ? vm.model.questionsForAdding.questions.filter(function (item) {
+                return item.checked;
+            }).length : 0;
         }
 
         function AddExistingQuestions() {
-            for (var i = 0; i < vm.model.checkedQuestions.length; i++) {
-                if (vm.model.checkedQuestions[i]) {
+            for (var i = 0; i < vm.model.questionsForAdding.questions.length; i++) {
+                if (vm.model.questionsForAdding.questions[i].checked) {
+
+                    delete vm.model.questionsForAdding.questions[i]['checked'];
+
                     vm.model.questions.push(vm.model.questionsForAdding.questions[i]);
 
                     vm.model.answers.push(vm.model.questionsForAdding.answers[i]);

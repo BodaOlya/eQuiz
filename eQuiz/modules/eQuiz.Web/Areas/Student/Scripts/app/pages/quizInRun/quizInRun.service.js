@@ -5,7 +5,8 @@
     equizModule.factory("quizService", ["$http", function ($http) {
         var service = {
             getQuestionsById: getQuestionsByIdAjax,
-            sendUserResult: sendUserResultAjax
+            sendUserResult: sendUserResultAjax,
+            sendQuestionResult: sendQuestionResultAjax
         };
 
         return service;
@@ -23,6 +24,12 @@
 
         function sendUserResultAjax(passedQuiz) {
             var promise = $http.post("InsertQuizResult", passedQuiz);
+
+            return promise;
+        };
+
+        function sendQuestionResultAjax(passedQuestion) {
+            var promise = $http.post("InsertQuestionResult", passedQuestion);
 
             return promise;
         };
