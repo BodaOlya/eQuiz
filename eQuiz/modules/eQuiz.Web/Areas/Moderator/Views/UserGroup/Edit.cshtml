@@ -78,7 +78,7 @@
                         <div ng-messages="userForm.Email.$error" class="error-block">
                             <p ng-message="required">Email is required</p>
                             <p ng-message="pattern">Please enter a valid email address</p>
-                            <p ng-message="repeatedMessage">This email is used by another user</p>
+                            <p ng-message="nonUniqueEmail">This email is used by another user</p>
                         </div>
                     </div>
                 </td>
@@ -137,4 +137,6 @@
     <script src="~/Areas/Moderator/Scripts/app/pages/shared/user-group.service.js"></script>
     <script src="~/Areas/Moderator/Scripts/app/pages/user-group/import-users-from-file.directive.js"></script>
     <script src="~/Areas/Moderator/Scripts/app/pages/user-group/user-group.controller.js"></script>
+
+<script src="~/Areas/Moderator/Scripts/app/pages/user-group/unique-user-email.directive.js"></script>
 }

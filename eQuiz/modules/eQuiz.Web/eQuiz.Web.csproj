@@ -151,6 +151,7 @@
     <Content Include="Areas\Moderator\Scripts\app\pages\shared\show-error.directive.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\user-groups-list\user-groups.controller.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\user-groups-list\user-groups.service.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\user-group\unique-user-email.directive.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\user-group\user-group.controller.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\user-group\import-users-from-file.directive.js" />
     <Content Include="Areas\Moderator\Scripts\libs\custom-pagination\custom-pagination.js" />
