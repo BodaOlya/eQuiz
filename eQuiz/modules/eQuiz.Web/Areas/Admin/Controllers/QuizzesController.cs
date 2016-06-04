@@ -160,9 +160,9 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                 questionsList.Add(item);
             }
 
-            //questionsList.Sort((p, q) => p.Order.HasValue.CompareTo);
+            var ordered = questionsList.OrderBy(q => q.Order).ToList();
 
-            return Json(questionsList, JsonRequestBehavior.AllowGet);
+            return Json(ordered, JsonRequestBehavior.AllowGet);
         }
 
         #endregion
