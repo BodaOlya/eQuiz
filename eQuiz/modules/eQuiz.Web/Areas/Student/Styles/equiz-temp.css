@@ -47,6 +47,9 @@ input[type='text'], select {
     width: 40%;
     font-size: 14pt;
 }
+.theadSort{
+    cursor: pointer;
+}
 .activeQuiz{
     background-color:ghostwhite;
 }
