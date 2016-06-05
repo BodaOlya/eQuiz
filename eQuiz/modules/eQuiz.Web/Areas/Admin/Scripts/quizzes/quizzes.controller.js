@@ -11,6 +11,22 @@
         vm.tablePage = 0;
         vm.search = '';
         var orderBy = $filter('orderBy');
+        vm.filterCategories = [{
+            name: 'Quiz',
+            field: 'quiz_name',
+            CategoryItems: [],
+            selectedGroup: []
+        }, {
+            name: 'Group',
+            field: 'group_name',
+            CategoryItems: [],
+            selectedGroup: []
+        }, {
+            name: 'Verification type',
+            field: 'verification_type',
+            CategoryItems: [],
+            selectedGroup: []
+        }];
 
         vm.headers = [{
             name: 'Quiz',
@@ -34,6 +50,21 @@
             predicateIndex: 4
         }];
 
+        vm.GetUniqueValuesByCategory = function (propertyName) {
+            var flags = [];
+            var output = [];
+            for (var i = 0; i < vm.quizzes.length; i++) {
+                if (flags[vm.quizzes[i][propertyName]]) {
+                    continue;
+                }
+
+                flags[vm.quizzes[i][propertyName]] = true;
+                output.push(vm.quizzes[i][propertyName]);
+            }
+
+            return output;
+        }
+
         function active() {
             vm.quizzes = quizzesList;
             vm.quizzes.forEach(function (currVal, index, array) {
@@ -41,7 +72,17 @@
                 currVal.group_name = currVal.group_name.toString();
                 currVal.questions_amount = currVal.questions_amount.toString();
             });
-            generatePredicate();            
+            generatePredicate();
+
+            for (var item = 0; item < vm.filterCategories.length; item++) {
+                if (vm.filterCategories[item].field == 'verification_type') {
+                    vm.filterCategories[item].CategoryItems.push('Auto');
+                    vm.filterCategories[item].CategoryItems.push('Manual');
+                    vm.filterCategories[item].CategoryItems.push('Combined');
+                } else {
+                    vm.filterCategories[item].CategoryItems = vm.GetUniqueValuesByCategory(vm.filterCategories[item].field);
+                }
+            }
         }
 
         active();
@@ -121,5 +162,27 @@
         vm.paginationChanged = function () {
             vm.tablePage = 0;
         }
+
+        $scope.setSelectedGroup = function (categoryName) { // DONT PUT THIS FUNCTION INTO VM! let it be in scope (because of 'this' in function)
+            var id = this.categoryItem;
+            if (categoryName.selectedGroup.toString().indexOf(id.toString()) > -1) {
+                for (var i = 0; i < categoryName.selectedGroup.length; i++) {
+                    if (categoryName.selectedGroup[i] === id) {
+                        categoryName.selectedGroup.splice(i, 1);
+                    }
+                }
+            } else {
+                categoryName.selectedGroup.push(id);
+            }
+            return false;
+        };
+
+        vm.checkSymbol = "&#x2714";
+        vm.toggleDropDownElem = function (group, categoryName) {
+            if (categoryName.selectedGroup.toString().indexOf(group.toString()) > -1) {
+                return false;
+            }
+            return true;
+        };
     }
 })(angular);
