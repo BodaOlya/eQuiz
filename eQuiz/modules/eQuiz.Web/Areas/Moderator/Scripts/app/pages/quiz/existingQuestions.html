@@ -19,17 +19,20 @@
         </div>
         <div class="question-block" ng-show="vm.selectedQuizIdForAddQuestion != 0">
             <div class="row bordered">
-                <div class="row" ng-repeat="q in vm.model.questionsForAdding.questions track by $index">
+                <div class="row" ng-repeat="q in vm.getQuestionsPage() track by $index">
                     <div class="col-sm-1 col-md-1">
                         <input type="checkbox" class="form-control" ng-model="q.checked" />
                     </div>
                     <div class="col-sm-11 col-md-11">
                         <p class="control-label">
-                            <b>Question {{ $index + 1 }}.</b>  {{q.QuestionText}}
+                            <b>Question {{ vm.getNumeration($index) }}.</b>  {{q.QuestionText}}
                         </p>
                     </div>
                 </div>
             </div>
+            <uib-pagination total-items="vm.questionsPagingInfo.questionsTotal" ng-model="vm.questionsPagingInfo.currentPage"
+                            items-per-page="vm.questionsPagingInfo.questionsPerPage" max-size="5" class="pagination-sm" boundary-link-numbers="true">
+            </uib-pagination>
             <div class="row copy-button-container">
                 <div class="col-md-offset-10 col-sm-offset-10 col-md-2 col-sm-2">
                     <button ng-click="vm.AddExistingQuestions()" ng-disabled="vm.GetCountSelectedQuestions() == 0" class="form-control">Copy</button>
