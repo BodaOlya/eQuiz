@@ -12,7 +12,7 @@
                 <a ng-click="rc.checkAll()">&#x2714 Check All</a>
                 <a ng-click="rc.unCheckAll()">&#x2716 Uncheck All</a>
                 <div ng-repeat="group in rc.groupList">
-                    <a ng-click="setSelectedGroup()" ng-model="group"> {{group}} <p ng-class="{dropdownContentElemChecked: rc.toggleDropDownElem(group)}" ng-bind-html="' ' + rc.checkSymbol | trustAsHtml"> </p></a>
+                    <a ng-click="setSelectedGroup()" ng-model="group"> {{group}} <b ng-class="{dropdownContentElemChecked: rc.toggleDropDownElem(group)}" ng-bind-html="' ' + rc.checkSymbol | trustAsHtml"> </b></a>
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="c in rc.contents = ((rc.searchFiltered = (rc.students | groupFilter:rc.selectedGroup | filter: {student:rc.search})) | startFrom: rc.tablePage*rc.resultsPerPage | limitTo:rc.resultsPerPage)" style="height: 50px">
+                <tr ng-repeat="c in rc.contents = ((rc.searchFiltered = (rc.students | groupFilter: rc.selectedGroup:'userGroup' | filter: {student:rc.search})) | startFrom: rc.tablePage*rc.resultsPerPage | limitTo:rc.resultsPerPage)" style="height: 50px">
                     <td><a href="Index/Student?Id={{c.id}}#Profile" class="link" ng-bind-html="c.student | highlight: rc.search">{{c.student}}</a></td>
                     <td>{{c.userGroup}}</td>
                     <td>{{c.quizzes}}</td>
