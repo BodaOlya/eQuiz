@@ -559,6 +559,7 @@
             vm.questionsForAdding = {};
             vm.isExistingQuestionEnable = false;
             vm.model.questionsForAdding = {};
+            vm.questionsPagingInfo.questionsTotal = 0;
         }
 
         function getQuestionsCopyForAddindQuestion(quizId) {

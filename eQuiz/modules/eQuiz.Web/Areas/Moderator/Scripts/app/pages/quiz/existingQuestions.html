@@ -30,7 +30,7 @@
                     </div>
                 </div>
             </div>
-            <uib-pagination total-items="vm.questionsPagingInfo.questionsTotal" ng-model="vm.questionsPagingInfo.currentPage"
+            <uib-pagination ng-show="vm.questionsPagingInfo.questionsTotal != 0" total-items="vm.questionsPagingInfo.questionsTotal" ng-model="vm.questionsPagingInfo.currentPage"
                             items-per-page="vm.questionsPagingInfo.questionsPerPage" max-size="5" class="pagination-sm" boundary-link-numbers="true">
             </uib-pagination>
             <div class="row copy-button-container">
