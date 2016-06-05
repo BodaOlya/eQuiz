@@ -9,7 +9,7 @@
     <table id='quizzesTable' ng-if="!isLoading">
         <caption><h2>Quizzes</h2></caption>
         <caption style="text-align: left;">
-            <input type="search" ng-model="searchInfo.quizName" ng-change="search(page)" class="search-by-name" placeholder="Search by name">
+            <input type="search" ng-model="searchInfo.searchText" ng-change="search(page)" class="search-by-name" placeholder="Search by name">
             <input type="checkbox" ng-model="searchInfo.InternetAccess" ng-change="search(page)" ng-false-value="undefined" style="width:15px;height:15px;vertical-align: bottom">
             <span class="checkboxtext" style="vertical-align: bottom">
                 Show only active quizzes
@@ -17,20 +17,32 @@
         </caption>
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Start date</th>
-                <th>Duration</th>
+                <th>
+                    <a href="#/" ng-click="sortBy('Name')">
+                        Name{{showOrderArrow('Name')}}
+                    </a>
+                </th>
+                <th>
+                    <a href="#/" ng-click="sortBy('StartDate')">
+                        Start date{{showOrderArrow('StartDate')}}
+                    </a>
+                </th>
+                <th>
+                    <a href="#/" ng-click="sortBy('Duration')">
+                        Duration{{showOrderArrow('Duration')}}
+                    </a>
+                </th>
                 <th></th>
             </tr>
         </thead>
-        <!--| filter:{ Name: searchInfo.quizName } | filter:{ InternetAccess: searchInfo.InternetAccess}-->
+        <!--| filter:{ Name: searchInfo.searchText } | filter:{ InternetAccess: searchInfo.InternetAccess}-->
         <tbody>
             <tr ng-repeat="quiz in pagedQuizzes" ng-class="{ activeQuiz: quiz.InternetAccess, inactiveQuiz: !quiz.InternetAccess }">
                 <td>
                     {{quiz.Name}}
                 </td>
                 <td>
-                    {{quiz.StartDate}}
+                    {{quiz.StartDate != -1 ? quiz.StartDate : 'No start date' | date: 'medium' }}
                 </td>
                 <td>
                     {{quiz.TimeLimitMinutes}}

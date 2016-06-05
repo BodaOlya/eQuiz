@@ -57,7 +57,8 @@ namespace eQuiz.Web.Areas.Student.Controllers
                          {
                              Id = q.Id,
                              Name = q.Name,
-                             StartDate = q.StartDate.HasValue ? q.StartDate.Value.ToString() : "No start date",
+                             // Unix time convertation.
+                             StartDate = q.StartDate.HasValue ? (long)(q.StartDate.Value.Subtract(new DateTime(1970, 1, 1))).TotalMilliseconds : -1,
                              TimeLimitMinutes = q.TimeLimitMinutes,
                              InternetAccess = q.InternetAccess
                          };
