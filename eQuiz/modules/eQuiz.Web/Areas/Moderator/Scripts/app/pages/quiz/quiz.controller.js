@@ -69,6 +69,15 @@
         vm.archiveQuizCanExecute = archiveQuizCanExecute;
         vm.initQuizFromData = initQuizFromData;
 
+        vm.questionsPagingInfo = {
+            currentPage: 1,
+            questionsPerPage: 10,
+            questionsTotal: 0
+        };
+
+        vm.getNumeration = getNumeration;
+        vm.getQuestionsPage = getQuestionsPage;
+
         activate();
 
         function activate() {
@@ -550,6 +559,7 @@
             vm.questionsForAdding = {};
             vm.isExistingQuestionEnable = false;
             vm.model.questionsForAdding = {};
+            vm.questionsPagingInfo.questionsTotal = 0;
         }
 
         function getQuestionsCopyForAddindQuestion(quizId) {
@@ -561,6 +571,8 @@
                 for (var i = 0; i < vm.model.questionsForAdding.questions.length; i++) {
                     vm.model.questionsForAdding.questions[i].checked = false;
                 }
+                vm.questionsPagingInfo.questionsTotal = vm.model.questionsForAdding.questions.length;
+                vm.questionsPagingInfo.currentPage = 1;
                 vm.hideLoading();
             });
         }
@@ -569,6 +581,20 @@
             return vm.model.questionsForAdding.questions ? vm.model.questionsForAdding.questions.filter(function (item) {
                 return item.checked;
             }).length : 0;
+        }
+
+        function getNumeration(index) {
+            var result = (index + 1) + ((vm.questionsPagingInfo.currentPage - 1) * vm.questionsPagingInfo.questionsPerPage);
+            return result;
+        };
+
+        function getQuestionsPage() {
+            if (vm.model.questionsForAdding.questions === undefined) {
+                return [];
+            }
+            return vm.model.questionsForAdding.questions.slice(((vm.questionsPagingInfo.currentPage - 1) *
+                vm.questionsPagingInfo.questionsPerPage), ((vm.questionsPagingInfo.currentPage) *
+                vm.questionsPagingInfo.questionsPerPage));
         }
 
         function AddExistingQuestions() {

@@ -127,7 +127,7 @@
     <Content Include="Areas\Admin\Scripts\review\start-from.filter.js" />
     <Content Include="Areas\Admin\Scripts\review\trustAsHtml.filter.js" />
     <Content Include="Areas\Admin\Scripts\shared\loading-screen.directive.js" />
-    <Content Include="Areas\Admin\Scripts\shared\popUp.js" />
+    <Content Include="Areas\Admin\Scripts\shared\pop-up-window.directive.js" />
     <Content Include="Areas\Admin\Scripts\shared\routing.js" />
     <Content Include="Areas\Admin\Scripts\student\student.controller.js" />
     <Content Include="Areas\Admin\Scripts\student\student-data.service.js" />
@@ -158,6 +158,8 @@
     <Content Include="Areas\Moderator\Styles\equiz-temp.css" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.controller.js" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.service.js" />
+    <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.pagination.directive.js" />
+    <Content Include="Areas\Student\Scripts\app\pages\dashboard\PagerTemplate.html" />
     <Content Include="Areas\Student\Scripts\app\pages\alert\customAlert.controller.js" />
     <Content Include="Areas\Student\Scripts\app\pages\alert\customAlert.html" />
     <Content Include="Areas\Student\Scripts\app\pages\confirm\customConfirm.controller.js" />
@@ -208,6 +210,7 @@
     <Compile Include="Areas\Moderator\ModeratorAreaRegistration.cs" />
     <Compile Include="Areas\Student\Controllers\AccountController.cs" />
     <Compile Include="Areas\Student\Controllers\DefaultController.cs" />
+    <Compile Include="Areas\Student\Models\QuestionResultModel.cs" />
     <Compile Include="Areas\Student\Models\QuizResultModel.cs" />
     <Compile Include="Areas\Student\Models\UserAnswerResult.cs" />
     <Compile Include="Areas\Student\StudentAreaRegistration.cs" />

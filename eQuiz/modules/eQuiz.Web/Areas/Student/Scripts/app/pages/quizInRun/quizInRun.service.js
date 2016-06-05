@@ -5,7 +5,9 @@
     equizModule.factory("quizService", ["$http", function ($http) {
         var service = {
             getQuestionsById: getQuestionsByIdAjax,
-            sendUserResult: sendUserResultAjax
+            sendUserResult: sendUserResultAjax,
+            sendQuestionResult: sendQuestionResultAjax,
+            setFinishTime: setFinishTimeAjax
         };
 
         return service;
@@ -26,5 +28,23 @@
 
             return promise;
         };
+
+        function sendQuestionResultAjax(passedQuestion) {
+            var promise = $http.post("InsertQuestionResult", passedQuestion);
+
+            return promise;
+        };
+
+        function setFinishTimeAjax(quizPassId) {
+            var promise = $http({
+                method: "GET",
+                url: "SetQuizFinishTime",
+                params: { quizPassId: quizPassId }
+            });
+
+            return promise;
+        };
+
+       
     }]);
 })(angular);
