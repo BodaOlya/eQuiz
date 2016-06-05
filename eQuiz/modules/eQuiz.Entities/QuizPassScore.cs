@@ -18,7 +18,9 @@ namespace eQuiz.Entities
         public short PassScore { get; set; }
         public int EvaluatedBy { get; set; }
         public System.DateTime EvaluatedAt { get; set; }
+        public int QuizPassId { get; set; }
     
         public virtual User User { get; set; }
+        public virtual QuizPass QuizPass { get; set; }
     }
 }

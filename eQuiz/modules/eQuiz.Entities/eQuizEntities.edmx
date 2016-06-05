@@ -125,6 +125,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuizPassId" Type="int" Nullable="false" />
           <Property Name="PassScore" Type="smallint" Nullable="false" />
           <Property Name="EvaluatedBy" Type="int" Nullable="false" />
           <Property Name="EvaluatedAt" Type="smalldatetime" Nullable="false" />
@@ -205,7 +206,8 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuizPassQuestionId" Type="int" Nullable="false" />
           <Property Name="Score" Type="tinyint" Nullable="false" />
           <Property Name="EvaluatedBy" Type="int" Nullable="false" />
           <Property Name="EvaluatedAt" Type="smalldatetime" Nullable="false" />
@@ -472,6 +474,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblQuizPassScore_tblQuizPass">
+          <End Role="tblQuizPass" Type="Self.tblQuizPass" Multiplicity="1" />
+          <End Role="tblQuizPassScore" Type="Self.tblQuizPassScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblQuizPass">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblQuizPassScore">
+              <PropertyRef Name="QuizPassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblQuizPassScore_tblUser">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
           <End Role="tblQuizPassScore" Type="Self.tblQuizPassScore" Multiplicity="*" />
@@ -552,6 +566,18 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="tblUserAnswer">
+              <PropertyRef Name="QuizPassQuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUserAnswerScore_tblQuizPassQuestion">
+          <End Role="tblQuizPassQuestion" Type="Self.tblQuizPassQuestion" Multiplicity="1" />
+          <End Role="tblUserAnswerScore" Type="Self.tblUserAnswerScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblQuizPassQuestion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblUserAnswerScore">
               <PropertyRef Name="QuizPassQuestionId" />
             </Dependent>
           </ReferentialConstraint>
@@ -730,6 +756,10 @@
             <End Role="tblQuizPass" EntitySet="tblQuizPass" />
             <End Role="tblQuizPassQuestion" EntitySet="tblQuizPassQuestion" />
           </AssociationSet>
+          <AssociationSet Name="FK_tblQuizPassScore_tblQuizPass" Association="Self.FK_tblQuizPassScore_tblQuizPass">
+            <End Role="tblQuizPass" EntitySet="tblQuizPass" />
+            <End Role="tblQuizPassScore" EntitySet="tblQuizPassScore" />
+          </AssociationSet>
           <AssociationSet Name="FK_tblQuizPassScore_tblUser" Association="Self.FK_tblQuizPassScore_tblUser">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblQuizPassScore" EntitySet="tblQuizPassScore" />
@@ -757,6 +787,10 @@
           <AssociationSet Name="FK_tblUserAnswer_tblQuizPassQuestion" Association="Self.FK_tblUserAnswer_tblQuizPassQuestion">
             <End Role="tblQuizPassQuestion" EntitySet="tblQuizPassQuestion" />
             <End Role="tblUserAnswer" EntitySet="tblUserAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserAnswerScore_tblQuizPassQuestion" Association="Self.FK_tblUserAnswerScore_tblQuizPassQuestion">
+            <End Role="tblQuizPassQuestion" EntitySet="tblQuizPassQuestion" />
+            <End Role="tblUserAnswerScore" EntitySet="tblUserAnswerScore" />
           </AssociationSet>
           <AssociationSet Name="FK_tblUserAnswerScore_tblUser" Association="Self.FK_tblUserAnswerScore_tblUser">
             <End Role="tblUser" EntitySet="tblUser" />
@@ -899,6 +933,7 @@
           <NavigationProperty Name="Quiz" Relationship="Self.FK_tblQuizPass_tblQuiz" FromRole="tblQuizPass" ToRole="tblQuiz" />
           <NavigationProperty Name="User" Relationship="Self.FK_tblQuizPass_tblUser" FromRole="tblQuizPass" ToRole="tblUser" />
           <NavigationProperty Name="QuizPassQuestions" Relationship="Self.FK_tblQuizPassQuestion_tblQuizPass" FromRole="tblQuizPass" ToRole="tblQuizPassQuestion" />
+          <NavigationProperty Name="QuizPassScores" Relationship="eQuizModel.FK_tblQuizPassScore_tblQuizPass" FromRole="QuizPass" ToRole="QuizPassScore" />
         </EntityType>
         <EntityType Name="QuizPassQuestion">
           <Key>
@@ -914,6 +949,7 @@
           <NavigationProperty Name="QuizPass" Relationship="Self.FK_tblQuizPassQuestion_tblQuizPass" FromRole="tblQuizPassQuestion" ToRole="tblQuizPass" />
           <NavigationProperty Name="UserAnswers" Relationship="Self.FK_tblUserAnswer_tblQuizPassQuestion" FromRole="tblQuizPassQuestion" ToRole="tblUserAnswer" />
           <NavigationProperty Name="UserTextAnswers" Relationship="eQuizModel.FK_tblUserTextAnswer_tblQuizPassQuestion" FromRole="QuizPassQuestion" ToRole="UserTextAnswer" />
+          <NavigationProperty Name="UserAnswerScores" Relationship="eQuizModel.FK_tblUserAnswerScore_tblQuizPassQuestion" FromRole="QuizPassQuestion" ToRole="UserAnswerScore" />
         </EntityType>
         <EntityType Name="QuizPassScore">
           <Key>
@@ -924,6 +960,8 @@
           <Property Name="EvaluatedBy" Type="Int32" Nullable="false" />
           <Property Name="EvaluatedAt" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="User" Relationship="Self.FK_tblQuizPassScore_tblUser" FromRole="tblQuizPassScore" ToRole="tblUser" />
+          <Property Name="QuizPassId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="QuizPass" Relationship="eQuizModel.FK_tblQuizPassScore_tblQuizPass" FromRole="QuizPassScore" ToRole="QuizPass" />
         </EntityType>
         <EntityType Name="QuizQuestion">
           <Key>
@@ -1018,6 +1056,8 @@
           <Property Name="EvaluatedBy" Type="Int32" Nullable="false" />
           <Property Name="EvaluatedAt" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="User" Relationship="Self.FK_tblUserAnswerScore_tblUser" FromRole="tblUserAnswerScore" ToRole="tblUser" />
+          <Property Name="QuizPassQuestionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="QuizPassQuestion" Relationship="eQuizModel.FK_tblUserAnswerScore_tblQuizPassQuestion" FromRole="UserAnswerScore" ToRole="QuizPassQuestion" />
         </EntityType>
         <EntityType Name="UserGroup">
           <Key>
@@ -1460,6 +1500,14 @@
             <End Role="User" EntitySet="Users" />
             <End Role="tblQuizEditHistory" EntitySet="QuizEditHistories" />
           </AssociationSet>
+          <AssociationSet Name="FK_tblQuizPassScore_tblQuizPass" Association="eQuizModel.FK_tblQuizPassScore_tblQuizPass">
+            <End Role="QuizPass" EntitySet="QuizPasses" />
+            <End Role="QuizPassScore" EntitySet="QuizPassScores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserAnswerScore_tblQuizPassQuestion" Association="eQuizModel.FK_tblUserAnswerScore_tblQuizPassQuestion">
+            <End Role="QuizPassQuestion" EntitySet="QuizPassQuestions" />
+            <End Role="UserAnswerScore" EntitySet="UserAnswerScores" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="UserTextAnswer">
           <Key>
@@ -1645,6 +1693,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblQuizPassScore_tblQuizPass">
+          <End Type="eQuizModel.QuizPass" Role="QuizPass" Multiplicity="1" />
+          <End Type="eQuizModel.QuizPassScore" Role="QuizPassScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuizPass">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QuizPassScore">
+              <PropertyRef Name="QuizPassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUserAnswerScore_tblQuizPassQuestion">
+          <End Type="eQuizModel.QuizPassQuestion" Role="QuizPassQuestion" Multiplicity="1" />
+          <End Type="eQuizModel.UserAnswerScore" Role="UserAnswerScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuizPassQuestion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserAnswerScore">
+              <PropertyRef Name="QuizPassQuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1759,6 +1831,7 @@
           <EntitySetMapping Name="QuizPassScores">
             <EntityTypeMapping TypeName="eQuizModel.QuizPassScore">
               <MappingFragment StoreEntitySet="tblQuizPassScore">
+                <ScalarProperty Name="QuizPassId" ColumnName="QuizPassId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PassScore" ColumnName="PassScore" />
                 <ScalarProperty Name="EvaluatedBy" ColumnName="EvaluatedBy" />
@@ -1840,6 +1913,7 @@
           <EntitySetMapping Name="UserAnswerScores">
             <EntityTypeMapping TypeName="eQuizModel.UserAnswerScore">
               <MappingFragment StoreEntitySet="tblUserAnswerScore">
+                <ScalarProperty Name="QuizPassQuestionId" ColumnName="QuizPassQuestionId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Score" ColumnName="Score" />
                 <ScalarProperty Name="EvaluatedBy" ColumnName="EvaluatedBy" />
