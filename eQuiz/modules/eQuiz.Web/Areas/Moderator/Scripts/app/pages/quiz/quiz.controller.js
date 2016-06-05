@@ -571,6 +571,7 @@
                     vm.model.questionsForAdding.questions[i].checked = false;
                 }
                 vm.questionsPagingInfo.questionsTotal = vm.model.questionsForAdding.questions.length;
+                vm.questionsPagingInfo.currentPage = 1;
                 vm.hideLoading();
             });
         }
