@@ -65,6 +65,8 @@
             }
         vm.studentQuizzes = sortByDate(vm.studentQuizzes);
         vm.studentComments = sortByDate(vm.studentComments);
+        generatePredicate();
+
         vm.numberOfPages = function () {
             return Math.ceil(vm.studentQuizzes.length / vm.resultsPerPage);
         };
