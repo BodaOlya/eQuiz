@@ -1,11 +1,25 @@
-﻿<div style="overflow-x:auto;">
+﻿<div style="height:100vh;">
     <br />
     <br />
-    <label>Search</label>
-    <input type="text" ng-model="qc.search" style="width:15em">
+    <div style="display:inline">
+        <label>Search</label>
+        <input type="text" ng-model="qc.search" style="width:15em">
+
+        <div class="multileveldropdown">
+            <button class="dropbtn"> Filters </button>
+            <div class="multileveldropdown-content">
+                <div ng-repeat="category in qc.filterCategories">
+                    <a> {{category.name}} </a>
+                    <div>
+                        <a ng-repeat="categoryItem in category.CategoryItems" ng-click="setSelectedGroup(category)" ng-model="categoryItem"> {{categoryItem}} <b ng-class="{dropdownContentElemChecked: qc.toggleDropDownElem(categoryItem, category)}" ng-bind-html="' ' + qc.checkSymbol | trustAsHtml"></b></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div>
-        <table class="reviewTable">
+        <table class="reviewTable" style="min-height:200px;">
             <thead>
                 <tr>
                     <th ng-repeat="h in qc.headers">
@@ -17,7 +31,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in qc.content = (qc.quizzesFiltered = (qc.quizzes | filter: {quiz_name:qc.search}) | startFrom: qc.tablePage*qc.resultsPerPage | limitTo:qc.resultsPerPage)" style="height: 50px">
+                <tr ng-repeat="item in qc.content = ((qc.quizzesFiltered = (qc.quizzes  | groupFilter: qc.filterCategories[0].selectedGroup:'quiz_name' | groupFilter: qc.filterCategories[2].selectedGroup:'verification_type' | groupFilter: qc.filterCategories[1].selectedGroup:'group_name' | filter: {quiz_name:qc.search})) | startFrom: qc.tablePage*qc.resultsPerPage | limitTo:qc.resultsPerPage)" style="height: 50px">
                     <td><a href="Index/Details?Id={{item.id}}" ng-bind-html="item.quiz_name | highlight: qc.search">{{item.quiz_name}}</a></td>
                     <td>{{item.group_name}}</td>
                     <td>{{item.questions_amount}}</td>
