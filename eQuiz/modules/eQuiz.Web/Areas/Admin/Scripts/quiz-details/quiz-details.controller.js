@@ -46,9 +46,21 @@
                 currVal.student = currVal.student.toString();
                 currVal.email = currVal.email.toString();
                 currVal.studentScore = currVal.studentScore.toString();
-                currVal.quizStatus = currVal.quizStatus.toString();
-                currVal.questionDetails = currVal.questionDetails.toString();
+                if(currVal.studentScore < vm.quizInfo[0].quizScore/2) {
+                    currVal.quizStatus = 'Not Passed'
+                }
+                else {
+                    currVal.quizStatus = 'Passed'
+                }
             });
+            
+
+            vm.quizInfo.forEach(function (currVal, index, array) {
+                currVal.quizName = currVal.quizName.toString();
+                currVal.groupName = currVal.groupName.toString();
+            });
+
+
             generatePredicate();
         };
 
