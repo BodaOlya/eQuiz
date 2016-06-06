@@ -55,6 +55,8 @@
         vm.getQuestionsCopyForAddindQuestion = getQuestionsCopyForAddindQuestion;
         vm.GetCountSelectedQuestions = GetCountSelectedQuestions;
         vm.AddExistingQuestions = AddExistingQuestions;
+        vm.getAnswersForQuestion = getAnswersForQuestion;
+        vm.getTagsForQuestion = getTagsForQuestion;
 
         vm.toggleQuizzesForCopy = toggleQuizzesForCopy;
         vm.quizzesForCopyVisible = false;
@@ -570,6 +572,7 @@
                 vm.model.questionsForAdding = vm.toViewModel(modelFromServer);
                 for (var i = 0; i < vm.model.questionsForAdding.questions.length; i++) {
                     vm.model.questionsForAdding.questions[i].checked = false;
+                    vm.model.questionsForAdding.questions[i].isExpanded = false;
                 }
                 vm.questionsPagingInfo.questionsTotal = vm.model.questionsForAdding.questions.length;
                 vm.questionsPagingInfo.currentPage = 1;
@@ -603,6 +606,8 @@
 
                     delete vm.model.questionsForAdding.questions[i]['checked'];
 
+                    delete vm.model.questionsForAdding.questions[i]['isExpanded'];
+
                     vm.model.questions.push(vm.model.questionsForAdding.questions[i]);
 
                     vm.model.answers.push(vm.model.questionsForAdding.answers[i]);
@@ -621,6 +626,18 @@
                 }
             }
             vm.closeAddingQuestionWindow();
+        }
+
+        function getAnswersForQuestion(question){
+            var questionIndex = vm.model.questionsForAdding.questions.indexOf(question);
+
+            return vm.model.questionsForAdding.answers[questionIndex];
+        }
+
+        function getTagsForQuestion(question) {
+            var questionIndex = vm.model.questionsForAdding.questions.indexOf(question);
+
+            return vm.model.questionsForAdding.tags[questionIndex].join(', ');
         }
     }
 })();

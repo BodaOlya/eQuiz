@@ -5,12 +5,12 @@
         $routeProvider.when("/", {
             templateUrl: "/Areas/Student/Scripts/app/pages/dashboard/dashboard.html",
             controller: "dashboardCtrl",
-            controllerAs: "dashboardCtrl"
+            controllerAs: "dc"
         })
         .when("/quizInRun/:id/", {
             templateUrl: "/Areas/Student/Scripts/app/pages/quizInRun/quizInRun.html",
             controller: "quizInRunCtrl",
-            controllerAs: "quizCtrl"
+            controllerAs: "qc"
         })
         .otherwise({
             redirectTo: '/'

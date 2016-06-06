@@ -1,13 +1,16 @@
 ﻿(function (angular) {
-    var equizModule = angular.module("equizModule");
+    angular.module("equizModule")
+            .controller('confirmCtrl', confirmCtrl);
+    confirmCtrl.$inject = ["$scope", "$uibModalInstance"];
 
-    equizModule.controller('confirmCtrl', ["$scope", "$uibModalInstance", function ($scope, $uibModalInstance) {
-        $scope.ok = function () {
+    function confirmCtrl($scope, $uibModalInstance) {
+        var vm = this;
+        vm.ok = function () {
             $uibModalInstance.close(true);
         };
 
-        $scope.cancel = function () {
+        vm.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };
-    }]);
+    };
 })(angular);
