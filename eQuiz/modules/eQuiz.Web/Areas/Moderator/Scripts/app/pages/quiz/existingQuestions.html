@@ -19,14 +19,59 @@
         </div>
         <div class="question-block" ng-show="vm.selectedQuizIdForAddQuestion != 0">
             <div class="row bordered">
-                <div class="row" ng-repeat="q in vm.getQuestionsPage() track by $index">
-                    <div class="col-sm-1 col-md-1">
-                        <input type="checkbox" class="form-control" ng-model="q.checked" />
+                <div ng-repeat="q in vm.getQuestionsPage() track by $index">
+                    <div class="row">
+                        <div class="col-sm-1 col-md-1">
+                            <input type="checkbox" class="form-control" ng-model="q.checked" />
+                        </div>
+                        <div class="col-sm-11 col-md-11">
+                            <p class="control-label">
+                                <b>Question {{ vm.getNumeration($index) }}.</b>  {{q.QuestionText}}
+                            </p>
+                        </div>
                     </div>
-                    <div class="col-sm-11 col-md-11">
-                        <p class="control-label">
-                            <b>Question {{ vm.getNumeration($index) }}.</b>  {{q.QuestionText}}
-                        </p>
+                    <div class="row" ng-show="q.isExpanded">
+                        <div class="col-md-offset-1 col-sm-offset-1 col-md-11 col-sm-11">
+                            <div ng-switch on="q.QuestionTypeId">
+                                <div ng-switch-when="1">
+                                    Descriptive...
+                                </div>
+                                <div ng-switch-when="2">
+                                    <div class="row" ng-repeat="answer in vm.getAnswersForQuestion(q)">
+                                        <div class="col-sm-1 col-md-1">
+                                            <input type="radio" class="form-control" ng-disabled="true" ng-checked="answer.IsRight" />
+                                        </div>
+                                        <div class="col-sm-11 col-md-11">
+                                            <p class="control-label">
+                                               {{answer.AnswerText}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-switch-when="3">
+                                    <div class="row" ng-repeat="answer in vm.getAnswersForQuestion(q)">
+                                        <div class="col-sm-1 col-md-1">
+                                            <input type="checkbox" class="form-control" ng-disabled="true" ng-checked="answer.IsRight" />
+                                        </div>
+                                        <div class="col-sm-11 col-md-11">
+                                            <p class="control-label">
+                                                {{answer.AnswerText}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-11 col-md-11">
+                                    <p class="control-label">
+                                        <b>Tags:</b> {{vm.getTagsForQuestion(q)}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <a href="" class="col-md-offset-1 col-sm-offset-1 col-md-2 col-sm-2" ng-click="q.isExpanded = !q.isExpanded">{{q.isExpanded ? "Collapse" : "Expand"}}</a>
                     </div>
                 </div>
             </div>
