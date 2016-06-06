@@ -10,7 +10,7 @@ namespace eQuiz.Web.Areas.Admin.Models
         public string Answer { get; set; }
         public string RightAnswer { get; set; }
 
-        public TextQuestion(int id, int maxScore, int userScore, string questionText, string answer, string rightAnswer, short? order)
+        public TextQuestion(int id, byte maxScore, int userScore, string questionText, string answer, string rightAnswer, short? order)
             : base(id, maxScore, userScore, questionText, order)
         {
             base.Type = "Text";

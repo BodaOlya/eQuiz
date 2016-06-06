@@ -7,9 +7,9 @@ namespace eQuiz.Web.Areas.Admin.Models
 {
     public class SelectQuestion : QuestionBase
     {
-        List<TestAnswer> QuestionVariants;
+        IEnumerable<TestAnswer> QuestionVariants;
 
-        public SelectQuestion(int id, int maxScore, int userScore, string questionText, List<TestAnswer> questionVariants, short? order)
+        public SelectQuestion(int id, byte maxScore, int userScore, string questionText, IEnumerable<TestAnswer> questionVariants, short? order)
             : base(id, maxScore, userScore, questionText, order)
         {
             base.Type = "Select";

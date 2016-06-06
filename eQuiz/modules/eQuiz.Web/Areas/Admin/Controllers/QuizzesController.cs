@@ -124,7 +124,6 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var quizPass = _repository.GetSingle<QuizPass>(qp => qp.Id == quizPassId);
             var quizId = quizPass.QuizId;
 
-            // Still don't know if I need this
             var quiz = _repository.GetSingle<Quiz>(q => q.Id == quizId);
 
             var quizBlock = _repository.GetSingle<QuizBlock>(qb => qb.QuizId == quizId);
@@ -135,6 +134,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var userTextAnswers = _repository.Get<UserTextAnswer>();
             var questionTypes = _repository.Get<QuestionType>();
 
+            // gets all text answers
             var textAnswers = from q in questions
                               join qt in questionTypes on q.QuestionTypeId equals qt.Id
                               join qpq in quizPassQuestions on q.Id equals qpq.QuestionId
@@ -147,21 +147,6 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var questionAnswers = _repository.Get<QuestionAnswer>();
             var answers = _repository.Get<Answer>();
 
-            //var testAnswers = from q in questions
-            //                  join qt in questionTypes on q.QuestionTypeId equals qt.Id
-            //                  join qa in questionAnswers on q.Id equals qa.QuestionId
-            //                  join a in answers on qa.AnswerId equals a.Id
-            //                  join ua in userAnswers on a.Id equals ua.AnswerId
-            //                  join qpq in quizPassQuestions on q.Id equals qpq.Id
-            //                  where qt.IsAutomatic == true
-            //                  group new {q, a} by q.Id into grouped
-            //                  select new
-            //                  {
-            //                      question = grouped.Select(g => g.q.Id),
-            //                      answer = grouped.Select(g => g.a.AnswerText).Distinct()
-            //                  };
-
-
             //gets all user answers
             var testAnswers = from q in questions
                               join qt in questionTypes on q.QuestionTypeId equals qt.Id
@@ -172,6 +157,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                               where qt.IsAutomatic == true
                               select new TestAnswer(a.Id, q.Id, a.AnswerText, (bool)a.IsRight, a.AnswerOrder, true);
 
+            // gest all answer variants
             var testQuestions = from q in questions
                                 join qt in questionTypes on q.QuestionTypeId equals qt.Id
                                 join qa in questionAnswers on q.Id equals qa.QuestionId
@@ -202,6 +188,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                 tests.Add(item);
             }
 
+            // Point tests clicked by user
             for (var i = 0; i < tests.Count; i++)
             {
                 for (var j = 0; j < testanswers.Count; j++)
@@ -212,6 +199,27 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                         break;
                     }
                 }
+            }
+
+            // Generate test questions
+            var generateQuestions = from q in questions
+                                    join qt in questionTypes on q.QuestionTypeId equals qt.Id
+                                    join qpq in quizPassQuestions on q.Id equals qpq.QuestionId
+                                    join qq in quizQuestions on q.Id equals qq.QuestionId
+                                    join t in tests on q.Id equals t.QuestionId
+                                    where qt.IsAutomatic == true
+                                    group new { qpq, qq, q, t } by q.Id into grouped
+                                    select new SelectQuestion(grouped.Key,
+                                                              grouped.Select(g => g.qq.QuestionScore).FirstOrDefault(),
+                                                              0,
+                                                              grouped.Select(g => g.q.QuestionText).FirstOrDefault(),
+                                                              grouped.Select(g => g.t).ToList(),
+                                                              grouped.Select(g => g.qq.QuestionOrder).FirstOrDefault()
+                                                              );
+
+            foreach (var item in generateQuestions)
+            {
+                questionsList.Add(item);
             }
 
             var ordered = questionsList.OrderBy(q => q.Order).ToList();

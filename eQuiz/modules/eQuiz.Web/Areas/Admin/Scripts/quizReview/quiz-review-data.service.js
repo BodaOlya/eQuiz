@@ -46,6 +46,7 @@
                 params: { quizPassId: 1 }
             });
 
+            console.log(promise);
             return promise;
         }
 
