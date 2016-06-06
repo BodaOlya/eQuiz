@@ -1,5 +1,4 @@
-﻿/// <reference path="D:\MyFork_eQuiz\eQuiz\modules\eQuiz.Web\Scripts/libs/angularjs/angular.js" />
-(function (angular) {
+﻿(function (angular) {
     angular.module("equizModule")
             .controller('quizInRunCtrl', quizInRunCtrl);
     quizInRunCtrl.$inject = ["$scope", "quizService", "trackUserResultService", "$routeParams", "$interval", "$window", "$location", "$uibModal"];
@@ -44,6 +43,7 @@
                 animation: false,
                 templateUrl: '/Areas/Student/Scripts/app/pages/refreshWarning/refreshWarning.html',
                 controller: 'refreshWarningCtrl',
+                controllerAs: 'rwc',
                 size: 'sm'
             });
         };
@@ -135,6 +135,7 @@
                 animation: false,
                 templateUrl: '/Areas/Student/Scripts/app/pages/confirm/customConfirm.html',
                 controller: 'confirmCtrl',
+                controllerAs: 'cc',
                 size: 'sm'
             });
 
@@ -154,6 +155,7 @@
                 animation: false,
                 templateUrl: '/Areas/Student/Scripts/app/pages/alert/customAlert.html',
                 controller: 'alertCtrl',
+                controllerAs: 'ac',
                 size: 'sm'
             });
 

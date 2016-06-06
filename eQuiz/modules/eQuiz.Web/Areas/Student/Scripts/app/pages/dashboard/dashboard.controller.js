@@ -31,7 +31,6 @@
                 vm.allQuizzes = value.data;
 
                 vm.isLoading = false;
-                console.log(vm.allQuizzes);
                 vm.search(0);
             };
             var _onError = function () {
