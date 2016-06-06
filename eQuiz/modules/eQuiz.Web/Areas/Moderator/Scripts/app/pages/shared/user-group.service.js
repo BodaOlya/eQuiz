@@ -9,7 +9,8 @@
             get: get,
             getGroup: getGroup,
             save: save,
-            isUserValid: isUserValid
+            isUserValid: isUserValid,
+            isNameUnique: isNameUnique
         };
 
         function get() {
@@ -32,5 +33,14 @@
         function save(data) {
             return $http.post('/moderator/usergroup/save', data);
         };
+
+        function isNameUnique(name, id) {
+            if (id) {
+                return $http.get('/moderator/usergroup/isnameunique?name=' + escape(name) + "id=" + escape(id));
+            }
+            else {
+                return $http.get('/moderator/usergroup/isnameunique?name=' + escape(name));
+            }
+        }
     };
 })();

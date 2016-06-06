@@ -20,14 +20,16 @@
         <h2> Create new/ Edit {{g.group.Name}}</h2>
 
         <div class="user-group-name">
-            <div show-error>
-                <label class="control-label"> Name </label>               
-                    <input class="form-control" type="text" ng-model="g.group.Name" value="{{g.group.Name}}" name="GroupName" required />
-                    <div ng-messages="g.groupForm.GroupName.$error" class="help-block hide">
-                        <p ng-message="required">Group name is required</p>
-                    </div>
+            <div unique-user-group-name>
+                <label class="control-label"> Name </label>
+                <input class="form-control" type="text" ng-model="g.group.Name" name="GroupName" required />
+                <input type="hidden" value="{{g.group.Id}}" name="Id"/>
+                <div ng-messages="g.groupForm.GroupName.$error" class="help-block hide">
+                    <p ng-message="required">Group name is required</p>
+                    <p ng-message="nonUniqueName">This name is already used</p>
                 </div>
             </div>
+        </div>
         <div class="ug-import">
             <label> Students </label>
             <label id="file-link" for="ug-file-upload"> Import from *.csv </label>
@@ -79,10 +81,10 @@
                         </div>
                     </td>
                     <td>
-                        <div show-error>
+                        <div>
                             <input class="form-control" type="email" ng-model="user.Email" name="Email" ng-pattern="g.regEx" required />
                             <div ng-messages="g.userForm.Email.$error" class="help-block hide">
-                                <p ng-message="required">Email is required</p>                                
+                                <p ng-message="required">Email is required</p>
                                 <p ng-message="pattern">Please enter a valid email address</p>
                                 <p ng-message="nonUniqueEmail">This email is used by another user</p>
                             </div>
@@ -145,4 +147,5 @@
     <script src="~/Areas/Moderator/Scripts/app/pages/user-group/user-group.controller.js"></script>
     <script src="~/Areas/Moderator/Scripts/app/pages/shared/show-error.directive.js"></script>
     <script src="~/Areas/Moderator/Scripts/app/pages/user-group/unique-user-email.directive.js"></script>
+<script src="~/Areas/Moderator/Scripts/app/pages/user-group/unique-user-group-name.directive.js"></script>
 }

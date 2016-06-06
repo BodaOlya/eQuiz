@@ -47,6 +47,12 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return Json(minGroups, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public ActionResult IsNameUnique(string name, int? id)
+        {
+            var result = ValidateUserGroupName(name, id);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult Edit()
         {
@@ -148,29 +154,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return Json(new { UserGroups = res, UserGroupsTotal = userGroupesTotal }, JsonRequestBehavior.AllowGet);
         }
 
-        private object GetUserGroupForSerialization(UserGroup group)
-        {
-            var minGroup = new
-            {
-                Id = group.Id,
-                Name = group.Name
-            };
-
-            return minGroup;
-        }
-        private object GetUsersForSerialization(User user)
-        {
-            var minUser = new
-            {
-                Id = user.Id,
-                LastName = user.LastName,
-                FirstName = user.FirstName,
-                FatheName = user.FatheName,
-                Email = user.Email
-            };
-
-            return minUser;
-        }
+       
 
         public ActionResult Create()
         {
@@ -206,6 +190,61 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             }
 
             return RedirectToAction("GetUserGroup", new { id = userGroupId });
+        }
+
+       
+
+        [HttpGet]
+        public ActionResult IsUserValid(string firstName, string lastName, string email)
+        {
+            bool isValid = ValidateUser(firstName, lastName, email);
+            return Json(isValid, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
+        #region Helpers
+
+        private bool ValidateUserGroupName(string name, int? id)
+        {
+            bool exists = true;
+
+            if (id != null)
+            {
+                var userGroup = _repository.GetSingle<UserGroup>(q => q.Name == name);
+                if (userGroup == null)
+                {
+                    exists = false;
+                }
+                else if (userGroup.Id == (int)id)
+                {
+                    exists = false;
+                }
+            }
+            else
+            {
+                exists = _repository.Exists<UserGroup>(q => q.Name == name);
+            }
+
+            return !exists;
+        }
+
+        private bool ValidateUser(string firstName, string lastName, string email)
+        {
+            var userIsValid = false;
+
+            bool userWithEmailAlreadyExists = _repository.Exists<User>(u => u.Email == email);
+
+            if (userWithEmailAlreadyExists)
+            {
+                userIsValid = _repository.Exists<User>(u => (u.Email == email) && (u.FirstName == firstName) && (u.LastName == lastName));
+            }
+            else
+            {
+                userIsValid = true;
+            }
+
+            return userIsValid;
         }
 
         private void AddUsersToGroup(int userGroupId, User[] users)
@@ -272,33 +311,28 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult IsUserValid(string firstName, string lastName, string email)
+        private object GetUserGroupForSerialization(UserGroup group)
         {
-            bool isValid = ValidateUser(firstName, lastName, email);
-            return Json(isValid, JsonRequestBehavior.AllowGet);
+            var minGroup = new
+            {
+                Id = group.Id,
+                Name = group.Name
+            };
+
+            return minGroup;
         }
-
-        #endregion
-
-        #region Helpers
-
-        private bool ValidateUser(string firstName, string lastName, string email)
+        private object GetUsersForSerialization(User user)
         {
-            var userIsValid = false;
-
-            bool userWithEmailAlreadyExists = _repository.Exists<User>(u => u.Email == email);
-
-            if (userWithEmailAlreadyExists)
+            var minUser = new
             {
-                userIsValid = _repository.Exists<User>(u => (u.Email == email) && (u.FirstName == firstName) && (u.LastName == lastName));
-            }
-            else
-            {
-                userIsValid = true;
-            }
+                Id = user.Id,
+                LastName = user.LastName,
+                FirstName = user.FirstName,
+                FatheName = user.FatheName,
+                Email = user.Email
+            };
 
-            return userIsValid;
+            return minUser;
         }
 
         #endregion
