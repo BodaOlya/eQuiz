@@ -152,6 +152,7 @@
     <Content Include="Areas\Moderator\Scripts\app\pages\user-groups-list\user-groups.controller.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\user-groups-list\user-groups.service.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\user-group\unique-user-email.directive.js" />
+    <Content Include="Areas\Moderator\Scripts\app\pages\user-group\unique-user-group-name.directive.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\user-group\user-group.controller.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\user-group\import-users-from-file.directive.js" />
     <Content Include="Areas\Moderator\Scripts\libs\custom-pagination\custom-pagination.js" />
@@ -166,7 +167,6 @@
     <Content Include="Areas\Student\Scripts\app\pages\confirm\customConfirm.html" />
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\quizInRun.controller.js" />
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\quizInRun.service.js" />
-    <Content Include="Areas\Student\Scripts\app\pages\quizInRun\timer.service.js" />
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\trackUserResult.service.js" />
     <Content Include="Areas\Student\Scripts\app\pages\refreshWarning\refreshWarning.controller.js" />
     <Content Include="Areas\Student\Scripts\app\pages\refreshWarning\refreshWarning.html" />
@@ -206,7 +206,7 @@
     <Compile Include="Areas\Moderator\Controllers\QuizQuestionController.cs" />
     <Compile Include="Areas\Moderator\Controllers\UserGroupController.cs" />
     <Compile Include="Areas\Moderator\Models\QuizPreviewModel.cs" />
-    <Compile Include="Areas\Moderator\Models\QuizListModel.cs" />
+    <Compile Include="Areas\Moderator\Models\QuizListViewModel.cs" />
     <Compile Include="Areas\Moderator\ModeratorAreaRegistration.cs" />
     <Compile Include="Areas\Student\Controllers\AccountController.cs" />
     <Compile Include="Areas\Student\Controllers\DefaultController.cs" />

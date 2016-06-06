@@ -2,7 +2,7 @@
 
     angular
         .module('equizModule')
-        .service('userGroupsService', userGroupsService);
+        .factory('userGroupsService', userGroupsService);
 
     userGroupsService.$inject = ['$http'];
 

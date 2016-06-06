@@ -3,12 +3,16 @@
     Layout = "~/Views/Shared/Layout.cshtml";
 }
 
-<section class="listQuizzes-wrapper">
+<section class="listQuizzes-wrapper" ng-controller="UserGroupsController as ug" ng-cloak>
 
     <h2>@Html.ActionLink(linkText: "Create new", actionName: "Create")</h2>    
     <br />
+    <div class="cssload-container" ng-show="ug.isLoading">
+        <div class="cssload-whirlpool"></div>
+    </div>
+    <br />
 
-    <div class="container-quizzes" ng-controller="UserGroupsController as ug">
+    <div class="container-quizzes" ng-show="!ug.isLoading">
         <label>Search</label>
         <input type="text" ng-model="ug.pagingInfo.searchText" ng-change="ug.reloadUserGroups()" style="width:10em; margin-bottom: 10px">
         <label style="margin-left:10px">Select status</label>
@@ -55,7 +59,7 @@
                     <td><a ng-href="/moderator/usergroup/edit/#/getusergroup?id={{ugroups.Id}}">{{ ugroups.Name }}</a></td>
                     <td>{{ ugroups.CountOfStudents }}</td>
                     <td>{{ ugroups.CountOfQuizzes }}</td>
-                    <td>20.06.21</td>
+                    <td>20.05.2016</td>
                     <td>Moderator 1</td>
                     <td>{{ugroups.StateName}}</td>
                 </tr>
