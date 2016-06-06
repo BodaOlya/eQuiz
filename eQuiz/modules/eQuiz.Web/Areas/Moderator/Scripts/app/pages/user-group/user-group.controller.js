@@ -22,6 +22,7 @@
         vm.deleteUser = deleteUser;
         vm.addUser = addUser;
         vm.save = save;
+        vm.canSave = canSave;
         vm.showSuccess = showSuccess;
         vm.showError = showError;
         vm.showLoading = showLoading;
@@ -74,7 +75,14 @@
                     FatheName: "",
                     Email: ""
                 });
-        }
+        };
+
+        function canSave() {            
+            if (vm.groupForm) {
+                return vm.groupForm.$valid;
+            }
+            return false;
+        };
 
         function save() {
             vm.showLoading();

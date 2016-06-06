@@ -16,126 +16,133 @@
 }
 
 <div ng-controller="UserGroupController as g" ng-cloak class="user-group">
-    <h2> Create new/ Edit {{g.group.Name}}</h2>
+    <ng-form name="g.groupForm">
+        <h2> Create new/ Edit {{g.group.Name}}</h2>
 
-    <div class="user-group-name">
-        <label> Name </label>
-        <input type="text" ng-model="g.group.Name" value="{{g.group.Name}}" />
-    </div>
-    <div class="ug-import">
-        <label> Students </label>
-        <label id="file-link" for="ug-file-upload"> Import from *.csv </label>
-        <input type="file" id="ug-file-upload" import-users-from-file callback="g.useImportedData(data)" hidden />
-    </div>
-
-    <table class="table-quizzes">
-
-        <thead>
-            <tr>
-                <th>
-                    <a href="#" ng-click="g.sortBy('LastName')">
-                        {{g.showOrderArrow('LastName')}}LastName
-                    </a>
-                </th>
-                <th>
-                    <a href="#" ng-click="g.sortBy('FirstName')">
-                        {{g.showOrderArrow('FirstName')}}FirstName
-                    </a>
-                </th>
-                <th>
-                    <a href="#" ng-click="g.sortBy('Email')">
-                        {{g.showOrderArrow('Email')}}E-mail
-                    </a>
-                </th>
-                <th>
-                    <a href="#" ng-click="g.sortBy('Delete')">
-                        {{g.showOrderArrow('Delete')}}Delete
-                    </a>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-form="userForm" ng-repeat="user in g.users | orderBy: g.predicate: g.reverse" unique-user-email users="g.users" user="user">
-                <td> 
-                    <div show-error>
-                        <input type="text" ng-model="user.LastName" name="LastName" required  />
-                        <div ng-messages="userForm.LastName.$error" class="error-block">
-                            <p ng-message="required">Last name is required</p>
-                        </div>
+        <div class="user-group-name">
+            <div show-error>
+                <label class="control-label"> Name </label>               
+                    <input class="form-control" type="text" ng-model="g.group.Name" value="{{g.group.Name}}" name="GroupName" required />
+                    <div ng-messages="g.groupForm.GroupName.$error" class="help-block hide">
+                        <p ng-message="required">Group name is required</p>
                     </div>
-                </td>
-                <td> 
-                    <div show-error>
-                        <input type="text" ng-model="user.FirstName" name="FirstName" required />
-                        <div ng-messages="userForm.FirstName.$error" class="error-block">
-                            <p ng-message="required">First name is required</p>
+                </div>
+            </div>
+        <div class="ug-import">
+            <label> Students </label>
+            <label id="file-link" for="ug-file-upload"> Import from *.csv </label>
+            <input type="file" id="ug-file-upload" import-users-from-file callback="g.useImportedData(data)" hidden />
+        </div>
+
+        <table class="table-quizzes">
+
+            <thead>
+                <tr>
+                    <th>
+                        <a href="#" ng-click="g.sortBy('LastName')">
+                            {{g.showOrderArrow('LastName')}}LastName
+                        </a>
+                    </th>
+                    <th>
+                        <a href="#" ng-click="g.sortBy('FirstName')">
+                            {{g.showOrderArrow('FirstName')}}FirstName
+                        </a>
+                    </th>
+                    <th>
+                        <a href="#" ng-click="g.sortBy('Email')">
+                            {{g.showOrderArrow('Email')}}E-mail
+                        </a>
+                    </th>
+                    <th>
+                        <a href="#" ng-click="g.sortBy('Delete')">
+                            {{g.showOrderArrow('Delete')}}Delete
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-form="g.userForm" ng-repeat="user in g.users | orderBy: g.predicate: g.reverse" unique-user-email users="g.users" user="user">
+                    <td>
+                        <div show-error>
+                            <input class="form-control" type="text" ng-model="user.LastName" name="LastName" required />
+                            <div ng-messages="g.userForm.LastName.$error" class="help-block hide">
+                                <p ng-message="required">Last name is required</p>
+                            </div>
                         </div>
-                    </div>
-                </td>
-                <td> 
-                    <div show-error>
-                        <input type="email" ng-model="user.Email" name="Email" ng-pattern="g.regEx" required /> 
-                        <div ng-messages="userForm.Email.$error" class="error-block">
-                            <p ng-message="required">Email is required</p>
-                            <p ng-message="pattern">Please enter a valid email address</p>
-                            <p ng-message="nonUniqueEmail">This email is used by another user</p>
+                    </td>
+                    <td>
+                        <div show-error>
+                            <input class="form-control" type="text" ng-model="user.FirstName" name="FirstName" required />
+                            <div ng-messages="g.userForm.FirstName.$error" class="help-block hide">
+                                <p ng-message="required">First name is required</p>
+                            </div>
                         </div>
-                    </div>
-                </td>
-                <td>
-                    <a href="#" ng-click="g.deleteUser(user)">Delete</a>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="4">
-                    <a href="#" ng-click="g.addUser()">Add new</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                    </td>
+                    <td>
+                        <div show-error>
+                            <input class="form-control" type="email" ng-model="user.Email" name="Email" ng-pattern="g.regEx" required />
+                            <div ng-messages="g.userForm.Email.$error" class="help-block hide">
+                                <p ng-message="required">Email is required</p>                                
+                                <p ng-message="pattern">Please enter a valid email address</p>
+                                <p ng-message="nonUniqueEmail">This email is used by another user</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="#" ng-click="g.deleteUser(user)">Delete</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <a href="#" ng-click="g.addUser()">Add new</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-    <div class="row">
-        <div class="col-sm-2 col-sm-offset-2">
-            <button class="btn btn-default form-control lightgray" ng-click="g.save()">Save</button>
+        <div class="row">
+            <div class="col-sm-2 col-sm-offset-2">
+                <button class="btn btn-default form-control lightgray" ng-click="g.save()" ng-disabled="!g.canSave()">Save</button>
+            </div>
+            <div class="col-sm-2">
+                @Html.ActionLink(linkText: "Cancel", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-default lightgray" })
+            </div>
         </div>
-        <div class="col-sm-2">
-            @Html.ActionLink(linkText: "Cancel", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-default lightgray" })
-        </div>
-    </div>
 
-    <div ng-cloak class="loading-background" ng-show="g.loadingVisible">
-        <div class="loading-content">
-            <p>
-                Processing...
-            </p>
+        <div ng-cloak class="loading-background" ng-show="g.loadingVisible">
+            <div class="loading-content">
+                <p>
+                    Processing...
+                </p>
+            </div>
         </div>
-    </div>
-    <div ng-cloak class="message-container" ng-show="g.errorMessageVisible">
-        <div class="message-content">
-            <p>
-                Changes have not been saved due to
-            </p>
-            <p class="red text-center">
-                SERVER ERROR
-            </p>
+        <div ng-cloak class="message-container" ng-show="g.errorMessageVisible">
+            <div class="message-content">
+                <p>
+                    Changes have not been saved due to
+                </p>
+                <p class="red text-center">
+                    SERVER ERROR
+                </p>
+            </div>
         </div>
-    </div>
-    <div ng-cloak class="message-container" ng-show="g.successMessageVisible">
-        <div class="message-content">
-            <p>
-                All changes have been
-            </p>
-            <p class="green">
-                SUCCESSFULLY SAVED
-            </p>
+        <div ng-cloak class="message-container" ng-show="g.successMessageVisible">
+            <div class="message-content">
+                <p>
+                    All changes have been
+                </p>
+                <p class="green">
+                    SUCCESSFULLY SAVED
+                </p>
+            </div>
         </div>
-    </div>
-
+    </ng-form>
 </div>
 
 @section FootScripts{
     <script src="~/Areas/Moderator/Scripts/app/pages/shared/user-group.service.js"></script>
     <script src="~/Areas/Moderator/Scripts/app/pages/user-group/import-users-from-file.directive.js"></script>
     <script src="~/Areas/Moderator/Scripts/app/pages/user-group/user-group.controller.js"></script>
+    <script src="~/Areas/Moderator/Scripts/app/pages/shared/show-error.directive.js"></script>
     <script src="~/Areas/Moderator/Scripts/app/pages/user-group/unique-user-email.directive.js"></script>
 }
