@@ -10,7 +10,9 @@
         var vm = this;
 
         //fields
-        vm.quizzes = [];        
+        vm.quizzes = [];
+
+        vm.isLoading = true;
 
         //paging with sorting 
         vm.pagingInfo = {
@@ -22,6 +24,9 @@
             searchText: null,
             selectedStatus: 'All'
         };
+
+        //constants for dropdown menu
+        vm.statuses = ['All', 'Opened', 'Scheduled', 'Draft'];
 
         //functions
         vm.reloadQuizzes = reloadQuizzes;
@@ -40,6 +45,7 @@
             quizzesPromise.then(function (data) {
                 vm.quizzes = data.Quizzes;
                 vm.pagingInfo.quizzesTotal = data.QuizzesTotal;
+                vm.isLoading = false;
             }, errorCallBack);
         };
 
@@ -54,10 +60,7 @@
                 return vm.pagingInfo.reverse ? '▲' : '▼';
             }
             return '';
-        };
-
-        //for dropdown menu
-        vm.statuses = ['All', 'Opened', 'Scheduled', 'Draft'];
+        };        
 
         function changedValue(item) {
             vm.pagingInfo.selectedStatus = item;

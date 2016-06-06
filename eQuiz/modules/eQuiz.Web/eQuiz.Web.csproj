@@ -207,7 +207,7 @@
     <Compile Include="Areas\Moderator\Controllers\QuizQuestionController.cs" />
     <Compile Include="Areas\Moderator\Controllers\UserGroupController.cs" />
     <Compile Include="Areas\Moderator\Models\QuizPreviewModel.cs" />
-    <Compile Include="Areas\Moderator\Models\QuizListModel.cs" />
+    <Compile Include="Areas\Moderator\Models\QuizListViewModel.cs" />
     <Compile Include="Areas\Moderator\ModeratorAreaRegistration.cs" />
     <Compile Include="Areas\Student\Controllers\AccountController.cs" />
     <Compile Include="Areas\Student\Controllers\DefaultController.cs" />

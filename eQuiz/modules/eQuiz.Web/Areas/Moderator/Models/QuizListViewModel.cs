@@ -5,7 +5,7 @@ using System.Web;
 
 namespace eQuiz.Web.Areas.Moderator.Models
 {
-    public class QuizListModel
+    public class QuizListViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

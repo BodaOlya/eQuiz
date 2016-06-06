@@ -12,6 +12,8 @@
         //fields
         vm.userGroups = [];
 
+        vm.isLoading = true;
+
         //paging with sorting 
         vm.pagingInfo = {
             currentPage: 1,
@@ -40,6 +42,7 @@
             userGroupsPromise.then(function (data) {
                 vm.userGroups = data.UserGroups;
                 vm.pagingInfo.userGroupsTotal = data.UserGroupsTotal;
+                vm.isLoading = false;
             }, errorCallBack);
         };
 

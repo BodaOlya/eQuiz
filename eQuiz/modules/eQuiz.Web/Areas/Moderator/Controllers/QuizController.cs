@@ -159,7 +159,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         public ActionResult GetQuizzesPage(int currentPage = 1, int quizzesPerPage = 3, string predicate = "Name",
                                             bool reverse = false, string searchText = null, string selectedStatus = null)
         {
-            IEnumerable<QuizListModel> quizzesList = null;
+            IEnumerable<QuizListViewModel> quizzesList = null;
             var quizzesTotal = 0;
 
             if (selectedStatus == "All")
@@ -176,7 +176,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                            join quizBlock in quizBlocks on quiz.Id equals quizBlock.QuizId
                            join quizState in quizStates on quiz.QuizStateId equals quizState.Id
                            select
-                                   new QuizListModel
+                                   new QuizListViewModel
                                    {
                                        Id = quiz.Id,
                                        Name = quiz.Name,

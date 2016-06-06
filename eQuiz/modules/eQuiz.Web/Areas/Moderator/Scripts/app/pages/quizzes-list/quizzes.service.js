@@ -2,7 +2,7 @@
 
     angular
         .module('equizModule')
-        .service('quizzesService', quizzesService);
+        .factory('quizzesService', quizzesService);
 
     quizzesService.$inject = ['$http'];
 
