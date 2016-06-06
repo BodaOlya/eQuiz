@@ -141,13 +141,41 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             ta.Add(new TestAnswer(3, "Name 3", true, 1, false));
             ta.Add(new TestAnswer(4, "Name 4", false, 1, true));
 
+            var userAnswers = _repository.Get<UserAnswer>();
+            var questionAnswers = _repository.Get<QuestionAnswer>();
+            var answers = _repository.Get<Answer>();
+
+            //var testAnswers = from q in questions
+            //                  join qt in questionTypes on q.QuestionTypeId equals qt.Id
+            //                  join qa in questionAnswers on q.Id equals qa.QuestionId
+            //                  join a in answers on qa.AnswerId equals a.Id
+            //                  join ua in userAnswers on a.Id equals ua.AnswerId
+            //                  join qpq in quizPassQuestions on q.Id equals qpq.Id
+            //                  where qt.IsAutomatic == true
+            //                  group new {q, a} by q.Id into grouped
+            //                  select new
+            //                  {
+            //                      question = grouped.Select(g => g.q.Id),
+            //                      answer = grouped.Select(g => g.a.AnswerText).Distinct()
+            //                  };
 
             var testAnswers = from q in questions
                               join qt in questionTypes on q.QuestionTypeId equals qt.Id
                               join qpq in quizPassQuestions on q.Id equals qpq.QuestionId
+                              join qa in questionAnswers on q.Id equals qa.QuestionId
+                              join ua in userAnswers on qpq.Id equals ua.QuizPassQuestionId
+                              join a in answers on ua.AnswerId equals a.Id
                               join qq in quizQuestions on q.Id equals qq.QuestionId
                               where qt.IsAutomatic == true
-                              select new SelectQuestion(qpq.Id, qq.QuestionScore, 0, q.QuestionText, ta, qq.QuestionOrder);
+                              select new
+                              {
+                                  question = q.QuestionText,
+                                  answer = a.AnswerText,
+                                  isTrue = a.IsRight
+                              };
+
+
+            var check = new List<object>();
 
 
             foreach (var item in textAnswers)
@@ -157,7 +185,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
 
             foreach (var item in testAnswers)
             {
-                questionsList.Add(item);
+                check.Add(item);
             }
 
             var ordered = questionsList.OrderBy(q => q.Order).ToList();

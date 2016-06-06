@@ -4,12 +4,12 @@
         .filter('groupFilter', GroupFilter);
 
     function GroupFilter() {
-        return function (data, selectedData) {
+        return function (data, selectedData, propertyToFilter) {
             if (!angular.isUndefined(data) && !angular.isUndefined(selectedData) && selectedData.length > 0) {
                 var tempData = [];
                 angular.forEach(selectedData, function (id) {
                     angular.forEach(data, function (item) {
-                        if (angular.equals(item.userGroup, id)) { //property user group needs to be changed manualy
+                        if (item[propertyToFilter].indexOf(id) != -1) {
                             tempData.push(item);
                         }
                     });

@@ -18,6 +18,7 @@ namespace eQuiz.Entities
         public QuizPass()
         {
             this.QuizPassQuestions = new HashSet<QuizPassQuestion>();
+            this.QuizPassScores = new HashSet<QuizPassScore>();
         }
     
         public int Id { get; set; }
@@ -30,5 +31,7 @@ namespace eQuiz.Entities
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuizPassQuestion> QuizPassQuestions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QuizPassScore> QuizPassScores { get; set; }
     }
 }
