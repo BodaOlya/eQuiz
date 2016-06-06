@@ -16,7 +16,7 @@
     			var messagesBlock = inputIdElement.next();
 
     			function callback(data) {
-    			    formControl.name.$setValidity('nonUniqueName', data.data);
+    			    formControl[inputName].$setValidity('nonUniqueName', data.data);
     			    element.toggleClass('has-error', formControl[inputName].$invalid);
     			    messagesBlock.toggleClass('hide', formControl[inputName].$valid);
     			}

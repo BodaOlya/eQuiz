@@ -8,7 +8,7 @@
             if (jsonDate != null) {
                 return new Date(parseInt(jsonDate.substr(6)));
             }
-            return "";
+            return "No date";
         };
     };
 })(angular);

@@ -47,7 +47,7 @@
                         }
                     });                                                                               
                 }
-                checkValidAfterAddedUser();
+              //  checkValidAfterAddedUser();
 
                 inputNgElement.bind('blur', function() {
                     checkValidAfterAddedUser();

@@ -55,16 +55,24 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                                     QuizId = grouped.Key,
                                     IsAutomatic = grouped.Select(q => q.qt.IsAutomatic).Count()
                                 };
-
-            var studentAmount = from ug in userGroup
-                                join utg in userToGroup on ug.Id equals utg.GroupId
-                                join u in user on utg.UserId equals u.Id
-                                group new { ug, u } by new { ug.Id, ug.Name } into grouped
-                                select new
-                                {
-                                    groupId = grouped.Key,
-                                    studentAmount = grouped.Select(item => item.u.Id).Count()
-                                };
+            var studentAmountReal = from q in quiz
+                                    join qp in quizPass on q.Id equals qp.QuizId
+                                    join u in user on qp.UserId equals u.Id
+                                    group new { q, u } by new { q.Id } into grouped
+                                    select new
+                                    {
+                                        quizId = grouped.Key,
+                                        studentAmount = grouped.Select(item => item.u.Id).Count()
+                                    };
+            //var studentAmount = from ug in userGroup
+            //                    join utg in userToGroup on ug.Id equals utg.GroupId
+            //                    join u in user on utg.UserId equals u.Id
+            //                    group new { ug, u } by new { ug.Id, ug.Name } into grouped
+            //                    select new
+            //                    {
+            //                        groupId = grouped.Key,
+            //                        studentAmount = grouped.Select(item => item.u.Id).Count()
+            //                    };
 
             //var query = from passq in quizPass
             //            join q in quiz on passq.QuizId equals q.Id
@@ -86,7 +94,8 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                         join ug in userGroup on q.GroupId equals ug.Id
                         join qb in quizBlock on q.Id equals qb.QuizId
                         join aq in autoQuestions on q.Id equals aq.QuizId
-                        join sa in studentAmount on ug.Id equals sa.groupId.Id
+                        // join sa in studentAmount on ug.Id equals sa.groupId.Id
+                        join sa in studentAmountReal on q.Id equals sa.quizId.Id
                         select new
                         {
                             id = q.Id,

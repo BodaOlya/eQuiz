@@ -22,6 +22,7 @@
         vm.deleteUser = deleteUser;
         vm.addUser = addUser;
         vm.save = save;
+        vm.canSave = canSave;
         vm.showSuccess = showSuccess;
         vm.showError = showError;
         vm.showLoading = showLoading;
@@ -45,7 +46,15 @@
         function useImportedData(data) {
             $timeout(function () {
                 vm.users.push.apply(vm.users, data);
-            }, 1000);             
+            }, 1000);            
+            var inputFirstName = document.getElementsByName('FirstName');
+            var inputLastName = document.getElementsByName('LastName');
+            var inputEmail = document.getElementsByName('Email');
+            $timeout(function () {
+                angular.element(inputFirstName).triggerHandler("blur");
+                angular.element(inputLastName).triggerHandler("blur");
+                angular.element(inputEmail).triggerHandler("blur");
+            }, 1000);
         }
 
         function sortBy(predicate) {
@@ -74,7 +83,14 @@
                     FatheName: "",
                     Email: ""
                 });
-        }
+        };
+
+        function canSave() {            
+            if (vm.groupForm) {
+                return vm.groupForm.$valid;
+            }
+            return false;
+        };
 
         function save() {
             vm.showLoading();
