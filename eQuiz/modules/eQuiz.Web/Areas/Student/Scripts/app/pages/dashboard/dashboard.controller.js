@@ -1,37 +1,41 @@
 ﻿
 (function (angular) {
-    var equizModule = angular.module("equizModule");
+    angular.module("equizModule")
+            .controller("dashboardCtrl", dashboardCtrl);
+    dashboardCtrl.$inject = ['$scope', 'dashboardService'];
 
-    equizModule.controller("dashboardCtrl", ["$scope", "dashboardService", function ($scope, dashboardService) {
-        $scope.allQuizzes = [];
-        $scope.pagedQuizzes = [];
-        $scope.page = 0;
-        $scope.pageSize = 7;
-        $scope.pagesCount = 1;
-        $scope.totalCount = 0;
-        $scope.searchInfo = {
+    function dashboardCtrl($scope, dashboardService) {
+        var vm = this;
+
+        vm.allQuizzes = [];
+        vm.pagedQuizzes = [];
+        vm.page = 0;
+        vm.pageSize = 7;
+        vm.pagesCount = 1;
+        vm.totalCount = 0;
+        vm.searchInfo = {
             predicate: null,
             reverse: false,
             searchText: ''
         };
 
-        $scope.isLoading = true;
+        vm.isLoading = true;
 
-        $scope.setToLocalStorage = function (durationValue) {
+        vm.setToLocalStorage = function (durationValue) {
             localStorage.setItem('duration', durationValue)
         }
 
         activate();
         function activate() {
             var _onSuccess = function (value) {
-                $scope.allQuizzes = value.data;
+                vm.allQuizzes = value.data;
 
-                $scope.isLoading = false;
-                console.log($scope.allQuizzes);
-                $scope.search(0);
+                vm.isLoading = false;
+                console.log(vm.allQuizzes);
+                vm.search(0);
             };
             var _onError = function () {
-                $scope.isLoading = false;
+                vm.isLoading = false;
                 console.log("Cannot load quizzes list");
             };
 
@@ -39,71 +43,71 @@
             quizPromise.then(_onSuccess, _onError);
         };
 
-        $scope.search = function (page) {
-            $scope.page = page || 0;
+        vm.search = function (page) {
+            vm.page = page || 0;
 
             // Filter by quiz name.
-            var filteredQuizzes = $scope.allQuizzes.filter(
+            var filteredQuizzes = vm.allQuizzes.filter(
                 function (quiz) {
-                    return quiz.Name.toLowerCase().indexOf($scope.searchInfo.searchText.toLowerCase()) > -1 ? true : false;
+                    return quiz.Name.toLowerCase().indexOf(vm.searchInfo.searchText.toLowerCase()) > -1 ? true : false;
                 });
 
             // Filter by quiz internet access.
-            if ($scope.searchInfo.InternetAccess != undefined) {
+            if (vm.searchInfo.InternetAccess != undefined) {
                 filteredQuizzes = filteredQuizzes.filter(
                     function (quiz) {
-                        return quiz.InternetAccess === $scope.searchInfo.InternetAccess ? true : false;
+                        return quiz.InternetAccess === vm.searchInfo.InternetAccess ? true : false;
                     });
             }
 
             // Sort by predicate.
-            if ($scope.searchInfo.predicate != undefined || $scope.searchInfo.predicate != null) {
-                switch ($scope.searchInfo.predicate) {
+            if (vm.searchInfo.predicate != undefined || vm.searchInfo.predicate != null) {
+                switch (vm.searchInfo.predicate) {
                     case 'Name': {
-                        filteredQuizzes.sort(sortFunc($scope.searchInfo.predicate, !$scope.searchInfo.reverse, function (a) { return a.toLowerCase() }));
+                        filteredQuizzes.sort(sortFunc(vm.searchInfo.predicate, !vm.searchInfo.reverse, function (a) { return a.toLowerCase() }));
                         break;
                     }
                     case 'StartDate': {
                         filteredQuizzes.sort(
                             sortFunc(
-                                $scope.searchInfo.predicate,
-                                $scope.searchInfo.reverse,
+                                vm.searchInfo.predicate,
+                                vm.searchInfo.reverse,
                                 function (unix_time) {
                                     return new Date(unix_time);
                                 }));
                         break;
                     }
                     case 'Duration': {
-                        filteredQuizzes.sort(sortFunc('TimeLimitMinutes', $scope.searchInfo.reverse, function (minutes) { return minutes == null ? 0 : minutes; }));
+                        filteredQuizzes.sort(sortFunc('TimeLimitMinutes', vm.searchInfo.reverse, function (minutes) { return minutes == null ? 0 : minutes; }));
                         break;
                     }
                 }
             }
 
-            $scope.totalCount = filteredQuizzes.length;
-            $scope.pagesCount = Math.ceil($scope.totalCount / $scope.pageSize);
+            vm.totalCount = filteredQuizzes.length;
+            vm.pagesCount = Math.ceil(vm.totalCount / vm.pageSize);
 
-            if ($scope.totalCount > $scope.page * $scope.pageSize) {
-                $scope.pagedQuizzes = filteredQuizzes.slice($scope.page * $scope.pageSize, $scope.page * $scope.pageSize + $scope.pageSize);
+            if (vm.totalCount > vm.page * vm.pageSize) {
+                vm.pagedQuizzes = filteredQuizzes.slice(vm.page * vm.pageSize, vm.page * vm.pageSize + vm.pageSize);
             }
             else {
-                $scope.pagedQuizzes = filteredQuizzes;
+                vm.pagedQuizzes = filteredQuizzes;
             }
         };
 
 
-        $scope.showOrderArrow = function (predicate) {
-            if ($scope.searchInfo.predicate === predicate) {
-                return $scope.searchInfo.reverse ? '▲' : '▼';
+        vm.showOrderArrow = function (predicate) {
+            if (vm.searchInfo.predicate === predicate) {
+                return vm.searchInfo.reverse ? '▲' : '▼';
             }
             return '';
         };
 
-        $scope.sortBy = function (predicate) {
-            $scope.searchInfo.reverse = ($scope.searchInfo.predicate === predicate) ? !$scope.searchInfo.reverse : false;
-            $scope.searchInfo.predicate = predicate;
+        vm.sortBy = function (predicate) {
+            vm.searchInfo.reverse = (vm.searchInfo.predicate === predicate) ? !vm.searchInfo.reverse : false;
+            vm.searchInfo.predicate = predicate;
 
-            $scope.search();
+            vm.search();
         };
 
         sortFunc = function (field, reverse, primer) {
@@ -115,5 +119,5 @@
             }
         };
 
-    }]);
+    };
 })(angular);
