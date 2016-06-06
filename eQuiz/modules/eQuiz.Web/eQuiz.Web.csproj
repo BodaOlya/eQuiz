@@ -167,7 +167,6 @@
     <Content Include="Areas\Student\Scripts\app\pages\confirm\customConfirm.html" />
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\quizInRun.controller.js" />
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\quizInRun.service.js" />
-    <Content Include="Areas\Student\Scripts\app\pages\quizInRun\timer.service.js" />
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\trackUserResult.service.js" />
     <Content Include="Areas\Student\Scripts\app\pages\refreshWarning\refreshWarning.controller.js" />
     <Content Include="Areas\Student\Scripts\app\pages\refreshWarning\refreshWarning.html" />
