@@ -126,8 +126,9 @@ namespace eQuiz.Web.Areas.Admin.Controllers
 
             // Still don't know if I need this
             var quiz = _repository.GetSingle<Quiz>(q => q.Id == quizId);
-            var quizQuestions = _repository.Get<QuizQuestion>();
+
             var quizBlock = _repository.GetSingle<QuizBlock>(qb => qb.QuizId == quizId);
+            var quizQuestions = _repository.Get<QuizQuestion>(qq => qq.QuizBlockId == quizBlock.Id);
 
             var quizPassQuestions = _repository.Get<QuizPassQuestion>(qp => qp.QuizPassId == quizPassId);
             var questions = _repository.Get<Question>();
@@ -141,14 +142,6 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                               join qq in quizQuestions on q.Id equals qq.QuestionId
                               where qt.IsAutomatic == false
                               select new TextQuestion(qpq.Id, qq.QuestionScore, 0, q.QuestionText, uta.AnswerText, "right", qq.QuestionOrder);
-
-
-            // Test data because script's not ready yet
-            List<TestAnswer> ta = new List<TestAnswer>();
-            ta.Add(new TestAnswer(1, "Name 1", true, 1, true));
-            ta.Add(new TestAnswer(2, "Name 2", false, 1, false));
-            ta.Add(new TestAnswer(3, "Name 3", true, 1, false));
-            ta.Add(new TestAnswer(4, "Name 4", false, 1, true));
 
             var userAnswers = _repository.Get<UserAnswer>();
             var questionAnswers = _repository.Get<QuestionAnswer>();
@@ -168,23 +161,28 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             //                      answer = grouped.Select(g => g.a.AnswerText).Distinct()
             //                  };
 
+
+            //gets all user answers
             var testAnswers = from q in questions
                               join qt in questionTypes on q.QuestionTypeId equals qt.Id
-                              join qpq in quizPassQuestions on q.Id equals qpq.QuestionId
                               join qa in questionAnswers on q.Id equals qa.QuestionId
-                              join ua in userAnswers on qpq.Id equals ua.QuizPassQuestionId
-                              join a in answers on ua.AnswerId equals a.Id
+                              join a in answers on qa.AnswerId equals a.Id
                               join qq in quizQuestions on q.Id equals qq.QuestionId
+                              join ua in userAnswers on a.Id equals ua.AnswerId
                               where qt.IsAutomatic == true
-                              select new
-                              {
-                                  question = q.QuestionText,
-                                  answer = a.AnswerText,
-                                  isTrue = a.IsRight
-                              };
+                              select new TestAnswer(a.Id, q.Id, a.AnswerText, (bool)a.IsRight, a.AnswerOrder, true);
+
+            var testQuestions = from q in questions
+                                join qt in questionTypes on q.QuestionTypeId equals qt.Id
+                                join qa in questionAnswers on q.Id equals qa.QuestionId
+                                join a in answers on qa.AnswerId equals a.Id
+                                join qq in quizQuestions on q.Id equals qq.QuestionId
+                                where qt.IsAutomatic == true
+                                select new TestAnswer(a.Id, q.Id, a.AnswerText, (bool)a.IsRight, a.AnswerOrder, false);
 
 
-            var check = new List<object>();
+            var tests = new List<TestAnswer>();
+            var testanswers = new List<TestAnswer>();
 
 
             foreach (var item in textAnswers)
@@ -194,7 +192,26 @@ namespace eQuiz.Web.Areas.Admin.Controllers
 
             foreach (var item in testAnswers)
             {
-                check.Add(item);
+                testanswers.Add(item);
+            }
+
+            testanswers = testanswers.Distinct().ToList();
+
+            foreach (var item in testQuestions)
+            {
+                tests.Add(item);
+            }
+
+            for (var i = 0; i < tests.Count; i++)
+            {
+                for (var j = 0; j < testanswers.Count; j++)
+                {
+                    if (tests[i].Equals(testanswers[j]))
+                    {
+                        tests[i] = testanswers[j];
+                        break;
+                    }
+                }
             }
 
             var ordered = questionsList.OrderBy(q => q.Order).ToList();
