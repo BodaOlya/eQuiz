@@ -63,11 +63,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-form="g.userForm" ng-repeat="user in g.users | orderBy: g.predicate: g.reverse" unique-user-email users="g.users" user="user">
+                <tr ng-form="g.userForm[$index]" ng-repeat="user in g.users | orderBy: g.predicate: g.reverse track by $index" unique-user-email users="g.users" user="user">
                     <td>
                         <div show-error>
                             <input class="form-control" type="text" ng-model="user.LastName" name="LastName" required />
-                            <div ng-messages="g.userForm.LastName.$error" class="help-block hide">
+                            <div ng-messages="g.userForm[$index].LastName.$error" class="help-block hide">
                                 <p ng-message="required">Last name is required</p>
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                     <td>
                         <div show-error>
                             <input class="form-control" type="text" ng-model="user.FirstName" name="FirstName" required />
-                            <div ng-messages="g.userForm.FirstName.$error" class="help-block hide">
+                            <div ng-messages="g.userForm[$index].FirstName.$error" class="help-block hide">
                                 <p ng-message="required">First name is required</p>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                     <td>
                         <div>
                             <input class="form-control" type="email" ng-model="user.Email" name="Email" ng-pattern="g.regEx" required />
-                            <div ng-messages="g.userForm.Email.$error" class="help-block hide">
+                            <div ng-messages="g.userForm[$index].Email.$error" class="help-block hide">
                                 <p ng-message="required">Email is required</p>
                                 <p ng-message="pattern">Please enter a valid email address</p>
                                 <p ng-message="nonUniqueEmail">This email is used by another user</p>

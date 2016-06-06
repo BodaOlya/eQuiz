@@ -27,7 +27,8 @@
         vm.showError = showError;
         vm.showLoading = showLoading;
         vm.hideLoading = hideLoading;
-        
+        vm.revalidateInputs = revalidateInputs;
+
         vm.useImportedData = useImportedData;
 
         activate();
@@ -44,22 +45,26 @@
         };
 
         function useImportedData(data) {
-            $timeout(function () {
-                vm.users.push.apply(vm.users, data);
-            }, 1000);            
+            vm.users.push.apply(vm.users, data);
+            $scope.$apply();
+            vm.revalidateInputs();
+        }
+
+        function revalidateInputs() {
             var inputFirstName = document.getElementsByName('FirstName');
             var inputLastName = document.getElementsByName('LastName');
             var inputEmail = document.getElementsByName('Email');
-            $timeout(function () {
-                angular.element(inputFirstName).triggerHandler("blur");
-                angular.element(inputLastName).triggerHandler("blur");
-                angular.element(inputEmail).triggerHandler("blur");
-            }, 1000);
+            angular.element(inputFirstName).triggerHandler("blur");
+            angular.element(inputLastName).triggerHandler("blur");
+            angular.element(inputEmail).triggerHandler("blur");
         }
 
         function sortBy(predicate) {
             vm.reverse = (vm.predicate === predicate) ? !vm.reverse : false;
             vm.predicate = predicate;
+            $timeout(function () {
+                vm.revalidateInputs();
+            }, 1000);
         };
 
         function showOrderArrow(predicate) {
@@ -85,7 +90,7 @@
                 });
         };
 
-        function canSave() {            
+        function canSave() {
             if (vm.groupForm) {
                 return vm.groupForm.$valid;
             }
