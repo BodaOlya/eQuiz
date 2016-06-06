@@ -55,17 +55,23 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         [HttpPost]
         public ActionResult Save(int id, Question[] questions, Answer[][] answers, Tag[][] tags)
         {
-            IEnumerable<string> errors = QuestionsValidate(id, questions, answers, tags);
-            if (errors != null)
-            {
-                string mergedErrors = string.Join(". ", errors.ToArray());
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, mergedErrors);
-            }
             using (var context = new eQuizEntities(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString))
             {
                 var quiz = context.Quizs.FirstOrDefault(x => x.Id == id);
                 var quizState = context.QuizStates.FirstOrDefault(state => state.Id == quiz.QuizStateId).Name;
                 var quizBlock = context.QuizBlocks.First(x => x.QuizId == id);
+                if (questions == null && answers == null && tags == null && quizState == "Draft")
+                {
+                    return RedirectToAction("Get", new { id = id });
+                }
+
+                IEnumerable<string> errors = QuestionsValidate(id, questions, answers, tags);
+                if (errors != null)
+                {
+                    string mergedErrors = string.Join(". ", errors.ToArray());
+                    return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, mergedErrors);
+                }
+
                 if (quizBlock.QuestionCount != questions.Length && quizState != "Draft")
                 {
                     return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Not enough question had created.");
