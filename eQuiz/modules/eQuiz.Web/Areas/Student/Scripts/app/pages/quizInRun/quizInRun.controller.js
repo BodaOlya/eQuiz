@@ -1,41 +1,43 @@
 ﻿/// <reference path="D:\MyFork_eQuiz\eQuiz\modules\eQuiz.Web\Scripts/libs/angularjs/angular.js" />
 (function (angular) {
-    var equizModule = angular.module("equizModule");
+    angular.module("equizModule")
+            .controller('quizInRunCtrl', quizInRunCtrl);
+    quizInRunCtrl.$inject = ["$scope", "quizService", "trackUserResultService", "$routeParams", "$interval", "$window", "$location", "$uibModal"];
 
-    equizModule.controller("quizInRunCtrl", ["$scope", "quizService", "trackUserResultService", "$routeParams", "$interval", "$window", "$location", "$uibModal",
-    function ($scope, quizService, trackUserResultService, $routeParams, $interval, $window, $location, $uibModal) {
-        $scope.quizQuestions = null;
-        $scope.quizId = parseInt($routeParams.id);
-        $scope.quizDuration = localStorage.getItem('duration');
-        $scope.currentQuestion = 0;
-        $scope.passedQuiz = trackUserResultService.passedQuiz;
-        $scope.passedQuiz.QuizId = $scope.quizId;
-        $scope.windowHeight = $window.innerHeight;
+    function quizInRunCtrl($scope, quizService, trackUserResultService, $routeParams, $interval, $window, $location, $uibModal) {
+        var vm = this;
+        vm.quizQuestions = null;
+        vm.quizId = parseInt($routeParams.id);
+        vm.quizDuration = localStorage.getItem('duration');
+        vm.currentQuestion = 0;
+        vm.passedQuiz = trackUserResultService.passedQuiz;
+        vm.passedQuiz.QuizId = vm.quizId;
+        vm.windowHeight = $window.innerHeight;
 
-        $scope.isLoading = false;
+        vm.isLoading = false;
 
         //Timer Data
-        $scope.tSeconds = 0;
-        $scope.tMinutes = $scope.quizDuration;
+        vm.tSeconds = 0;
+        vm.tMinutes = vm.quizDuration;
 
-        $scope.seconds = $scope.tSeconds;
-        $scope.minutes = $scope.tMinutes;
-        $scope.myStyle = {};
-        $scope.time = $scope.minutes + ":0" + $scope.seconds;
+        vm.seconds = vm.tSeconds;
+        vm.minutes = vm.tMinutes;
+        vm.myStyle = {};
+        vm.time = vm.minutes + ":0" + vm.seconds;
         var stop;
 
 
-        $scope.setCurrentQuestion = function (currentQuestionId, index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
-            $scope.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
+        vm.setCurrentQuestion = function (currentQuestionId, index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
+            vm.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
 
-            $scope.sendDataToServer();
+            vm.sendDataToServer();
 
-            if (currentQuestionId < $scope.quizQuestions.length && currentQuestionId >= 0) {
-                $scope.currentQuestion = currentQuestionId;
+            if (currentQuestionId < vm.quizQuestions.length && currentQuestionId >= 0) {
+                vm.currentQuestion = currentQuestionId;
             }
         };
 
-        $scope.isLoading = true;
+        vm.isLoading = true;
 
         function openPopUpRefreshWarning() {
             var modalInstance = $uibModal.open({
@@ -46,7 +48,7 @@
             });
         };
   
-        getQuestionById($scope.quizId, $scope.quizDuration);
+        getQuestionById(vm.quizId, vm.quizDuration);
         
         function getQuestionById(questionId, duration ) {
             quizService.getQuestionsById(questionId, duration)
@@ -55,10 +57,10 @@
                         $location.path("/Dashboard");
                     }
                     else {
-                        $scope.quizQuestions = response.data;   
+                        vm.quizQuestions = response.data;   
                         //openPopUpRefreshWarning();
-                        $scope.passedQuiz.StartDate = new Date(Date.now());
-                        $scope.isLoading = false;
+                        vm.passedQuiz.StartDate = new Date(Date.now());
+                        vm.isLoading = false;
                     }
                 });
         };
@@ -72,42 +74,42 @@
             quizService.setFinishTime(quizPassId);
         };
 
-        $scope.setUserSingleChoice = function (index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
+        vm.setUserSingleChoice = function (index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
             trackUserResultService.setUserAnswers(index, questionId, answerId, isAutomatic, quizBlock, questionOrder);
         };
-        $scope.setUserMultipleChoice = function (index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
+        vm.setUserMultipleChoice = function (index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
             trackUserResultService.setUserMultipleAnswer(index, questionId, answerId, isAutomatic, quizBlock, questionOrder);
         };
-        $scope.setUserTextAnswers = function (index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
+        vm.setUserTextAnswers = function (index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
             trackUserResultService.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
         };
 
-        $scope.sendDataToServer = function () {
+        vm.sendDataToServer = function () {
 
-            if ($scope.passedQuiz.UserAnswers[$scope.currentQuestion] !== undefined) {
+            if (vm.passedQuiz.UserAnswers[vm.currentQuestion] !== undefined) {
                 var answers = null;
-                if ($scope.passedQuiz.UserAnswers[$scope.currentQuestion].Answers != undefined && $scope.passedQuiz.UserAnswers[$scope.currentQuestion].Answers != null) {
+                if (vm.passedQuiz.UserAnswers[vm.currentQuestion].Answers != undefined && vm.passedQuiz.UserAnswers[vm.currentQuestion].Answers != null) {
                     answers = [];
-                    for (var prop in $scope.passedQuiz.UserAnswers[$scope.currentQuestion].Answers) {
-                        answers.push($scope.passedQuiz.UserAnswers[$scope.currentQuestion].Answers[prop]);
+                    for (var prop in vm.passedQuiz.UserAnswers[vm.currentQuestion].Answers) {
+                        answers.push(vm.passedQuiz.UserAnswers[vm.currentQuestion].Answers[prop]);
                     }
                 }
                 var questionResult = {
-                    QuestionId: $scope.quizQuestions[$scope.currentQuestion].Id,
-                    QuestionType: $scope.quizQuestions[$scope.currentQuestion].QuestionType,
-                    QuestionOrder: $scope.quizQuestions[$scope.currentQuestion].QuestionOrder,
-                    QuizBlock: $scope.quizQuestions[$scope.currentQuestion].QuizBlock,
-                    QuizPassId: $scope.quizQuestions[$scope.currentQuestion].QuizPassId,
-                    AnswerId: $scope.passedQuiz.UserAnswers[$scope.currentQuestion].AnswerId,
-                    AnswerText: $scope.passedQuiz.UserAnswers[$scope.currentQuestion].AnswerText,
+                    QuestionId: vm.quizQuestions[vm.currentQuestion].Id,
+                    QuestionType: vm.quizQuestions[vm.currentQuestion].QuestionType,
+                    QuestionOrder: vm.quizQuestions[vm.currentQuestion].QuestionOrder,
+                    QuizBlock: vm.quizQuestions[vm.currentQuestion].QuizBlock,
+                    QuizPassId: vm.quizQuestions[vm.currentQuestion].QuizPassId,
+                    AnswerId: vm.passedQuiz.UserAnswers[vm.currentQuestion].AnswerId,
+                    AnswerText: vm.passedQuiz.UserAnswers[vm.currentQuestion].AnswerText,
                     Answers: answers,
-                    AnswerTime: $scope.passedQuiz.UserAnswers[$scope.currentQuestion].AnswerTime
+                    AnswerTime: vm.passedQuiz.UserAnswers[vm.currentQuestion].AnswerTime
                 }
                 console.log(JSON.stringify(questionResult));
                 sendQuestionResult(questionResult);
             }
-            //$scope.passedQuiz.FinishDate = new Date(Date.now());
-            //var passedQuiz = $scope.passedQuiz;
+            //vm.passedQuiz.FinishDate = new Date(Date.now());
+            //var passedQuiz = vm.passedQuiz;
             //for (var i in passedQuiz.UserAnswers) {
             //    if (passedQuiz.UserAnswers[i] != null && passedQuiz.UserAnswers[i] != undefined) {
             //        if (passedQuiz.UserAnswers.hasOwnProperty(i)) {
@@ -137,9 +139,9 @@
             });
 
             modalInstance.result.then(function () {
-                $scope.sendDataToServer();
-                setFinishTime($scope.quizQuestions[$scope.currentQuestion].QuizPassId);
-                $scope.resetTimer();
+                vm.sendDataToServer();
+                setFinishTime(vm.quizQuestions[vm.currentQuestion].QuizPassId);
+                vm.resetTimer();
                 $location.path("/Dashboard");
             }, function () {
                 return;
@@ -162,9 +164,9 @@
 
 
         //FINISH BUTTON
-        $scope.finishQuiz = function (index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
-            if (!$scope.quizQuestions[index].isAutomatic) {
-                $scope.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
+        vm.finishQuiz = function (index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
+            if (!vm.quizQuestions[index].isAutomatic) {
+                vm.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
             }
 
             openPopUpConfirm();
@@ -173,78 +175,78 @@
         $scope.$watch(function () {
             return $window.innerHeight;
         }, function (value) {
-            $scope.windowHeight = value;
+            vm.windowHeight = value;
         });
 
 
         //Timer Methods
-        $scope.startTimer = function () {
+        vm.startTimer = function () {
             if (angular.isDefined(stop)) return;
 
             stop = $interval(function () {
 
-                if ($scope.seconds < 10) {
-                    $scope.time = $scope.minutes + ":0" + $scope.seconds;
+                if (vm.seconds < 10) {
+                    vm.time = vm.minutes + ":0" + vm.seconds;
                 } else {
-                    $scope.time = $scope.minutes + ":" + $scope.seconds;
+                    vm.time = vm.minutes + ":" + vm.seconds;
                 }
 
-                if ($scope.seconds > 0) {
-                    $scope.seconds = $scope.seconds - 1;
-                } else if ($scope.minutes > 0) {
-                    $scope.minutes = $scope.minutes - 1;
-                    $scope.seconds = 59;
+                if (vm.seconds > 0) {
+                    vm.seconds = vm.seconds - 1;
+                } else if (vm.minutes > 0) {
+                    vm.minutes = vm.minutes - 1;
+                    vm.seconds = 59;
                 } else {
-                    $scope.Stop();
+                    vm.Stop();
                 }
-                if ($scope.minutes <= $scope.minutes / 10) {
-                    $scope.myStyle = {
+                if (vm.minutes <= vm.minutes / 10) {
+                    vm.myStyle = {
                         color: 'red'
                     }
                 } else {
-                    $scope.myStyle = {
+                    vm.myStyle = {
                         color: 'black'
                     }
                 }
-                if ($scope.minutes == 0 && $scope.seconds == 0) {
-                    $scope.endQuiz();
+                if (vm.minutes == 0 && vm.seconds == 0) {
+                    vm.endQuiz();
                 }
             }, 1000);
         };//start timer
 
-        $scope.stopTimer = function () {
+        vm.stopTimer = function () {
             if (angular.isDefined(stop)) {
                 $interval.cancel(stop);
                 stop = undefined;
             }
         };
 
-        $scope.resetTimer = function () {
-            $scope.stopTimer();
-            if ($scope.tSeconds <= 60 && $scope.tSeconds > 0) {
-                $scope.tSeconds = 0;
+        vm.resetTimer = function () {
+            vm.stopTimer();
+            if (vm.tSeconds <= 60 && vm.tSeconds > 0) {
+                vm.tSeconds = 0;
             }
 
-            if ($scope.tMinutes > 0) {
-                $scope.tMinutes = 0;
+            if (vm.tMinutes > 0) {
+                vm.tMinutes = 0;
             }
 
-            $scope.seconds = $scope.tSeconds;
-            $scope.minutes = $scope.tMinutes;
-            $scope.myStyle = {
+            vm.seconds = vm.tSeconds;
+            vm.minutes = vm.tMinutes;
+            vm.myStyle = {
                 color: 'black'
             }
         };
 
-        $scope.endQuiz = function () {
-            $scope.sendDataToServer();
-            setFinishTime($scope.quizQuestions[$scope.currentQuestion].QuizPassId);
-            $scope.resetTimer();
+        vm.endQuiz = function () {
+            vm.sendDataToServer();
+            setFinishTime(vm.quizQuestions[vm.currentQuestion].QuizPassId);
+            vm.resetTimer();
             openPopUpAlert();
         };
 
         $scope.$on('$destroy', function () {
-            $scope.stopTimer();
+            vm.stopTimer();
         });
-    }]);
+    };
 })(angular);
