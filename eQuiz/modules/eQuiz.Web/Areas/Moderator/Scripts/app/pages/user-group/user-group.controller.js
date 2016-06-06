@@ -46,7 +46,15 @@
         function useImportedData(data) {
             $timeout(function () {
                 vm.users.push.apply(vm.users, data);
-            }, 1000);             
+            }, 1000);            
+            var inputFirstName = document.getElementsByName('FirstName');
+            var inputLastName = document.getElementsByName('LastName');
+            var inputEmail = document.getElementsByName('Email');
+            $timeout(function () {
+                angular.element(inputFirstName).triggerHandler("blur");
+                angular.element(inputLastName).triggerHandler("blur");
+                angular.element(inputEmail).triggerHandler("blur");
+            }, 1000);
         }
 
         function sortBy(predicate) {
