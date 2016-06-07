@@ -214,10 +214,21 @@ CREATE TABLE [dbo].[tblUserAnswerScore]
 	CONSTRAINT [UK_tblUserAnswerScore_QuizPassQuestionId] UNIQUE ([QuizPassQuestionId])
 );
 
+CREATE TABLE [dbo].[tblUserGroupState]
+(
+	[Id] [TINYINT] NOT NULL IDENTITY(1, 1),
+	[Name] [NVARCHAR](50) NOT NULL,
+	CONSTRAINT [PK_tblUserGroupState_Id] PRIMARY KEY ([Id]),
+	CONSTRAINT [UK_tblUserGroupState_Name] UNIQUE ([Name])
+);
+
 CREATE TABLE [dbo].[tblUserGroup]
 (
 	[Id] [INT] NOT NULL IDENTITY(1, 1),
+	[UserGroupStateId] [TINYINT] NOT NULL,
+	[CreatedByUserId] [INT] NOT NULL,
 	[Name] [NVARCHAR](50) NOT NULL,
+	[CreatedDate] [SMALLDATETIME] NOT NULL,
 	CONSTRAINT [PK_tblUserGroup_Id] PRIMARY KEY ([Id]), 
 	CONSTRAINT [UK_tblUserGroups_Name] UNIQUE ([Name]) 
 );
@@ -333,5 +344,9 @@ ALTER TABLE [dbo].[tblUserToUserGroup] ADD  CONSTRAINT [FK_tblUserToUserGroup_tb
 ALTER TABLE [dbo].[tblUserTextAnswer] ADD  CONSTRAINT [FK_tblUserTextAnswer_tblQuizPassQuestion] FOREIGN KEY([QuizPassQuestionId]) REFERENCES [dbo].[tblQuizPassQuestion] ([Id]);
 
 ALTER TABLE [dbo].[tblQuestionAnswer] ADD  CONSTRAINT [FK_tblQuestionAnswer_tblAnswer] FOREIGN KEY([AnswerId]) REFERENCES [dbo].[tblAnswer] ([Id]); ---------------
+
+ALTER TABLE [dbo].[tblUserGroup] ADD  CONSTRAINT [FK_tblUserGroup_tblUserGroupState] FOREIGN KEY([UserGroupStateId]) REFERENCES [dbo].[tblUserGroupState] ([Id]);
+
+ALTER TABLE [dbo].[tblUserGroup] ADD  CONSTRAINT [FK_tblUserGroup_tblUser] FOREIGN KEY([CreatedByUserId]) REFERENCES [dbo].[tblUser] ([Id]);
 
 GO

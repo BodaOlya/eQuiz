@@ -43,14 +43,21 @@ VALUES
 SET IDENTITY_INSERT [dbo].[tblFacebookUser] OFF
 -----------------------------------Oleksii end
 
-SET IDENTITY_INSERT [tblUserGroup] ON
-INSERT INTO [tblUserGroup] ([Id], [Name])
+SET IDENTITY_INSERT [tblUserGroupState] ON
+INSERT INTO [tblUserGroupState] ([Id], [Name])
 VALUES
- (1, 'Application Engineer'),
- (2, 'Network Engineer'),
- (3, 'Software Programmer'),
- (4, 'Software Testing Engineer'),
- (5, 'Trainee');
+	(1, 'Active'),
+	(2, 'Archived');
+SET IDENTITY_INSERT [tblUserGroupState] OFF
+
+SET IDENTITY_INSERT [tblUserGroup] ON
+INSERT INTO [tblUserGroup] ([Id], [UserGroupStateId], [CreatedByUserId], [Name], [CreatedDate])
+VALUES
+ (1, 1, 1, 'Application Engineer', CONVERT(DATETIME, '2016.04.25', 102)),
+ (2, 1, 2, 'Network Engineer', CONVERT(DATETIME, '2016.04.30', 102)),
+ (3, 1, 3, 'Software Programmer', CONVERT(DATETIME, '2016.04.15', 102)),
+ (4, 1, 4, 'Software Testing Engineer', CONVERT(DATETIME, '2016.04.22', 102)),
+ (5, 1, 5, 'Trainee', CONVERT(DATETIME, '2016.04.21', 102));
 SET IDENTITY_INSERT [tblUserGroup] OFF;
 
 -----------------------------------Oleksii start

@@ -66,6 +66,10 @@ ALTER TABLE [dbo].[tblUserComment] DROP CONSTRAINT [FK_tblUserComment_AdminId_tb
 
 ALTER TABLE [dbo].[tblUserComment] DROP CONSTRAINT [FK_tblUserComment_UserId_tblUser];
 
+ALTER TABLE [dbo].[tblUserGroup] DROP CONSTRAINT [FK_tblUserGroup_tblUserGroupState];
+
+ALTER TABLE [dbo].[tblUserGroup] DROP CONSTRAINT [FK_tblUserGroup_tblUser];
+
 DROP TABLE [tblUserComment];
 
 DROP TABLE [tblUserTextAnswer];
@@ -115,3 +119,5 @@ DROP TABLE [tblUserGroup];
 DROP TABLE [tblQuizType];
  
 DROP TABLE [tblQuizEditHistory];
+
+DROP TABLE [tblUserGroupState];
