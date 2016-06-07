@@ -50,5 +50,6 @@ namespace eQuiz.Entities
         public virtual DbSet<QuizState> QuizStates { get; set; }
         public virtual DbSet<UserComment> UserComments { get; set; }
         public virtual DbSet<QuizEditHistory> QuizEditHistories { get; set; }
+        public virtual DbSet<UserGroupState> UserGroupStates { get; set; }
     }
 }

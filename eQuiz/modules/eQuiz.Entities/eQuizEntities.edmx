@@ -227,6 +227,16 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserGroupStateId" Type="tinyint" Nullable="false" />
+          <Property Name="CreatedByUserId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreatedDate" Type="smalldatetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblUserGroupState">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="tblUserTextAnswer">
@@ -618,6 +628,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblUserGroup_tblUser">
+          <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
+          <End Role="tblUserGroup" Type="Self.tblUserGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblUserGroup">
+              <PropertyRef Name="CreatedByUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUserGroup_tblUserGroupState">
+          <End Role="tblUserGroupState" Type="Self.tblUserGroupState" Multiplicity="1" />
+          <End Role="tblUserGroup" Type="Self.tblUserGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUserGroupState">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblUserGroup">
+              <PropertyRef Name="UserGroupStateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblUserTextAnswer_tblQuizPassQuestion">
           <End Role="tblQuizPassQuestion" Type="Self.tblQuizPassQuestion" Multiplicity="1" />
           <End Role="tblUserTextAnswer" Type="Self.tblUserTextAnswer" Multiplicity="*" />
@@ -678,6 +712,7 @@
           <EntitySet Name="tblUserAnswerScore" EntityType="Self.tblUserAnswerScore" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserComment" EntityType="Self.tblUserComment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserGroup" EntityType="Self.tblUserGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUserGroupState" EntityType="Self.tblUserGroupState" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserTextAnswer" EntityType="Self.tblUserTextAnswer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserToUserGroup" EntityType="Self.tblUserToUserGroup" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_tblFacebookUser_tblUser" Association="Self.FK_tblFacebookUser_tblUser">
@@ -803,6 +838,14 @@
           <AssociationSet Name="FK_tblUserComment_UserId_tblUser" Association="Self.FK_tblUserComment_UserId_tblUser">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblUserComment" EntitySet="tblUserComment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserGroup_tblUser" Association="Self.FK_tblUserGroup_tblUser">
+            <End Role="tblUser" EntitySet="tblUser" />
+            <End Role="tblUserGroup" EntitySet="tblUserGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserGroup_tblUserGroupState" Association="Self.FK_tblUserGroup_tblUserGroupState">
+            <End Role="tblUserGroupState" EntitySet="tblUserGroupState" />
+            <End Role="tblUserGroup" EntitySet="tblUserGroup" />
           </AssociationSet>
           <AssociationSet Name="FK_tblUserTextAnswer_tblQuizPassQuestion" Association="Self.FK_tblUserTextAnswer_tblQuizPassQuestion">
             <End Role="tblQuizPassQuestion" EntitySet="tblQuizPassQuestion" />
@@ -1034,6 +1077,7 @@
           <NavigationProperty Name="UserToUserGroups" Relationship="Self.FK_tblUserToUserGroup_tblUser" FromRole="tblUser" ToRole="tblUserToUserGroup" />
           <NavigationProperty Name="UserComments" Relationship="eQuizModel.FK_tblUserComment_AdminId_tblUser" FromRole="User" ToRole="tblUserComment" />
           <NavigationProperty Name="QuizEditHistories" Relationship="eQuizModel.FK_tblQuizEditHistory_tblUser" FromRole="User" ToRole="tblQuizEditHistory" />
+          <NavigationProperty Name="UserGroups" Relationship="eQuizModel.FK_tblUserGroup_tblUser" FromRole="User" ToRole="UserGroup" />
         </EntityType>
         <EntityType Name="UserAnswer">
           <Key>
@@ -1067,6 +1111,11 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Quizs" Relationship="Self.FK_tblQuiz_tblGroup" FromRole="tblUserGroup" ToRole="tblQuiz" />
           <NavigationProperty Name="UserToUserGroups" Relationship="Self.FK_tblUserToUserGroup_tblUserGroup" FromRole="tblUserGroup" ToRole="tblUserToUserGroup" />
+          <Property Name="UserGroupStateId" Type="Byte" Nullable="false" />
+          <Property Name="CreatedByUserId" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="User" Relationship="eQuizModel.FK_tblUserGroup_tblUser" FromRole="UserGroup" ToRole="User" />
+          <NavigationProperty Name="UserGroupState" Relationship="eQuizModel.FK_tblUserGroup_tblUserGroupState" FromRole="UserGroup" ToRole="tblUserGroupState" />
         </EntityType>
         <EntityType Name="UserToUserGroup">
           <Key>
@@ -1508,6 +1557,15 @@
             <End Role="QuizPassQuestion" EntitySet="QuizPassQuestions" />
             <End Role="UserAnswerScore" EntitySet="UserAnswerScores" />
           </AssociationSet>
+          <EntitySet Name="UserGroupStates" EntityType="eQuizModel.UserGroupState" />
+          <AssociationSet Name="FK_tblUserGroup_tblUser" Association="eQuizModel.FK_tblUserGroup_tblUser">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserGroup" EntitySet="UserGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserGroup_tblUserGroupState" Association="eQuizModel.FK_tblUserGroup_tblUserGroupState">
+            <End Role="tblUserGroupState" EntitySet="UserGroupStates" />
+            <End Role="UserGroup" EntitySet="UserGroups" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="UserTextAnswer">
           <Key>
@@ -1714,6 +1772,38 @@
             </Principal>
             <Dependent Role="UserAnswerScore">
               <PropertyRef Name="QuizPassQuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="UserGroupState">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserGroups" Relationship="eQuizModel.FK_tblUserGroup_tblUserGroupState" FromRole="tblUserGroupState" ToRole="UserGroup" />
+        </EntityType>
+        <Association Name="FK_tblUserGroup_tblUser">
+          <End Type="eQuizModel.User" Role="User" Multiplicity="1" />
+          <End Type="eQuizModel.UserGroup" Role="UserGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserGroup">
+              <PropertyRef Name="CreatedByUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUserGroup_tblUserGroupState">
+          <End Type="eQuizModel.UserGroupState" Role="tblUserGroupState" Multiplicity="1" />
+          <End Type="eQuizModel.UserGroup" Role="UserGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUserGroupState">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserGroup">
+              <PropertyRef Name="UserGroupStateId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1924,6 +2014,9 @@
           <EntitySetMapping Name="UserGroups">
             <EntityTypeMapping TypeName="eQuizModel.UserGroup">
               <MappingFragment StoreEntitySet="tblUserGroup">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedByUserId" ColumnName="CreatedByUserId" />
+                <ScalarProperty Name="UserGroupStateId" ColumnName="UserGroupStateId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
@@ -1984,6 +2077,14 @@
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="QuizId" ColumnName="QuizId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserGroupStates">
+            <EntityTypeMapping TypeName="eQuizModel.UserGroupState">
+              <MappingFragment StoreEntitySet="tblUserGroupState">
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -137,6 +137,9 @@
     <Compile Include="UserGroup.cs">
       <DependentUpon>eQuizEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="UserGroupState.cs">
+      <DependentUpon>eQuizEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="UserTextAnswer.cs">
       <DependentUpon>eQuizEntities.tt</DependentUpon>
     </Compile>

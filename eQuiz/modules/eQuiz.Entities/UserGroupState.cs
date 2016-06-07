@@ -12,26 +12,18 @@ namespace eQuiz.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class UserGroup
+    public partial class UserGroupState
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public UserGroup()
+        public UserGroupState()
         {
-            this.Quizs = new HashSet<Quiz>();
-            this.UserToUserGroups = new HashSet<UserToUserGroup>();
+            this.UserGroups = new HashSet<UserGroup>();
         }
     
-        public int Id { get; set; }
+        public byte Id { get; set; }
         public string Name { get; set; }
-        public byte UserGroupStateId { get; set; }
-        public int CreatedByUserId { get; set; }
-        public System.DateTime CreatedDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Quiz> Quizs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserToUserGroup> UserToUserGroups { get; set; }
-        public virtual User User { get; set; }
-        public virtual UserGroupState UserGroupState { get; set; }
+        public virtual ICollection<UserGroup> UserGroups { get; set; }
     }
 }

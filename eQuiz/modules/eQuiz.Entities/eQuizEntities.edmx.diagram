@@ -65,6 +65,9 @@
         <AssociationConnector Association="eQuizModel.FK_tblQuizEditHistory_tblUser" />
         <AssociationConnector Association="eQuizModel.FK_tblQuizPassScore_tblQuizPass" />
         <AssociationConnector Association="eQuizModel.FK_tblUserAnswerScore_tblQuizPassQuestion" />
+        <EntityTypeShape EntityType="eQuizModel.UserGroupState" Width="2.375" PointX="10.375" PointY="10.875" />
+        <AssociationConnector Association="eQuizModel.FK_tblUserGroup_tblUser" />
+        <AssociationConnector Association="eQuizModel.FK_tblUserGroup_tblUserGroupState" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

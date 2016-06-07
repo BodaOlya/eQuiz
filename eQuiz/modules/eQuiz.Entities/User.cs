@@ -24,6 +24,7 @@ namespace eQuiz.Entities
             this.UserToUserGroups = new HashSet<UserToUserGroup>();
             this.UserComments = new HashSet<UserComment>();
             this.QuizEditHistories = new HashSet<QuizEditHistory>();
+            this.UserGroups = new HashSet<UserGroup>();
         }
     
         public int Id { get; set; }
@@ -50,5 +51,7 @@ namespace eQuiz.Entities
         public virtual ICollection<UserComment> UserComments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuizEditHistory> QuizEditHistories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserGroup> UserGroups { get; set; }
     }
 }
