@@ -12,6 +12,11 @@
 
         return service;
 
+        function toUTCDate(date){
+            var _utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),  date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+            return _utc;
+        };
+
         function getPassedQuiz() {
             var passedUserQuiz = {
                 QuizId: null,
@@ -31,7 +36,7 @@
                     Answers: null,
                     AnswerId: answerId,
                     AnswerText: null,
-                    AnswerTime: new Date(Date.now()),
+                    AnswerTime: toUTCDate(new Date(Date.now())),
                     IsAutomatic: isAutomatic,
                     QuizBlock: quizBlock,
                     QuestionOrder: questionOrder
@@ -46,7 +51,7 @@
                     Answers: answers,
                     AnswerId: null,
                     AnswerText: null,
-                    AnswerTime: new Date(Date.now()),
+                    AnswerTime: toUTCDate(new Date(Date.now())),
                     IsAutomatic: isAutomatic,
                     QuizBlock: quizBlock,
                     QuestionOrder: questionOrder
@@ -63,7 +68,7 @@
                     Answers: null,
                     AnswerId: null,
                     AnswerText: answerText,
-                    AnswerTime: new Date(Date.now()),
+                    AnswerTime: toUTCDate(new Date(Date.now())),
                     IsAutomatic: isAutomatic,
                     QuizBlock: quizBlock,
                     QuestionOrder: questionOrder

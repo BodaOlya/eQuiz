@@ -85,6 +85,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                                                                 })
                                                                 .ToList()
                                                                 .LastOrDefault();
+                int quizPassId = lastPassedQuiz.Id;
 
                 if (lastPassedQuiz != null && lastPassedQuiz.FinishTime == null)
                 {
@@ -101,7 +102,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                     };
 
                     _repository.Insert<QuizPass>(quizPassToInsert);
-                    var quizPassId = quizPassToInsert.Id;
+                    quizPassId = quizPassToInsert.Id;
                     TempData["doc"] = quizPassToInsert.Id;
                 }
 
@@ -124,7 +125,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                                         }),
                                         QuizBlock = q.QuizBlockId,
                                         QuestionOrder = q.QuestionOrder,
-                                        QuizPassId = id
+                                        QuizPassId = quizPassId
                                     })
                                     .OrderBy(q => q.QuestionOrder)
                                     .ToList();
@@ -380,7 +381,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
 
         public void SetQuizFinishTime(int quizPassId)
         {
-            var quizPassWithFinishTime = _repository.Get<QuizPass>(qp => qp.QuizId == quizPassId).Last();
+            var quizPassWithFinishTime = _repository.GetSingle<QuizPass>(qp => qp.Id == quizPassId);
             quizPassWithFinishTime.FinishTime = DateTime.UtcNow;
             _repository.Update<QuizPass>(quizPassWithFinishTime);
         }
