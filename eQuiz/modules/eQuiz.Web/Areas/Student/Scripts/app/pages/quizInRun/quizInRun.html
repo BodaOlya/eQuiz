@@ -30,7 +30,7 @@
                         <input type="radio" ng-model="qc.passedQuiz.UserAnswers[qc.currentQuestion].AnswerId" name="answersGroup" value="{{answer.Id}}" ng-click="qc.setUserSingleChoice(qc.currentQuestion, qc.quizQuestions[qc.currentQuestion].Id, answer.Id, qc.quizQuestions[qc.currentQuestion].IsAutomatic, qc.quizQuestions[qc.currentQuestion].QuizBlock, qc.quizQuestions[qc.currentQuestion].QuestionOrder)"> {{answer.Text}}
                     </label>
                     <label ng-if="qc.quizQuestions[qc.currentQuestion].QuestionType == 'Select many'">
-                        <input type="checkbox" ng-model="qc.passedQuiz.UserAnswers[currentQuestion].Answers[$index]" ng-true-value="{{answer.Id}}" name="answersGroup" ng-false-value="null" ng-click="qc.setUserMultipleChoice(qc.currentQuestion, qc.quizQuestions[qc.currentQuestion].Id, qc.passedQuiz.UserAnswers[qc.currentQuestion].Answers, qc.quizQuestions[qc.currentQuestion].IsAutomatic, qc.quizQuestions[qc.currentQuestion].QuizBlock, qc.quizQuestions[qc.currentQuestion].QuestionOrder)"> {{answer.Text}}
+                        <input type="checkbox" ng-model="qc.passedQuiz.UserAnswers[qc.currentQuestion].Answers[$index]" ng-true-value="{{answer.Id}}" name="answersGroup" ng-false-value="null" ng-click="qc.setUserMultipleChoice(qc.currentQuestion, qc.quizQuestions[qc.currentQuestion].Id, qc.passedQuiz.UserAnswers[qc.currentQuestion].Answers, qc.quizQuestions[qc.currentQuestion].IsAutomatic, qc.quizQuestions[qc.currentQuestion].QuizBlock, qc.quizQuestions[qc.currentQuestion].QuestionOrder)"> {{answer.Text}}
                     </label>
                 </li>
 
