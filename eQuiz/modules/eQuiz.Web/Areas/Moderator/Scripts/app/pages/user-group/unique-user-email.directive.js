@@ -18,14 +18,12 @@
                 var inputNgElement = angular.element(inputElement);
                 var inputName = inputNgElement.attr('name');
                 var messagesBlock = inputNgElement.next();
-             
+
                 function callback(data) {
                     formControl.Email.$setValidity('nonUniqueEmail', data);
                     element.toggleClass('has-error', formControl[inputName].$invalid);
                     messagesBlock.toggleClass('hide', formControl[inputName].$valid);
                 }
-
-                console.log('user ', scope.user);
 
                 function checkValidAfterAddedUser() {
                     var amountSame = 0;
@@ -45,11 +43,11 @@
 
                             callback(true);
                         }
-                    });                                                                               
+                    });
                 }
-              //  checkValidAfterAddedUser();
+                //  checkValidAfterAddedUser();
 
-                inputNgElement.bind('blur', function() {
+                inputNgElement.bind('blur', function () {
                     checkValidAfterAddedUser();
                 });
             }
