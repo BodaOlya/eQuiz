@@ -70,16 +70,40 @@ namespace eQuiz.Web.Areas.Student.Controllers
         {
             try
             {
-                QuizPass quizPassToInsert = new QuizPass
+                // Because duration is in minutes.
+                int timeLeft = duration * 60;
+                var lastPassedQuiz = _repository.Get<QuizPass>(q => q.QuizId == id
+                                                                && q.Quiz.TimeLimitMinutes == duration
+                                                                && q.StartTime.AddMinutes(duration) > DateTime.UtcNow)
+                                                                .Select(q => new
+                                                                {
+                                                                    Id = q.Id,
+                                                                    QuizId = q.QuizId,
+                                                                    UserId = q.UserId,
+                                                                    StartTime = q.StartTime,
+                                                                    FinishTime = q.FinishTime
+                                                                })
+                                                                .ToList()
+                                                                .LastOrDefault();
+
+                if (lastPassedQuiz != null && lastPassedQuiz.FinishTime == null)
                 {
-                    QuizId = id,
-                    UserId = 1,//TODO will be fixed after authentification
-                    StartTime = DateTime.UtcNow,
-                    FinishTime = null
-                };
-                _repository.Insert<QuizPass>(quizPassToInsert);
-                var quizPassId = quizPassToInsert.Id;
-                TempData["doc"] = quizPassToInsert.Id;
+                    timeLeft = (int)(lastPassedQuiz.StartTime.AddMinutes(duration) - DateTime.UtcNow).TotalSeconds;
+                }
+                else if (lastPassedQuiz == null || (lastPassedQuiz != null && lastPassedQuiz.FinishTime != null))
+                {
+                    QuizPass quizPassToInsert = new QuizPass
+                    {
+                        QuizId = id,
+                        UserId = 1,//TODO will be fixed after authentification
+                        StartTime = DateTime.UtcNow,
+                        FinishTime = null
+                    };
+
+                    _repository.Insert<QuizPass>(quizPassToInsert);
+                    var quizPassId = quizPassToInsert.Id;
+                    TempData["doc"] = quizPassToInsert.Id;
+                }
 
                 var quizInfo = _repository.Get<QuizQuestion>(q => q.QuizVariant.QuizId == id && q.QuizBlock.Quiz.TimeLimitMinutes == duration,
                                                                  q => q.Question,
@@ -87,25 +111,25 @@ namespace eQuiz.Web.Areas.Student.Controllers
                                                                  q => q.Question.QuestionAnswers,
                                                                  q => q.QuizBlock.Quiz);
                 var quizInfoList = quizInfo
-                                            .Select(q => new
-                                            {
-                                                Id = q.Question.Id,
-                                                Text = q.Question.QuestionText,
-                                                IsAutomatic = q.Question.QuestionType.IsAutomatic,
-                                                QuestionType = q.Question.QuestionType.TypeName,
-                                                Answers = q.Question.QuestionAnswers.Select(a => new
-                                                {
-                                                    Id = a.Id,
-                                                    Text = _repository.GetSingle<Answer>(ans => ans.Id == a.Id).AnswerText
-                                                }),
-                                                QuizBlock = q.QuizBlockId,
-                                                QuestionOrder = q.QuestionOrder,
-                                                QuizPassId = quizPassId
-                                            })
-                                            .OrderBy(q => q.QuestionOrder)
-                                            .ToList();
+                                    .Select(q => new
+                                    {
+                                        Id = q.Question.Id,
+                                        Text = q.Question.QuestionText,
+                                        IsAutomatic = q.Question.QuestionType.IsAutomatic,
+                                        QuestionType = q.Question.QuestionType.TypeName,
+                                        Answers = q.Question.QuestionAnswers.Select(a => new
+                                        {
+                                            Id = a.Id,
+                                            Text = _repository.GetSingle<Answer>(ans => ans.Id == a.Id).AnswerText
+                                        }),
+                                        QuizBlock = q.QuizBlockId,
+                                        QuestionOrder = q.QuestionOrder,
+                                        QuizPassId = id
+                                    })
+                                    .OrderBy(q => q.QuestionOrder)
+                                    .ToList();
 
-                return Json(quizInfoList, JsonRequestBehavior.AllowGet);
+                return Json(new { remainingTime = timeLeft, questions = quizInfoList }, JsonRequestBehavior.AllowGet);
             }
             catch (DbUpdateException)
             {
@@ -115,7 +139,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
             {
                 return Json("Exception", JsonRequestBehavior.AllowGet);
             }
-           
+
 
         }
 
@@ -356,7 +380,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
 
         public void SetQuizFinishTime(int quizPassId)
         {
-            var quizPassWithFinishTime = _repository.GetSingle<QuizPass>(qp => qp.Id == quizPassId);
+            var quizPassWithFinishTime = _repository.Get<QuizPass>(qp => qp.QuizId == quizPassId).Last();
             quizPassWithFinishTime.FinishTime = DateTime.UtcNow;
             _repository.Update<QuizPass>(quizPassWithFinishTime);
         }

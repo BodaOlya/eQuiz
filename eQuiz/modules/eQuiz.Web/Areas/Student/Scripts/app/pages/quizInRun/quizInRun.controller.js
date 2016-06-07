@@ -57,9 +57,19 @@
                         $location.path("/Dashboard");
                     }
                     else {
-                        vm.quizQuestions = response.data;   
+                        vm.quizQuestions = response.data.questions;   
                         //openPopUpRefreshWarning();
                         vm.passedQuiz.StartDate = new Date(Date.now());
+
+                        //vm.resetTimer();
+                        vm.startTimer();
+                        vm.tMinutes = Math.floor(response.data.remainingTime / 60);
+                        vm.tSeconds = response.data.remainingTime - vm.tMinutes * 60;
+
+                        vm.minutes = vm.tMinutes;
+                        vm.seconds = vm.tSeconds;
+                        
+
                         vm.isLoading = false;
                     }
                 });
@@ -199,7 +209,7 @@
                     vm.minutes = vm.minutes - 1;
                     vm.seconds = 59;
                 } else {
-                    vm.Stop();
+                    vm.stopTimer();
                 }
                 if (vm.minutes <= vm.minutes / 10) {
                     vm.myStyle = {
