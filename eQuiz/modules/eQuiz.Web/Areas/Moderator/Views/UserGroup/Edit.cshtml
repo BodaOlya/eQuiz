@@ -66,7 +66,7 @@
                 <tr ng-form="g.userForm[$index]" ng-repeat="user in g.users | orderBy: g.predicate: g.reverse track by $index" unique-user-email users="g.users" user="user">
                     <td>
                         <div show-error>
-                            <input class="form-control" type="text" ng-model="user.LastName" name="LastName" required />
+                            <input class="form-control" type="text" ng-model="user.LastName" name="LastName" ng-change="g.checkEmail()" required />
                             <div ng-messages="g.userForm[$index].LastName.$error" class="help-block hide">
                                 <p ng-message="required">Last name is required</p>
                             </div>
@@ -74,7 +74,7 @@
                     </td>
                     <td>
                         <div show-error>
-                            <input class="form-control" type="text" ng-model="user.FirstName" name="FirstName" required />
+                            <input class="form-control" type="text" ng-model="user.FirstName" name="FirstName" ng-change="g.checkEmail()" required />
                             <div ng-messages="g.userForm[$index].FirstName.$error" class="help-block hide">
                                 <p ng-message="required">First name is required</p>
                             </div>

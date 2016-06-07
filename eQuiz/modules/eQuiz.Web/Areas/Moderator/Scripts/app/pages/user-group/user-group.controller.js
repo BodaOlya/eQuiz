@@ -28,6 +28,7 @@
         vm.showLoading = showLoading;
         vm.hideLoading = hideLoading;
         vm.revalidateInputs = revalidateInputs;
+        vm.checkEmail = checkEmail;
 
         vm.useImportedData = useImportedData;
 
@@ -57,6 +58,14 @@
             angular.element(inputFirstName).triggerHandler("blur");
             angular.element(inputLastName).triggerHandler("blur");
             angular.element(inputEmail).triggerHandler("blur");
+        }
+
+        function checkEmail() {
+            $timeout(function () {                       
+                var inputEmail = document.getElementsByName('Email');            
+                angular.element(inputEmail).triggerHandler("blur");
+            }, 100);
+            
         }
 
         function sortBy(predicate) {
