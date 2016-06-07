@@ -107,6 +107,9 @@
                 <button class="btn btn-default form-control lightgray" ng-click="g.save()" ng-disabled="!g.canSave()">Save</button>
             </div>
             <div class="col-sm-2">
+                <button class="btn btn-default form-control lightgray" ng-click="g.archive()" ng-disabled="!g.canArchive()">Archive</button>
+            </div>
+            <div class="col-sm-2">
                 @Html.ActionLink(linkText: "Cancel", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-default lightgray" })
             </div>
         </div>

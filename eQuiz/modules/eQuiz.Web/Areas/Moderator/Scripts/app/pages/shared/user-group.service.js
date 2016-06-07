@@ -10,7 +10,8 @@
             getGroup: getGroup,
             save: save,
             isUserValid: isUserValid,
-            isNameUnique: isNameUnique
+            isNameUnique: isNameUnique,
+            getStates: getStates
         };
 
         function get() {
@@ -41,6 +42,10 @@
             else {
                 return $http.get('/moderator/usergroup/isnameunique?name=' + escape(name));
             }
+        }
+
+        function getStates() {
+            return $http.get("/moderator/usergroup/getstates");
         }
     };
 })();

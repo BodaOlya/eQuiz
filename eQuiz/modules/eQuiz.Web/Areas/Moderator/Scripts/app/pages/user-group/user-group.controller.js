@@ -16,6 +16,7 @@
         vm.successMessageVisible = false;
         vm.loadingVisible = false;
         vm.regEx = /^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
+        vm.states = [];
 
         vm.sortBy = sortBy;
         vm.showOrderArrow = showOrderArrow;
@@ -32,9 +33,16 @@
 
         vm.useImportedData = useImportedData;
 
+        vm.archive = archive;
+        vm.canArchive = canArchive;
+
         activate();
 
         function activate() {
+            userGroupService.getStates().then(function (data) {
+                vm.states = data.data;
+            });
+
             if ($location.search().id) {
                 vm.showLoading();
                 userGroupService.getGroup($location.search().id).then(function (data) {
@@ -140,6 +148,21 @@
         }
         function hideLoading() {
             vm.loadingVisible = false;
+        }
+
+        function archive() {
+            vm.group.UserGroupStateId = vm.states.filter(function (item) {
+                return item.Name == "Archived";
+            })[0].Id;
+            vm.save();
+        }
+
+        function canArchive() {
+            var archivedState = vm.states.filter(function (item) {
+                return item.Name == "Archived";
+            })[0];
+
+            return archivedState ? vm.canSave() && vm.group.Id && vm.group.UserGroupStateId != archivedState.Id : false;
         }
     };
 

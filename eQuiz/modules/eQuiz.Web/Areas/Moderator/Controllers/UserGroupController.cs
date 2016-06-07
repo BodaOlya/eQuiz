@@ -178,12 +178,14 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 }
                 userGroupId = existedUserGroup.Id;
                 existedUserGroup.Name = userGroup.Name;
+                existedUserGroup.UserGroupStateId = userGroup.UserGroupStateId;
+                existedUserGroup.UserGroupState = null;
                 _repository.Update<UserGroup>(existedUserGroup);
                 DeleteUsersFromGroupIfExist(userGroupId, users);
             }
             else
             {
-                userGroup.UserGroupStateId = 1;
+                userGroup.UserGroupStateId = _repository.GetSingle<UserGroupState>(x => x.Name == "Active").Id;
                 userGroup.CreatedByUserId = 1; //temporary
                 userGroup.CreatedDate = DateTime.Now;
                 _repository.Insert<UserGroup>(userGroup);
@@ -202,6 +204,21 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         {
             bool isValid = ValidateUser(firstName, lastName, email);
             return Json(isValid, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult GetStates()
+        {
+            var states = _repository.Get<UserGroupState>().ToList();
+
+            var minStates = new ArrayList();
+
+            foreach (var state in states)
+            {
+                minStates.Add(GetUserGroupStateForSerialization(state));
+            }
+
+            return Json(minStates, JsonRequestBehavior.AllowGet);
         }
 
         #endregion
@@ -340,6 +357,17 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             };
 
             return minUser;
+        }
+
+        private object GetUserGroupStateForSerialization(UserGroupState state)
+        {
+            var minState = new
+            {
+                Id = state.Id,
+                Name = state.Name
+            };
+
+            return minState;
         }
 
         #endregion
