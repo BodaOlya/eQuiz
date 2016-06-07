@@ -78,12 +78,12 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 }
                 else
                 {
-                    LockQuiz((int)id, 1, now);
+                    latestChange = LockQuiz((int)id, 1, now);
                 }
             }
             else
             {
-                LockQuiz((int)id, 1, now);
+                latestChange = LockQuiz((int)id, 1, now);
             }
 
             Quiz quiz = _repository.GetSingle<Quiz>(q => q.Id == id, r => r.UserGroup, s => s.QuizState);
