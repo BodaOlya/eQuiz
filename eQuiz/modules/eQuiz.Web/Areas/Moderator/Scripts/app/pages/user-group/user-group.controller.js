@@ -77,6 +77,9 @@
         function deleteUser(user) {
             var userIndex = vm.users.indexOf(user);
             vm.users.splice(userIndex, 1);
+            $timeout(function () {
+                vm.revalidateInputs();
+            }, 1000);
         };
 
         function addUser() {
