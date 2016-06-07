@@ -183,6 +183,9 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             }
             else
             {
+                userGroup.UserGroupStateId = 1;
+                userGroup.CreatedByUserId = 1; //temporary
+                userGroup.CreatedDate = DateTime.Now;
                 _repository.Insert<UserGroup>(userGroup);
                 var id = _repository.GetSingle<UserGroup>(g => g.Name == userGroup.Name).Id;
                 userGroupId = id;
@@ -295,6 +298,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                     }
                     else
                     {
+                        currentUser.Phone = currentUser.Phone ?? "";
                         _repository.Insert<User>(currentUser);
                         var userId = _repository.GetSingle<User>(x => x.Email == currentUser.Email).Id;
                         _repository.Insert<UserToUserGroup>(new UserToUserGroup { UserId = userId, GroupId = userGroupId });
@@ -316,7 +320,10 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             var minGroup = new
             {
                 Id = group.Id,
-                Name = group.Name
+                UserGroupStateId = group.UserGroupStateId,
+                CreatedByUserId = group.CreatedByUserId,
+                Name = group.Name,
+                CreatedDate = group.CreatedDate.ToString("yyyy-MM-ddTHH:mm:ss")
             };
 
             return minGroup;
