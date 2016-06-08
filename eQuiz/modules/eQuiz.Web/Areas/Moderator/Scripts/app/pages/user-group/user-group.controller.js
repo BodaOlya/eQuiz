@@ -15,7 +15,7 @@
         vm.errorMessageVisible = false;
         vm.successMessageVisible = false;
         vm.loadingVisible = false;
-        vm.regEx = /^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
+        vm.regEx = /^[_A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,4})$/;
         vm.states = [];
 
         vm.sortBy = sortBy;
@@ -61,11 +61,11 @@
 
         function revalidateInputs() {
             var inputFirstName = document.getElementsByName('FirstName');
-            var inputLastName = document.getElementsByName('LastName');
-            var inputEmail = document.getElementsByName('Email');
+            var inputLastName = document.getElementsByName('LastName');            
+            var inputEmail = document.getElementsByName('Email');                      
             angular.element(inputFirstName).triggerHandler("blur");
-            angular.element(inputLastName).triggerHandler("blur");
-            angular.element(inputEmail).triggerHandler("blur");
+            angular.element(inputLastName).triggerHandler("blur");            
+            angular.element(inputEmail).triggerHandler("blur");            
         }
 
         function checkEmail() {
@@ -79,6 +79,18 @@
         function sortBy(predicate) {
             vm.reverse = (vm.predicate === predicate) ? !vm.reverse : false;
             vm.predicate = predicate;
+            
+            vm.users.sort(function (a, b) {
+                var aElement = angular.isUndefined(a[predicate])? "": a[predicate].toLowerCase();
+                var bElement = angular.isUndefined(b[predicate])? "": b[predicate].toLowerCase();
+                                
+                if (aElement < bElement)
+                    return vm.reverse ? 1 : -1;
+                if (aElement > bElement)
+                    return vm.reverse ? -1 : 1;
+                return 0;
+            });
+            
             $timeout(function () {
                 vm.revalidateInputs();
             }, 1000);
