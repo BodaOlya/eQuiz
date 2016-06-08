@@ -164,6 +164,7 @@
 
             modalInstance.result.then(function () {               
                 localStorage.removeItem('passQuiz' + vm.quizId);
+                localStorage.removeItem('currentQuestion' + vm.quizId);
                 vm.sendDataToServer();
                 setFinishTime(vm.quizQuestions[vm.currentQuestion].QuizPassId);
                 vm.resetTimer();
