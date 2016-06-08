@@ -94,7 +94,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
             var userGroupesTotal = 0;
 
-            if ((selectedStatus != "Active") && (selectedStatus != "Archive"))
+            if ((selectedStatus != "Active") && (selectedStatus != "Archived"))
             {
                 selectedStatus = null;
             }
