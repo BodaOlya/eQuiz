@@ -356,21 +356,12 @@ input[type="button"] {
   }
 }
 
-#customConfirm {
+.notification {
     text-align: center;
     width: 350px;
     height: 150px;
 }
-#customAlert{
-    text-align: center;
-    width: 350px;
-    height: 150px;
-}
-#refreshWarning {
-    text-align: center;
-    width: 350px;
-    height: 150px;
-}
+
 .quiz-table{
     text-align: left;
 }
