@@ -200,13 +200,15 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                     quizzesList = reverse ? quizzesList.OrderByDescending(q => q.CountOfQuestions) : quizzesList.OrderBy(q => q.CountOfQuestions);
                     break;
                 case "StartDate":
-                    quizzesList = reverse ? quizzesList.OrderByDescending(q => q.StartDate) : quizzesList.OrderBy(q => q.StartDate);
+                    quizzesList = reverse ? quizzesList.OrderBy(q => !q.StartDate.HasValue).ThenByDescending(q => q.StartDate) :
+                        quizzesList.OrderBy(q => !q.StartDate.HasValue).ThenBy(q => q.StartDate);
                     break;
                 case "StateName":
                     quizzesList = reverse ? quizzesList.OrderByDescending(q => q.StateName) : quizzesList.OrderBy(q => q.StateName);
                     break;
                 case "Duration":
-                    quizzesList = reverse ? quizzesList.OrderByDescending(q => q.Duration) : quizzesList.OrderBy(q => q.Duration);
+                    quizzesList = reverse ? quizzesList.OrderBy(q => !q.Duration.HasValue).ThenByDescending(q => q.Duration) :
+                        quizzesList.OrderBy(q => !q.Duration.HasValue).ThenBy(q => q.Duration);
                     break;
                 default:
                     quizzesList = reverse ? quizzesList.OrderByDescending(q => q.Name) : quizzesList.OrderBy(q => q.Name);
