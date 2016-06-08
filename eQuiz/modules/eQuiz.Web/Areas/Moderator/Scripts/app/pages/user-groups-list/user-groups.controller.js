@@ -60,7 +60,7 @@
         };
 
         //for dropdown menu
-        vm.statuses = ['All', 'Active', 'Archive'];
+        vm.statuses = ['All', 'Active', 'Archived'];
 
         function changedValue(item) {
             vm.pagingInfo.selectedStatus = item;

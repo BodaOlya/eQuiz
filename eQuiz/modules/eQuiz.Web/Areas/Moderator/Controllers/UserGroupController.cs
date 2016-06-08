@@ -125,7 +125,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                                   CreatedBy = "Moderator 1",
                                   StateName = grouped.Key.ugStateName
                               }).Where(item => (searchText == null || item.Name.ToLower().Contains(searchText.ToLower())) &&
-                                                  (item.StateName == "Active" || item.StateName == "Archived" || item.StateName == "Scheduled") &&
+                                                  (item.StateName == "Active" || item.StateName == "Archived") &&
                                                   (selectedStatus == null || item.StateName == selectedStatus))
                                             .OrderBy(q => q.Name);
 
