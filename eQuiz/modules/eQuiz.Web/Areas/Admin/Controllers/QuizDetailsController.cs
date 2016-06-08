@@ -41,11 +41,12 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var userAnswerScores = _repository.Get<UserAnswerScore>();
             var quizQuestions = _repository.Get<QuizQuestion>();
 
+            int questionCount = (int)_repository.GetSingle<QuizBlock>(qb => qb.QuizId == id).QuestionCount;
+
             var query = from u in users
                         join qp in quizPasses on u.Id equals qp.UserId
                         where qp.QuizId == id
                         join qs in quizScores on qp.Id equals qs.QuizPassId
-                        join qb in quizBlock on qp.QuizId equals qb.QuizId
                         join qpq in quizPassQuestions on qp.Id equals qpq.QuizPassId
                         join uas in userAnswerScores on qpq.Id equals uas.QuizPassQuestionId 
                         group new { u, qp, qs, qpq, uas} by u.Id into changed
@@ -60,7 +61,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                             questionDetails = new {
                                 passed = changed.Count(ch => ch.uas.Score > 0),
                                 notPassed = changed.Count(ch => ch.uas.Score == 0),
-                                inVerification = changed.Count(ch => ch.uas.Score == 0)
+                                inVerification = questionCount - changed.Count(ch => ch.uas.Score > 0) - changed.Count(ch => ch.uas.Score == 0)
                             },
                         };
 
