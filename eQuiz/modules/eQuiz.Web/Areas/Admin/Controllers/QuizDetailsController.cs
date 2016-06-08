@@ -95,6 +95,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                         group new { q, ug, qq, qp } by qp.Id into changed
                         select new
                         {
+                            quizId = changed.Select(ch => ch.q.Id).Distinct(),
                             quizName = changed.Select(ch => ch.q.Name).Distinct(),
                             groupName = changed.Select(ch => ch.ug.Name).Distinct(),
                             quizScore = changed.Sum(ch => ch.qq.QuestionScore),

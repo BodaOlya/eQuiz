@@ -16,7 +16,7 @@
         vm.resultsCount = [10, 25, 50, 100];
         vm.tablePage = 0;
         vm.linkToProfile = "Index/Student?Id=";
-        vm.linkToQuizRewiew = "Index/Student?Id=";
+        vm.linkToQuizRewiew = "Index/Quiz?Student=";
         vm.contentsToExport = []; // Contains data for exporting into excel file
         vm.excelPath = 'D:/name.xls'; // Default path and name for excel file
 
@@ -51,6 +51,7 @@
             
 
             vm.quizInfo.forEach(function (currVal, index, array) {
+                currVal.quizId = currVal.quizId.toString();
                 currVal.quizName = currVal.quizName.toString();
                 currVal.groupName = currVal.groupName.toString();
             });
@@ -119,7 +120,7 @@
         };
 
         vm.setLinkToQuiz = function (studentId) {
-            vm.linkToQuizRewiew += studentId + "#Quizzes";
+            vm.linkToQuizRewiew += studentId + "&Quiz=" + vm.quizInfo[0].quizId;
         };
 
         vm.numberOfPages = function () {
