@@ -57,7 +57,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                             //student = u.FirstName + " " + u.LastName,
                             email = changed.Select(ch => ch.u.Email).Distinct(),
                             studentScore = changed.Select(ch => ch.qs.PassScore).Distinct(),
-                            //quizStatus = changed.Count(ch => ch.uas.Score > 0) < changed.Count()/2 ? "Not Passed" : "Passed",
+                            quizStatus = changed.Count(ch => ch.uas.Score >= 0) == questionCount ? "Passed" : "In Verification",
                             questionDetails = new {
                                 passed = changed.Count(ch => ch.uas.Score > 0),
                                 notPassed = changed.Count(ch => ch.uas.Score == 0),
@@ -95,6 +95,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                         group new { q, ug, qq, qp } by qp.Id into changed
                         select new
                         {
+                            quizId = changed.Select(ch => ch.q.Id).Distinct(),
                             quizName = changed.Select(ch => ch.q.Name).Distinct(),
                             groupName = changed.Select(ch => ch.ug.Name).Distinct(),
                             quizScore = changed.Sum(ch => ch.qq.QuestionScore),

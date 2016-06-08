@@ -17,6 +17,8 @@
         vm.quiz = getQuizTests;   
         vm.selectedStatuses = [];
         vm.statusList = [{ id: 0, name: "In Verification" }, { id: 1, name: "Passed" }, { id: 2, name: "Not Passed" }];
+        $scope.showNotification = false;
+        $scope.showWarning = false;
 
         vm.countStats = function () {
             vm.passed = 0;
@@ -83,12 +85,16 @@
         vm.saveQuizReview = function () {
             quizReviewDataService.saveQuizReview(vm.quiz);
             vm.saveIsDisabled = true;
+            $scope.showNotifyPopUp('Quiz data was sucessfully saved!')
+            $timeout($scope.closePopUp, 5000);
         }
 
         vm.finalizeQuizReview = function () {
             vm.quiz.isFinalized = true;
             quizReviewDataService.finalizeQuizReview(vm.quiz);
             vm.isFinalized = true;
+            $scope.showNotifyPopUp('Quiz was sucessfully finalized!')
+            $timeout($scope.closePopUp, 5000);
         }
 
 

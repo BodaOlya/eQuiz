@@ -160,9 +160,15 @@
 
         vm.saveProfile = function () {
             studentDataService.saveProfileInfo(vm.studentInfo.id, vm.studentInfo.firstName, vm.studentInfo.lastName, vm.studentInfo.phone)
+            .success(function (res) {
+                $scope.showNotifyPopUp('Profile data was sucessfully saved!')
+                $timeout($scope.closePopUp, 5000);
+            })
+            .error(function (res) {
+                $scope.showNotifyPopUp('Error: profile data was not saved!')
+                $timeout($scope.closePopUp, 5000);
+            });
             vm.modelChanged = false;
-            $scope.showNotifyPopUp('Profile data was sucessfully saved!')
-            $timeout($scope.closePopUp, 2000);
         };
 
         vm.cancelProfile = function () {
@@ -176,11 +182,19 @@
         };
 
         vm.addComment = function () {
-                studentDataService.addComment(vm.studentInfo.id, 1, vm.newComment.text).then(activate);
+            studentDataService.addComment(vm.studentInfo.id, 1, vm.newComment.text)
+            .success(function (res) {
+                $scope.showNotifyPopUp("New comment was successfully added!");
+                $timeout($scope.closePopUp, 5000);
+                activate();
+            })
+            .error(function (res) {
+                $scope.showNotifyPopUp("Error: new comment was not saved!");
+                $timeout($scope.closePopUp, 5000);
+            });
                 vm.toggleNewCommentFrame();
                 vm.studentComments = sortByDate(vm.studentComments);
-                $scope.showNotifyPopUp("New comment was successfully added!");
-                $timeout($scope.closePopUp, 2000);
+
                 
         };
 

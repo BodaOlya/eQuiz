@@ -1101,13 +1101,14 @@ thead, th, td {
     margin-left: 40px;
 }
 
-    .user-group h2 {
+.user-group h2 {
         font-size: 2em;
         margin-bottom: 40px;
         font-weight: bold;
-    }
+        margin-left: 40px;
+}
 
-.user-group-name label {
+.user-group label {
     font-size: 1em;
 }
 
@@ -1137,12 +1138,6 @@ thead, th, td {
 .user-group .table-quizzes input {
     width: 90%;
 }
-
-.user-group .error-block {
-    display: block;
-    color: #a94442;
-}
-
 
 /*--------Styles form pagination--------*/
 

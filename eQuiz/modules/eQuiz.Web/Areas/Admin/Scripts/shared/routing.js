@@ -4,6 +4,18 @@
         .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
             $routeProvider
                 .when('/', {
+                    templateUrl: '/Areas/Admin/Scripts/quizzes.html',
+                    controller: 'QuizzesController',
+                    controllerAs: 'qc',
+                    resolve: {
+                    quizzesList: function (quizzesDataService) {
+                        return quizzesDataService.getQuizzes().then(function (respond) {
+                        return respond.data;
+                    })
+               }
+               }
+               })
+                .when('/Index/Students', {
                     templateUrl: '/Areas/Admin/Scripts/review.html',
                     controller: 'ReviewController',
                     controllerAs: 'rc',
@@ -91,18 +103,6 @@
                 //        }
                 //    }
                 //})
-                .when('/Index/Quizzes', {
-                    templateUrl: '/Areas/Admin/Scripts/quizzes.html',
-                    controller: 'QuizzesController',
-                    controllerAs: 'qc',
-                    resolve: {
-                        quizzesList: function (quizzesDataService) {
-                            return quizzesDataService.getQuizzes().then(function (respond) {
-                                return respond.data;
-                            })
-                        }
-                    }
-                })
                 .otherwise({ redirectTo: '/' });
 
             $locationProvider.html5Mode(true);

@@ -21,7 +21,7 @@
         activate();
 
         function activate() {
-            userGroupService.get().then(function (data) {
+            userGroupService.getActiveUserGroups().then(function (data) {
                 vm.model.userGroups = data.data;
             });
 
