@@ -45,6 +45,8 @@
         vm.resultsCount = [10, 25, 50, 100];
         vm.tablePage = 0;
         vm.resultsPerPage = 10;
+        vm.commentsPage = 0;
+        vm.resultsPerCommentsPage = 10;
 
         function activate() {
             studentDataService.getStudentInfo($location.search().Id).then(function (response) {
@@ -56,7 +58,8 @@
                 return vm.studentQuizzes;
             });
             studentDataService.getStudentComments($location.search().Id).then(function (response) {
-                    vm.studentComments = response.data;
+                vm.studentComments = response.data;
+                vm.studentComments = sortByDate(vm.studentComments);
                     return vm.studentComments;
                 });
 
@@ -71,12 +74,21 @@
             return Math.ceil(vm.studentQuizzes.length / vm.resultsPerPage);
         };
 
+        vm.numberOfCommentsPages = function () {
+            return Math.ceil(vm.studentComments.length / vm.resultsPerCommentsPage);
+        };
+
         vm.getNumber = function (num) {
             return new Array(num);
         };
 
         vm.goToPage = function (page) {
             vm.tablePage = page;
+        };
+
+
+        vm.goToCommentsPage = function (page) {
+            vm.commentsPage = page;
         };
 
         function generatePredicate() {
@@ -186,7 +198,7 @@
             .success(function (res) {
                 $scope.showNotifyPopUp("New comment was successfully added!");
                 $timeout($scope.closePopUp, 5000);
-                activate();
+                activate();          
             })
             .error(function (res) {
                 $scope.showNotifyPopUp("Error: new comment was not saved!");

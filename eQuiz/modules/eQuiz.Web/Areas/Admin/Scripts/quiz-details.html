@@ -30,7 +30,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="c in qc.contents = (qc.studentsFiltered = (qc.students | filter: {student:qc.search}) | startFrom: qc.tablePage*qc.resultsPerPage | limitTo:qc.resultsPerPage)" style="height: 50px">
+                <tr ng-repeat="c in qc.contents = (qc.quizzesFiltered = (qc.students | filter: {student:qc.search}) | startFrom: qc.tablePage*qc.resultsPerPage | limitTo:qc.resultsPerPage)" style="height: 50px">
                     <td><a href="#" ng-show="qc.exportShow" ng-click="qc.addOrRemoveFromExport(c)">{{qc.singleExportToDo(c)}}</a></td>
                     <td><a href="{{qc.linkToProfile}}" class="link" ng-click="qc.setLink(c.id);" ng-bind-html="c.student | highlight: qc.search">{{c.student}}</a></td>
                     <td>{{c.studentScore}} / {{qc.quizInfo[0].quizScore}} </td>
