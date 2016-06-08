@@ -112,9 +112,17 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                               join q in quizzes on ug.Id equals q.GroupId into qOuter
                               from quiz in qOuter.DefaultIfEmpty()
                               join ugs in userGroupStates on ug.UserGroupStateId equals ugs.Id
-                              group new { ug, user, quiz, ugs }
-                              by new { ugId = ug.Id, ugName = ug.Name, ugCreatedDate = ug.CreatedDate, ugStateName = ugs.Name }
-                         into grouped
+                              join uc in users on ug.CreatedByUserId equals uc.Id
+                              group new { ug, user, quiz, ugs, uc }
+                              by new
+                              {
+                                  ugId = ug.Id,
+                                  ugName = ug.Name,
+                                  ugCreatedBy = string.Format("{0} {1} {2}", uc.LastName, uc.FirstName, uc.FatheName),
+                                  ugCreatedDate = ug.CreatedDate,
+                                  ugStateName = ugs.Name
+                              }
+                              into grouped
                               select new UserGroupsViewModel
                               {
                                   Id = grouped.Key.ugId,
@@ -122,7 +130,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                                   CountOfStudents = grouped.Where(g => g.user != null).Select(g => g.user.Id).Distinct().Count(),
                                   CountOfQuizzes = grouped.Where(g => g.quiz != null).Select(g => g.quiz.Id).Distinct().Count(),
                                   CreatedDate = grouped.Key.ugCreatedDate,
-                                  CreatedBy = "Moderator 1",
+                                  CreatedBy = grouped.Key.ugCreatedBy,
                                   StateName = grouped.Key.ugStateName
                               }).Where(item => (searchText == null || item.Name.ToLower().Contains(searchText.ToLower())) &&
                                                   (item.StateName == "Active" || item.StateName == "Archived") &&
@@ -162,7 +170,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return Json(new { UserGroups = userGroupsList, UserGroupsTotal = userGroupesTotal }, JsonRequestBehavior.AllowGet);
         }
 
-       
+
 
         public ActionResult Create()
         {
@@ -205,7 +213,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return RedirectToAction("GetUserGroup", new { id = userGroupId });
         }
 
-       
+
 
         [HttpGet]
         public ActionResult IsUserValid(string firstName, string lastName, string email)
