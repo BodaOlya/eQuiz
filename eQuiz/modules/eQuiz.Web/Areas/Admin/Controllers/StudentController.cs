@@ -104,7 +104,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                         where uq.UserId == id
                         select new QuizInfo
                         {
-                            id = q.Id,
+                            id = uq.Id,
                             name = q.Name,
                             state = "Passed",
                             questions = (int)qb.QuestionCount,
