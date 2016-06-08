@@ -37,8 +37,8 @@
         </span>
     </div>
 
-    <div class="spacing">  <!--| questionStatusFilter:ReviewCtrl.selectedStatuses-->
-        <div ng-repeat="item in filtered = (ReviewCtrl.quiz.QuestionText)" ng-cloak>
+    <div class="spacing">  <!--.QuestionText | questionStatusFilter:ReviewCtrl.selectedStatuses-->
+        <div ng-repeat="item in filtered = (ReviewCtrl.quiz)" ng-cloak>
             <div ng-if="item.Type == 'Text'">
                 <div>
                     <p> <b>#{{$index + 1}}</b> {{item.QuestionText}} </p>
