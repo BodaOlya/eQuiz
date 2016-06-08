@@ -323,15 +323,17 @@ namespace eQuiz.Web.Areas.Student.Controllers
                    
 
                     var lastGeneratedQuizPassQuestionId = quizPassQuestionToInsert.Id;
-
-                    var userAnswerToInsert = new UserAnswer
+                    if (passedQuestion.AnswerId != null)
                     {
-                        QuizPassQuestionId = lastGeneratedQuizPassQuestionId,
-                        AnswerTime = passedQuestion.AnswerTime,
-                        AnswerId = (int)passedQuestion.AnswerId
-                    };
+                        var userAnswerToInsert = new UserAnswer
+                        {
+                            QuizPassQuestionId = lastGeneratedQuizPassQuestionId,
+                            AnswerTime = passedQuestion.AnswerTime,
+                            AnswerId = (int) passedQuestion.AnswerId
+                        };
 
-                    _repository.Insert<UserAnswer>(userAnswerToInsert);
+                        _repository.Insert<UserAnswer>(userAnswerToInsert);
+                    }
                 }
             }
             else

@@ -103,27 +103,30 @@
 
         vm.sendDataToServer = function () {
 
-            if (vm.passedQuiz.UserAnswers[vm.currentQuestion] !== undefined) {
+            if (vm.passedQuiz.UserAnswers != null && vm.passedQuiz.UserAnswers[vm.currentQuestion] !== undefined) {
                 var answers = null;
-                if (vm.passedQuiz.UserAnswers[vm.currentQuestion].Answers != undefined && vm.passedQuiz.UserAnswers[vm.currentQuestion].Answers != null) {
-                    answers = [];
-                    for (var prop in vm.passedQuiz.UserAnswers[vm.currentQuestion].Answers) {
-                        answers.push(vm.passedQuiz.UserAnswers[vm.currentQuestion].Answers[prop]);
+                if (vm.passedQuiz.UserAnswers[vm.currentQuestion] != null && vm.passedQuiz.UserAnswers[vm.currentQuestion] != undefined) {
+                    if (vm.passedQuiz.UserAnswers[vm.currentQuestion].Answers != undefined && vm.passedQuiz.UserAnswers[vm.currentQuestion].Answers != null) {
+                        answers = [];
+                        for (var prop in vm.passedQuiz.UserAnswers[vm.currentQuestion].Answers) {
+                            answers.push(vm.passedQuiz.UserAnswers[vm.currentQuestion].Answers[prop]);
+                        }
                     }
+
+                    var questionResult = {
+                        QuestionId: vm.quizQuestions[vm.currentQuestion].Id,
+                        QuestionType: vm.quizQuestions[vm.currentQuestion].QuestionType,
+                        QuestionOrder: vm.quizQuestions[vm.currentQuestion].QuestionOrder,
+                        QuizBlock: vm.quizQuestions[vm.currentQuestion].QuizBlock,
+                        QuizPassId: vm.quizQuestions[vm.currentQuestion].QuizPassId,
+                        AnswerId: vm.passedQuiz.UserAnswers[vm.currentQuestion].AnswerId,
+                        AnswerText: vm.passedQuiz.UserAnswers[vm.currentQuestion].AnswerText,
+                        Answers: answers,
+                        AnswerTime: vm.passedQuiz.UserAnswers[vm.currentQuestion].AnswerTime
+                    }
+                    console.log(JSON.stringify(questionResult));
+                    sendQuestionResult(questionResult);
                 }
-                var questionResult = {
-                    QuestionId: vm.quizQuestions[vm.currentQuestion].Id,
-                    QuestionType: vm.quizQuestions[vm.currentQuestion].QuestionType,
-                    QuestionOrder: vm.quizQuestions[vm.currentQuestion].QuestionOrder,
-                    QuizBlock: vm.quizQuestions[vm.currentQuestion].QuizBlock,
-                    QuizPassId: vm.quizQuestions[vm.currentQuestion].QuizPassId,
-                    AnswerId: vm.passedQuiz.UserAnswers[vm.currentQuestion].AnswerId,
-                    AnswerText: vm.passedQuiz.UserAnswers[vm.currentQuestion].AnswerText,
-                    Answers: answers,
-                    AnswerTime: vm.passedQuiz.UserAnswers[vm.currentQuestion].AnswerTime
-                }
-                console.log(JSON.stringify(questionResult));
-                sendQuestionResult(questionResult);
             }
             //vm.passedQuiz.FinishDate = new Date(Date.now());
             //var passedQuiz = vm.passedQuiz;
@@ -156,11 +159,12 @@
                 size: 'sm'
             });
 
-            modalInstance.result.then(function () {
-                localStorage.removeItem('passQuiz' + vm.QuizId);
+            modalInstance.result.then(function () {               
+                localStorage.removeItem('passQuiz' + vm.quizId);
                 vm.sendDataToServer();
                 setFinishTime(vm.quizQuestions[vm.currentQuestion].QuizPassId);
                 vm.resetTimer();
+                trackUserResultService.passedQuiz.UserAnswers = null;
                 $location.path("/Dashboard");
             }, function () {
                 return;
@@ -188,7 +192,6 @@
             if (!vm.quizQuestions[index].isAutomatic) {
                 vm.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
             }
-
             openPopUpConfirm();
         };
 
