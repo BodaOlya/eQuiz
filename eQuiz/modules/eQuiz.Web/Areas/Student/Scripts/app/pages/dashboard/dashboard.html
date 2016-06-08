@@ -8,10 +8,10 @@
 
     <table id='quizzesTable' ng-if="!dc.isLoading">
         <caption><h2>Quizzes</h2></caption>
-        <caption style="text-align: left;">
+        <caption class="dashboard">
             <input type="search" ng-model="dc.searchInfo.searchText" ng-change="dc.search(page)" class="search-by-name" placeholder="Search by name">
-            <input type="checkbox" ng-model="dc.searchInfo.InternetAccess" ng-change="dc.search(page)" ng-false-value="undefined" style="width:15px;height:15px;vertical-align: bottom">
-            <span class="checkboxtext" style="vertical-align: bottom">
+            <input type="checkbox" ng-model="dc.searchInfo.InternetAccess" ng-change="dc.search(page)" ng-false-value="undefined">
+            <span class="search-by-name">
                 Show only active quizzes
             </span>
         </caption>

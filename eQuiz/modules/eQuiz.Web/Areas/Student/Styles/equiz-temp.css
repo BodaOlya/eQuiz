@@ -365,13 +365,7 @@ input[type="button"] {
 .quiz-table{
     text-align: left;
 }
-.search-by-name {
-    width:20em;
-    height:25px;
-    font-size:11pt; 
-    cursor: auto;
-    
-}
+
 
 /*Pagination*/
 ul.pagination {
@@ -401,4 +395,25 @@ ul.pagination li a.active {
 
 ul.pagination li a:hover:not(.active) {
     background-color: #ddd;
+}
+
+
+.search-by-name {
+    width:20em;
+    height:25px;
+    font-size:11pt; 
+    cursor: auto;
+    
+}
+
+caption.dashboard{
+    text-align: left;
+}
+
+caption.dashboard input  {
+    vertical-align: bottom;
+}
+caption.dashboard span {
+    vertical-align: bottom;
+    font-size:14pt;
 }
