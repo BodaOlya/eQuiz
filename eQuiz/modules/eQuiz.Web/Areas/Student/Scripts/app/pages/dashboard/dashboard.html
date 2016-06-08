@@ -48,7 +48,7 @@
                     {{quiz.TimeLimitMinutes}}
                 </td>
                 <td>
-                    <a href='#/quizInRun/{{quiz.Id}}' ng-if="quiz.InternetAccess" ng-click="dc.setToLocalStorage(quiz.TimeLimitMinutes)">Start</a>
+                    <a href='#/quizInRun/{{quiz.Id}}' ng-if="quiz.InternetAccess" ng-click="dc.setToLocalStorage(quiz.Id, quiz.TimeLimitMinutes)">Start</a>
                     <div ng-if="!quiz.InternetAccess">Inactive</div>
                 </td>
             </tr>

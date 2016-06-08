@@ -21,7 +21,8 @@
 
         vm.isLoading = true;
 
-        vm.setToLocalStorage = function (durationValue) {
+        vm.setToLocalStorage = function (quizId, durationValue) {
+            localStorage.setItem('currentQuestion' + quizId, 0);
             localStorage.setItem('duration', durationValue)
         }
 
