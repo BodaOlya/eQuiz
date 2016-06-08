@@ -6,7 +6,7 @@
     function userGroupService($http) {
 
         return {
-            get: get,
+            getActiveUserGroups: getActiveUserGroups,
             getGroup: getGroup,
             save: save,
             isUserValid: isUserValid,
@@ -14,8 +14,8 @@
             getStates: getStates
         };
 
-        function get() {
-            return $http.get('/moderator/usergroup/get');
+        function getActiveUserGroups() {
+            return $http.get('/moderator/usergroup/getactiveusergroups');
         }
 
         function getGroup(id) {

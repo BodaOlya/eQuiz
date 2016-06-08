@@ -35,9 +35,11 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return View();
         }
 
-        public ActionResult Get()
+        [HttpGet]
+        public ActionResult GetActiveUserGroups()
         {
-            IEnumerable<UserGroup> groups = _repository.Get<UserGroup>();
+            UserGroupState activeState = _repository.GetSingle<UserGroupState>(ugs => ugs.Name == "Active");
+            IEnumerable<UserGroup> groups = _repository.Get<UserGroup>(ug => ug.UserGroupStateId == activeState.Id);
             var minGroups = new ArrayList();
 
             foreach (var group in groups)
