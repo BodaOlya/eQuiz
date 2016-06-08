@@ -46,12 +46,7 @@
                 currVal.student = currVal.student.toString();
                 currVal.email = currVal.email.toString();
                 currVal.studentScore = currVal.studentScore.toString();
-                if(currVal.studentScore < vm.quizInfo[0].quizScore/2) {
-                    currVal.quizStatus = 'Not Passed'
-                }
-                else {
-                    currVal.quizStatus = 'Passed'
-                }
+                currVal.quizStatus = currVal.quizStatus.toString();
             });
             
 

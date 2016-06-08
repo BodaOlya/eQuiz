@@ -57,7 +57,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                             //student = u.FirstName + " " + u.LastName,
                             email = changed.Select(ch => ch.u.Email).Distinct(),
                             studentScore = changed.Select(ch => ch.qs.PassScore).Distinct(),
-                            //quizStatus = changed.Count(ch => ch.uas.Score > 0) < changed.Count()/2 ? "Not Passed" : "Passed",
+                            quizStatus = changed.Count(ch => ch.uas.Score >= 0) == questionCount ? "Passed" : "In Verification",
                             questionDetails = new {
                                 passed = changed.Count(ch => ch.uas.Score > 0),
                                 notPassed = changed.Count(ch => ch.uas.Score == 0),
