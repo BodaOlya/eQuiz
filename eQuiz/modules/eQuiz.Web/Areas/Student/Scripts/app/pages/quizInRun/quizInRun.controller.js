@@ -265,11 +265,16 @@
             }
         };
 
+        // time is running out
         vm.endQuiz = function () {
             vm.sendDataToServer();
             setFinishTime(vm.quizQuestions[vm.currentQuestion].QuizPassId);
             vm.resetTimer();
             openPopUpAlert();
+
+            localStorage.removeItem('passQuiz' + vm.quizId);
+            localStorage.removeItem('currentQuestion' + vm.quizId);
+            trackUserResultService.passedQuiz.UserAnswers = null;
         };
 
         $scope.$on('$destroy', function () {
