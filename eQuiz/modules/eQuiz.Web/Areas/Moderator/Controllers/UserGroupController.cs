@@ -1,5 +1,6 @@
 ﻿using eQuiz.Entities;
 using eQuiz.Repositories.Abstract;
+using eQuiz.Web.Areas.Moderator.Models;
 using eQuiz.Web.Code;
 using Newtonsoft.Json;
 using System;
@@ -89,11 +90,11 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         public ActionResult GetUserGroupsPage(int currentPage = 1, int userGroupsPerPage = 3, string predicate = "Name",
                                             bool reverse = false, string searchText = null, string selectedStatus = null)
         {
-            var res = new List<object>();
+            IEnumerable<UserGroupsViewModel> userGroupsList = null;
 
             var userGroupesTotal = 0;
 
-            if (selectedStatus == "All")
+            if ((selectedStatus != "Active") && (selectedStatus != "Archived"))
             {
                 selectedStatus = null;
             }
@@ -102,56 +103,63 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             var userGroups = _repository.Get<UserGroup>();
             var userToUserGroups = _repository.Get<UserToUserGroup>();
             var quizzes = _repository.Get<Quiz>();
+            var userGroupStates = _repository.Get<UserGroupState>();
 
-            var query = (from ug in userGroups
-                         join uug in userToUserGroups on ug.Id equals uug.GroupId
-                         join u in users on uug.UserId equals u.Id into uOuter
-                         from user in uOuter.DefaultIfEmpty()
-                         join q in quizzes on ug.Id equals q.GroupId into qOuter
-                         from quiz in qOuter.DefaultIfEmpty()
-                         group new { ug, user, quiz } by new { ug.Id, ug.Name } into grouped
-                         select new
-                         {
-                             Id = grouped.Key.Id,
-                             Name = grouped.Key.Name,
-                             CountOfStudents = grouped.Where(g => g.user != null).Select(g => g.user.Id).Distinct().Count(),
-                             CountOfQuizzes = grouped.Where(g => g.quiz != null).Select(g => g.quiz.Id).Distinct().Count(),
-                             StateName = "Active"
-                         }).Where(item => (searchText == null || item.Name.ToLower().Contains(searchText.ToLower())) &&
-                                             (item.StateName == "Active" || item.StateName == "Archived" || item.StateName == "Scheduled") &&
-                                             (selectedStatus == null || item.StateName == selectedStatus))
+            userGroupsList = (from ug in userGroups
+                              join uug in userToUserGroups on ug.Id equals uug.GroupId
+                              join u in users on uug.UserId equals u.Id into uOuter
+                              from user in uOuter.DefaultIfEmpty()
+                              join q in quizzes on ug.Id equals q.GroupId into qOuter
+                              from quiz in qOuter.DefaultIfEmpty()
+                              join ugs in userGroupStates on ug.UserGroupStateId equals ugs.Id
+                              group new { ug, user, quiz, ugs }
+                              by new { ugId = ug.Id, ugName = ug.Name, ugCreatedDate = ug.CreatedDate, ugStateName = ugs.Name }
+                         into grouped
+                              select new UserGroupsViewModel
+                              {
+                                  Id = grouped.Key.ugId,
+                                  Name = grouped.Key.ugName,
+                                  CountOfStudents = grouped.Where(g => g.user != null).Select(g => g.user.Id).Distinct().Count(),
+                                  CountOfQuizzes = grouped.Where(g => g.quiz != null).Select(g => g.quiz.Id).Distinct().Count(),
+                                  CreatedDate = grouped.Key.ugCreatedDate,
+                                  CreatedBy = "Moderator 1",
+                                  StateName = grouped.Key.ugStateName
+                              }).Where(item => (searchText == null || item.Name.ToLower().Contains(searchText.ToLower())) &&
+                                                  (item.StateName == "Active" || item.StateName == "Archived") &&
+                                                  (selectedStatus == null || item.StateName == selectedStatus))
                                             .OrderBy(q => q.Name);
 
-            userGroupesTotal = query.Count();
+            userGroupesTotal = userGroupsList.Count();
 
             switch (predicate)
             {
                 case "Name":
-                    query = reverse ? query.OrderByDescending(q => q.Name) : query.OrderBy(q => q.Name);
+                    userGroupsList = reverse ? userGroupsList.OrderByDescending(q => q.Name) : userGroupsList.OrderBy(q => q.Name);
                     break;
                 case "CountOfStudents":
-                    query = reverse ? query.OrderByDescending(q => q.CountOfStudents) : query.OrderBy(q => q.CountOfStudents);
+                    userGroupsList = reverse ? userGroupsList.OrderByDescending(q => q.CountOfStudents) : userGroupsList.OrderBy(q => q.CountOfStudents);
                     break;
                 case "CountOfQuizzes":
-                    query = reverse ? query.OrderByDescending(q => q.CountOfQuizzes) : query.OrderBy(q => q.CountOfQuizzes);
+                    userGroupsList = reverse ? userGroupsList.OrderByDescending(q => q.CountOfQuizzes) : userGroupsList.OrderBy(q => q.CountOfQuizzes);
                     break;
-                //case "CreatedDate":
-                //    query = reverse ? query.OrderByDescending(q => q.CreatedDate) : query.OrderBy(q => q.CreatedDate);
-                //    break;
-                //case "CreatedBy":
-                //    query = reverse ? query.OrderByDescending(q => q.CreatedBy) : query.OrderBy(q => q.CreatedBy);
-                //    break;
+                case "CreatedDate":
+                    userGroupsList = reverse ? userGroupsList.OrderBy(q => !q.CreatedDate.HasValue).ThenByDescending(q => q.CreatedDate) :
+                        userGroupsList.OrderBy(q => !q.CreatedDate.HasValue).ThenBy(q => q.CreatedDate);
+                    break;
+                case "CreatedBy":
+                    userGroupsList = reverse ? userGroupsList.OrderByDescending(q => q.CreatedBy) : userGroupsList.OrderBy(q => q.CreatedBy);
+                    break;
                 case "StateName":
-                    query = reverse ? query.OrderByDescending(q => q.StateName) : query.OrderBy(q => q.StateName);
+                    userGroupsList = reverse ? userGroupsList.OrderByDescending(q => q.StateName) : userGroupsList.OrderBy(q => q.StateName);
                     break;
                 default:
-                    query = reverse ? query.OrderByDescending(q => q.Name) : query.OrderBy(q => q.Name);
+                    userGroupsList = reverse ? userGroupsList.OrderByDescending(q => q.Name) : userGroupsList.OrderBy(q => q.Name);
                     break;
             }
 
-            res = query.Skip((currentPage - 1) * userGroupsPerPage).Take(userGroupsPerPage).ToList<object>();
+            userGroupsList = userGroupsList.Skip((currentPage - 1) * userGroupsPerPage).Take(userGroupsPerPage).ToList<UserGroupsViewModel>();
 
-            return Json(new { UserGroups = res, UserGroupsTotal = userGroupesTotal }, JsonRequestBehavior.AllowGet);
+            return Json(new { UserGroups = userGroupsList, UserGroupsTotal = userGroupesTotal }, JsonRequestBehavior.AllowGet);
         }
 
        

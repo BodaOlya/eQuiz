@@ -34,7 +34,7 @@
                     </th>
                     <th>
                         <a href="#" ng-click="ug.sortBy('CountOfQuizzes')">
-                            {{ug.showOrderArrow('quizzes')}}Quizzes
+                            {{ug.showOrderArrow('CountOfQuizzes')}}Quizzes
                         </a>
                     </th>
                     <th>
@@ -44,12 +44,12 @@
                     </th>
                     <th>
                         <a href="#" ng-click="ug.sortBy('CreatedBy')">
-                            {{ug.showOrderArrow('Duration')}}Created by
+                            {{ug.showOrderArrow('CreatedBy')}}Created by
                         </a>
                     </th>
                     <th>
                         <a href="#" ng-click="ug.sortBy('StateName')">
-                            {{ug.showOrderArrow('StateName')}}Status
+                            {{ug.showOrderArrow('StateName')}}State
                         </a>
                     </th>
                 </tr>
@@ -59,9 +59,9 @@
                     <td><a ng-href="/moderator/usergroup/edit/#/getusergroup?id={{ugroups.Id}}">{{ ugroups.Name }}</a></td>
                     <td>{{ ugroups.CountOfStudents }}</td>
                     <td>{{ ugroups.CountOfQuizzes }}</td>
-                    <td>20.05.2016</td>
-                    <td>Moderator 1</td>
-                    <td>{{ugroups.StateName}}</td>
+                    <td>{{ ugroups.CreatedDate | ctime | date:"dd-MM-yyyy HH:mm" }}</td>
+                    <td>{{ ugroups.CreatedBy }}</td>
+                    <td>{{ ugroups.StateName }}</td>
                 </tr>
             </tbody>
         </table>

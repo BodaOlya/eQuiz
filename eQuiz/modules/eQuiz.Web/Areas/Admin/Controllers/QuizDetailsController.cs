@@ -41,11 +41,12 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var userAnswerScores = _repository.Get<UserAnswerScore>();
             var quizQuestions = _repository.Get<QuizQuestion>();
 
+            int questionCount = (int)_repository.GetSingle<QuizBlock>(qb => qb.QuizId == id).QuestionCount;
+
             var query = from u in users
                         join qp in quizPasses on u.Id equals qp.UserId
                         where qp.QuizId == id
                         join qs in quizScores on qp.Id equals qs.QuizPassId
-                        join qb in quizBlock on qp.QuizId equals qb.QuizId
                         join qpq in quizPassQuestions on qp.Id equals qpq.QuizPassId
                         join uas in userAnswerScores on qpq.Id equals uas.QuizPassQuestionId 
                         group new { u, qp, qs, qpq, uas} by u.Id into changed
@@ -56,11 +57,11 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                             //student = u.FirstName + " " + u.LastName,
                             email = changed.Select(ch => ch.u.Email).Distinct(),
                             studentScore = changed.Select(ch => ch.qs.PassScore).Distinct(),
-                            //quizStatus = changed.Count(ch => ch.uas.Score > 0) < changed.Count()/2 ? "Not Passed" : "Passed",
+                            quizStatus = changed.Count(ch => ch.uas.Score >= 0) == questionCount ? "Passed" : "In Verification",
                             questionDetails = new {
                                 passed = changed.Count(ch => ch.uas.Score > 0),
                                 notPassed = changed.Count(ch => ch.uas.Score == 0),
-                                inVerification = changed.Count(ch => ch.uas.Score == 0)
+                                inVerification = questionCount - changed.Count(ch => ch.uas.Score > 0) - changed.Count(ch => ch.uas.Score == 0)
                             },
                         };
 
@@ -94,6 +95,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                         group new { q, ug, qq, qp } by qp.Id into changed
                         select new
                         {
+                            quizId = changed.Select(ch => ch.q.Id).Distinct(),
                             quizName = changed.Select(ch => ch.q.Name).Distinct(),
                             groupName = changed.Select(ch => ch.ug.Name).Distinct(),
                             quizScore = changed.Sum(ch => ch.qq.QuestionScore),
