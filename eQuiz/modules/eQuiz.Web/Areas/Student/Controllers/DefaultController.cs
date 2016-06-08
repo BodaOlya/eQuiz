@@ -226,6 +226,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
 
         public void InsertQuestionResult(QuestionResultModel passedQuestion)
         {
+            passedQuestion.AnswerTime = DateTime.UtcNow;
             if (passedQuestion.QuestionType == "Descriptive")
             {
                 if (passedQuestion.AnswerText == null)
@@ -299,14 +300,27 @@ namespace eQuiz.Web.Areas.Student.Controllers
                 }
                 else
                 {
-                    var quizPassQuestionToInsert = new QuizPassQuestion
+                    var quizzPassQuestionToCheck =
+                        _repository.GetSingle<QuizPassQuestion>(el => el.QuizPassId == passedQuestion.QuizPassId
+                                                                      && el.QuestionId == passedQuestion.QuestionId);
+
+                    QuizPassQuestion quizPassQuestionToInsert;
+                    if (quizzPassQuestionToCheck == null)
                     {
-                        QuizPassId = passedQuestion.QuizPassId,
-                        QuestionId = passedQuestion.QuestionId,
-                        QuizBlockId = passedQuestion.QuizBlock,
-                        QuestionOrder = passedQuestion.QuestionOrder
-                    };
-                    _repository.Insert<QuizPassQuestion>(quizPassQuestionToInsert);
+                        quizPassQuestionToInsert = new QuizPassQuestion
+                        {
+                            QuizPassId = passedQuestion.QuizPassId,
+                            QuestionId = passedQuestion.QuestionId,
+                            QuizBlockId = passedQuestion.QuizBlock,
+                            QuestionOrder = passedQuestion.QuestionOrder
+                        };
+                        _repository.Insert<QuizPassQuestion>(quizPassQuestionToInsert);
+                    }
+                    else
+                    {
+                        quizPassQuestionToInsert = quizzPassQuestionToCheck;
+                    }
+                   
 
                     var lastGeneratedQuizPassQuestionId = quizPassQuestionToInsert.Id;
 

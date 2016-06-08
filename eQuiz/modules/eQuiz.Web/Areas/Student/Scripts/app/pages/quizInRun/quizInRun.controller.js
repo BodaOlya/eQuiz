@@ -9,10 +9,10 @@
         vm.quizId = parseInt($routeParams.id);
         vm.quizDuration = localStorage.getItem('duration');
         vm.currentQuestion = 0;
-        vm.passedQuiz = trackUserResultService.passedQuiz;
+        vm.passedQuiz = JSON.parse(localStorage.getItem('passQuiz' + vm.quizId)) || trackUserResultService.passedQuiz;
         vm.passedQuiz.QuizId = vm.quizId;
         vm.windowHeight = $window.innerHeight;
-
+        
         vm.isLoading = false;
 
         //Timer Data
@@ -81,17 +81,24 @@
         };
 
         function setFinishTime(quizPassId) {
+
             quizService.setFinishTime(quizPassId);
         };
 
         vm.setUserSingleChoice = function (index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
             trackUserResultService.setUserAnswers(index, questionId, answerId, isAutomatic, quizBlock, questionOrder);
+
+            localStorage.setItem('passQuiz' + vm.quizId, JSON.stringify(vm.passedQuiz));
         };
         vm.setUserMultipleChoice = function (index, questionId, answerId, isAutomatic, quizBlock, questionOrder) {
             trackUserResultService.setUserMultipleAnswer(index, questionId, answerId, isAutomatic, quizBlock, questionOrder);
+
+            localStorage.setItem('passQuiz' + vm.quizId, JSON.stringify(vm.passedQuiz));
         };
         vm.setUserTextAnswers = function (index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
             trackUserResultService.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
+
+            localStorage.setItem('passQuiz' + vm.quizId, JSON.stringify(vm.passedQuiz));
         };
 
         vm.sendDataToServer = function () {
@@ -150,6 +157,7 @@
             });
 
             modalInstance.result.then(function () {
+                localStorage.removeItem('passQuiz' + vm.QuizId);
                 vm.sendDataToServer();
                 setFinishTime(vm.quizQuestions[vm.currentQuestion].QuizPassId);
                 vm.resetTimer();
