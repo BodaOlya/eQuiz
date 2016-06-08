@@ -24,6 +24,7 @@
                 method: "GET",
                 params: { id: studentId }
             });
+            
             return promise;
         }
 
@@ -43,14 +44,19 @@
             var promise = $http({
                 url: '/Admin/Quizzes/GetStudentQuiz',
                 method: "GET",
-                params: { quizPassId: 1 }
+                params: { quizPassId: quizeId }
             });
 
-            console.log(promise);
             return promise;
         }
 
-        function getGroupAjax() {
+        function getGroupAjax(quizeId) {
+            //var promise = $http({
+            //    url: '/Admin/Quizzes/GetQuizGroup',
+            //    method: "GET",
+            //    params: { quizPassId: quizeId }
+            //});
+
             var promise = {
                 group_name: ".Net 2015"
             };

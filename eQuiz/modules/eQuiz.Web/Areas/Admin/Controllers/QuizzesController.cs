@@ -115,7 +115,6 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-
         [HttpGet]
         public JsonResult GetStudentQuiz(int quizPassId)
         {
@@ -225,6 +224,15 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var ordered = questionsList.OrderBy(q => q.Order).ToList();
 
             return Json(ordered, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetQuizGroup(int quizPassId)
+        {
+            var result = new List<object>();
+
+            
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

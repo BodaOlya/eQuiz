@@ -7,7 +7,7 @@
         var vm = this;
 
         vm.studentInfo = studentInfo;
-        vm.studentQuizzes = studentQuizzes;
+        vm.studentQuizzes = studentQuizzes;        
         vm.studentComments = studentComments;
         $scope.showNotification = false;
         $scope.showWarning = false;

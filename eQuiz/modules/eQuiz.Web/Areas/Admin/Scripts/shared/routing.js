@@ -20,6 +20,11 @@
                     controller: 'QuizReviewController',
                     controllerAs: 'ReviewCtrl',
                     resolve: {
+                        getQuizTests: function (quizReviewDataService, $location) {                            
+                            return quizReviewDataService.getQuiz($location.search().Quiz).then(function (respond) {
+                                return respond.data;
+                            })
+                        },
                         student: function (quizReviewDataService, $location) {
                             return quizReviewDataService.getStudent($location.search().Student).then(function (respond) {
                                 return respond.data;
@@ -27,11 +32,6 @@
                         },
                         //group: function (quizReviewDataService, $location) {
                         //    return quizReviewDataService.getGroup($location.search().Quiz).then(function (respond) {
-                        //        return respond.data;
-                        //    })
-                        //},
-                        //quiz: function (quizReviewDataService, $location) {
-                        //    return quizReviewDataService.getQuiz($location.search().Quiz).then(function (respond) {
                         //        return respond.data;
                         //    })
                         //}
