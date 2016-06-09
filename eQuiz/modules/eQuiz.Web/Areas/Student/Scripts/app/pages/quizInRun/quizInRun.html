@@ -43,11 +43,11 @@
         <table>
             <tr>
                 <td>
-                    <input type="button" value="&laquo Q{{qc.currentQuestion > 0 ? qc.currentQuestion: qc.currentQuestion + 1}}" ng-click="qc.setCurrentQuestion(qc.currentQuestion - 1, qc.currentQuestion, qc.quizQuestions[qc.currentQuestion].Id, qc.quizQuestions[qc.currentQuestion].IsAutomatic, qc.quizQuestions[qc.currentQuestion].QuizBlock, qc.quizQuestions[qc.currentQuestion].QuestionOrder, qc.passedQuiz.UserAnswers[qc.currentQuestion].AnswerText);">
+                    <input type="button" value="&laquo Q{{qc.currentQuestion > 0 ? qc.currentQuestion: +qc.currentQuestion + 1}}" ng-click="qc.setCurrentQuestion(qc.currentQuestion - 1, qc.currentQuestion, qc.quizQuestions[qc.currentQuestion].Id, qc.quizQuestions[qc.currentQuestion].IsAutomatic, qc.quizQuestions[qc.currentQuestion].QuizBlock, qc.quizQuestions[qc.currentQuestion].QuestionOrder, qc.passedQuiz.UserAnswers[qc.currentQuestion].AnswerText);">
                 </td>
                 <td class="empty"></td>
                 <td>
-                    <input type="button" value="Q{{qc.currentQuestion < qc.quizQuestions.length - 1 ? qc.currentQuestion + 2 : qc.currentQuestion + 1}} &raquo" ng-click="qc.setCurrentQuestion(qc.currentQuestion + 1, qc.currentQuestion, qc.quizQuestions[qc.currentQuestion].Id, qc.quizQuestions[qc.currentQuestion].IsAutomatic, qc.quizQuestions[qc.currentQuestion].QuizBlock, qc.quizQuestions[qc.currentQuestion].QuestionOrder, qc.passedQuiz.UserAnswers[qc.currentQuestion].AnswerText)">
+                    <input type="button" value="Q{{qc.currentQuestion < qc.quizQuestions.length - 1 ? +qc.currentQuestion + 2 : +qc.currentQuestion + 1}} &raquo" ng-click="qc.setCurrentQuestion(+qc.currentQuestion + 1, qc.currentQuestion, qc.quizQuestions[qc.currentQuestion].Id, qc.quizQuestions[qc.currentQuestion].IsAutomatic, qc.quizQuestions[qc.currentQuestion].QuizBlock, qc.quizQuestions[qc.currentQuestion].QuestionOrder, qc.passedQuiz.UserAnswers[qc.currentQuestion].AnswerText)">
                 </td>
                 <td class="empty"></td>
                 <td>
