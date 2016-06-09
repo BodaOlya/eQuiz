@@ -40,6 +40,5 @@ namespace eQuiz.Entities
         public virtual ICollection<QuizPassQuestion> QuizPassQuestions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuizQuestion> QuizQuestions { get; set; }
-        public virtual TextAnswer TextAnswer { get; set; }
     }
 }

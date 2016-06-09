@@ -68,8 +68,6 @@
         <EntityTypeShape EntityType="eQuizModel.UserGroupState" Width="2.375" PointX="10.375" PointY="10.875" />
         <AssociationConnector Association="eQuizModel.FK_tblUserGroup_tblUser" />
         <AssociationConnector Association="eQuizModel.FK_tblUserGroup_tblUserGroupState" />
-        <EntityTypeShape EntityType="eQuizModel.TextAnswer" Width="1.5" PointX="8.25" PointY="26.125" />
-        <AssociationConnector Association="eQuizModel.FK_tblTextAnswer_tblQuestion" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
