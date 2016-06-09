@@ -246,7 +246,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Areas\Admin\Views\Default\Index.cshtml" />
-    <Content Include="Areas\Moderator\Views\Quiz\AccessDenied.cshtml" />
     <None Include="Areas\Moderator\Views\Quiz\QuizPreview.cshtml" />
     <Content Include="Areas\Moderator\Views\UserGroup\Edit.cshtml" />
     <Content Include="Areas\Moderator\Views\Quiz\Schedule.cshtml" />
