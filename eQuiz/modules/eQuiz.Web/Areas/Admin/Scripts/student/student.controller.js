@@ -9,8 +9,26 @@
         vm.studentInfo = studentInfo;
         vm.studentQuizzes = studentQuizzes;        
         vm.studentComments = studentComments;
+        var map = { 17: false, 13: false };
         $scope.showNotification = false;
         $scope.showWarning = false;
+
+        vm.addCommentKeyDown = function() {
+            var key = window.event.keyCode;
+            if (key in map) {
+                map[key] = true;
+                if (map[17] && map[13]) {
+                    vm.addComment();
+                }
+            }
+        }
+
+        vm.addCommentKeyUp = function () {
+            var key = window.event.keyCode;
+            if (key in map) {
+                map[key] = false;
+            }
+        };
 
         vm.studentQuizzesHeaders = [
         {
