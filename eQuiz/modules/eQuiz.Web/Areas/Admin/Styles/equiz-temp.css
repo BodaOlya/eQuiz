@@ -258,6 +258,18 @@ button.btn-lightcoral {
     height: 100px;   
 }
 
+.showRightAnswer:hover + textarea{
+    display: block;
+}
+
+.adminHintAnswer {
+    display: none;
+}
+
+.adminHintAnswer:hover  {
+    display: block;
+}
+
 /* quizReview Styles END */
 
 
