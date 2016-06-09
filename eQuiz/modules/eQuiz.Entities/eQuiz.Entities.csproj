@@ -119,6 +119,9 @@
     <Compile Include="Tag.cs">
       <DependentUpon>eQuizEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="TextAnswer.cs">
+      <DependentUpon>eQuizEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Topic.cs">
       <DependentUpon>eQuizEntities.tt</DependentUpon>
     </Compile>
