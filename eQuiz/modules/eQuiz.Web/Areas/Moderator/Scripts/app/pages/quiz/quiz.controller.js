@@ -209,7 +209,6 @@
                     vm.model.latestChange.StartDate = new Date(vm.model.latestChange.StartDate);
                     vm.model.latestChange.LastChangeDate = new Date(vm.model.latestChange.LastChangeDate);
                     vm.model.locked = data.data.locked;
-                    vm.model.EndLockDate = new Date(vm.model.latestChange.LastChangeDate.getTime() + 2 * 60000).toLocaleString("ru");
         }
 
         function showSuccess() {

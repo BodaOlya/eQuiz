@@ -645,6 +645,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 QuizId = history.QuizId,
                 StartDate = history.StartDate.ToString("yyyy-MM-ddTHH:mm:ss"),
                 LastChangeDate = history.LastChangeDate.ToString("yyyy-MM-ddTHH:mm:ss"),
+                EndLockDate = history.LastChangeDate.AddMinutes(QuizLockDuration).ToString("dd.MM.yyyy HH:mm:ss"),
                 User = user
             };
 

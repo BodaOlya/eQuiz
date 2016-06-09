@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Areas\Admin\Controllers\DefaultControllerTest.cs" />
+    <Compile Include="Areas\Admin\Controllers\QuizzesControllerTest.cs" />
     <Compile Include="Areas\Moderator\Controllers\DefaultControllerTest.cs" />
     <Compile Include="Areas\Student\Controllers\DefaultControllerTest.cs" />
     <Compile Include="Controllers\AccountControllerTest.cs" />
