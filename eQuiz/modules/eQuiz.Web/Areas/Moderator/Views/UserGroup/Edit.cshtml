@@ -22,7 +22,7 @@
         <div class="container-quizzes">
             <div unique-user-group-name>
                 <label class="control-label"> Name </label>
-                <input class="form-control" type="text" ng-model="g.group.Name" name="GroupName" required />
+                <input class="form-control" type="text" ng-disabled="!g.isEditingEnabled()" ng-model="g.group.Name" name="GroupName" required />
                 <input type="hidden" value="{{g.group.Id}}" name="Id" />
                 <div ng-messages="g.groupForm.GroupName.$error" class="help-block hide">
                     <p ng-message="required">Group name is required</p>
@@ -33,7 +33,7 @@
             <div class="ug-import">
                 <label> Students </label>
                 <label id="file-link" for="ug-file-upload"> Import from *.csv </label>
-                <input type="file" id="ug-file-upload" import-users-from-file callback="g.useImportedData(data)" hidden />
+                <input type="file" id="ug-file-upload" ng-disabled="!g.isEditingEnabled()" import-users-from-file callback="g.useImportedData(data)" hidden />
             </div>
 
             <table class="table-quizzes">
@@ -64,7 +64,7 @@
                     <tr ng-form="g.userForm[$index]" ng-repeat="user in g.users track by $index" unique-user-email users="g.users" user="user">
                         <td>
                             <div show-error>
-                                <input class="form-control" type="text" ng-model="user.LastName" name="LastName" ng-change="g.checkEmail()" required />
+                                <input class="form-control" type="text" ng-disabled="!g.isEditingEnabled()" ng-model="user.LastName" name="LastName" ng-change="g.checkEmail()" required />
                                 <div ng-messages="g.userForm[$index].LastName.$error" class="help-block hide">
                                     <p ng-message="required">Last name is required</p>
                                 </div>
@@ -72,7 +72,7 @@
                         </td>
                         <td>
                             <div show-error>
-                                <input class="form-control" type="text" ng-model="user.FirstName" name="FirstName" ng-change="g.checkEmail()" required />
+                                <input class="form-control" type="text" ng-disabled="!g.isEditingEnabled()" ng-model="user.FirstName" name="FirstName" ng-change="g.checkEmail()" required />
                                 <div ng-messages="g.userForm[$index].FirstName.$error" class="help-block hide">
                                     <p ng-message="required">First name is required</p>
                                 </div>
@@ -80,7 +80,7 @@
                         </td>
                         <td>
                             <div>
-                                <input class="form-control" type="email" ng-model="user.Email" name="Email" ng-pattern="g.regEx" required />
+                                <input class="form-control" type="email" ng-disabled="!g.isEditingEnabled()" ng-model="user.Email" name="Email" ng-pattern="g.regEx" required />
                                 <div ng-messages="g.userForm[$index].Email.$error" class="help-block hide">
                                     <p ng-message="required">Email is required</p>
                                     <p ng-message="pattern">Please enter a valid email address</p>
@@ -89,12 +89,12 @@
                             </div>
                         </td>
                         <td>
-                            <a href="#" ng-click="g.deleteUser(user)">Delete</a>
+                            <a href="#" ng-click="g.isEditingEnabled() && g.deleteUser(user)">Delete</a>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="4">
-                            <a href="#" ng-click="g.addUser()">Add new</a>
+                            <a href="#" ng-click="g.isEditingEnabled() && g.addUser()">Add new</a>
                         </td>
                     </tr>
                 </tbody>
@@ -102,10 +102,10 @@
         </div>
             <div class="row">
                 <div class="col-sm-2 col-sm-offset-2">
-                    <button class="btn btn-default form-control lightgray" ng-click="g.save()" ng-disabled="!g.canSave()">Save</button>
+                    <button class="btn btn-default form-control lightgray" ng-click="g.save()" ng-disabled="!g.isEditingEnabled() || !g.canSave()">Save</button>
                 </div>
                 <div class="col-sm-2">
-                    <button class="btn btn-default form-control lightgray" ng-click="g.archive()" ng-disabled="!g.canArchive()">Archive</button>
+                    <button class="btn btn-default form-control lightgray" ng-click="g.archive()" ng-disabled="!g.isEditingEnabled() || !g.canArchive()">Archive</button>
                 </div>
                 <div class="col-sm-2">
                     @Html.ActionLink(linkText: "Cancel", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-default lightgray" })                    
