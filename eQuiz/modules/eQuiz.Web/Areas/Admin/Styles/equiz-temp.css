@@ -37,11 +37,21 @@
     width:30px;
 }
 
-.textPopUp {
+.ConfirmPopUpText {
     display:block;
     font:700;
     font-family:Arial;
     margin:5px;
+    text-align:center;
+    width:inherit;
+    height:auto;
+}
+
+.NotifyPopUpText {
+    display:block;
+    font:700;
+    font-family:Arial;
+    margin:20px;
     text-align:center;
     width:inherit;
     height:auto;

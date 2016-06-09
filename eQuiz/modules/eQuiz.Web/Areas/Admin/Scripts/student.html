@@ -93,11 +93,11 @@
                 </span>
             </div>
             <a class="link" style="font-size:large" ng-click="sc.toggleNewCommentFrame()">Add new</a>
-            <div style="position:relative">
-                <form name="addNewCommentForm" ng-show="sc.newCommentFrame" novalidate>
+            <div style="position:relative" ng-show="sc.newCommentFrame">
+                <label>Text:</label>
+                <form name="addNewCommentForm"  novalidate>
                     <span>
-                        <label>Text:</label>
-                        <textarea class="commentTextBox" name="commentText" ng-model="sc.newComment.text" cols="80" rows="5" required></textarea>
+                        <textarea ng-keydown="sc.addCommentKeyDown()" ng-keyup="sc.addCommentKeyUp()" class="commentTextBox" name="commentText" ng-model="sc.newComment.text" cols="80" rows="5" required></textarea>
                     </span>
                     <br />
                     <button ng-click="sc.addComment()" ng-disabled="addNewCommentForm.commentAuthor.$error.required || addNewCommentForm.commentText.$error.required">Add comment</button>

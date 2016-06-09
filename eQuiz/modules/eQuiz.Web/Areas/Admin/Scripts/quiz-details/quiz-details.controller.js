@@ -189,7 +189,7 @@
             var exportHref = Excel.tableToExcel(tableId, 'Sheet1');
             $timeout(function () {
                 var link = document.createElement('a');
-                link.download = vm.quizInfo[0].quizName + " by " + vm.quizInfo[0].groupName + ".xls";
+                link.download = vm.quizInfo[0].quizName + " by " + vm.quizInfo[0].groupName + ".xml";
                 link.href = exportHref;
                 link.click();
             }, 100);
