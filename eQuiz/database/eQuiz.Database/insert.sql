@@ -1259,7 +1259,31 @@ VALUES
     (2001, 'SELECT COLUMNS(*) FROM Persons', 1, 0),
     (2002, 'SELECT COUNT(*) FROM Persons', 2, 1),
     (2003, 'SELECT COLUMNS() FROM Persons', 3, 0),
-    (2004, 'SELECT COUNT() FROM Persons', 4, 0);
+    (2004, 'SELECT COUNT() FROM Persons', 4, 0),
+	
+    (2005, 'System Exception - mainly used for inbuilt exceptions like Null Ref Exception, Overflow Exception, Argument. Application Exception - this class is used for user defined exceptions.', 1, 1),
+    (2006, 'Generally we use finally block along with try catch blocks, just to ensure releasing of all the costly resources even if the code executed correctly or with an exception.', 1, 1),
+    (2007, 'The Common Language Runtime (CLR) is the programming (Virtual Machine component) that manages the execution of programs written in any language that uses the .NET Framework, for example C#, VB.Net, F# and so on.', 1, 1),
+    (2008, 'List<> and Dictionary<,> - have different data structures which is used for different purposes, List is simply a set of items and Dictionary is a set of key-value pairs.', 1, 1),
+    (2009, 'Interfaces define properties, methods, and events, which are the members of the interface. Interfaces contain only the declaration of the members. It is the responsibility of the deriving class to define the members.', 1, 1),
+    (2010, 'Write once, run anywhere - promise of Java technology is that you only have to write your application once - for the Java platform - and then you''ll be able to run it anywhere. The Java platform allows users to download untrusted code over a network and run it in a secure environment in which it cannot do any harm. Java platform is network-centric. Java is both dynamic and extensible. Java is the only commonly used programming language that has internationalization features at its very core, rather than tacked on as an afterthought. Java programs are faster than programs or scripts written in purely interpreted languages. ', 1, 1),
+    (2011, 'Wrapper class is a class that encapsulates types, so that those types can be used to create object instances and methods in another class that need those types. Strings are a sequence of characters, strings are objects.', 1, 1),
+    (2012, 'Java is a multi threaded programming language which means we can develop multi threaded program using Java. A multi threaded program contains two or more parts that can run concurrently and each part can handle different task at the same time making optimal use of the available resources specially when your computer has multiple CPUs.', 1, 1),
+    (2013, 'Declaration: A variable declaration with a variable name with an object type. Instantiation: The ''new'' key word is used to create the object. Initialization: The ''new'' keyword is followed by a call to a constructor. This call initializes the new object.', 1, 1),
+    (2014, 'IL code is a CPU independent partially compiled code. It’s partially compiled because we do not know in what kind of environment .Net code will run and on runtime IL Code will compile to machine code using the environmental properties (CPU, OS, machine configuration etc).', 1, 1),
+    (2015, 'Every assembly contains a collection of data that describes how the elements in the assembly relate to each other. The assembly manifest contains this assembly metadata. An assembly manifest contains all the metadata needed to specify the assembly''s version requirements and security identity, and all metadata needed to define the scope of the assembly and resolve references to resources and classes.', 1, 1),
+    (2016, 'The Common Type System (CTS) is a standard that specifies how type definitions and specific values of types are represented in computer memory. It is intended to allow programs written in different programming languages to easily share information.', 1, 1),
+    (2017, 'Finalize() belongs to the Object class.It is automatically called by the Garbage Collection mechanism when the object goes out of the scope(usually at the end of the program). Dispose() belongs to the IDisposable interface. We have to manually write the code to implement it(User Code). It is deterministic function as Dispose() method is explicitly called by the User Code. ', 1, 1),
+    (2018, 'An Assembly can contain many namespaces. A dll is an assembly. A namespace is for logical seperation.', 1, 1),
+    (2019, 'A Common Language Specification (CLS) is a document that says how computer programs can be turned into MSIL code.', 1, 1),
+    (2020, 'The main difference is System.String is immutable and System.StringBuilder is a mutable. Append keyword is used in string builder.', 1, 1),
+    (2021, 'It doesn’t matter which one you take, they perform equally. string is a synonym for System.String.', 1, 1),
+    (2022, 'When creating a class, instead of writing completely new data members and member functions, the programmer can designate that the new class should inherit the members of an existing class. This existing class is called the base class, and the new class is referred to as the derived class.', 1, 1),
+    (2023, 'Use the sealed keyword.', 1, 1),
+    (2024, 'The keyword event is a scope modifier for multicast delegates. Practical differences between this and just declaring a multicast delegate are as follows: you can use event in an interface; invocation access to the multicast delegate is limited to the declaring class. The behaviour is as though the delegate were private for invocation. For the purposes of assignment, access is as specified by an explicit access modifier (eg public event). Events are syntactical sugar. When I see an event, I know what to do.', 1, 1),
+    (2025, 'A shared assembly is an assembly available for use by multiple applications on the computer.', 1, 1),
+    (2026, 'SELECT * FROM Products;', 1, 1),
+    (2027, 'h1 { color: red; }', 1, 1);
 SET IDENTITY_INSERT tblAnswer OFF;
  
 SET IDENTITY_INSERT tblQuestionAnswer ON;
@@ -1919,7 +1943,31 @@ VALUES
 (2001, 200, 2001),
 (2002, 200, 2002),
 (2003, 200, 2003),
-(2004, 200, 2004)
+(2004, 200, 2004),
+
+(2005, 2, 2005),
+(2006, 3, 2006),
+(2007, 6, 2007),
+(2008, 15, 2008),
+(2009, 20, 2009),
+(2010, 21, 2010),
+(2011, 30, 2011),
+(2012, 35, 2012),
+(2013, 36, 2013),
+(2014, 41, 2014),
+(2015, 42, 2015),
+(2016, 43, 2016),
+(2017, 44, 2017),
+(2018, 45, 2018),
+(2019, 46, 2019),
+(2020, 47, 2020),
+(2021, 48, 2021),
+(2022, 49, 2022),
+(2023, 50, 2023),
+(2024, 64, 2024),
+(2025, 65, 2025),
+(2026, 100, 2026),
+(2027, 120, 2027);
 SET IDENTITY_INSERT tblQuestionAnswer OFF;
 
 
