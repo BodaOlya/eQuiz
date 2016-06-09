@@ -3,9 +3,9 @@
         .module("equizModule")
         .controller('QuizReviewController', quizReviewController);
 
-    quizReviewController.$inject = ['$scope', 'quizReviewDataService', '$location', 'student' /*'group', 'quiz'*/];
+    quizReviewController.$inject = ['$scope', 'quizReviewDataService', '$location', 'student', 'getQuizTests'];
 
-    function quizReviewController($scope, quizReviewDataService, $location, student /*group, quiz*/) {
+    function quizReviewController($scope, quizReviewDataService, $location, student, getQuizTests) {
         var vm = this;
         vm.passed = 0;
         vm.notPassed = 0;
@@ -13,9 +13,8 @@
         vm.saveIsDisabled = true;
         vm.isFinalized = false;
         vm.student = student;
-        vm.group = quizReviewDataService.getGroup($location.search().Student);
-        vm.quiz = quizReviewDataService.getQuiz($location.search().Quiz);
-        console.log(student);
+        vm.group = quizReviewDataService.getGroup($location.search().Quiz);
+        vm.quiz = getQuizTests;   
         vm.selectedStatuses = [];
         vm.statusList = [{ id: 0, name: "In Verification" }, { id: 1, name: "Passed" }, { id: 2, name: "Not Passed" }];
         $scope.showNotification = false;
@@ -44,7 +43,7 @@
             vm.student = quizReviewDataService.getStudent($location.search().Student);
             vm.group = quizReviewDataService.getGroup($location.search().Student);
             vm.quiz = quizReviewDataService.getQuiz($location.search().Quiz);
-
+            debugger;
             vm.countStats();
         };
 
@@ -79,8 +78,8 @@
             }
         }
 
-        vm.cancelQuizReview = function () {
-            activate();
+        vm.cancelQuizReview = function () {            
+            activate();            
         }
 
         vm.saveQuizReview = function () {

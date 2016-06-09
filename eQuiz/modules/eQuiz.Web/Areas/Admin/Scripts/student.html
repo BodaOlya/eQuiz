@@ -59,6 +59,8 @@
                     <select class="md-primary" ng-model="sc.resultsPerPage" ng-change="sc.tablePage=0" ng-options="p for p in sc.resultsCount"></select>
                 </span>
                 <span ng-show="sc.numberOfPages() &gt; 1">
+                    Rows on the page:
+                    <select style="margin:5px" ng-model="sc.resultsPerPage" ng-change="sc.tablePage=0" ng-options="p for p in sc.resultsCount"></select>
                     <button ng-disabled="sc.tablePage==0" ng-click="sc.tablePage=sc.tablePage-1">Previous page</button>
                     <span ng-repeat="i in sc.getNumber(sc.numberOfPages()) track by $index">
                         <button ng-click="sc.goToPage($index)"><span ng-class="{ 'table-active-page' : sc.tablePage==$index}">{{$index+1}}</span></button>
@@ -71,19 +73,32 @@
         <div id="commentsTab" ng-show="sc.currentTab=='Comments'">
             <div style="float:left; position:relative; margin-right:40px; width:550px">
                 <div style="height:300px; overflow:auto" width:auto>
-                    <div ng-repeat="comment in sc.studentComments">
+                    <div ng-repeat="comment in sc.studentComments | startFrom: sc.commentsPage*sc.resultsPerCommentsPage | limitTo:sc.resultsPerCommentsPage">
                         <label>{{comment.date + ' by ' + 'Admin' }}</label>
                         <div style="border:1px solid grey; width:500px; height:auto">
                             {{comment.text}}
                         </div>
                     </div>
                 </div>
-                <a class="link" ng-click="sc.toggleNewCommentFrame()">Add new</a>
+                <span>
+                    Rows on the page:
+                    <select style="margin:5px" ng-model="sc.resultsPerCommentsPage" ng-change="sc.commentsPage=0" ng-options="p for p in sc.resultsCount"></select>
+                </span>
+                <span ng-show="sc.numberOfCommentsPages() &gt; 1">
+                    <button ng-disabled="sc.commentsPage==0" ng-click="sc.commentsPage=sc.commentsPage-1">Previous page</button>
+                    <span ng-repeat="i in sc.getNumber(sc.numberOfCommentsPages()) track by $index">
+                        <button ng-click="sc.goToCommentsPage($index)"><span ng-class="{ 'table-active-page' : sc.commentsPage==$index}">{{$index+1}}</span></button>
+                    </span>
+                    <button ng-disabled="sc.commentsPage==sc.numberOfCommentsPages()-1" ng-click="sc.commentsPage=sc.commentsPage+1">Next page</button>
+                </span>
             </div>
-            <div style=" position:relative">
+            <a class="link" style="font-size:large" ng-click="sc.toggleNewCommentFrame()">Add new</a>
+            <div style="position:relative">
                 <form name="addNewCommentForm" ng-show="sc.newCommentFrame" novalidate>
-                    <label>Text:</label>
-                    <textarea class="commentTextBox" name="commentText" ng-model="sc.newComment.text" cols="80" rows="5" required></textarea>
+                    <span>
+                        <label>Text:</label>
+                        <textarea class="commentTextBox" name="commentText" ng-model="sc.newComment.text" cols="80" rows="5" required></textarea>
+                    </span>
                     <br />
                     <button ng-click="sc.addComment()" ng-disabled="addNewCommentForm.commentAuthor.$error.required || addNewCommentForm.commentText.$error.required">Add comment</button>
                     <button ng-click="sc.toggleNewCommentFrame()">Close</button>

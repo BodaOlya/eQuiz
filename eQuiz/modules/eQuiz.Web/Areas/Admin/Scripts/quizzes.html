@@ -6,11 +6,13 @@
         <input type="text" ng-model="qc.search" style="width:15em">
 
         <div class="multileveldropdown">
-            <button class="dropbtn"> Filters </button>
+            <button class="dropbtn"> Filters &#x25BC </button>
             <div class="multileveldropdown-content">
                 <div ng-repeat="category in qc.filterCategories">
                     <a> {{category.name}} </a>
                     <div>
+                        <a ng-click="qc.checkAll(category)">&#x2714 Check All</a>
+                        <a ng-click="qc.unCheckAll(category)">&#x2716 Uncheck All</a> <hr />
                         <a ng-repeat="categoryItem in category.CategoryItems" ng-click="setSelectedGroup(category)" ng-model="categoryItem"> {{categoryItem}} <b ng-class="{dropdownContentElemChecked: qc.toggleDropDownElem(categoryItem, category)}" ng-bind-html="' ' + qc.checkSymbol | trustAsHtml"></b></a>
                     </div>
                 </div>

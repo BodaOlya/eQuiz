@@ -4,8 +4,7 @@
         <h4 ng-cloak>
             {{ReviewCtrl.student.firstName + " " + ReviewCtrl.student.lastName + " " + ReviewCtrl.student.fatherName}}, {{ReviewCtrl.group.group_name}}, {{ReviewCtrl.quiz.quiz_name}}
         </h4>
-    </div>
-
+    </div>    
     <div class="spacing" ng-cloak>
         <div class="display_inline">
             <label> Started: <b> {{ReviewCtrl.quiz.start_date}} </b></label>
@@ -38,15 +37,15 @@
         </span>
     </div>
 
-    <div class="spacing">
-        <div ng-repeat="item in filtered = (ReviewCtrl.quiz.questions | questionStatusFilter:ReviewCtrl.selectedStatuses)" ng-cloak>
-            <div ng-if="item.questionType == 'Manual'">
+    <div class="spacing">  <!--.QuestionText | questionStatusFilter:ReviewCtrl.selectedStatuses-->
+        <div ng-repeat="item in filtered = (ReviewCtrl.quiz)" ng-cloak>
+            <div ng-if="item.Type == 'Text'">
                 <div>
-                    <p> <b>#{{$index + 1}}</b> {{item.question}} </p>
+                    <p> <b>#{{$index + 1}}</b> {{item.QuestionText}} </p>
                 </div>
 
                 <div>
-                    <textarea class="textarea" readonly> {{item.answer}} </textarea>
+                    <textarea class="textarea" readonly> {{item.Answer}} </textarea>
                 </div>
 
                 <div>
@@ -56,17 +55,17 @@
 
                     <div class="display_inline">
                         <!-- 0 - in verification, 1 - passed, 2 - not passed -->
-                        <button ng-click="ReviewCtrl.setQuestionStatus(item.question_id, 0)" ng-class="{'btn-lightgrey': ReviewCtrl.setButtonColor(item.questionStatus, 0)}" type="button" class="btn btn-primary btn-lightgrey-hover btn-standart">In Verification</button>
-                        <button ng-click="ReviewCtrl.setQuestionStatus(item.question_id, 1)" ng-class="{'btn-lightgreen': ReviewCtrl.setButtonColor(item.questionStatus, 1)}" type="button" class="btn btn-primary btn-lightgreen-hover btn-standart">Passed</button>
-                        <button ng-click="ReviewCtrl.setQuestionStatus(item.question_id, 2)" ng-class="{'btn-lightcoral': ReviewCtrl.setButtonColor(item.questionStatus, 2)}" type="button" class="btn btn-primary btn-lightcoral-hover btn-standart">Not Passed</button>
+                        <button ng-click="ReviewCtrl.setQuestionStatus(item.Id, 0)" ng-class="{'btn-lightgrey': ReviewCtrl.setButtonColor(item.questionStatus, 0)}" type="button" class="btn btn-primary btn-lightgrey-hover btn-standart">In Verification</button>
+                        <button ng-click="ReviewCtrl.setQuestionStatus(item.Id, 1)" ng-class="{'btn-lightgreen': ReviewCtrl.setButtonColor(item.questionStatus, 1)}" type="button" class="btn btn-primary btn-lightgreen-hover btn-standart">Passed</button>
+                        <button ng-click="ReviewCtrl.setQuestionStatus(item.Id, 2)" ng-class="{'btn-lightcoral': ReviewCtrl.setButtonColor(item.questionStatus, 2)}" type="button" class="btn btn-primary btn-lightcoral-hover btn-standart">Not Passed</button>
                     </div>
                 </div>
                 <br>
             </div>
 
-            <div ng-if="item.questionType == 'Auto'">
+            <div ng-if="item.Type == 'Select'">
                 <div>
-                    <p> <b>#{{$index + 1}}</b> {{item.question}} </p>
+                    <p> <b>#{{$index + 1}}</b> {{item.QuestionText}} </p>
                 </div>
 
                 <div ng-repeat="anw in item.answers">
@@ -79,9 +78,9 @@
 
                 <div class="display_inline">
                     <!-- 0 - in verification, 1 - passed, 2 - not passed -->
-                    <button ng-click="ReviewCtrl.setQuestionStatus(item.question_id, 0)" ng-class="{'btn-lightgrey': ReviewCtrl.setButtonColor(item.questionStatus, 0)}" type="button" class="btn btn-primary btn-lightgrey-hover btn-standart">In Verification</button>
-                    <button ng-click="ReviewCtrl.setQuestionStatus(item.question_id, 1)" ng-class="{'btn-lightgreen': ReviewCtrl.setButtonColor(item.questionStatus, 1)}" type="button" class="btn btn-primary btn-lightgreen-hover btn-standart">Passed</button>
-                    <button ng-click="ReviewCtrl.setQuestionStatus(item.question_id, 2)" ng-class="{'btn-lightcoral': ReviewCtrl.setButtonColor(item.questionStatus, 2)}" type="button" class="btn btn-primary btn-lightcoral-hover btn-standart">Not Passed</button>
+                    <button ng-click="ReviewCtrl.setQuestionStatus(item.Id, 0)" ng-class="{'btn-lightgrey': ReviewCtrl.setButtonColor(item.questionStatus, 0)}" type="button" class="btn btn-primary btn-lightgrey-hover btn-standart">In Verification</button>
+                    <button ng-click="ReviewCtrl.setQuestionStatus(item.Id, 1)" ng-class="{'btn-lightgreen': ReviewCtrl.setButtonColor(item.questionStatus, 1)}" type="button" class="btn btn-primary btn-lightgreen-hover btn-standart">Passed</button>
+                    <button ng-click="ReviewCtrl.setQuestionStatus(item.Id, 2)" ng-class="{'btn-lightcoral': ReviewCtrl.setButtonColor(item.questionStatus, 2)}" type="button" class="btn btn-primary btn-lightcoral-hover btn-standart">Not Passed</button>
                 </div>
             </div>
             <br>

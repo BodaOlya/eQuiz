@@ -8,7 +8,7 @@
         vm.quizQuestions = null;
         vm.quizId = parseInt($routeParams.id);
         vm.quizDuration = localStorage.getItem('duration');
-        vm.currentQuestion = 0;
+        vm.currentQuestion = localStorage.getItem('currentQuestion' + vm.quizId) || 0;
         vm.passedQuiz = JSON.parse(localStorage.getItem('passQuiz' + vm.quizId)) || trackUserResultService.passedQuiz;
         vm.passedQuiz.QuizId = vm.quizId;
         vm.windowHeight = $window.innerHeight;
@@ -27,12 +27,15 @@
 
 
         vm.setCurrentQuestion = function (currentQuestionId, index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
+
             vm.setUserTextAnswers(index, questionId, isAutomatic, quizBlock, questionOrder, answerText);
 
             vm.sendDataToServer();
 
             if (currentQuestionId < vm.quizQuestions.length && currentQuestionId >= 0) {
                 vm.currentQuestion = currentQuestionId;
+
+                localStorage.setItem('currentQuestion' + vm.quizId, vm.currentQuestion);
             }
         };
 
@@ -161,6 +164,7 @@
 
             modalInstance.result.then(function () {               
                 localStorage.removeItem('passQuiz' + vm.quizId);
+                localStorage.removeItem('currentQuestion' + vm.quizId);
                 vm.sendDataToServer();
                 setFinishTime(vm.quizQuestions[vm.currentQuestion].QuizPassId);
                 vm.resetTimer();
@@ -261,11 +265,16 @@
             }
         };
 
+        // time is running out
         vm.endQuiz = function () {
             vm.sendDataToServer();
             setFinishTime(vm.quizQuestions[vm.currentQuestion].QuizPassId);
             vm.resetTimer();
             openPopUpAlert();
+
+            localStorage.removeItem('passQuiz' + vm.quizId);
+            localStorage.removeItem('currentQuestion' + vm.quizId);
+            trackUserResultService.passedQuiz.UserAnswers = null;
         };
 
         $scope.$on('$destroy', function () {

@@ -82,7 +82,7 @@
                 } else {
                     vm.filterCategories[item].CategoryItems = vm.GetUniqueValuesByCategory(vm.filterCategories[item].field);
                 }
-            }
+            }            
         }
 
         active();
@@ -183,6 +183,18 @@
                 return false;
             }
             return true;
+        };
+
+        vm.checkAll = function (categoryName) {
+            categoryName.selectedGroup = [];
+            for (var i = 0; i < categoryName.CategoryItems.length; i++) {
+                categoryName.selectedGroup.push(categoryName.CategoryItems[i]);
+            }
+
+        };
+
+        vm.unCheckAll = function (categoryName) {
+            categoryName.selectedGroup = [];
         };
     }
 })(angular);
