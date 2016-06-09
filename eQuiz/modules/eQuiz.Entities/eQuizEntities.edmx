@@ -171,13 +171,6 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
-        <EntityType Name="tblTextAnswer">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
-        </EntityType>
         <EntityType Name="tblTopic">
           <Key>
             <PropertyRef Name="Id" />
@@ -563,18 +556,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tblTextAnswer_tblQuestion">
-          <End Role="tblQuestion" Type="Self.tblQuestion" Multiplicity="1" />
-          <End Role="tblTextAnswer" Type="Self.tblTextAnswer" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="tblQuestion">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="tblTextAnswer">
-              <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_tblUserAnswer_tblAnswer">
           <End Role="tblAnswer" Type="Self.tblAnswer" Multiplicity="1" />
           <End Role="tblUserAnswer" Type="Self.tblUserAnswer" Multiplicity="*" />
@@ -725,7 +706,6 @@
           <EntitySet Name="tblQuizType" EntityType="Self.tblQuizType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblQuizVariant" EntityType="Self.tblQuizVariant" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTag" EntityType="Self.tblTag" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tblTextAnswer" EntityType="Self.tblTextAnswer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTopic" EntityType="Self.tblTopic" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUser" EntityType="Self.tblUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserAnswer" EntityType="Self.tblUserAnswer" Schema="dbo" store:Type="Tables" />
@@ -835,10 +815,6 @@
             <End Role="tblQuiz" EntitySet="tblQuiz" />
             <End Role="tblQuizVariant" EntitySet="tblQuizVariant" />
           </AssociationSet>
-          <AssociationSet Name="FK_tblTextAnswer_tblQuestion" Association="Self.FK_tblTextAnswer_tblQuestion">
-            <End Role="tblQuestion" EntitySet="tblQuestion" />
-            <End Role="tblTextAnswer" EntitySet="tblTextAnswer" />
-          </AssociationSet>
           <AssociationSet Name="FK_tblUserAnswer_tblAnswer" Association="Self.FK_tblUserAnswer_tblAnswer">
             <End Role="tblAnswer" EntitySet="tblAnswer" />
             <End Role="tblUserAnswer" EntitySet="tblUserAnswer" />
@@ -918,7 +894,6 @@
           <NavigationProperty Name="QuestionTags" Relationship="Self.FK_tblQuestionTag_tblQuestion" FromRole="tblQuestion" ToRole="tblQuestionTag" />
           <NavigationProperty Name="QuizPassQuestions" Relationship="Self.FK_tblQuizPassQuestion_tblQuestion" FromRole="tblQuestion" ToRole="tblQuizPassQuestion" />
           <NavigationProperty Name="QuizQuestions" Relationship="eQuizModel.FK_tblQuizQuestion_tblQuestion" FromRole="tblQuestion" ToRole="tblQuizQuestion" />
-          <NavigationProperty Name="TextAnswer" Relationship="eQuizModel.FK_tblTextAnswer_tblQuestion" FromRole="Question" ToRole="tblTextAnswer" />
         </EntityType>
         <EntityType Name="QuestionAnswer">
           <Key>
@@ -1591,11 +1566,6 @@
             <End Role="tblUserGroupState" EntitySet="UserGroupStates" />
             <End Role="UserGroup" EntitySet="UserGroups" />
           </AssociationSet>
-          <EntitySet Name="TextAnswers" EntityType="eQuizModel.TextAnswer" />
-          <AssociationSet Name="FK_tblTextAnswer_tblQuestion" Association="eQuizModel.FK_tblTextAnswer_tblQuestion">
-            <End Role="Question" EntitySet="Questions" />
-            <End Role="tblTextAnswer" EntitySet="TextAnswers" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="UserTextAnswer">
           <Key>
@@ -1834,26 +1804,6 @@
             </Principal>
             <Dependent Role="UserGroup">
               <PropertyRef Name="UserGroupStateId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="TextAnswer">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Text" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Question" Relationship="eQuizModel.FK_tblTextAnswer_tblQuestion" FromRole="tblTextAnswer" ToRole="Question" />
-        </EntityType>
-        <Association Name="FK_tblTextAnswer_tblQuestion">
-          <End Type="eQuizModel.Question" Role="Question" Multiplicity="1" />
-          <End Type="eQuizModel.TextAnswer" Role="tblTextAnswer" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Question">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="tblTextAnswer">
-              <PropertyRef Name="Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2135,14 +2085,6 @@
             <EntityTypeMapping TypeName="eQuizModel.UserGroupState">
               <MappingFragment StoreEntitySet="tblUserGroupState">
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TextAnswers">
-            <EntityTypeMapping TypeName="eQuizModel.TextAnswer">
-              <MappingFragment StoreEntitySet="tblTextAnswer">
-                <ScalarProperty Name="Text" ColumnName="Text" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

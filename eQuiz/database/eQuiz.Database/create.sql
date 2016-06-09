@@ -266,28 +266,16 @@ CREATE TABLE [dbo].[tblUserTextAnswer]
 	CONSTRAINT [PK_tblUserTextAnswer_Id] PRIMARY KEY ([Id]) 
 );
 
-CREATE TABLE [dbo].[tblUserComment]
-(
-    [Id] [INT] NOT NULL IDENTITY(1,1) ,
-    [UserId] [INT] NOT NULL,
-    [AdminId] [INT] NOT NULL,
-    [CommentTime] [DATETIME] NOT NULL,
-    [CommentText] NVARCHAR(MAX) NOT NULL,     
-    CONSTRAINT [PK_tblUserComment_Id] PRIMARY KEY ([Id]),
-);
-
-CREATE TABLE [dbo].[tblTextAnswer]
-(
-	[Id] [INT] IDENTITY(1,1) NOT NULL,
-	[Text] NVARCHAR(MAX) NOT NULL,
-	--[QuestionId] [INT] UNIQUE
-	CONSTRAINT [PK_tblTextAnswer_Id] PRIMARY KEY ([Id])
-);
-	 
+CREATE TABLE [dbo].[tblUserComment](
+    Id int IDENTITY(1,1) NOT NULL,
+    UserId int NOT NULL,
+    AdminId int NOT NULL,
+    CommentTime datetime NOT NULL,
+    CommentText nvarchar(max) NOT NULL,     
+    CONSTRAINT PK_tblUserComment_Id PRIMARY KEY ([Id]),
+)
 
 GO
-
-ALTER TABLE [dbo].[tblTextAnswer] ADD CONSTRAINT [FK_tblTextAnswer_tblQuestion] FOREIGN KEY([Id]) REFERENCES [dbo].[tblQuestion] ([Id]);
  
 ALTER TABLE [dbo].[tblUserComment] ADD CONSTRAINT [FK_tblUserComment_AdminId_tblUser] FOREIGN KEY([AdminId]) REFERENCES [dbo].[tblUser] ([Id]);
 
