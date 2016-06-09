@@ -9,6 +9,7 @@
 
         var vm = this;
         vm.users = [];
+        vm.group = {};
 
         vm.predicate = 'LastName';
         vm.reverse = false;
@@ -35,6 +36,7 @@
 
         vm.archive = archive;
         vm.canArchive = canArchive;
+        vm.isEditingEnabled = isEditingEnabled;
 
         activate();
 
@@ -175,6 +177,14 @@
             })[0];
 
             return archivedState ? vm.canSave() && vm.group.Id && vm.group.UserGroupStateId != archivedState.Id : false;
+        }
+
+        function isEditingEnabled() {
+            var archivedState = vm.states.filter(function (item) {
+                return item.Name == "Archived";
+            })[0];
+
+            return !vm.group.UserGroupStateId || vm.group.UserGroupStateId != archivedState.Id;
         }
     };
 
