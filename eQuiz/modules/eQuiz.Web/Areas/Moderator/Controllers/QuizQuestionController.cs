@@ -77,7 +77,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                     return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Not enough question had created.");
                 }
                 var topicId = context.Topics.First().Id;
-                var quizVariantId = 1; /*context.QuizVariants.First(x => x.QuizId == id).Id;*/ //we don't have fk on tblQuiz
+                var quizVariantId = _repository.GetSingle<QuizVariant>(x => x.QuizId == id).Id; 
                 var blockId = quizBlock.Id;
                 var newQuestions = questions.Where(q => q.Id == 0).ToList();
 
