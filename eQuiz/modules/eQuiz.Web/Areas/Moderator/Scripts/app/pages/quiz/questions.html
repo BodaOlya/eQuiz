@@ -38,7 +38,20 @@
                 </div>
             </div>
             <div ng-switch on="question.QuestionTypeId">
-                <div ng-switch-when="1">
+                <div ng-form="oneAnswerForm" ng-switch-when="1">
+                    <div class="row" show-error>
+                        <div class="col-sm-12 col-md-12">
+                            <p class="control-label">
+                                Answer
+                            </p>
+                        </div>
+                        <div  class="col-sm-12 col-md-12">
+                            <textarea class="questionText form-control" ng-model="vm.model.answers[$index][0].AnswerText" ng-disabled="!vm.isEditingEnabled()" required name="AnswerText">{{ vm.model.answers[$index][0] }}</textarea>
+                            <div ng-messages="oneAnswerForm.AnswerText.$error" class="help-block hide">
+                                <p ng-message="required">Answer text is required</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div ng-switch-when="2">
                     <div class="row">
