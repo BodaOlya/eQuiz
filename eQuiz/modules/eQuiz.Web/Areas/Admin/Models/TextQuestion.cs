@@ -18,5 +18,15 @@ namespace eQuiz.Web.Areas.Admin.Models
             Answer = answer;
             RightAnswer = rightAnswer;
         }
+
+        public static string GetAnswer(string answer)
+        {
+            if (answer.Length == 0)
+            {
+                return "No right answer in the database";
+            }
+
+            return answer;
+        }
     }
 }
