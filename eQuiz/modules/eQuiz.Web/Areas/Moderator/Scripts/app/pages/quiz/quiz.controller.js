@@ -233,8 +233,48 @@
                 return item.IsRight;
             }).length;
 
-            if (typeId == 2 && countChecked != 1) {
-                for (var i = 0; i < vm.model.answers[questionIndex].length; i++) {
+            if (typeId == 1) {
+                if (vm.model.answers[questionIndex].length == 0) {
+                    vm.model.answers[questionIndex].push({
+                        Id: 0,
+                        QuestionId: 0,
+                        AnswerText: "",
+                        AnswerOrder: 1,
+                        IsRight: true,
+                        Question: null,
+                        UserAnswers: null
+                    });
+                }
+                else {
+                    if (countChecked == 0) {
+                        vm.model.answers[questionIndex][0].IsRight = true;
+                    }
+                    if (countChecked > 0 && !vm.model.answers[questionIndex][0].IsRight) {
+                        var temp = vm.model.answers[questionIndex].filter(function (item) {
+                            return item.IsRight;
+                        })[0];
+
+                        var tempIndex = vm.model.answers[questionIndex].indexOf(temp);
+
+                        var tempAnswerOrder = temp.AnswerOrder;
+
+                        temp.AnswerOrder = vm.model.answers[questionIndex][0].AnswerOrder;
+
+                        vm.model.answers[questionIndex][0].AnswerOrder = tempAnswerOrder;
+
+                        vm.model.answers[questionIndex][tempIndex] = vm.model.answers[questionIndex][0];
+
+                        vm.model.answers[questionIndex][0] = temp;
+                    }
+                }
+            }
+
+            if (typeId == 2 && countChecked > 1) {
+                var temp = vm.model.answers[questionIndex].filter(function (item) {
+                    return item.IsRight;
+                })[0];
+                var checkedIndex = vm.model.answers[questionIndex].indexOf(temp);
+                for (var i = checkedIndex + 1; i < vm.model.answers[questionIndex].length; i++) {
                     vm.model.answers[questionIndex][i].IsRight = false;
                 }
             }
@@ -271,7 +311,19 @@
                 QuizQuestions: null,
             });
 
-            vm.model.answers.push([]);
+            var answersForQuestion = [
+                {
+                    Id: 0,
+                    QuestionId: 0,
+                    AnswerText: "",
+                    AnswerOrder: 1,
+                    IsRight: true,
+                    Question: null,
+                    UserAnswers: null
+                }
+            ];
+
+            vm.model.answers.push(answersForQuestion);
 
             vm.model.tags.push([]);
 
@@ -388,7 +440,8 @@
             for (var i = 0; i < vm.model.answers.length; i++) {
 
                 var answerArray = [];
-                for (var j = 0; j < vm.model.answers[i].length; j++) {
+                var finalIndex = vm.model.questions[i].QuestionTypeId != 1 ? vm.model.answers[i].length : 1;
+                for (var j = 0; j < finalIndex; j++) {
                     answerArray.push(vm.model.answers[i][j]);
                 }
                 if (answerArray.length == 0) {
