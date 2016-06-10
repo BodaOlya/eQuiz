@@ -71,8 +71,8 @@
                     <p> <b>#{{$index + 1}}</b> {{item.QuestionText}} </p>
                 </div>
 
-                <div ng-repeat="anw in item.answers">
-                    <input ng-checked="ReviewCtrl.addAttriChecked(item.question_id, anw.id)" type="checkbox" onclick="return false;" onkeydown="return false;"> {{anw.answer}} <br>
+                <div ng-repeat="anw in item.QuestionVariants">
+                    <input ng-checked="anw.ChosenByUser" type="checkbox" onclick="return false;" onkeydown="return false;"> {{anw.Name}} <br>
                 </div>
 
                 <div class="display_inline">

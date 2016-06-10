@@ -14,7 +14,7 @@
         vm.isFinalized = false;
         vm.student = student;
         vm.group = quizReviewDataService.getGroup($location.search().Quiz);
-        vm.quiz = getQuizTests;   
+        vm.quiz = getQuizTests;        
         vm.selectedStatuses = [];
         vm.statusList = [{ id: 0, name: "In Verification" }, { id: 1, name: "Passed" }, { id: 2, name: "Not Passed" }];
         $scope.showNotification = false;
@@ -58,18 +58,6 @@
 
             vm.saveIsDisabled = false;
             vm.countStats();
-        }
-
-        vm.addAttriChecked = function (questionId, aswerId) {    //add attribute 'checked' to checkboxes if finds proper user answer     
-            for (var i = 0; i < vm.quiz.questions.length; i++) {
-                if (vm.quiz.questions[i].question_id == questionId) {
-                    for (var j = 0; j < vm.quiz.questions[i].userAnswer.length; j++) {
-                        if (vm.quiz.questions[i].userAnswer[j] == aswerId) {
-                            return true;
-                        }
-                    }
-                }
-            }
         }
 
         vm.setButtonColor = function (questionStatus, expectedStatus) { // sets button color
