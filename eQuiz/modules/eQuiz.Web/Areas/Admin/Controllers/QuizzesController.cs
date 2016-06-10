@@ -229,11 +229,48 @@ namespace eQuiz.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetQuizGroup(int quizPassId)
+        public JsonResult GetQuizInfo(int quizPassId)
         {
             var result = new List<object>();
 
-            
+            var quizPass = _repository.Get<QuizPass>(item => item.Id == quizPassId);            
+            var quiz = _repository.Get<Quiz>();
+            var userGroup = _repository.Get<UserGroup>();            
+            var quizBlock = _repository.Get<QuizBlock>();
+            var quizQuestions = _repository.Get<QuizQuestion>();
+
+            var query = from quizp in quizPass
+                        join q in quiz on quizp.QuizId equals q.Id
+                        join ugroup in userGroup on q.GroupId equals ugroup.Id
+                        join quizb in quizBlock on q.Id equals quizb.QuizId
+                        join quizq in quizQuestions on quizb.Id equals quizq.QuizBlockId
+                        group new { quizp, q, ugroup, quizq } by quizp.Id into grouped
+                        select new
+                        {
+                            quiz_name = grouped.Select(item => item.q.Name).FirstOrDefault(),
+                            group_name = grouped.Select(item => item.ugroup.Name).FirstOrDefault(),
+                            start_date = grouped.Select(item => item.quizp.StartTime).FirstOrDefault(),
+                            end_date = grouped.Select(item => item.quizp.FinishTime).FirstOrDefault(),
+                            quiz_score = grouped.Sum(item => item.quizq.QuestionScore)
+                        };
+                        
+
+            foreach(var item in query)
+            {
+                result.Add(item);
+            }
+
+            //SELECT quizp.Id, SUM(quizq.QuestionScore)
+            //FROM tblQuizPass quizp
+            //INNER JOIN tblQuiz quiz ON quizp.QuizId = quiz.Id
+            //INNER JOIN tblUserGroup ugroup ON quiz.GroupId = ugroup.Id
+            //INNER JOIN tblQuizBlock quizb ON quiz.Id = quizb.QuizId
+            //INNER JOIN tblQuizQuestion quizq ON quizb.Id = quizq.QuizBlockId
+            //WHERE quizp.Id = 13
+            //GROUP BY quizp.Id
+            //ORDER BY quizp.Id
+
+
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 

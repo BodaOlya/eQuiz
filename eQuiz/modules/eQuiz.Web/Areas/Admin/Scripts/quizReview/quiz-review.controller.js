@@ -3,9 +3,9 @@
         .module("equizModule")
         .controller('QuizReviewController', quizReviewController);
 
-    quizReviewController.$inject = ['$scope', 'quizReviewDataService', '$location', 'student', 'getQuizTests'];
+    quizReviewController.$inject = ['$scope', 'quizReviewDataService', '$location', 'student', 'getQuizTests', 'getQuizPassInfo'];
 
-    function quizReviewController($scope, quizReviewDataService, $location, student, getQuizTests) {
+    function quizReviewController($scope, quizReviewDataService, $location, student, getQuizTests, getQuizPassInfo) {
         var vm = this;
         vm.passed = 0;
         vm.notPassed = 0;
@@ -13,7 +13,7 @@
         vm.saveIsDisabled = true;
         vm.isFinalized = false;
         vm.student = student;
-        vm.group = quizReviewDataService.getGroup($location.search().Quiz);
+        vm.quizPassInfo = getQuizPassInfo;        
         vm.quiz = getQuizTests;        
         vm.selectedStatuses = [];
         vm.statusList = [{ id: 0, name: "In Verification" }, { id: 1, name: "Passed" }, { id: 2, name: "Not Passed" }];
@@ -41,9 +41,8 @@
 
         function activate() {
             vm.student = quizReviewDataService.getStudent($location.search().Student);
-            vm.group = quizReviewDataService.getGroup($location.search().Student);
-            vm.quiz = quizReviewDataService.getQuiz($location.search().Quiz);
-            debugger;
+            vm.quizPassInfo = quizReviewDataService.getQuizInfo($location.search().Quiz);
+            vm.quiz = quizReviewDataService.getQuizBlock($location.search().Quiz);            
             vm.countStats();
         };
 
@@ -60,8 +59,25 @@
             vm.countStats();
         }
 
-        vm.setButtonColor = function (questionStatus, expectedStatus) { // sets button color
-            if (questionStatus == expectedStatus) {
+        vm.checkAutoQuestion = function (arrayOfAnswers, expectedStatus) { // sets button color
+            var temp = 0;
+            for (var answer = 0; answer < arrayOfAnswers.length; answer++) {
+                if (arrayOfAnswers[answer].ChosenByUser == arrayOfAnswers[answer].IsRight) {
+                    temp += 1;
+                }
+            }
+            
+            var status;
+
+            if (temp == arrayOfAnswers.length) {
+                status = 1;
+            }
+
+            else {
+                status = 2;
+            }
+
+            if (expectedStatus == status) {
                 return true;
             }
         }
@@ -100,8 +116,7 @@
             return false;
         };
 
-        vm.selectStatusId = function (id) { // DONT PUT THIS FUNCTION INTO VM! let it be in scope (because of 'this' in function)
-            // debugger;
+        vm.selectStatusId = function (id) {
             if (vm.selectedStatuses.toString().indexOf(id.toString()) > -1) {
                 for (var i = 0; i < vm.selectedStatuses.length; i++) {
                     if (vm.selectedStatuses[i] === id) {
@@ -137,5 +152,13 @@
         vm.unCheckAll = function () {
             vm.selectedStatuses = [];
         };
+
+        vm.countUserScore = function (testsToCheck) {
+            var result = 0;
+            testsToCheck.forEach(function (item) {
+                result += item.UserScore;
+            })            
+            return result;
+        }
     };
 })(angular);

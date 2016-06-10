@@ -33,7 +33,7 @@
                     controllerAs: 'ReviewCtrl',
                     resolve: {
                         getQuizTests: function (quizReviewDataService, $location) {                            
-                            return quizReviewDataService.getQuiz($location.search().Quiz).then(function (respond) {
+                            return quizReviewDataService.getQuizBlock($location.search().Quiz).then(function (respond) {
                                 return respond.data;
                             })
                         },
@@ -42,11 +42,11 @@
                                 return respond.data;
                             })
                         },
-                        //group: function (quizReviewDataService, $location) {
-                        //    return quizReviewDataService.getGroup($location.search().Quiz).then(function (respond) {
-                        //        return respond.data;
-                        //    })
-                        //}
+                        getQuizPassInfo: function (quizReviewDataService, $location) {
+                            return quizReviewDataService.getQuizInfo($location.search().Quiz).then(function (respond) {
+                                return respond.data;
+                            })
+                        }
                     }
                 })
                 .when('/Index/Student', {

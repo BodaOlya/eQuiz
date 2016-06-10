@@ -78,11 +78,9 @@ namespace eQuiz.Web.Areas.Admin.Controllers
         {
             var result = new List<object>();
 
-            var quizzPasses = _repository.Get<QuizPass>();
-            var quizPassScore = _repository.Get<QuizPassScore>();
+            var quizzPasses = _repository.Get<QuizPass>();            
             var quiz = _repository.Get<Quiz>();
-            var ugroup = _repository.Get<UserGroup>();
-            var quizScores = _repository.Get<QuizPassScore>();
+            var ugroup = _repository.Get<UserGroup>();            
             var quizBlock = _repository.Get<QuizBlock>();
             var quizQuestions = _repository.Get<QuizQuestion>();
 
