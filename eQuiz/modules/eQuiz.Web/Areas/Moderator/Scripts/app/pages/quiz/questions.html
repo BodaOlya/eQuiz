@@ -46,7 +46,7 @@
                             </p>
                         </div>
                         <div  class="col-sm-12 col-md-12">
-                            <textarea class="questionText form-control" ng-model="vm.model.answers[$index][0].AnswerText" ng-disabled="!vm.isEditingEnabled()" required name="AnswerText">{{ vm.model.answers[$index][0] }}</textarea>
+                            <textarea class="questionText form-control" ng-model="vm.model.answers[$index][vm.getFirstCheckedAnswerIndex($index)].AnswerText" ng-disabled="!vm.isEditingEnabled()" required name="AnswerText">{{ vm.model.answers[$index][0] }}</textarea>
                             <div ng-messages="oneAnswerForm.AnswerText.$error" class="help-block hide">
                                 <p ng-message="required">Answer text is required</p>
                             </div>

@@ -57,6 +57,7 @@
         vm.AddExistingQuestions = AddExistingQuestions;
         vm.getAnswersForQuestion = getAnswersForQuestion;
         vm.getTagsForQuestion = getTagsForQuestion;
+        vm.getFirstCheckedAnswerIndex = getFirstCheckedAnswerIndex;
 
         vm.toggleQuizzesForCopy = toggleQuizzesForCopy;
         vm.quizzesForCopyVisible = false;
@@ -239,32 +240,12 @@
                         Id: 0,
                         QuestionId: 0,
                         AnswerText: "",
-                        AnswerOrder: 1,
-                        IsRight: true,
-                        Question: null,
-                        UserAnswers: null
+                        AnswerOrder: 1
                     });
                 }
                 else {
                     if (countChecked == 0) {
                         vm.model.answers[questionIndex][0].IsRight = true;
-                    }
-                    if (countChecked > 0 && !vm.model.answers[questionIndex][0].IsRight) {
-                        var temp = vm.model.answers[questionIndex].filter(function (item) {
-                            return item.IsRight;
-                        })[0];
-
-                        var tempIndex = vm.model.answers[questionIndex].indexOf(temp);
-
-                        var tempAnswerOrder = temp.AnswerOrder;
-
-                        temp.AnswerOrder = vm.model.answers[questionIndex][0].AnswerOrder;
-
-                        vm.model.answers[questionIndex][0].AnswerOrder = tempAnswerOrder;
-
-                        vm.model.answers[questionIndex][tempIndex] = vm.model.answers[questionIndex][0];
-
-                        vm.model.answers[questionIndex][0] = temp;
                     }
                 }
             }
@@ -302,13 +283,7 @@
                 TopicId: 0,
                 QuestionText: "",
                 QuestionComplexity: 0,
-                IsActive: true,
-                QuestionType: null,
-                Topic: null,
-                QuestionAnswers: null,
-                QuestionTags: null,
-                QuizPassQuestions: null,
-                QuizQuestions: null,
+                IsActive: true
             });
 
             var answersForQuestion = [
@@ -317,9 +292,7 @@
                     QuestionId: 0,
                     AnswerText: "",
                     AnswerOrder: 1,
-                    IsRight: true,
-                    Question: null,
-                    UserAnswers: null
+                    IsRight: true
                 }
             ];
 
@@ -345,9 +318,7 @@
                 QuestionId: question.Id,
                 AnswerText: "",
                 AnswerOrder: answerOrder,
-                IsRight: false,
-                Question: null,
-                UserAnswers: null
+                IsRight: false
             });
 
             vm.model.answersDirty[questionIndex].countAnswersDirty = true;
@@ -424,8 +395,7 @@
                     if (secondElementIndex == -1) {
                         tagArray.push({
                             Id: 0,
-                            Name: vm.model.tags[i][j],
-                            QuestionTags: null
+                            Name: vm.model.tags[i][j]
                         });
                     }
                 }
@@ -440,9 +410,15 @@
             for (var i = 0; i < vm.model.answers.length; i++) {
 
                 var answerArray = [];
-                var finalIndex = vm.model.questions[i].QuestionTypeId != 1 ? vm.model.answers[i].length : 1;
-                for (var j = 0; j < finalIndex; j++) {
-                    answerArray.push(vm.model.answers[i][j]);
+                if (vm.model.questions[i].QuestionTypeId == 1) {
+                    vm.model.answers[i][vm.getFirstCheckedAnswerIndex(i)].AnswerOrder = 1;
+                    answerArray.push(vm.model.answers[i][vm.getFirstCheckedAnswerIndex(i)]);
+                }
+                else {
+                    for (var j = 0; j < vm.model.answers[i].length; j++) {
+                        vm.model.answers[i][j].AnswerOrder = j + 1;
+                        answerArray.push(vm.model.answers[i][j]);
+                    }
                 }
                 if (answerArray.length == 0) {
                     answerArray.push(null);
@@ -690,6 +666,17 @@
             var questionIndex = vm.model.questionsForAdding.questions.indexOf(question);
 
             return vm.model.questionsForAdding.tags[questionIndex].join(', ');
+        }
+
+        function getFirstCheckedAnswerIndex(questionIndex) {
+
+            var temp = vm.model.answers[questionIndex].filter(function (item) {
+                return item.IsRight;
+            })[0];
+
+            var checkedIndex = vm.model.answers[questionIndex].indexOf(temp);
+
+            return checkedIndex;
         }
     }
 })();
