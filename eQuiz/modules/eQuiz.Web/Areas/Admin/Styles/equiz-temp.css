@@ -181,11 +181,11 @@ html .tabLabels li.active, html .tabLabels li.active a:hover  {
     display:inline-block;
 }
 
-.ng-invalid.ng-touched {
+.ng-invalid.ng-dirty.showValidation {
 border: 1px solid red;
 }
 
-.ng-valid.ng-touched {
+.ng-valid.ng-dirty.showValidation {
 border: 1px solid green;
 }
 
