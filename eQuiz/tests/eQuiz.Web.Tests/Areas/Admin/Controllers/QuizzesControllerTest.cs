@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using eQuiz.Repositories.Abstract;
+using Moq;
 using AdminQuizzesController = eQuiz.Web.Areas.Admin.Controllers.QuizzesController;
 
 namespace eQuiz.Web.Tests.Areas.Admin.Controllers
@@ -13,10 +14,12 @@ namespace eQuiz.Web.Tests.Areas.Admin.Controllers
     class QuizzesControllerTest
     {
         private AdminQuizzesController _controller;
+        private Mock<IRepository> _mockRepository = new Mock<IRepository>();
 
         [TestInitialize]
         public void BeforeTestMethod()
         {
+
             
         }
 
