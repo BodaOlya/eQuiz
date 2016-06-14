@@ -6,7 +6,8 @@
 {
     <base href="/Admin/Default/" />
 }
-
+@section PageHeader
+{
 <div ng-app="equizModule">
     <div layout="row" style="padding:10px">
         <div>
@@ -20,14 +21,13 @@
                 Full Name
             </label>
         </div>
-
+        }
         <div data-loading class="cssload-container">
             <div class="cssload-speeding-wheel"></div>
         </div>
         <div ng-view> </div>
     </div>
 </div>
-
 @section FootScripts
 {
     <script src="~/Areas/Admin/Scripts/shared/routing.js"></script>
