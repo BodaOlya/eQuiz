@@ -265,7 +265,7 @@ CREATE TABLE [dbo].[tblUserTextAnswer]
 	[AnswerText] [NVARCHAR](MAX) NOT NULL,
 	[IsPassed] [BIT] NOT NULL,
 	[EvaluatedBy] [INT] NULL,
-	[EvaluatedAt] [DATETIME] NOT NULL 
+	[EvaluatedAt] [DATETIME] NULL,
 	CONSTRAINT [PK_tblUserTextAnswer_Id] PRIMARY KEY ([Id]) 
 );
 
