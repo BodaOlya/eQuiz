@@ -70,6 +70,8 @@ ALTER TABLE [dbo].[tblUserGroup] DROP CONSTRAINT [FK_tblUserGroup_tblUserGroupSt
 
 ALTER TABLE [dbo].[tblUserGroup] DROP CONSTRAINT [FK_tblUserGroup_tblUser];
 
+ALTER TABLE [dbo].[tblUserTextAnswer] DROP CONSTRAINT [FR_tblUserTextAnswer_tblUser];
+
 DROP TABLE [tblUserComment];
 
 DROP TABLE [tblUserTextAnswer];
