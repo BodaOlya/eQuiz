@@ -66,6 +66,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
         [HttpGet]
         public JsonResult GetStudentQuizzes(int id)
         {
+            var passedQuizes = new List<object>();
             var result = new List<object>();
             var types = new List<object>();
 
@@ -77,44 +78,81 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var questionTypes = _repository.Get<QuestionType>();
             var quizStates = _repository.Get<QuizState>();
 
+            var quizPasses = _repository.Get<QuizPass>();
+            var quizPassScores = _repository.Get<QuizPassScore>();
+
             var autoQuestions = from qz in quizzes
-                           join qb in quizBlocks on qz.Id equals qb.QuizId
-                           join qq in quizQuestions on qb.Id equals qq.QuizBlockId
-                           join q in questions on qq.QuestionId equals q.Id
-                           join qt in questionTypes on q.QuestionTypeId equals qt.Id
-                           where qt.IsAutomatic
-                           group new { qz, qt } by qz.Id into grouped
-                           select new QuestionsAuto
-                           {
-                               QuizId = grouped.Key,
-                               IsAutomatic = grouped.Select(q => q.qt.IsAutomatic).Count()
-                           };
+                                join qb in quizBlocks on qz.Id equals qb.QuizId
+                                join qq in quizQuestions on qb.Id equals qq.QuizBlockId
+                                join q in questions on qq.QuestionId equals q.Id
+                                join qt in questionTypes on q.QuestionTypeId equals qt.Id
+                                where qt.IsAutomatic
+                                group new { qz, qt } by qz.Id into grouped
+                                select new QuestionsAuto
+                                {
+                                    QuizId = grouped.Key,
+                                    IsAutomatic = grouped.Select(q => q.qt.IsAutomatic).Count()
+                                };
 
             foreach (var item in autoQuestions)
             {
                 types.Add(item);
             }
 
-            var query = from q in quizzes
-                        join uq in userQuizzes on q.Id equals uq.QuizId
-                        join qb in quizBlocks on q.Id equals qb.QuizId
-                        join aq in autoQuestions on q.Id equals aq.QuizId 
-                        join qs in quizStates on q.QuizStateId equals qs.Id
-                        where uq.UserId == id
-                        select new QuizInfo
-                        {
-                            id = uq.Id,
-                            name = q.Name,
-                            state = qs.Name, //bullshit
-                            questions = (int)qb.QuestionCount,
-                            verificationType = QuizInfo.SetVerificationType(aq.IsAutomatic, (int)qb.QuestionCount),
-                            otherDetails = q.Description,
-                            date = uq.FinishTime
-                        };
+            var passed = from q in quizzes
+                         join uq in userQuizzes on q.Id equals uq.QuizId
+                         join qb in quizBlocks on q.Id equals qb.QuizId
+                         join aq in autoQuestions on q.Id equals aq.QuizId
+                         join qp in quizPasses on q.Id equals qp.QuizId
+                         join qps in quizPassScores on qp.Id equals qps.QuizPassId
+                         where uq.UserId == id
+                         select new QuizInfo
+                         {
+                             id = uq.Id,
+                             name = q.Name,
+                             state = "Passed",
+                             questions = (int)qb.QuestionCount,
+                             verificationType = QuizInfo.SetVerificationType(aq.IsAutomatic, (int)qb.QuestionCount),
+                             otherDetails = q.Description,
+                             date = uq.FinishTime
+                         };
 
-            foreach (var item in query)
+            var notPassed = from q in quizzes
+                            join uq in userQuizzes on q.Id equals uq.QuizId
+                            join qb in quizBlocks on q.Id equals qb.QuizId
+                            join aq in autoQuestions on q.Id equals aq.QuizId
+                            where uq.UserId == id
+                            select new QuizInfo
+                            {
+                                id = uq.Id,
+                                name = q.Name,
+                                state = "Not Passed",
+                                questions = (int)qb.QuestionCount,
+                                verificationType = QuizInfo.SetVerificationType(aq.IsAutomatic, (int)qb.QuestionCount),
+                                otherDetails = q.Description,
+                                date = uq.FinishTime
+                            };
+
+            foreach (var item in passed)
+            {
+                passedQuizes.Add(item);
+            }
+
+            foreach (var item in notPassed)
             {
                 result.Add(item);
+            }
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                for (int j = 0; j < passedQuizes.Count; j++)
+                {
+                    if (result[i].Equals(passedQuizes[j]))
+                    {
+                        result[i] = passedQuizes[j];
+                        break;
+                    }
+                }
             }
 
             return Json(result, JsonRequestBehavior.AllowGet);

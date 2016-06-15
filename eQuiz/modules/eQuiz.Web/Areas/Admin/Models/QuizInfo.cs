@@ -6,7 +6,7 @@ using System.Web;
 
 namespace eQuiz.Web.Areas.Admin.Models
 {
-    public class QuizInfo
+    public class QuizInfo : IEquatable<QuizInfo>
     {
         public int id { get; set; }
         public string name { get; set; }
@@ -27,6 +27,29 @@ namespace eQuiz.Web.Areas.Admin.Models
                 return "Auto";
             }
             else { return "Manual"; }
+        }
+
+        public bool Equals(QuizInfo other)
+        {
+            if (id == other.id && name == other.name && questions == other.questions &&
+                verificationType == other.verificationType && otherDetails == other.otherDetails &&
+                date == other.date)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            int idHash = id.ToString().GetHashCode();
+            int nameHash = name.GetHashCode();
+            int questionsHash = questions.ToString().GetHashCode();
+            int otherDetailsHash = otherDetails.GetHashCode();
+            int dateHash = date.ToString().GetHashCode();
+
+            return idHash + nameHash + questionsHash + otherDetailsHash + dateHash;
         }
     }
 }
