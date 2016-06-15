@@ -263,6 +263,9 @@ CREATE TABLE [dbo].[tblUserTextAnswer]
 	[QuizPassQuestionId] [INT] NOT NULL,
 	[AnswerTime] [DATETIME] NOT NULL,
 	[AnswerText] [NVARCHAR](MAX) NOT NULL,
+	[IsPassed] [BIT] NOT NULL,
+	[EvaluatedBy] [INT] NULL,
+	[EvaluatedAt] [DATETIME] NOT NULL 
 	CONSTRAINT [PK_tblUserTextAnswer_Id] PRIMARY KEY ([Id]) 
 );
 
@@ -277,6 +280,8 @@ CREATE TABLE [dbo].[tblUserComment](
 
 GO
  
+ALTER TABLE [dbo].[tblUserTextAnswer] ADD CONSTRAINT [FR_tblUserTextAnswer_tblUser] FOREIGN KEY([EvaluatedBy]) REFERENCES [dbo].[tblUser] ([Id]);
+
 ALTER TABLE [dbo].[tblUserComment] ADD CONSTRAINT [FK_tblUserComment_AdminId_tblUser] FOREIGN KEY([AdminId]) REFERENCES [dbo].[tblUser] ([Id]);
 
 ALTER TABLE [dbo].[tblUserComment] ADD CONSTRAINT [FK_tblUserComment_UserId_tblUser] FOREIGN KEY([UserId]) REFERENCES [dbo].[tblUser] ([Id]);

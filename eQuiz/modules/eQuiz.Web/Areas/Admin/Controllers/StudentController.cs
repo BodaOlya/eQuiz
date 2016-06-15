@@ -75,6 +75,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var quizQuestions = _repository.Get<QuizQuestion>();
             var questions = _repository.Get<Question>();
             var questionTypes = _repository.Get<QuestionType>();
+            var quizStates = _repository.Get<QuizState>();
 
             var autoQuestions = from qz in quizzes
                            join qb in quizBlocks on qz.Id equals qb.QuizId
@@ -94,19 +95,17 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                 types.Add(item);
             }
 
-            //var countTypes = from g in getTypes
-
-
             var query = from q in quizzes
                         join uq in userQuizzes on q.Id equals uq.QuizId
                         join qb in quizBlocks on q.Id equals qb.QuizId
                         join aq in autoQuestions on q.Id equals aq.QuizId 
+                        join qs in quizStates on q.QuizStateId equals qs.Id
                         where uq.UserId == id
                         select new QuizInfo
                         {
                             id = uq.Id,
                             name = q.Name,
-                            state = "Passed",
+                            state = qs.Name, //bullshit
                             questions = (int)qb.QuestionCount,
                             verificationType = QuizInfo.SetVerificationType(aq.IsAutomatic, (int)qb.QuestionCount),
                             otherDetails = q.Description,
