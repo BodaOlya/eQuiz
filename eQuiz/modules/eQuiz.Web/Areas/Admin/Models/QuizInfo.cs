@@ -31,9 +31,7 @@ namespace eQuiz.Web.Areas.Admin.Models
 
         public bool Equals(QuizInfo other)
         {
-            if (id == other.id && name == other.name && questions == other.questions &&
-                verificationType == other.verificationType && otherDetails == other.otherDetails &&
-                date == other.date)
+            if (id == other.id && name == other.name)
             {
                 return true;
             }

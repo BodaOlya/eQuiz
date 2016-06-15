@@ -66,8 +66,8 @@ namespace eQuiz.Web.Areas.Admin.Controllers
         [HttpGet]
         public JsonResult GetStudentQuizzes(int id)
         {
-            var passedQuizes = new List<object>();
-            var result = new List<object>();
+            var passedQuizes = new List<QuizInfo>();
+            var result = new List<QuizInfo>();
             var types = new List<object>();
 
             var quizzes = _repository.Get<Quiz>();
@@ -126,7 +126,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                             {
                                 id = uq.Id,
                                 name = q.Name,
-                                state = "Not Passed",
+                                state = "In verification",
                                 questions = (int)qb.QuestionCount,
                                 verificationType = QuizInfo.SetVerificationType(aq.IsAutomatic, (int)qb.QuestionCount),
                                 otherDetails = q.Description,
@@ -137,6 +137,8 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             {
                 passedQuizes.Add(item);
             }
+
+            //passedQuizes = passedQuizes.Distinct();
 
             foreach (var item in notPassed)
             {

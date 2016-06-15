@@ -249,7 +249,7 @@
           <Property Name="AnswerText" Type="nvarchar(max)" Nullable="false" />
           <Property Name="IsPassed" Type="bit" Nullable="false" />
           <Property Name="EvaluatedBy" Type="int" />
-          <Property Name="EvaluatedAt" Type="datetime" Nullable="false" />
+          <Property Name="EvaluatedAt" Type="datetime" />
         </EntityType>
         <EntityType Name="tblUserToUserGroup">
           <Key>
@@ -1602,7 +1602,7 @@
           <NavigationProperty Name="QuizPassQuestion" Relationship="eQuizModel.FK_tblUserTextAnswer_tblQuizPassQuestion" FromRole="UserTextAnswer" ToRole="QuizPassQuestion" />
           <Property Name="IsPassed" Type="Boolean" Nullable="false" />
           <Property Name="EvaluatedBy" Type="Int32" />
-          <Property Name="EvaluatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EvaluatedAt" Type="DateTime" Precision="3" />
           <NavigationProperty Name="User" Relationship="eQuizModel.FR_tblUserTextAnswer_tblUser" FromRole="UserTextAnswer" ToRole="User" />
         </EntityType>
         <Association Name="FK_tblQuizQuestion_tblQuestion">

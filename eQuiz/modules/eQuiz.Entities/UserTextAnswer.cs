@@ -20,7 +20,7 @@ namespace eQuiz.Entities
         public int QuizPassQuestionId { get; set; }
         public bool IsPassed { get; set; }
         public Nullable<int> EvaluatedBy { get; set; }
-        public System.DateTime EvaluatedAt { get; set; }
+        public Nullable<System.DateTime> EvaluatedAt { get; set; }
     
         public virtual QuizPassQuestion QuizPassQuestion { get; set; }
         public virtual User User { get; set; }
