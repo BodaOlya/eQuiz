@@ -82,7 +82,6 @@
                 });
 
             generatePredicate();
-            
             }
         vm.studentQuizzes = sortByDate(vm.studentQuizzes);
         vm.studentComments = sortByDate(vm.studentComments);
@@ -103,7 +102,6 @@
         vm.goToPage = function (page) {
             vm.tablePage = page;
         };
-
 
         vm.goToCommentsPage = function (page) {
             vm.commentsPage = page;
@@ -177,15 +175,12 @@
                 if (currVal.state == 'Passed') {
                     passed++;
                 }
-                else if (currVal.state == 'In Verification') {
+                else if (currVal.state == 'In verification') {
                     inVerification++;
-                }
-                else {
-                    notPassed++;
                 }
             });
 
-            return passed + '/' + inVerification + '/' + notPassed;
+            return passed + '/' + inVerification;
         };
 
         vm.saveProfile = function () {
@@ -224,8 +219,6 @@
             });
                 vm.toggleNewCommentFrame();
                 vm.studentComments = sortByDate(vm.studentComments);
-
-                
         };
 
         vm.validationCheck = function () {

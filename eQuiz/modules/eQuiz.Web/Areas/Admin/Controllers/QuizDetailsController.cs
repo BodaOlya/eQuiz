@@ -46,17 +46,16 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var query = from u in users
                         join qp in quizPasses on u.Id equals qp.UserId
                         where qp.QuizId == id
-                        join qs in quizScores on qp.Id equals qs.QuizPassId
                         join qpq in quizPassQuestions on qp.Id equals qpq.QuizPassId
-                        join uas in userAnswerScores on qpq.Id equals uas.QuizPassQuestionId 
-                        group new { u, qp, qs, qpq, uas} by u.Id into changed
+                        join uas in userAnswerScores on qpq.Id equals uas.QuizPassQuestionId
+                        group new { u, qp, qpq, uas } by u.Id into changed
                         select new
                         {
                             id = changed.Key,
                             student = changed.Select(ch => ch.u.FirstName + " " + ch.u.LastName).Distinct(),
                             //student = u.FirstName + " " + u.LastName,
                             email = changed.Select(ch => ch.u.Email).Distinct(),
-                            studentScore = changed.Select(ch => ch.qs.PassScore).Distinct(),
+                            studentScore = changed.Sum(ch => ch.uas.Score),
                             quizStatus = changed.Count(ch => ch.uas.Score >= 0) == questionCount ? "Passed" : "In Verification",
                             questionDetails = new {
                                 passed = changed.Count(ch => ch.uas.Score > 0),
