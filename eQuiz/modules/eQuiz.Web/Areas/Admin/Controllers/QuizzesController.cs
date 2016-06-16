@@ -55,6 +55,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                                     QuizId = grouped.Key,
                                     IsAutomatic = grouped.Select(q => q.qt.IsAutomatic).Count()
                                 };
+
             var studentAmountReal = from q in quiz
                                     join qp in quizPass on q.Id equals qp.QuizId
                                     join u in user on qp.UserId equals u.Id
