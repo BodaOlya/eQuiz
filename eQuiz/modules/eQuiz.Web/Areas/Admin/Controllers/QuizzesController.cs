@@ -138,6 +138,8 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var questionAnswers = _repository.Get<QuestionAnswer>();
             var answers = _repository.Get<Answer>();
 
+            var userAnswerScore = _repository.Get<UserAnswerScore>();
+
             // gets all text answers
             var textAnswers = from q in questions
                               join qt in questionTypes on q.QuestionTypeId equals qt.Id
@@ -146,8 +148,9 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                               join qq in quizQuestions on q.Id equals qq.QuestionId
                               join qa in questionAnswers on q.Id equals qa.QuestionId
                               join a in answers on qa.AnswerId equals a.Id
+                              join uas in userAnswerScore on qpq.Id equals uas.QuizPassQuestionId
                               where qt.IsAutomatic == false
-                              select new TextQuestion(qpq.Id, qq.QuestionScore, 0, q.QuestionText, uta.AnswerText, TextQuestion.GetAnswer(a.AnswerText), qq.QuestionOrder);
+                              select new TextQuestion(q.Id, qq.QuestionScore, uas.Score, q.QuestionText, uta.AnswerText, TextQuestion.GetAnswer(a.AnswerText), qq.QuestionOrder);
 
             //gets all user answers
             var testAnswers = from q in questions
