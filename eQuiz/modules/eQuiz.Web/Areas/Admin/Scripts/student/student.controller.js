@@ -175,7 +175,7 @@
                 if (currVal.state == 'Passed') {
                     passed++;
                 }
-                else if (currVal.state == 'In Verification') {
+                else if (currVal.state == 'In verification') {
                     inVerification++;
                 }
             });
