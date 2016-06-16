@@ -210,13 +210,14 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var generateQuestions = from q in questions
                                     join qt in questionTypes on q.QuestionTypeId equals qt.Id
                                     join qpq in quizPassQuestions on q.Id equals qpq.QuestionId
+                                    join uas in userAnswerScore on qpq.Id equals uas.QuizPassQuestionId
                                     join qq in quizQuestions on q.Id equals qq.QuestionId
                                     join t in tests on q.Id equals t.QuestionId
                                     where qt.IsAutomatic == true
-                                    group new { qpq, qq, q, t } by q.Id into grouped
+                                    group new { qpq, qq, q, t, uas } by q.Id into grouped
                                     select new SelectQuestion(grouped.Key,
                                                               grouped.Select(g => g.qq.QuestionScore).FirstOrDefault(),
-                                                              0,
+                                                              grouped.Select(g => g.uas.Score).FirstOrDefault(),
                                                               grouped.Select(g => g.q.QuestionText).FirstOrDefault(),
                                                               grouped.Select(g => g.t).ToList(),
                                                               grouped.Select(g => g.qq.QuestionOrder).FirstOrDefault()
