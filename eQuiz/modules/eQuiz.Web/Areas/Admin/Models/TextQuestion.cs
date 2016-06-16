@@ -9,14 +9,18 @@ namespace eQuiz.Web.Areas.Admin.Models
     {
         public string Answer { get; set; }
         public string RightAnswer { get; set; }
+        public bool IsPassed { get; set; }
+        public int? EvaluatedBy { get; set; }
 
         public TextQuestion(int id, byte maxScore, int 
-            userScore, string questionText, string answer, string rightAnswer, short? order)
+            userScore, string questionText, string answer, string rightAnswer, short? order, bool isPassed, int? evaluatedBy)
             : base(id, maxScore, userScore, questionText, order)
         {
             base.Type = "Text";
             Answer = answer;
             RightAnswer = rightAnswer;
+            IsPassed = isPassed;
+            EvaluatedBy = evaluatedBy;
         }
 
         public static string GetAnswer(string answer)
