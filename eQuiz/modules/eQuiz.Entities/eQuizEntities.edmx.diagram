@@ -47,7 +47,7 @@
         <AssociationConnector Association="eQuizModel.FK_tblUserAnswerScore_tblUser" ManuallyRouted="false" />
         <AssociationConnector Association="eQuizModel.FK_tblUserToUserGroup_tblUser" ManuallyRouted="false" />
         <AssociationConnector Association="eQuizModel.FK_tblUserToUserGroup_tblUserGroup" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="eQuizModel.UserTextAnswer" Width="1.5" PointX="6.5" PointY="1.125" />
+        <EntityTypeShape EntityType="eQuizModel.UserTextAnswer" Width="1.5" PointX="6.375" PointY="0.75" />
         <AssociationConnector Association="eQuizModel.FK_tblQuizQuestion_tblQuestion" />
         <AssociationConnector Association="eQuizModel.FK_tblQuizQuestion_tblQuizVariant" />
         <EntityTypeShape EntityType="eQuizModel.Answer" Width="1.5" PointX="10.375" PointY="0.875" />
@@ -68,7 +68,6 @@
         <EntityTypeShape EntityType="eQuizModel.UserGroupState" Width="2.375" PointX="10.375" PointY="10.875" />
         <AssociationConnector Association="eQuizModel.FK_tblUserGroup_tblUser" />
         <AssociationConnector Association="eQuizModel.FK_tblUserGroup_tblUserGroupState" />
-        <AssociationConnector Association="eQuizModel.FR_tblUserTextAnswer_tblUser" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

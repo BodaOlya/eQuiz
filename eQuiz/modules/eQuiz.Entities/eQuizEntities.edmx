@@ -247,9 +247,6 @@
           <Property Name="QuizPassQuestionId" Type="int" Nullable="false" />
           <Property Name="AnswerTime" Type="datetime" Nullable="false" />
           <Property Name="AnswerText" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="IsPassed" Type="bit" Nullable="false" />
-          <Property Name="EvaluatedBy" Type="int" />
-          <Property Name="EvaluatedAt" Type="datetime" />
         </EntityType>
         <EntityType Name="tblUserToUserGroup">
           <Key>
@@ -691,18 +688,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FR_tblUserTextAnswer_tblUser">
-          <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
-          <End Role="tblUserTextAnswer" Type="Self.tblUserTextAnswer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="tblUserTextAnswer">
-              <PropertyRef Name="EvaluatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="eQuizModelStoreContainer">
           <EntitySet Name="tblAnswer" EntityType="Self.tblAnswer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblFacebookUser" EntityType="Self.tblFacebookUser" Schema="dbo" store:Type="Tables" />
@@ -873,10 +858,6 @@
           <AssociationSet Name="FK_tblUserToUserGroup_tblUserGroup" Association="Self.FK_tblUserToUserGroup_tblUserGroup">
             <End Role="tblUserGroup" EntitySet="tblUserGroup" />
             <End Role="tblUserToUserGroup" EntitySet="tblUserToUserGroup" />
-          </AssociationSet>
-          <AssociationSet Name="FR_tblUserTextAnswer_tblUser" Association="Self.FR_tblUserTextAnswer_tblUser">
-            <End Role="tblUser" EntitySet="tblUser" />
-            <End Role="tblUserTextAnswer" EntitySet="tblUserTextAnswer" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -1097,7 +1078,6 @@
           <NavigationProperty Name="UserComments" Relationship="eQuizModel.FK_tblUserComment_AdminId_tblUser" FromRole="User" ToRole="tblUserComment" />
           <NavigationProperty Name="QuizEditHistories" Relationship="eQuizModel.FK_tblQuizEditHistory_tblUser" FromRole="User" ToRole="tblQuizEditHistory" />
           <NavigationProperty Name="UserGroups" Relationship="eQuizModel.FK_tblUserGroup_tblUser" FromRole="User" ToRole="UserGroup" />
-          <NavigationProperty Name="tblUserTextAnswers" Relationship="eQuizModel.FR_tblUserTextAnswer_tblUser" FromRole="User" ToRole="UserTextAnswer" />
         </EntityType>
         <EntityType Name="UserAnswer">
           <Key>
@@ -1586,10 +1566,6 @@
             <End Role="tblUserGroupState" EntitySet="UserGroupStates" />
             <End Role="UserGroup" EntitySet="UserGroups" />
           </AssociationSet>
-          <AssociationSet Name="FR_tblUserTextAnswer_tblUser" Association="eQuizModel.FR_tblUserTextAnswer_tblUser">
-            <End Role="User" EntitySet="Users" />
-            <End Role="UserTextAnswer" EntitySet="UserTextAnswers" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="UserTextAnswer">
           <Key>
@@ -1600,10 +1576,6 @@
           <Property Name="AnswerText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="QuizPassQuestionId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="QuizPassQuestion" Relationship="eQuizModel.FK_tblUserTextAnswer_tblQuizPassQuestion" FromRole="UserTextAnswer" ToRole="QuizPassQuestion" />
-          <Property Name="IsPassed" Type="Boolean" Nullable="false" />
-          <Property Name="EvaluatedBy" Type="Int32" />
-          <Property Name="EvaluatedAt" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="User" Relationship="eQuizModel.FR_tblUserTextAnswer_tblUser" FromRole="UserTextAnswer" ToRole="User" />
         </EntityType>
         <Association Name="FK_tblQuizQuestion_tblQuestion">
           <End Type="eQuizModel.Question" Role="tblQuestion" Multiplicity="1" />
@@ -1835,18 +1807,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FR_tblUserTextAnswer_tblUser">
-          <End Type="eQuizModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="eQuizModel.UserTextAnswer" Role="UserTextAnswer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserTextAnswer">
-              <PropertyRef Name="EvaluatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2074,9 +2034,6 @@
           <EntitySetMapping Name="UserTextAnswers">
             <EntityTypeMapping TypeName="eQuizModel.UserTextAnswer">
               <MappingFragment StoreEntitySet="tblUserTextAnswer">
-                <ScalarProperty Name="EvaluatedAt" ColumnName="EvaluatedAt" />
-                <ScalarProperty Name="EvaluatedBy" ColumnName="EvaluatedBy" />
-                <ScalarProperty Name="IsPassed" ColumnName="IsPassed" />
                 <ScalarProperty Name="QuizPassQuestionId" ColumnName="QuizPassQuestionId" />
                 <ScalarProperty Name="AnswerText" ColumnName="AnswerText" />
                 <ScalarProperty Name="AnswerTime" ColumnName="AnswerTime" />

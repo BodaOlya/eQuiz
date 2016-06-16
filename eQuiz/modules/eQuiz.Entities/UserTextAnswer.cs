@@ -18,11 +18,7 @@ namespace eQuiz.Entities
         public System.DateTime AnswerTime { get; set; }
         public string AnswerText { get; set; }
         public int QuizPassQuestionId { get; set; }
-        public bool IsPassed { get; set; }
-        public Nullable<int> EvaluatedBy { get; set; }
-        public Nullable<System.DateTime> EvaluatedAt { get; set; }
     
         public virtual QuizPassQuestion QuizPassQuestion { get; set; }
-        public virtual User User { get; set; }
     }
 }
