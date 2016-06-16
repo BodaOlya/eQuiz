@@ -12,9 +12,9 @@
         vm.inVerification = 0;
         vm.saveIsDisabled = true;
         vm.isFinalized = false;
-        vm.student = student;
+        vm.student = student;      
         vm.quizPassInfo = getQuizPassInfo;        
-        vm.quiz = getQuizTests;        
+        vm.quiz = getQuizTests;
         vm.selectedStatuses = [];
         vm.statusList = [{ id: 0, name: "In Verification" }, { id: 1, name: "Passed" }, { id: 2, name: "Not Passed" }];
         $scope.showNotification = false;
@@ -158,6 +158,12 @@
             testsToCheck.forEach(function (item) {
                 result += item.UserScore;
             })            
+            return result;
+        }
+
+        vm.getDateFromSeconds = function (date_in_seconds) {
+            var milliseconds = parseInt(date_in_seconds.slice(6, date_in_seconds.length - 2));
+            var result = new Date(milliseconds);
             return result;
         }
     };
