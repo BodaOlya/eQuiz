@@ -147,7 +147,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                               join qa in questionAnswers on q.Id equals qa.QuestionId
                               join a in answers on qa.AnswerId equals a.Id
                               where qt.IsAutomatic == false
-                              select new TextQuestion(qpq.Id, qq.QuestionScore, 0, q.QuestionText, uta.AnswerText, TextQuestion.GetAnswer(a.AnswerText), qq.QuestionOrder, uta.IsPassed, uta.EvaluatedBy);
+                              select new TextQuestion(qpq.Id, qq.QuestionScore, 0, q.QuestionText, uta.AnswerText, TextQuestion.GetAnswer(a.AnswerText), qq.QuestionOrder);
 
             //gets all user answers
             var testAnswers = from q in questions
