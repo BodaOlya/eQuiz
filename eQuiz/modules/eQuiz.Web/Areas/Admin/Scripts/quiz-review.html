@@ -13,16 +13,16 @@
 
         <div class="display_inline">
             <label> Total: <b> {{ReviewCtrl.quiz.length}} </b> </label> <br />
-            <label> In verification:<b> {{ReviewCtrl.inVerification}} </b> </label>
+            <label> In verification:<b> {{ReviewCtrl.quizStatistics.inVerification}} </b> </label>
         </div>
 
         <div class="display_inline">
-            <label> Passed: <b> {{ReviewCtrl.passed}} </b> </label> <br />
-            <label> Not passed: <b> {{ReviewCtrl.notPassed}} </b> </label>
+            <label> Passed: <b> {{ReviewCtrl.quizStatistics.passed}} </b> </label> <br />
+            <label> Not passed: <b> {{ReviewCtrl.quizStatistics.notPassed}} </b> </label>
         </div>
 
         <div class="display_inline">
-            <label> Score: <b> {{ReviewCtrl.countUserScore(ReviewCtrl.quiz)}} / {{ReviewCtrl.quizPassInfo[0].quiz_score}} </b> </label>
+            <label> Score: <b> {{ReviewCtrl.quizStatistics.userSumPoints}} / {{ReviewCtrl.quizPassInfo[0].quiz_score}} </b> </label>
         </div>
     </div>
 
@@ -53,14 +53,13 @@
 
                 <div>
                     <div class="display_inline">
-                        <label> State:</label>
+                        <label> Score (MaxScore = {{item.MaxScore}}):</label>
                     </div>
 
-                    <div class="display_inline">
+                    <div  class="display_inline">
                         <!-- 0 - in verification, 1 - passed, 2 - not passed -->
-                        <button ng-click="ReviewCtrl.setQuestionStatus(item.Id, 0)" ng-class="{'btn-lightgrey': ReviewCtrl.setButtonColor(item.questionStatus, 0)}" type="button" class="btn btn-primary btn-lightgrey-hover btn-standart">In Verification</button>
-                        <button ng-click="ReviewCtrl.setQuestionStatus(item.Id, 1)" ng-class="{'btn-lightgreen': ReviewCtrl.setButtonColor(item.questionStatus, 1)}" type="button" class="btn btn-primary btn-lightgreen-hover btn-standart">Passed</button>
-                        <button ng-click="ReviewCtrl.setQuestionStatus(item.Id, 2)" ng-class="{'btn-lightcoral': ReviewCtrl.setButtonColor(item.questionStatus, 2)}" type="button" class="btn btn-primary btn-lightcoral-hover btn-standart">Not Passed</button>
+                        <input ng-model="item.UserScore" style="width: 75px" type="number" name="input" min="0" max="{{item.MaxScore}}" required>
+                        <button ng-click="ReviewCtrl.checkAndCount(item.UserScore, item.MaxScore, item.Id, $index + 1)">&#x2714</button>
                     </div>
                 </div>
                 <br>
@@ -80,10 +79,9 @@
                 </div>
 
                 <div class="display_inline">
-                    <!-- 0 - in verification, 1 - passed, 2 - not passed -->
-                    <button ng-click="ReviewCtrl.setQuestionStatus(item.Id, 0)" ng-class="{'btn-lightgrey': ReviewCtrl.checkAutoQuestion(item.QuestionVariants, 0)}" type="button" class="btn btn-primary btn-lightgrey-hover btn-standart">In Verification</button>
-                    <button ng-click="ReviewCtrl.setQuestionStatus(item.Id, 1)" ng-class="{'btn-lightgreen': ReviewCtrl.checkAutoQuestion(item.QuestionVariants, 1)}" type="button" class="btn btn-primary btn-lightgreen-hover btn-standart">Passed</button>
-                    <button ng-click="ReviewCtrl.setQuestionStatus(item.Id, 2)" ng-class="{'btn-lightcoral': ReviewCtrl.checkAutoQuestion(item.QuestionVariants, 2)}" type="button" class="btn btn-primary btn-lightcoral-hover btn-standart">Not Passed</button>
+                    <!-- 0 - in verification, 1 - passed, 2 - not passed -->                    
+                    <button ng-click="ReviewCtrl.setAutoQuestionStatus(item.Id, 1)" ng-class="{'btn-lightgreen': ReviewCtrl.setAutoQuestionColor(item.UserScore, 1)}" type="button" class="btn btn-primary btn-lightgreen-hover btn-standart">Passed</button>
+                    <button ng-click="ReviewCtrl.setAutoQuestionStatus(item.Id, 2)" ng-class="{'btn-lightcoral': ReviewCtrl.setAutoQuestionColor(item.UserScore, 2)}" type="button" class="btn btn-primary btn-lightcoral-hover btn-standart">Not Passed</button>
                 </div>
             </div>
             <br>
