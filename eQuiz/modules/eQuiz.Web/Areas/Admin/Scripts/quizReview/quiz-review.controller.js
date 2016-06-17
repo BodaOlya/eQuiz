@@ -28,6 +28,7 @@
             vm.quizStatistics.passed = 0;
             vm.quizStatistics.notPassed = 0;
             vm.quizStatistics.userSumPoints = 0;
+            vm.quizStatistics.inVerification = 0;
             //vm.isFinalized = vm.quiz.isFinalized;
 
             vm.quiz.forEach(function (item) {
