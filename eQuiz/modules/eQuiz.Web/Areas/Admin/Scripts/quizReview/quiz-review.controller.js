@@ -3,9 +3,9 @@
         .module("equizModule")
         .controller('QuizReviewController', quizReviewController);
 
-    quizReviewController.$inject = ['$scope', 'quizReviewDataService', '$location', 'student', 'getQuizTests', 'getQuizPassInfo'];
+    quizReviewController.$inject = ['$scope', 'quizReviewDataService', '$location', 'student', 'getQuizTests', 'getQuizPassInfo', '$timeout'];
 
-    function quizReviewController($scope, quizReviewDataService, $location, student, getQuizTests, getQuizPassInfo) {
+    function quizReviewController($scope, quizReviewDataService, $location, student, getQuizTests, getQuizPassInfo, $timeout) {
         var vm = this;
         vm.quizStatistics = {
             passed: 0,
@@ -26,7 +26,6 @@
         (vm.countStats = function () {
             vm.quizStatistics.passed = 0;
             vm.quizStatistics.notPassed = 0;
-            vm.quizStatistics.inVerification = 0;
             vm.quizStatistics.userSumPoints = 0;
             //vm.isFinalized = vm.quiz.isFinalized;
 
