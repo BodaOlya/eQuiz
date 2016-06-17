@@ -9,7 +9,11 @@
                 var tempQuestions = [];
                 angular.forEach(selectedStatuses, function (id) {
                     angular.forEach(questions, function (question) {
-                        if (angular.equals(question.questionStatus, id)) {
+                        if (question.UserScore === 0 && id === 2) {
+                            tempQuestions.push(question);
+                        } else if (question.UserScore == null && id === 0) {
+                            tempQuestions.push(question);
+                        } else if (question.UserScore > 0 && id === 1) {
                             tempQuestions.push(question);
                         }
                     });

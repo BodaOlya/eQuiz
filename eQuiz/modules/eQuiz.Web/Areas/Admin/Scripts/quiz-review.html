@@ -31,14 +31,14 @@
             Filter:
             <a style="margin-right:5px" ng-click="ReviewCtrl.unCheckAll()">All</a><input style="margin-bottom:5px" type="checkbox" ng-checked="ReviewCtrl.allChecked()" onclick="return false;">
             <a style="margin-right:5px" ng-click="ReviewCtrl.selectStatusId(0)">In verification</a>
-        </span><input style="margin-bottom:5px" type="checkbox" ng-checked="ReviewCtrl.isChecked(0)" onclick="return false;">
+        <input style="margin-bottom:5px" type="checkbox" ng-checked="ReviewCtrl.isChecked(0)" onclick="return false;">
         <a style="margin-right:5px" ng-click="ReviewCtrl.selectStatusId(1)">Passed</a><input style="margin-bottom:5px" type="checkbox" ng-checked="ReviewCtrl.isChecked(1)" onclick="return false;">
         <a style="margin-right:5px" ng-click="ReviewCtrl.selectStatusId(2)">Not passed</a><input style="margin-bottom:5px" type="checkbox" ng-checked="ReviewCtrl.isChecked(2)" onclick="return false;">
         </span>
     </div>
 
-    <div class="spacing">  <!--.QuestionText | questionStatusFilter:ReviewCtrl.selectedStatuses-->
-        <div ng-repeat="item in filtered = (ReviewCtrl.quiz)" ng-cloak>
+    <div class="spacing">  
+        <div ng-repeat="item in filtered = (ReviewCtrl.quiz | questionStatusFilter:ReviewCtrl.selectedStatuses)" ng-cloak>
             <div ng-if="item.Type == 'Text'">
                 <div>
                     <p> <b>#{{$index + 1}}</b> {{item.QuestionText}} </p>
@@ -47,7 +47,7 @@
                 <div>
                     User answer:
                     <textarea class="textarea" readonly> {{item.Answer}} </textarea>
-                    <button class="showRightAnswer btn-standart"> Show Right answer: </button> 
+                    <button class="showRightAnswer btn-standart"> Show Right answer: </button>
                     <textarea class="textarea adminHintAnswer" style="border-color:lightgreen" readonly> {{item.RightAnswer}} </textarea>
                 </div>
 
@@ -56,7 +56,7 @@
                         <label> Score (MaxScore = {{item.MaxScore}}):</label>
                     </div>
 
-                    <div  class="display_inline">
+                    <div class="display_inline">
                         <!-- 0 - in verification, 1 - passed, 2 - not passed -->
                         <input ng-model="item.UserScore" style="width: 75px" type="number" name="input" min="0" max="{{item.MaxScore}}" required>
                         <button ng-click="ReviewCtrl.checkAndCount(item.UserScore, item.MaxScore, item.Id, $index + 1)">&#x2714</button>
@@ -79,7 +79,7 @@
                 </div>
 
                 <div class="display_inline">
-                    <!-- 0 - in verification, 1 - passed, 2 - not passed -->                    
+                    <!-- 0 - in verification, 1 - passed, 2 - not passed -->
                     <button ng-click="ReviewCtrl.setAutoQuestionStatus(item.Id, 1)" ng-class="{'btn-lightgreen': ReviewCtrl.setAutoQuestionColor(item.UserScore, 1)}" type="button" class="btn btn-primary btn-lightgreen-hover btn-standart">Passed</button>
                     <button ng-click="ReviewCtrl.setAutoQuestionStatus(item.Id, 2)" ng-class="{'btn-lightcoral': ReviewCtrl.setAutoQuestionColor(item.UserScore, 2)}" type="button" class="btn btn-primary btn-lightcoral-hover btn-standart">Not Passed</button>
                 </div>
