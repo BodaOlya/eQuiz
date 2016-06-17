@@ -36,7 +36,7 @@
                     <td>{{c.studentScore}} / {{qc.quizInfo[0].quizScore}} </td>
                     <td>{{c.quizStatus}}</td>
                     <td>
-                        <a href="{{qc.linkToQuizRewiew}}" class="link" ng-click="qc.setLinkToQuiz(c.id);">
+                        <a href="{{qc.linkToQuizRewiew}}" class="link" ng-click="qc.setLinkToQuiz(c.id, c.quizPassId);">
                             Passed : {{c.questionDetails.passed}}
                             In Verification : {{c.questionDetails.inVerification}}
                             Not Passed : {{c.questionDetails.notPassed}}

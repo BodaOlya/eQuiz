@@ -119,8 +119,8 @@
             vm.linkToProfile += studentId + "#Profile";
         };
 
-        vm.setLinkToQuiz = function (studentId) {
-            vm.linkToQuizRewiew += studentId + "&Quiz=" + vm.quizInfo[0].quizId;
+        vm.setLinkToQuiz = function (studentId, quizId) {
+            vm.linkToQuizRewiew += studentId + "&Quiz=" + quizId;
         };
 
         vm.numberOfPages = function () {

@@ -52,6 +52,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                         select new
                         {
                             id = changed.Key,
+                            quizPassId = changed.Select(ch => ch.qp.Id).Distinct(),
                             student = changed.Select(ch => ch.u.FirstName + " " + ch.u.LastName).Distinct(),
                             //student = u.FirstName + " " + u.LastName,
                             email = changed.Select(ch => ch.u.Email).Distinct(),
