@@ -18,6 +18,7 @@
         vm.student = student;      
         vm.quizPassInfo = getQuizPassInfo;        
         vm.quiz = getQuizTests;
+        console.log(vm.quiz);
         vm.selectedStatuses = [];
         vm.statusList = [{ id: 0, name: "In Verification" }, { id: 1, name: "Passed" }, { id: 2, name: "Not Passed" }];
         $scope.showNotification = false;
@@ -34,6 +35,8 @@
                 vm.quizStatistics.userSumPoints += item.UserScore;
                 if (item.UserScore === 0) {
                     vm.quizStatistics.notPassed += 1;
+                } else if (item.UserScore == null) {
+                    vm.quizStatistics.inVerification += 1;
                 } else {
                     vm.quizStatistics.passed += 1;
                 }                

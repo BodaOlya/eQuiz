@@ -8,6 +8,7 @@ using eQuiz.Web.Code;
 using eQuiz.Entities;
 using eQuiz.Web.Areas.Admin.Models;
 
+
 namespace eQuiz.Web.Areas.Admin.Controllers
 {
     public class QuizzesController : BaseController
@@ -148,9 +149,11 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                               join qq in quizQuestions on q.Id equals qq.QuestionId
                               join qa in questionAnswers on q.Id equals qa.QuestionId
                               join a in answers on qa.AnswerId equals a.Id
-                              join uas in userAnswerScore on qpq.Id equals uas.QuizPassQuestionId
-                              where qt.IsAutomatic == false
-                              select new TextQuestion(q.Id, qq.QuestionScore, uas.Score, q.QuestionText, uta.AnswerText, TextQuestion.GetAnswer(a.AnswerText), qq.QuestionOrder);
+                              join uas in userAnswerScore on qpq.Id equals uas.QuizPassQuestionId into result
+                              from res in result.DefaultIfEmpty()
+                              where qt.IsAutomatic == false                       
+                              select new TextQuestion(q.Id, qq.QuestionScore, res == null ? (int?)null : res.Score, q.QuestionText, uta.AnswerText, TextQuestion.GetAnswer(a.AnswerText), qq.QuestionOrder);
+                            
 
             //gets all user answers
             var testAnswers = from q in questions
