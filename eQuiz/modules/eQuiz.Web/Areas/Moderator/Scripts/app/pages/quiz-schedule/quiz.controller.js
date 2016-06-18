@@ -10,6 +10,7 @@
         vm.successMessageVisible = false;
         vm.save = save;
         vm.saveCanExecute = saveCanExecute;
+        vm.revalidateInputs = revalidateInputs;
         vm.model = {
             quizzes: [],
             userGroups: []
@@ -39,7 +40,22 @@
             return false;
         }
 
+        function revalidateInputs() {
+            var elements = document.getElementsByTagName("input");
+            angular.element(elements).triggerHandler("blur");
+            elements = document.getElementsByTagName("select");
+            angular.element(elements).triggerHandler("blur");
+            elements = document.getElementsByTagName("textarea");
+            angular.element(elements).triggerHandler("blur");
+        }
+
         function save() {
+
+            if (!vm.saveCanExecute()) {
+                vm.revalidateInputs();
+                return;
+            }
+
             showLoading();
             saveQuiz();
 
