@@ -62,12 +62,12 @@
         }
 
         function revalidateInputs() {
-            var inputFirstName = document.getElementsByName('FirstName');
-            var inputLastName = document.getElementsByName('LastName');            
-            var inputEmail = document.getElementsByName('Email');                      
-            angular.element(inputFirstName).triggerHandler("blur");
-            angular.element(inputLastName).triggerHandler("blur");            
-            angular.element(inputEmail).triggerHandler("blur");            
+            var elements = document.getElementsByTagName("input");
+            angular.element(elements).triggerHandler("blur");
+            elements = document.getElementsByTagName("select");
+            angular.element(elements).triggerHandler("blur");
+            elements = document.getElementsByTagName("textarea");
+            angular.element(elements).triggerHandler("blur");
         }
 
         function checkEmail() {
@@ -132,6 +132,11 @@
         };
 
         function save() {
+            if (!vm.canSave()) {
+                vm.revalidateInputs();
+                return;
+            }
+
             vm.showLoading();
             userGroupService.save({ userGroup: vm.group, users: vm.users }).then(function (data) {
                 vm.group = data.data.group;
