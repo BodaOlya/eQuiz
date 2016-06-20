@@ -430,6 +430,70 @@ namespace eQuiz.Web.Areas.Student.Controllers
             var quizPassWithFinishTime = _repository.GetSingle<QuizPass>(qp => qp.Id == quizPassId);
             quizPassWithFinishTime.FinishTime = DateTime.UtcNow;
             _repository.Update<QuizPass>(quizPassWithFinishTime);
+
+            var userResult = _repository.Get<QuizPassQuestion>(q => q.QuizPassId == quizPassId, q => q.Question.QuestionType);
+
+            foreach(var elem in userResult)
+            {
+                if(elem.Question.QuestionType.TypeName == "Select one")
+                {
+                    var userAnswer = _repository.GetSingle<UserAnswer>(ur => ur.QuizPassQuestionId == elem.Id, ur => ur.Answer);
+
+                    if(userAnswer.Answer.IsRight.HasValue && userAnswer.Answer.IsRight.Value)
+                    {
+                        var userAnswerScoreToInsert = new UserAnswerScore
+                        {
+                            QuizPassQuestionId = elem.Id,
+                            Score = 1,
+                            EvaluatedBy = 1,
+                            EvaluatedAt = DateTime.UtcNow
+                        };
+                        _repository.Insert<UserAnswerScore>(userAnswerScoreToInsert);
+                    }
+                    else
+                    {
+                        var userAnswerScoreToInsert = new UserAnswerScore
+                        {
+                            QuizPassQuestionId = elem.Id,
+                            Score = 0,
+                            EvaluatedBy = 1,
+                            EvaluatedAt = DateTime.UtcNow
+                        };
+                        _repository.Insert<UserAnswerScore>(userAnswerScoreToInsert);
+                    }
+                }
+                else if(elem.Question.QuestionType.TypeName == "Select many")
+                {
+                    var userAnswers = _repository.Get<UserAnswer>(ur => ur.QuizPassQuestionId == elem.Id, ur => ur.Answer);
+                    byte mark = 0;
+
+                    foreach(var answer in userAnswers)
+                    {
+                        if(answer.Answer.IsRight.HasValue && answer.Answer.IsRight.Value)
+                        {
+                            mark++; 
+                        }
+                        else
+                        {
+                            mark--;
+                        }
+                    }
+
+                    if(mark <= 0)
+                    {
+                        mark = 0;
+                    }
+
+                    var userAnswerScoreToInsert = new UserAnswerScore
+                    {
+                        QuizPassQuestionId = elem.Id,
+                        Score = mark,
+                        EvaluatedBy = 1,
+                        EvaluatedAt = DateTime.UtcNow
+                    };
+                    _repository.Insert<UserAnswerScore>(userAnswerScoreToInsert);
+                }
+            }
         }
         #endregion
     }
