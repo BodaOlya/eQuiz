@@ -448,6 +448,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                             EvaluatedBy = 1,
                             EvaluatedAt = DateTime.UtcNow
                         };
+
                         _repository.Insert<UserAnswerScore>(userAnswerScoreToInsert);
                     }
                     else
@@ -459,13 +460,14 @@ namespace eQuiz.Web.Areas.Student.Controllers
                             EvaluatedBy = 1,
                             EvaluatedAt = DateTime.UtcNow
                         };
+
                         _repository.Insert<UserAnswerScore>(userAnswerScoreToInsert);
                     }
                 }
                 else if(elem.Question.QuestionType.TypeName == "Select many")
                 {
                     var userAnswers = _repository.Get<UserAnswer>(ur => ur.QuizPassQuestionId == elem.Id, ur => ur.Answer);
-                    byte mark = 0;
+                    sbyte mark = 0;
 
                     foreach(var answer in userAnswers)
                     {
@@ -487,10 +489,11 @@ namespace eQuiz.Web.Areas.Student.Controllers
                     var userAnswerScoreToInsert = new UserAnswerScore
                     {
                         QuizPassQuestionId = elem.Id,
-                        Score = mark,
-                        EvaluatedBy = 1,
+                        Score = Convert.ToByte(mark),
+                        EvaluatedBy = 1,//TODO
                         EvaluatedAt = DateTime.UtcNow
                     };
+
                     _repository.Insert<UserAnswerScore>(userAnswerScoreToInsert);
                 }
             }
