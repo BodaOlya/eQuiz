@@ -71,6 +71,7 @@
         vm.archiveQuiz = archiveQuiz;
         vm.archiveQuizCanExecute = archiveQuizCanExecute;
         vm.initQuizFromData = initQuizFromData;
+        vm.revalidateInputs = revalidateInputs;
 
         vm.questionsPagingInfo = {
             currentPage: 1,
@@ -162,6 +163,11 @@
         }
 
         function save(callback) {
+            if (!vm.saveCanExecute()) {
+                vm.revalidateInputs();
+                return;
+            }
+
             vm.showLoading();
             saveQuiz();
 
@@ -196,6 +202,15 @@
             }
 
 
+        }
+
+        function revalidateInputs() {
+            var elements = document.getElementsByTagName("input");
+            angular.element(elements).triggerHandler("blur");
+            elements = document.getElementsByTagName("select");
+            angular.element(elements).triggerHandler("blur");
+            elements = document.getElementsByTagName("textarea");
+            angular.element(elements).triggerHandler("blur");
         }
 
         function initQuizFromData(data) {

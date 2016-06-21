@@ -42,7 +42,7 @@
                     {{quiz.Name}}
                 </td>
                 <td>
-                    {{quiz.StartDate != -1 ? quiz.StartDate : 'No start date' | date: 'medium' }}
+                    {{quiz.StartDate != -1 ? quiz.StartDate : 'No start date' | date: 'dd-MM-yyyy HH:mm' }}
                 </td>
                 <td>
                     {{quiz.TimeLimitMinutes}}

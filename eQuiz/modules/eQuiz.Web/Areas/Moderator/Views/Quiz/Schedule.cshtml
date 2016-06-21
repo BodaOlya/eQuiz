@@ -78,7 +78,7 @@
 
         <div class="row">
             <div class="col-sm-2 col-sm-offset-4">
-                <button class="btn btn-default form-control lightgray" ng-click="vm.save()" ng-disabled="!vm.saveCanExecute()">Save</button>
+                <button class="btn btn-default form-control lightgray" ng-click="vm.save()">Save</button>
             </div>
             <div class="col-sm-2">
                 @Html.ActionLink(linkText: "Cancel", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-default lightgray" })
@@ -86,14 +86,14 @@
         </div>
 
 
-        <div class="loading-background" ng-show="vm.loadingVisible">
+        <div class="loading-background" ng-cloak ng-show="vm.loadingVisible">
             <div class="loading-content">
                 <p>
                     Processing...
                 </p>
             </div>
         </div>
-        <div class="message-container" ng-show="vm.errorMessageVisible">
+        <div class="message-container" ng-cloak ng-show="vm.errorMessageVisible">
             <div class="message-content">
                 <p>
                     Changes have not been saved due to
@@ -103,7 +103,7 @@
                 </p>
             </div>
         </div>
-        <div class="message-container" ng-show="vm.successMessageVisible">
+        <div class="message-container" ng-cloak ng-show="vm.successMessageVisible">
             <div class="message-content">
                 <p>
                     Quiz has been
