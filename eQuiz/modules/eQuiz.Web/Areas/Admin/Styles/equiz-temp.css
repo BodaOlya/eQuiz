@@ -4,7 +4,10 @@
     background-color:lightgreen;
     width:auto;
     min-height:60px;
-    margin:10px;
+    min-width: 120px;
+    bottom: 0;
+    right: 0;
+    position: absolute;
 }
 
 .closePopUp {
