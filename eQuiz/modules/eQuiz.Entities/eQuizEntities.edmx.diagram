@@ -68,6 +68,13 @@
         <EntityTypeShape EntityType="eQuizModel.UserGroupState" Width="2.375" PointX="10.375" PointY="10.875" />
         <AssociationConnector Association="eQuizModel.FK_tblUserGroup_tblUser" />
         <AssociationConnector Association="eQuizModel.FK_tblUserGroup_tblUserGroupState" />
+        <EntityTypeShape EntityType="eQuizModel.AspNetRole" Width="1.5" PointX="12.375" PointY="2.5" />
+        <EntityTypeShape EntityType="eQuizModel.AspNetUserClaim" Width="1.5" PointX="16.875" PointY="3.625" />
+        <EntityTypeShape EntityType="eQuizModel.AspNetUserLogin" Width="1.5" PointX="16.875" PointY="1" />
+        <EntityTypeShape EntityType="eQuizModel.AspNetUser" Width="1.5" PointX="14.625" PointY="1.25" />
+        <AssociationConnector Association="eQuizModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="eQuizModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="eQuizModel.AspNetUserRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
