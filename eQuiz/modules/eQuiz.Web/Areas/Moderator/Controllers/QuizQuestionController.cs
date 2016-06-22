@@ -167,11 +167,6 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                                     QuestionId = questionId,
                                     Answer = answer,
                                 });
-                                //answer.AnswerOrder = (byte)(qa + 1);
-                                //answer.QuestionAnswers.Add(new QuestionAnswer
-                                //{
-                                //    Answer = answer
-                                //});
                             }
                         }
                         if (questionAnswer != null)
@@ -182,8 +177,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                             }
                         }
                     }
-                    //todo doesn't delete tags 
-
+                   
                     if (tags[i][0] != null)
                     {
                         var question = context.Questions.FirstOrDefault(x => x.Id == questionId);
@@ -220,7 +214,6 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                                         Tag = existedTag
                                     });
                                 }
-
                             }
                         }
                         if (questionTags != null)
@@ -269,7 +262,6 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 foreach (var quizQuestion in quizQuestios)
                 {
                     questions.Add(_repository.GetSingle<Question>(q => q.Id == quizQuestion.QuestionId, q => q.QuestionAnswers, q => q.QuestionTags));
-
                 }
 
                 foreach (var item in questions)
@@ -286,10 +278,9 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
                 foreach (var item in questions)
                 {
-                    // var questionTags = context.QuestionTags.Where(x => x.QuestionId == item.Id).Include("Tag").ToList();
                     var questionTags = _repository.Get<QuestionTag>(x => x.QuestionId == item.Id, x => x.Tag).ToList();
-
                     var tagStorage = new ArrayList();
+
                     foreach (var tag in questionTags)
                     {
                         var tempTag = GetTagForSerialization(tag.Tag);
@@ -300,6 +291,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
             }
             var returnQuestion = new ArrayList();
+
             foreach (var question in questions)
             {
                 var tempQuestion = GetQuestionForSerialization(question);

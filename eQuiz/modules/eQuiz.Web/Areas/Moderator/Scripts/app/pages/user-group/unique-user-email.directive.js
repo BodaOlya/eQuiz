@@ -2,7 +2,7 @@
     angular
     .module('equizModule')
     .directive('uniqueUserEmail', uniqueUserEmail);
-    //todo
+    
     uniqueUserEmail.$inject = ['userGroupService'];
     function uniqueUserEmail(userGroupService) {
         return {
@@ -45,7 +45,6 @@
                         }
                     });
                 }
-                //  checkValidAfterAddedUser();
 
                 inputNgElement.bind('blur', function () {
                     checkValidAfterAddedUser();
