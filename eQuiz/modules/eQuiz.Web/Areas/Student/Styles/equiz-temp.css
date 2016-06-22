@@ -316,7 +316,7 @@ input[type="button"] {
   position: relative;
   padding: 15px;
   font-size: 12pt;
-  margin-top: 30px;
+  margin-top: 75px;
 }
 .modal-body label{
     font-size: 14pt;
@@ -327,27 +327,39 @@ input[type="button"] {
   text-align: center;
   position:absolute;
    bottom: 0;
-   width: 320px;
+   width: 618px;
+   height: 70px;
+   border-top: 1px solid lightgray;
+   border-bottom: 1px solid lightgray;
 }
 
 .modalBtn{
-    width: 120px;
-    height: 30px;
-    border: 2px solid black;
-    border-radius: 4px;
+    width: 75px;
+    height: 35px;
+    /*border: 2px solid black;
+    border-radius: 4px;*/
     margin: 10px;
+    border: none;
+    font-size: 12pt;
+    color: white;
+    margin-bottom: 12px;
 }
-.modalBtnAlert{
-    width: 240px;
-    height: 30px;
-    border: 2px solid black;
-    border-radius: 4px;
-    margin: 10px;
+#modalBtnYes{
+     background-color: #E74936;
+     margin-right: 50px;
+}
+#modalBtnNo{
+    margin-left: 50px;
+    background-color: #A3C644;
+}
+
+#modalBtnAlert{
+    background-color: #A3C644;
 }
 
 @media (min-width: 768px) {
   .modal-dialog {
-    width: 350px;
+    width: 650px;
     margin: 30px auto;
   }
   .modal-content {
@@ -358,8 +370,8 @@ input[type="button"] {
 
 .notification {
     text-align: center;
-    width: 350px;
-    height: 150px;
+    width: 650px;
+    height: 260px;
 }
 
 .quiz-table{
