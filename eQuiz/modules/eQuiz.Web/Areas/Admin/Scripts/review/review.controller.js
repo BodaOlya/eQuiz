@@ -38,8 +38,8 @@
             vm.students.forEach(function (currVal, index, array) {
                 currVal.id = currVal.id.Id.toString();
                 currVal.student = currVal.student.toString();
-                currVal.userGroup = currVal.userGroup.toString();
-                currVal.quizzes = currVal.quizzes.toString();
+                currVal.userGroup = currVal.userGroup.join(", ");
+                currVal.quizzes = currVal.quizzes.join(", ");
             }); // Converts received data to string values
             vm.groupList = GetUniquePropertyValues(vm.students, 'userGroup'); // Property user group needs to be changed manualy    
             generatePredicate();
