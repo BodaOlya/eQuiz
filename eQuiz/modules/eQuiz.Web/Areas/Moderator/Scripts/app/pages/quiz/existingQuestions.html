@@ -19,7 +19,12 @@
         </div>
         <div class="question-block" ng-show="vm.selectedQuizIdForAddQuestion != 0">
             <div class="row bordered">
-                <div ng-repeat="q in vm.getQuestionsPage() track by $index">
+                <div class="col-sm-12 col-md-12">
+                    <input type="text" class="form-control" placeholder="Search" ng-model="questionSearch" />
+                </div>
+            </div>
+            <div class="row bordered">                
+                <div ng-repeat="q in questions = (vm.model.questionsForAdding.questions | filter: questionSearch) | startFrom: (vm.questionsPagingInfo.currentPage - 1) * vm.questionsPagingInfo.questionsPerPage | limitTo : vm.questionsPagingInfo.questionsPerPage  track by $index">
                     <div class="row">
                         <div class="col-sm-1 col-md-1">
                             <input type="checkbox" class="form-control" ng-model="q.checked" />
@@ -75,7 +80,7 @@
                     </div>
                 </div>
             </div>
-            <uib-pagination ng-show="vm.questionsPagingInfo.questionsTotal != 0" total-items="vm.questionsPagingInfo.questionsTotal" ng-model="vm.questionsPagingInfo.currentPage"
+            <uib-pagination ng-show="vm.questionsPagingInfo.questionsTotal != 0" total-items="questions.length" ng-model="vm.questionsPagingInfo.currentPage"
                             items-per-page="vm.questionsPagingInfo.questionsPerPage" max-size="5" class="pagination-sm" boundary-link-numbers="true">
             </uib-pagination>
             <div class="row copy-button-container">
