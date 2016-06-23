@@ -20,9 +20,6 @@ select {
     width: 172px;
 }
 
-input[type='text'], select {
-    border: 2px solid black;
-}
 
 #saveDetailsBtn {
     border: 2px solid black;
@@ -442,4 +439,59 @@ caption.dashboard input  {
 caption.dashboard span {
     vertical-align: bottom;
     font-size:14pt;
+}
+
+@media (min-width: 768px) {
+  .wrapper {
+    display: flex;
+    align-items: center;
+  }
+}
+@media (max-width: 768px) {
+    .wrapper .formContainer {
+        position: relative;
+        top: 50px;
+    }
+}
+
+.wrapper .formContainer {
+    background-color: white;
+    padding: 1% 1% 1% 1%;
+}
+.wrapper {
+    background-color: whitesmoke;
+    font-family: Oswald;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+    z-index: -100;
+}
+.wrapper .formHeader {
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+}
+#epamLogo {
+    text-align: center;
+    font-size: 30px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400;
+	line-height: 26.4px;
+    font-family: Oswald;
+}
+.header {
+    align-items: center;
+    background-color: white;
+}
+.wrapper .form-control{
+    -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+            border-radius: 0;
+}
+.wrapper .form-control-label {
+    font-weight: normal;
 }

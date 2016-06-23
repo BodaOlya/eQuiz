@@ -5,53 +5,68 @@
 
 @section HeadStyles{
     <link rel="stylesheet" href="~/Areas/Student/Styles/equiz-temp.css">
+    <link href="~/Styles/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Oswald" />
+}
+      @section HeadScripts{
+    <script src="~/Areas/Student/Scripts/app/pages/details/deatils.controller.js"></script>
 }
 
-<div id='details'>
-    <table>
-        <thead>
-            <tr>
-                <th>
-                    <h3>Student Details</h3>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>First name</td>
-                <td>
-                    <input type="text" id='firstName_txt'>
-                </td>
-            </tr>
-            <tr>
-                <td>Last Name</td>
-                <td>
-                    <input type="text" id='lastName_txt'>
-                </td>
-            </tr>
-            <tr>
-                <td>Phone</td>
-                <td>
-                    <input type="text" id='phone_txt'>
-                </td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td>
-                    <input type="text" id='email_txt'>
-                </td>
-            </tr>
-            <tr>
-                <td>User group</td>
-                <td>
-                    <select id='userGroup_txt'></select>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><a href='@Url.Action("Dashboard", "Default")'><input type="button" value="Save" id="saveDetailsBtn"></a></td>
-            </tr>
-        </tbody>
-    </table>
+@section PageHeader{
+    <div class="header">
+        <div id="epamLogo">&lt;epam&gt;</div>
+        <hr />
+    </div>
+}
+<div class="wrapper">
+    <div class="container col-sm-offset-3 col-sm-6 jumbotron formContainer">
+        <form>
+            <div class="form-group row">
+                <label class="col-sm-12 formHeader">STUDENT DETAILS</label>
+            </div>
+            <hr />
+            <div class="form-group row">
+                <label for="firstName" class="col-sm-6 form-control-label">First name</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="firstName">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="lastName" class="col-sm-6 form-control-label">Last name</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="lastName">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="phone" class="col-sm-6 form-control-label">Phone</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="phone">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="email" class="col-sm-6 form-control-label">Email</label>
+                <div class="col-sm-6">
+                    <input type="email" class="form-control" id="email">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-6 form-control-label">User group</label>
+                <div for="userGroup" class="col-sm-6">
+                    <select class="form-control" id="userGroup">
+                        <option selected disabled hidden></option>
+                        <option>Application Engineer</option>
+                        <option>Network Engineer</option>
+                        <option>Software Programmer</option>
+                        <option>Software Testing Engineer</option>
+                        <option>Trainee</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-offset-6 col-md-2">
+                    <button type="submit" class="btn btn-success form-control">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
-
