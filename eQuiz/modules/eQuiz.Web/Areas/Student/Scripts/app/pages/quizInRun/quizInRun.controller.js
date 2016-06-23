@@ -6,7 +6,7 @@
     function quizInRunCtrl($scope, quizService, trackUserResultService, $routeParams, $interval, $window, $location, $uibModal) {
         var vm = this;
         vm.quizQuestions = null;
-        vm.quizId = parseInt($routeParams.id);
+        vm.quizId = parseInt(localStorage.getItem('quizId'));
         vm.quizDuration = localStorage.getItem('duration');
         vm.currentQuestion = localStorage.getItem('currentQuestion' + vm.quizId) || 0;
         vm.passedQuiz = JSON.parse(localStorage.getItem('passQuiz' + vm.quizId)) || trackUserResultService.passedQuiz;
@@ -57,7 +57,7 @@
             quizService.getQuestionsById(questionId, duration)
                 .then(function (response) {
                     if (response.data.length === 0 || response.data === "SaveChangeException") {
-                        $location.path("/Dashboard");
+                        location.assign("/Student/Default/Dashboard");
                     }
                     else {
                         vm.quizQuestions = response.data.questions;   
@@ -169,7 +169,7 @@
                 setFinishTime(vm.quizQuestions[vm.currentQuestion].QuizPassId);
                 vm.resetTimer();
                 trackUserResultService.passedQuiz.UserAnswers = null;
-                $location.path("/Dashboard");
+                location.assign("/Student/Default/Dashboard");
             }, function () {
                 return;
             });
@@ -186,7 +186,7 @@
             });
 
             modalInstance.result.then(function () {
-                $location.path("/Dashboard");
+                location.assign("/Student/Default/Dashboard");
             });
         };
 

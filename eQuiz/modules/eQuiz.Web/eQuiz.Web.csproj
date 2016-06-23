@@ -172,9 +172,6 @@
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\trackUserResult.service.js" />
     <Content Include="Areas\Student\Scripts\app\pages\refreshWarning\refreshWarning.controller.js" />
     <Content Include="Areas\Student\Scripts\app\pages\refreshWarning\refreshWarning.html" />
-    <Content Include="Areas\Student\Scripts\routeConfig.js" />
-    <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.html" />
-    <Content Include="Areas\Student\Scripts\app\pages\quizInRun\quizInRun.html" />
     <Content Include="Areas\Student\Styles\equiz-temp.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\app\shared\equiz.module.js" />
@@ -252,6 +249,7 @@
     <Content Include="Areas\Moderator\Views\UserGroup\Edit.cshtml" />
     <Content Include="Areas\Moderator\Views\Quiz\Schedule.cshtml" />
     <Content Include="Areas\Moderator\Views\UserGroup\Index.cshtml" />
+    <Content Include="Areas\Student\Views\Default\QuizInRun.cshtml" />
     <None Include="Properties\PublishProfiles\myasp.net.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

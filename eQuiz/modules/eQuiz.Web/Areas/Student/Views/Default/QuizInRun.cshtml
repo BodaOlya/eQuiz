@@ -1,4 +1,32 @@
-﻿<div>
+﻿
+@{
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+@section HeadStyles{
+    <link rel="stylesheet" href="~/Areas/Student/Styles/equiz-temp.css" />
+}
+
+@section HeadScripts{
+    <script src="~/Areas/Student/Scripts/app/pages/quizInRun/quizInRun.service.js"></script>
+    <script src="~/Areas/Student/Scripts/app/pages/quizInRun/trackUserResult.service.js"></script>
+    <script src="~/Areas/Student/Scripts/app/pages/alert/customAlert.controller.js"></script>
+    <script src="~/Areas/Student/Scripts/app/pages/confirm/customConfirm.controller.js"></script>
+    <script src="~/Areas/Student/Scripts/app/pages/refreshWarning/refreshWarning.controller.js"></script>
+    <script src="~/Areas/Student/Scripts/app/pages/quizInRun/quizInRun.controller.js"></script>
+}
+@section PageHeader{
+    <header>
+        <table id='headerTable'>
+            <tr>
+                <td id='Menu_td'><a href="#">Menu</a></td>
+                <td id='User_group_td'>User Group # <a href="#">FullName</a></td>
+            </tr>
+        </table>
+    </header>
+}
+<hr>
+<div ng-controller="quizInRunCtrl as qc" ng-cloak>
     <!--<div ng-if="isLoading">
         <span id="loadingMessage">Loading...</span>
     </div>-->
@@ -58,4 +86,3 @@
         </table>
     </footer>
 </div>
-

@@ -46,6 +46,10 @@ namespace eQuiz.Web.Areas.Student.Controllers
         {
             return View();
         }
+        public ActionResult QuizInRun()
+        {
+            return View();
+        }
 
         [HttpGet]
         public ActionResult GetAllQuizzes()
@@ -444,7 +448,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                         var userAnswerScoreToInsert = new UserAnswerScore
                         {
                             QuizPassQuestionId = elem.Id,
-                            Score = 1,
+                            Score = 1,//TODO
                             EvaluatedBy = 1,
                             EvaluatedAt = DateTime.UtcNow
                         };
