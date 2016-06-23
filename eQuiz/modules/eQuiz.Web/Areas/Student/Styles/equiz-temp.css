@@ -477,6 +477,9 @@ caption.dashboard span {
         -moz-border-radius: 0;
             border-radius: 0;
 }
+.wrapper input[type=email]{
+    cursor: text;
+}
 .wrapper .form-control-label {
     font-weight: normal;
 }
