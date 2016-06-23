@@ -374,7 +374,6 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Scripts\libs\jquery\jquery-1.10.2.min.map" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Account\AdminLogin.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

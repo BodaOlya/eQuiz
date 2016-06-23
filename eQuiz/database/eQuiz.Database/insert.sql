@@ -4486,24 +4486,3 @@ VALUES
 (34, 34, 10, 1, CONVERT(DATETIME, '2016-10-01 00:01:00', 120)),
 (35, 35, 6, 1, CONVERT(DATETIME, '2016-10-01 00:01:00', 120));
 SET IDENTITY_INSERT [dbo].[tblQuizPassScore] OFF
-
-USE [eQuiz]
-GO
-
-INSERT INTO [dbo].[AspNetRoles]
-           ([Id], [Name])
-     VALUES
-           ('8D6C21AE-E284-4CEC-B373-C402554C1630', 'Administrator'), 
-		   ('EDF20647-55F2-4384-B3BD-7BF2E0E25D06', 'Moderator'),
-		   ('984A9BAC-BBE6-4B1E-BE15-66E40253D023', 'Student')
-GO
-
-USE [eQuiz]
-GO
-
-INSERT INTO [dbo].[AspNetUserRoles]
-           ([UserId], [RoleId])
-     VALUES
-           ('52440dc5-7ce3-4f27-ae4d-96276d4bd919', '8D6C21AE-E284-4CEC-B373-C402554C1630'),
-		   ('d434ae75-bc46-4b26-85b3-5813d9eadbf5', '984A9BAC-BBE6-4B1E-BE15-66E40253D023')
-GO
