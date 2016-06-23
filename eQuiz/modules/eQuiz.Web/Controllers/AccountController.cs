@@ -198,7 +198,8 @@ namespace eQuiz.Web.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            var model = new RegisterViewModel();
+            return View(model);
         }
 
         //
@@ -212,8 +213,8 @@ namespace eQuiz.Web.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
-
-                UserManager.AddToRole(user.Id, "Administrator");
+                
+                UserManager.AddToRole(user.Id, model.SelectedRole);
 
                 if (result.Succeeded)
                 {
@@ -225,7 +226,8 @@ namespace eQuiz.Web.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Default", new { area = "Admin" });
+
+                    return RedirectToAction("Index", "Default", new { area = model.SelectedRole == "Administrator" ? "Admin" : model.SelectedRole });
                 }
                 AddErrors(result);
             }

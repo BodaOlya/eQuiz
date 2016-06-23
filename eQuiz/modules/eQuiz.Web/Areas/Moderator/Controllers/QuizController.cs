@@ -15,6 +15,7 @@ using System.Web.Mvc;
 
 namespace eQuiz.Web.Areas.Moderator.Controllers
 {
+    [Authorize(Roles = "Moderator")]
     public class QuizController : BaseController
     {
         #region Fields

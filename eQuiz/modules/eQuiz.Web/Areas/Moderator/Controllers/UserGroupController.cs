@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace eQuiz.Web.Areas.Moderator.Controllers
 {
+    [Authorize(Roles = "Moderator")]
     public class UserGroupController : BaseController
     {
         #region Fields

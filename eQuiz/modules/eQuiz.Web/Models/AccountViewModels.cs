@@ -79,6 +79,20 @@ namespace eQuiz.Web.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Role")]
+        public string SelectedRole { get; set; }
+
+        [Required]
+        public List<string> Roles
+        {
+            get
+            {
+                return new List<string> { "Administrator", "Moderator" };
+            }
+        }
+                
     }
 
     public class ResetPasswordViewModel
