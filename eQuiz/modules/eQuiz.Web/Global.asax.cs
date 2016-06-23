@@ -13,7 +13,7 @@ namespace eQuiz.Web
         {
             AutofacConfig.Initialize();
             AreaRegistration.RegisterAllAreas();
-            RouteConfig.RegisterRoutes(RouteTable.Routes);            
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
         }
     }
 }
