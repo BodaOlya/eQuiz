@@ -316,7 +316,7 @@ input[type="button"] {
   position: relative;
   padding: 15px;
   font-size: 12pt;
-  margin-top: 75px;
+  margin-top: 50px;
 }
 .modal-body label{
     font-size: 14pt;
@@ -328,10 +328,23 @@ input[type="button"] {
   position:absolute;
    bottom: 0;
    width: 618px;
-   height: 70px;
+   height: 50px;
    border-top: 1px solid lightgray;
    border-bottom: 1px solid lightgray;
 }
+
+.modal-header {
+  min-height: 16.42857143px;
+  height: 20px;
+  text-align:right;
+}
+
+.closePopUp{
+    margin-top:10px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
 
 .modalBtn{
     width: 75px;
@@ -343,6 +356,7 @@ input[type="button"] {
     font-size: 12pt;
     color: white;
     margin-bottom: 12px;
+    cursor: pointer;
 }
 #modalBtnYes{
      background-color: #E74936;
