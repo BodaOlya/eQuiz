@@ -441,19 +441,6 @@ caption.dashboard span {
     font-size:14pt;
 }
 
-@media (min-width: 768px) {
-  .wrapper {
-    display: flex;
-    align-items: center;
-  }
-}
-@media (max-width: 768px) {
-    .wrapper .formContainer {
-        position: relative;
-        top: 50px;
-    }
-}
-
 .wrapper .formContainer {
     background-color: white;
     padding: 1% 1% 1% 1%;
@@ -468,6 +455,8 @@ caption.dashboard span {
     right: 0;
     overflow: auto;
     z-index: -100;
+    display: flex;
+    align-items: center;
 }
 .wrapper .formHeader {
     text-align: center;
