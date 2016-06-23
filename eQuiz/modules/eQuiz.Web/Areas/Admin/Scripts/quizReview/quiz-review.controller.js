@@ -15,10 +15,10 @@
         }
         vm.saveIsDisabled = true;
         vm.isFinalized = false;
-        vm.student = student;      
-        vm.quizPassInfo = getQuizPassInfo;        
-        vm.quiz = getQuizTests;
-        console.log(vm.quiz);
+        vm.student = {};
+        vm.quizPassInfo = [];
+        vm.quiz = [];
+        vm.quizClone = [];
         vm.selectedStatuses = [];
         vm.statusList = [{ id: 0, name: "In Verification" }, { id: 1, name: "Passed" }, { id: 2, name: "Not Passed" }];
         $scope.showNotification = false;
@@ -43,12 +43,37 @@
             });
         })();
 
-        function activate() {
-            vm.student = quizReviewDataService.getStudent($location.search().Student);
-            vm.quizPassInfo = quizReviewDataService.getQuizInfo($location.search().Quiz);
-            vm.quiz = quizReviewDataService.getQuizBlock($location.search().Quiz);            
-            vm.countStats();
+        vm.deepCopy = function (obj) {
+            if (Object.prototype.toString.call(obj) === '[object Array]') {
+                var out = [], i = 0, len = obj.length;
+                for (; i < len; i++) {
+                    out[i] = arguments.callee(obj[i]);
+                }
+                return out;
+            }
+            if (typeof obj === 'object') {
+                var out = {}, i;
+                for (i in obj) {
+                    out[i] = arguments.callee(obj[i]);
+                }
+                return out;
+            }
+            return obj;
+        }
+
+        function activate() {         
+            vm.student = student;
+            vm.quizPassInfo = getQuizPassInfo;
+            vm.quiz = getQuizTests;
+
+            console.log(vm.quiz);
+
+            for (var i = 0; i < vm.quiz.length; i++) {
+                vm.quizClone[i] = vm.deepCopy(vm.quiz[i]);
+            }            
         };
+
+        activate();
 
         vm.setAutoQuestionColor = function (UserScore, expectedStatus) { // sets button color
             var status = 2;            
@@ -65,24 +90,6 @@
             }
         }
 
-        vm.setAutoQuestionStatus = function (id, status) {
-            if (!vm.isFinalized) {
-                for (var i = 0; i < vm.quiz.length; i++) {
-                    if (vm.quiz[i].Id === id) {
-                        if(status === 1) {
-                            vm.quiz[i].UserScore = vm.quiz[i].MaxScore;
-                        } else {
-                            vm.quiz[i].UserScore = 0;
-                        }                        
-                    }
-                }
-            }
-
-            
-            vm.saveIsDisabled = false;
-            vm.countStats();
-        }
-
         vm.setTextQuestionColor = function (id, userScore) {
             for (var i = 0; i < vm.quiz.length; i++) {
                 if (vm.quiz[i].Id === id) {
@@ -97,11 +104,26 @@
         }
 
         vm.cancelQuizReview = function () {            
-            activate();            
+            vm.quiz = [];
+
+            for (var i = 0; i < vm.quizClone.length; i++) {
+                vm.quiz[i] = vm.deepCopy(vm.quizClone[i]);
+            }
         }
 
         vm.saveQuizReview = function () {
-            quizReviewDataService.saveQuizReview(vm.quiz);
+            for (var i = 0; i < vm.quiz.length; i++) {          
+                if (vm.quiz[i].WasChanged == true && vm.quiz[i].WasNull == false) {
+                    quizReviewDataService.updateQuizAnswer(vm.quiz[i].Id, vm.quiz[i].UserScore, 1); //TODO CHANGE 1 to future admin id
+                    vm.quiz[i].WasChanged = false;
+                }
+                
+                if (vm.quiz[i].WasChanged == true && vm.quiz[i].WasNull == true) {
+                    quizReviewDataService.insertQuizAnswer(vm.quiz[i].Id, vm.quiz[i].UserScore, 1); //TODO CHANGE 1 to future admin id
+                    vm.quiz[i].WasChanged = false;
+                }
+            };
+
             vm.saveIsDisabled = true;
             $scope.showNotifyPopUp('Quiz data was sucessfully saved!')
             $timeout($scope.closePopUp, 5000);
@@ -116,19 +138,19 @@
         }
 
 
-        $scope.setSelectedStatuses = function () { // DONT PUT THIS FUNCTION INTO VM! let it be in scope (because of 'this' in function)
-            var id = this.status.id;
-            if (vm.selectedStatuses.toString().indexOf(id.toString()) > -1) {
-                for (var i = 0; i < vm.selectedStatuses.length; i++) {
-                    if (vm.selectedStatuses[i] === id) {
-                        vm.selectedStatuses.splice(i, 1);
-                    }
-                }
-            } else {
-                vm.selectedStatuses.push(id);
-            }
-            return false;
-        };
+        //$scope.setSelectedStatuses = function () { // DONT PUT THIS FUNCTION INTO VM! let it be in scope (because of 'this' in function)
+        //    var id = this.status.id;
+        //    if (vm.selectedStatuses.toString().indexOf(id.toString()) > -1) {
+        //        for (var i = 0; i < vm.selectedStatuses.length; i++) {
+        //            if (vm.selectedStatuses[i] === id) {
+        //                vm.selectedStatuses.splice(i, 1);
+        //            }
+        //        }
+        //    } else {
+        //        vm.selectedStatuses.push(id);
+        //    }
+        //    return false;
+        //};
 
         vm.selectStatusId = function (id) {
             if (vm.selectedStatuses.toString().indexOf(id.toString()) > -1) {
@@ -173,12 +195,33 @@
             return result;
         }
 
-        // Checking and changing UserScore
+        // Changing UserScore for auto questions
+        vm.setAutoQuestionStatus = function (id, status) {
+            if (!vm.isFinalized) {
+                for (var i = 0; i < vm.quiz.length; i++) {
+                    if (vm.quiz[i].Id === id) {
+                        if (status === 1) {
+                            vm.quiz[i].UserScore = vm.quiz[i].MaxScore;
+                            vm.quiz[i].WasChanged = true;
+                        } else {
+                            vm.quiz[i].UserScore = 0;
+                            vm.quiz[i].WasChanged = true;
+                        }
+                    }
+                }
+            }
+
+            vm.saveIsDisabled = false;
+            vm.countStats();
+        }
+
+        // Checking and changing UserScore for text questions
         vm.checkAndCount = function (mark, maxScore, questionId, questionPosition) {            
             if (!isNaN(mark) && mark <= maxScore && mark >= 0) {
                 for (var i = 0; i < vm.quiz.length; i++) {
                     if (vm.quiz[i].Id === questionId) {
-                        vm.quiz[i].UserScore = mark;                      
+                        vm.quiz[i].UserScore = mark;
+                        vm.quiz[i].WasChanged = true;
                     }
                 }                
             } else {
@@ -187,7 +230,7 @@
                         vm.quiz[i].UserScore = 0;
                     }
                 }
-                alert("Question №" + questionPosition + " mark is invalid");
+                alert("Question №" + questionPosition + " mark is invalid and user score was changed to 0");
             }
             
             vm.countStats();

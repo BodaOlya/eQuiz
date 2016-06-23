@@ -12,7 +12,8 @@
             getStudent: getStudentAjax,
             getQuizBlock: getQuizBlockAjax,
             getQuizInfo: getQuizInfoAjax,
-            saveQuizReview: saveQuizReviewAjax,
+            updateQuizAnswer: updateQuizAnswerAjax,
+            insertQuizAnswer: insertQuizAnswerAjax,
             finalizeQuizReview: finalizeQuizReviewAjax
         };
 
@@ -48,8 +49,24 @@
             return promise;
         }
 
-        function saveQuizReviewAjax(quizToSave) {
-            //TODO save quiz review data
+        function updateQuizAnswerAjax(quizPassQuestionId, userScore, evaluatedBy) {            
+            var promise = $http({
+                url: '/Admin/Quizzes/UpdateAnswer',
+                method: "POST",
+                params: { quizPassQuestionId: quizPassQuestionId, newMark: userScore, evaluatedBy: evaluatedBy }
+            });
+
+            return promise;
+        }
+
+        function insertQuizAnswerAjax(quizPassQuestionId, userScore, evaluatedBy) {
+            var promise = $http({
+                url: '/Admin/Quizzes/InsertAnswer',
+                method: "POST",
+                params: { quizPassQuestionId: quizPassQuestionId, newMark: userScore, evaluatedBy: evaluatedBy }
+            });
+
+            return promise;
         }
 
         function finalizeQuizReviewAjax(quizToFinalize) {

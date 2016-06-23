@@ -152,7 +152,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                               join uas in userAnswerScore on qpq.Id equals uas.QuizPassQuestionId into result
                               from res in result.DefaultIfEmpty()
                               where qt.IsAutomatic == false                       
-                              select new TextQuestion(q.Id, qq.QuestionScore, res == null ? (int?)null : res.Score, q.QuestionText, uta.AnswerText, TextQuestion.GetAnswer(a.AnswerText), qq.QuestionOrder);
+                              select new TextQuestion(q.Id, qq.QuestionScore, res == null ? (int?)null : res.Score, q.QuestionText, uta.AnswerText, TextQuestion.GetAnswer(a.AnswerText), qq.QuestionOrder, false, res == null ? true : false);
                             
 
             //gets all user answers
@@ -223,7 +223,9 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                                                               grouped.Select(g => g.uas.Score).FirstOrDefault(),
                                                               grouped.Select(g => g.q.QuestionText).FirstOrDefault(),
                                                               grouped.Select(g => g.t).ToList(),
-                                                              grouped.Select(g => g.qq.QuestionOrder).FirstOrDefault()
+                                                              grouped.Select(g => g.qq.QuestionOrder).FirstOrDefault(),
+                                                              false,
+                                                              grouped.Select(g => g.uas.Score) == null ? true : false
                                                               );
 
             foreach (var item in generateQuestions)
@@ -268,18 +270,39 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                 result.Add(item);
             }
 
-            //SELECT quizp.Id, SUM(quizq.QuestionScore)
-            //FROM tblQuizPass quizp
-            //INNER JOIN tblQuiz quiz ON quizp.QuizId = quiz.Id
-            //INNER JOIN tblUserGroup ugroup ON quiz.GroupId = ugroup.Id
-            //INNER JOIN tblQuizBlock quizb ON quiz.Id = quizb.QuizId
-            //INNER JOIN tblQuizQuestion quizq ON quizb.Id = quizq.QuizBlockId
-            //WHERE quizp.Id = 13
-            //GROUP BY quizp.Id
-            //ORDER BY quizp.Id
-
-
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public void UpdateAnswer(int quizPassQuestionId, int newMark, int evaluatedBy)
+        {
+            var dateNow = DateTime.Now;            
+
+            var userAnswerScore = _repository.GetSingle<UserAnswerScore>(item => item.QuizPassQuestionId == quizPassQuestionId);            
+            userAnswerScore.Score = (byte)newMark;
+            userAnswerScore.EvaluatedBy = evaluatedBy;               
+            userAnswerScore.EvaluatedAt = dateNow;            
+
+            _repository.Update<UserAnswerScore>(userAnswerScore);
+            //var newUserAnswerScore =
+            //return Json(newUserAnswerScore);
+        }
+
+        [HttpPost]
+        public void InsertAnswer(int quizPassQuestionId, int newMark, int evaluatedBy)
+        {
+            var dateNow = DateTime.Now;
+
+            var userAnswerScore = new UserAnswerScore();
+            userAnswerScore.QuizPassQuestionId = quizPassQuestionId;
+            userAnswerScore.Score = (byte)newMark;
+            userAnswerScore.EvaluatedBy = evaluatedBy;
+            userAnswerScore.EvaluatedAt = dateNow;
+
+
+            _repository.Insert<UserAnswerScore>(userAnswerScore);
+
+           // return Json(newUserAnswerScore);
         }
 
         #endregion
