@@ -441,7 +441,7 @@ caption.dashboard span {
     font-size:14pt;
 }
 
-.wrapper .formContainer {
+.wrapper .container {
     background-color: white;
     padding: 1% 1% 1% 1%;
 }
@@ -482,4 +482,40 @@ caption.dashboard span {
 }
 .wrapper .form-control-label {
     font-weight: normal;
+}
+.headerLogin img {
+    height: 70px;
+}
+.background {
+    background-image: url(../Images/mountains.jpg);
+    background-repeat:no-repeat;
+    background-size:cover;
+}
+.wrapper .transperent {
+    background-color: rgba(200, 200, 200, 0.3);
+}
+.wrapper #equiz {
+    text-align: center;
+    font-size: x-large;
+    font-weight: bold;
+    color: white;
+    margin-top: 10vh;
+}
+.wrapper #login {
+    text-align: center;
+    font-size: medium;
+    font-weight: lighter;
+    color: white;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+}
+.wrapper button[type=button] {
+    -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+            border-radius: 0;
+}
+.wrapper .center {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10vh;
 }
