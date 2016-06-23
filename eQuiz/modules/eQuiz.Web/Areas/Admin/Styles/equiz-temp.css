@@ -7,7 +7,7 @@
     min-width: 120px;
     bottom: 0;
     right: 0;
-    position: absolute;
+    position: fixed;
 }
 
 .closePopUp {
