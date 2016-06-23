@@ -152,7 +152,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                               join uas in userAnswerScore on qpq.Id equals uas.QuizPassQuestionId into result
                               from res in result.DefaultIfEmpty()
                               where qt.IsAutomatic == false                       
-                              select new TextQuestion(q.Id, qq.QuestionScore, res == null ? (int?)null : res.Score, q.QuestionText, uta.AnswerText, TextQuestion.GetAnswer(a.AnswerText), qq.QuestionOrder, false, res == null ? true : false);
+                              select new TextQuestion(qpq.Id, qq.QuestionScore, res == null ? (int?)null : res.Score, q.QuestionText, uta.AnswerText, TextQuestion.GetAnswer(a.AnswerText), qq.QuestionOrder, false, res == null ? true : false);
                             
 
             //gets all user answers
@@ -217,7 +217,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                                     join qq in quizQuestions on q.Id equals qq.QuestionId
                                     join t in tests on q.Id equals t.QuestionId
                                     where qt.IsAutomatic == true
-                                    group new { qpq, qq, q, t, uas } by q.Id into grouped
+                                    group new { qpq, qq, q, t, uas } by qpq.Id into grouped
                                     select new SelectQuestion(grouped.Key,
                                                               grouped.Select(g => g.qq.QuestionScore).FirstOrDefault(),
                                                               grouped.Select(g => g.uas.Score).FirstOrDefault(),
