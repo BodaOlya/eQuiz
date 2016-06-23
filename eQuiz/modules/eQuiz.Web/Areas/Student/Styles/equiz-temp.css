@@ -20,9 +20,6 @@ select {
     width: 172px;
 }
 
-input[type='text'], select {
-    border: 2px solid black;
-}
 
 #saveDetailsBtn {
     border: 2px solid black;
@@ -305,7 +302,7 @@ input[type="button"] {
   bottom: 0;
   left: 0;
   z-index: 1040;
-  background-color: #000;
+  background-color: dodgerblue;
 }
 
 .modal-backdrop.in {
@@ -316,7 +313,7 @@ input[type="button"] {
   position: relative;
   padding: 15px;
   font-size: 12pt;
-  margin-top: 30px;
+  margin-top: 50px;
 }
 .modal-body label{
     font-size: 14pt;
@@ -327,27 +324,53 @@ input[type="button"] {
   text-align: center;
   position:absolute;
    bottom: 0;
-   width: 320px;
+   width: 618px;
+   height: 50px;
+   border-top: 1px solid lightgray;
+   border-bottom: 1px solid lightgray;
 }
 
-.modalBtn{
-    width: 120px;
-    height: 30px;
-    border: 2px solid black;
-    border-radius: 4px;
-    margin: 10px;
+.modal-header {
+  min-height: 16.42857143px;
+  height: 20px;
+  text-align:right;
 }
-.modalBtnAlert{
-    width: 240px;
-    height: 30px;
-    border: 2px solid black;
-    border-radius: 4px;
+
+.closePopUp{
+    margin-top:10px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+
+.modalBtn{
+    width: 75px;
+    height: 35px;
+    /*border: 2px solid black;
+    border-radius: 4px;*/
     margin: 10px;
+    border: none;
+    font-size: 12pt;
+    color: white;
+    margin-bottom: 12px;
+    cursor: pointer;
+}
+#modalBtnYes{
+     background-color: #E74936;
+     margin-right: 50px;
+}
+#modalBtnNo{
+    margin-left: 50px;
+    background-color: #A3C644;
+}
+
+#modalBtnAlert{
+    background-color: #A3C644;
 }
 
 @media (min-width: 768px) {
   .modal-dialog {
-    width: 350px;
+    width: 650px;
     margin: 30px auto;
   }
   .modal-content {
@@ -358,8 +381,8 @@ input[type="button"] {
 
 .notification {
     text-align: center;
-    width: 350px;
-    height: 150px;
+    width: 650px;
+    height: 260px;
 }
 
 .quiz-table{
@@ -416,4 +439,55 @@ caption.dashboard input  {
 caption.dashboard span {
     vertical-align: bottom;
     font-size:14pt;
+}
+
+@media (min-width: 768px) {
+  .wrapper {
+    display: flex;
+    align-items: center;
+  }
+}
+@media (max-width: 768px) {
+    .wrapper .formContainer {
+        position: relative;
+        top: 50px;
+    }
+}
+
+.wrapper .formContainer {
+    background-color: white;
+    padding: 1% 1% 1% 1%;
+}
+.wrapper {
+    background-color: whitesmoke;
+    font-family: Oswald;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+    z-index: -100;
+}
+.wrapper .formHeader {
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+}
+.header {
+    background-color: white;
+}
+.header img {
+    height: 70px;
+}
+.header hr {
+    margin: 0 0 0 0;
+}
+.wrapper .form-control{
+    -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+            border-radius: 0;
+}
+.wrapper .form-control-label {
+    font-weight: normal;
 }
