@@ -14,6 +14,7 @@
             userSumPoints: 0
         }
         vm.saveIsDisabled = true;
+        vm.cancelIsDisabled = true;
         vm.isFinalized = false;
         vm.student = {};
         vm.quizPassInfo = [];
@@ -108,7 +109,14 @@
                     vm.quiz[i].WasChanged = false;
                 }
             };
+            
+            vm.quizCopy = [];
 
+            for (var i = 0; i < vm.quiz.length; i++) {
+                vm.quizClone[i] = vm.deepCopy(vm.quiz[i]);
+            }
+
+            vm.cancelIsDisabled = true;
             vm.saveIsDisabled = true;
             $scope.showNotifyPopUp('Quiz data was sucessfully saved!')
             $timeout($scope.closePopUp, 5000);
@@ -183,6 +191,7 @@
                     }
                 }
 
+                vm.cancelIsDisabled = false;
                 vm.saveIsDisabled = false;
                 vm.countStats();
             }
@@ -209,6 +218,8 @@
                     alert("Question №" + questionPosition + " mark is invalid and user score was changed to 0");
                 }
 
+                vm.saveIsDisabled = false;
+                vm.cancelIsDisabled = true;
                 vm.countStats();
             }            
         }

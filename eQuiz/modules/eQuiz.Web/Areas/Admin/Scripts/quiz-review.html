@@ -93,7 +93,7 @@
             <button ng-click="ReviewCtrl.finalizeQuizReview()" ng-disabled="ReviewCtrl.isFinalized" type="button" ng-class="{'btn_finalized': ReviewCtrl.isFinalized}" class="btn_spacing btn_length">Finalize</button>            
             <button ng-click="ReviewCtrl.saveQuizReview()" ng-disabled="ReviewCtrl.saveIsDisabled || ReviewCtrl.isFinalized" type="button" class="btn_spacing btn_length">Save</button>
             <button type="button" onclick="window.history.back();" class="btn_spacing btn_length">Return</button>
-            <button ng-click="ReviewCtrl.cancelQuizReview()" type="button" class="btn_spacing btn_length">Cancel changes</button>
+            <button ng-click="ReviewCtrl.cancelQuizReview()" ng-disabled="ReviewCtrl.cancelIsDisabled || ReviewCtrl.isFinalized" type="button" class="btn_spacing btn_length">Cancel changes</button>
         </span>
     </div>
 </div>
