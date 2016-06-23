@@ -64,9 +64,7 @@
         function activate() {         
             vm.student = student;
             vm.quizPassInfo = getQuizPassInfo;
-            vm.quiz = getQuizTests;
-
-            console.log(vm.quiz);
+            vm.quiz = getQuizTests;            
 
             for (var i = 0; i < vm.quiz.length; i++) {
                 vm.quizClone[i] = vm.deepCopy(vm.quiz[i]);
@@ -88,19 +86,6 @@
             if (expectedStatus == status) {
                 return true;
             }
-        }
-
-        vm.setTextQuestionColor = function (id, userScore) {
-            for (var i = 0; i < vm.quiz.length; i++) {
-                if (vm.quiz[i].Id === id) {
-                    if (vm.quiz[i].UserScore > 0) {
-                        return true;
-                    }
-                    return false;
-                }
-            }            
-
-            return false;
         }
 
         vm.cancelQuizReview = function () {            
@@ -136,21 +121,6 @@
             $scope.showNotifyPopUp('Quiz was sucessfully finalized!')
             $timeout($scope.closePopUp, 5000);
         }
-
-
-        //$scope.setSelectedStatuses = function () { // DONT PUT THIS FUNCTION INTO VM! let it be in scope (because of 'this' in function)
-        //    var id = this.status.id;
-        //    if (vm.selectedStatuses.toString().indexOf(id.toString()) > -1) {
-        //        for (var i = 0; i < vm.selectedStatuses.length; i++) {
-        //            if (vm.selectedStatuses[i] === id) {
-        //                vm.selectedStatuses.splice(i, 1);
-        //            }
-        //        }
-        //    } else {
-        //        vm.selectedStatuses.push(id);
-        //    }
-        //    return false;
-        //};
 
         vm.selectStatusId = function (id) {
             if (vm.selectedStatuses.toString().indexOf(id.toString()) > -1) {
@@ -197,7 +167,10 @@
 
         // Changing UserScore for auto questions
         vm.setAutoQuestionStatus = function (id, status) {
-            if (!vm.isFinalized) {
+            if (vm.isFinalized) {
+                alert("This quiz was finalized");
+            }
+            else {
                 for (var i = 0; i < vm.quiz.length; i++) {
                     if (vm.quiz[i].Id === id) {
                         if (status === 1) {
@@ -209,31 +182,35 @@
                         }
                     }
                 }
-            }
 
-            vm.saveIsDisabled = false;
-            vm.countStats();
+                vm.saveIsDisabled = false;
+                vm.countStats();
+            }
         }
 
         // Checking and changing UserScore for text questions
-        vm.checkAndCount = function (mark, maxScore, questionId, questionPosition) {            
-            if (!isNaN(mark) && mark <= maxScore && mark >= 0) {
-                for (var i = 0; i < vm.quiz.length; i++) {
-                    if (vm.quiz[i].Id === questionId) {
-                        vm.quiz[i].UserScore = mark;
-                        vm.quiz[i].WasChanged = true;
-                    }
-                }                
+        vm.checkAndCount = function (mark, maxScore, questionId, questionPosition) {
+            if (vm.isFinalized) {
+                alert("This quiz was finalized");
             } else {
-                for (var i = 0; i < vm.quiz.length; i++) {
-                    if (vm.quiz[i].Id === questionId) {
-                        vm.quiz[i].UserScore = 0;
+                if (!isNaN(mark) && mark <= maxScore && mark >= 0) {
+                    for (var i = 0; i < vm.quiz.length; i++) {
+                        if (vm.quiz[i].Id === questionId) {
+                            vm.quiz[i].UserScore = mark;
+                            vm.quiz[i].WasChanged = true;
+                        }
                     }
+                } else {
+                    for (var i = 0; i < vm.quiz.length; i++) {
+                        if (vm.quiz[i].Id === questionId) {
+                            vm.quiz[i].UserScore = 0;
+                        }
+                    }
+                    alert("Question №" + questionPosition + " mark is invalid and user score was changed to 0");
                 }
-                alert("Question №" + questionPosition + " mark is invalid and user score was changed to 0");
-            }
-            
-            vm.countStats();
+
+                vm.countStats();
+            }            
         }
     };
 })(angular);

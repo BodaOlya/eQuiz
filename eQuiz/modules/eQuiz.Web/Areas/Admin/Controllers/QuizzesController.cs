@@ -274,22 +274,22 @@ namespace eQuiz.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public void UpdateAnswer(int quizPassQuestionId, int newMark, int evaluatedBy)
+        public JsonResult UpdateAnswer(int quizPassQuestionId, int newMark, int evaluatedBy)
         {
             var dateNow = DateTime.Now;            
 
             var userAnswerScore = _repository.GetSingle<UserAnswerScore>(item => item.QuizPassQuestionId == quizPassQuestionId);            
             userAnswerScore.Score = (byte)newMark;
             userAnswerScore.EvaluatedBy = evaluatedBy;               
-            userAnswerScore.EvaluatedAt = dateNow;            
+            userAnswerScore.EvaluatedAt = dateNow;
 
-            _repository.Update<UserAnswerScore>(userAnswerScore);
-            //var newUserAnswerScore =
-            //return Json(newUserAnswerScore);
+            var newUserAnswerScore = _repository.Update<UserAnswerScore>(userAnswerScore);
+            
+            return Json(newUserAnswerScore);
         }
 
         [HttpPost]
-        public void InsertAnswer(int quizPassQuestionId, int newMark, int evaluatedBy)
+        public JsonResult InsertAnswer(int quizPassQuestionId, int newMark, int evaluatedBy)
         {
             var dateNow = DateTime.Now;
 
@@ -300,9 +300,9 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             userAnswerScore.EvaluatedAt = dateNow;
 
 
-            _repository.Insert<UserAnswerScore>(userAnswerScore);
+            var newUserAnswerScore = _repository.Insert<UserAnswerScore>(userAnswerScore);
 
-           // return Json(newUserAnswerScore);
+            return Json(newUserAnswerScore);
         }
 
         #endregion
