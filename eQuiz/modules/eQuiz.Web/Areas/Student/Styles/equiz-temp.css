@@ -474,18 +474,14 @@ caption.dashboard span {
     font-size: large;
     font-weight: bold;
 }
-#epamLogo {
-    text-align: center;
-    font-size: 30px;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 400;
-	line-height: 26.4px;
-    font-family: Oswald;
-}
 .header {
-    align-items: center;
     background-color: white;
+}
+.header img {
+    height: 70px;
+}
+.header hr {
+    margin: 0 0 0 0;
 }
 .wrapper .form-control{
     -webkit-border-radius: 0;
