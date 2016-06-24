@@ -3,9 +3,9 @@
         .module("equizModule")
         .controller('QuizReviewController', quizReviewController);
 
-    quizReviewController.$inject = ['$scope', 'quizReviewDataService', '$location', 'student', 'getQuizTests', 'getQuizPassInfo', '$timeout'];
+    quizReviewController.$inject = ['$scope', 'quizReviewDataService', '$location', 'student', 'getQuizTests', 'getQuizPassInfo', 'quizPassScore', '$timeout'];
 
-    function quizReviewController($scope, quizReviewDataService, $location, student, getQuizTests, getQuizPassInfo, $timeout) {
+    function quizReviewController($scope, quizReviewDataService, $location, student, getQuizTests, getQuizPassInfo, quizPassScore, $timeout) {
         var vm = this;
         vm.quizStatistics = {
             passed: 0,
@@ -50,7 +50,15 @@
 
             for (var i = 0; i < vm.quiz.length; i++) {
                 vm.quizClone[i] = vm.deepCopy(vm.quiz[i]);
-            }            
+            }
+
+            if(quizPassScore.length == 0)
+            {
+                vm.isFinalized = false;
+            }
+            else {
+                vm.isFinalized = true;
+            }
         };
 
         activate();
@@ -126,13 +134,25 @@
             $timeout($scope.closePopUp, 5000);
         }
 
+        vm.finalizeEnabled = function () {
+            for (var i = 0; i < vm.quiz.length; i++) {
+                if (vm.quiz[i].UserScore == null || vm.isFinalized == true) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         vm.returnButton = function () {
             window.history.back();
         }
 
         vm.finalizeQuizReview = function () {
-            vm.quiz.isFinalized = true;
-            quizReviewDataService.finalizeQuizReview(vm.quiz);
+            var totalScore = 0;
+            for (var i = 0; i < vm.quiz.length; i++) {
+                totalScore += vm.quiz[i].UserScore;
+            }
+            quizReviewDataService.finalizeQuizReview($location.search().Quiz, totalScore);
             vm.isFinalized = true;
             $scope.showNotifyPopUp('Quiz was sucessfully finalized!')
             $timeout($scope.closePopUp, 5000);

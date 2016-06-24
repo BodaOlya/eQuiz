@@ -14,7 +14,8 @@
             getQuizInfo: getQuizInfoAjax,
             updateQuizAnswer: updateQuizAnswerAjax,
             insertQuizAnswer: insertQuizAnswerAjax,
-            finalizeQuizReview: finalizeQuizReviewAjax
+            finalizeQuizReview: finalizeQuizReviewAjax,
+            getQuizPassScore : getQuizPassScoreAjax
         };
 
         return service;
@@ -69,8 +70,23 @@
             return promise;
         }
 
-        function finalizeQuizReviewAjax(quizToFinalize) {
-            // TODO finalize quiz
+        function finalizeQuizReviewAjax(quizId, totalScore) {
+            var promise = $http({
+                url: '/Admin/Quizzes/FinalizeQuiz',
+                method: "POST",
+                params: { quizId: quizId, totalScore: totalScore, userId: 1 }
+            });
+
+            return promise;
+        }
+
+        function getQuizPassScoreAjax(quizPassId) {
+            var promise = $http({
+                url: '/Admin/Quizzes/GetQuizPassScore',
+                method: "POST",
+                params: { quizPassId: quizPassId }
+            });
+            return promise;
         }
     }
 

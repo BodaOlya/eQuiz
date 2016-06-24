@@ -46,6 +46,11 @@
                             return quizReviewDataService.getQuizInfo($location.search().Quiz).then(function (respond) {
                                 return respond.data;
                             })
+                        },
+                        quizPassScore: function (quizReviewDataService, $location) {
+                            return quizReviewDataService.getQuizPassScore($location.search().Quiz).then(function (respond) {
+                                return respond.data;
+                            })
                         }
                     }
                 })

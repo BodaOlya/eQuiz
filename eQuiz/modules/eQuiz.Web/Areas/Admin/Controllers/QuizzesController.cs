@@ -254,18 +254,32 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                         join ugroup in userGroup on q.GroupId equals ugroup.Id
                         join quizb in quizBlock on q.Id equals quizb.QuizId
                         join quizq in quizQuestions on quizb.Id equals quizq.QuizBlockId
-                        group new { quizp, q, ugroup, quizq } by quizp.Id into grouped
+                        group new { quizp, q, ugroup, quizq} by quizp.Id into grouped
                         select new
                         {
                             quiz_name = grouped.Select(item => item.q.Name).FirstOrDefault(),
                             group_name = grouped.Select(item => item.ugroup.Name).FirstOrDefault(),
                             start_date = grouped.Select(item => item.quizp.StartTime).FirstOrDefault(),
                             end_date = grouped.Select(item => item.quizp.FinishTime).FirstOrDefault(),
-                            quiz_score = grouped.Sum(item => item.quizq.QuestionScore)
+                            quiz_score = grouped.Sum(item => item.quizq.QuestionScore),
                         };
                         
 
             foreach(var item in query)
+            {
+                result.Add(item);
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult GetQuizPassScore(int quizPassId)
+        {
+            var result = new List<object>();
+            var quizPassScore = _repository.Get<QuizPassScore>(q => q.QuizPassId == quizPassId);
+            var query = from qps in quizPassScore select new { score = qps.PassScore };
+            foreach (var item in query)
             {
                 result.Add(item);
             }
@@ -305,6 +319,20 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             return Json(newUserAnswerScore);
         }
 
+        public JsonResult FinalizeQuiz(int quizId, int totalScore, int userId)
+        {
+            var dateNow = DateTime.Now;
+
+            var quizPassScore = new QuizPassScore();
+            quizPassScore.PassScore = (short)totalScore;
+            quizPassScore.QuizPassId = quizId;
+            quizPassScore.EvaluatedAt = DateTime.Now;
+            quizPassScore.EvaluatedBy = userId;
+
+            var newUserAnswerScore = _repository.Insert<QuizPassScore>(quizPassScore);
+
+            return Json(newUserAnswerScore);
+        }
         #endregion
 
     }
