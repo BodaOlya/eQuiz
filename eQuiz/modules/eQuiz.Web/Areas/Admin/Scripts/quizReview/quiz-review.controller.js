@@ -113,12 +113,14 @@
                 if (vm.quiz[i].WasChanged == true && vm.quiz[i].WasNull == false) {
                     quizReviewDataService.updateQuizAnswer(vm.quiz[i].Id, vm.quiz[i].UserScore, 1); //TODO CHANGE 1 to future admin id
                     vm.quiz[i].WasChanged = false;
+                    vm.reEvaluateQuestionStatus(vm.quiz[i]);
                 }
                 
                 if (vm.quiz[i].WasChanged == true && vm.quiz[i].WasNull == true) {
                     quizReviewDataService.insertQuizAnswer(vm.quiz[i].Id, vm.quiz[i].UserScore, 1); //TODO CHANGE 1 to future admin id
                     vm.quiz[i].WasChanged = false;
                     vm.quiz[i].WasNull = false;
+                    vm.reEvaluateQuestionStatus(vm.quiz[i]);
                 }
             };
             
@@ -252,5 +254,13 @@
                 vm.countStats();
             }            
         }
+
+        vm.reEvaluateQuestionStatus = function (question) {
+            if (question.UserScore > 0) {
+                question.Status = "Passed";
+            } else {
+                question.Status = "Not Passed";
+            }
+        };
     };
 })(angular);
