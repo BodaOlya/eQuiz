@@ -36,6 +36,7 @@ namespace eQuiz.Entities
         public bool IsEmailConfirmed { get; set; }
         public string PasswordHash { get; set; }
         public string SecurityStamp { get; set; }
+        public string AspNetUserId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FacebookUser> FacebookUsers { get; set; }
@@ -53,5 +54,6 @@ namespace eQuiz.Entities
         public virtual ICollection<QuizEditHistory> QuizEditHistories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserGroup> UserGroups { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }
