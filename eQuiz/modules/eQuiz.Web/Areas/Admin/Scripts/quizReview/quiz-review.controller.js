@@ -207,6 +207,7 @@
                     for (var i = 0; i < vm.quiz.length; i++) {
                         if (vm.quiz[i].Id === questionId) {
                             vm.quiz[i].UserScore = mark;
+                            
                             vm.quiz[i].WasChanged = true;
                         }
                     }
@@ -220,7 +221,7 @@
                 }
 
                 vm.saveIsDisabled = false;
-                vm.cancelIsDisabled = true;
+                vm.cancelIsDisabled = false;
                 vm.countStats();
             }            
         }
