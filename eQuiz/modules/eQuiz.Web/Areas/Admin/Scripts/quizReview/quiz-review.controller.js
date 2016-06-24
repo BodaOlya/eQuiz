@@ -126,6 +126,10 @@
             $timeout($scope.closePopUp, 5000);
         }
 
+        vm.returnButton = function () {
+            window.history.back();
+        }
+
         vm.finalizeQuizReview = function () {
             vm.quiz.isFinalized = true;
             quizReviewDataService.finalizeQuizReview(vm.quiz);

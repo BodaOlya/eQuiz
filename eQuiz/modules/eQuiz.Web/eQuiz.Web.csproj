@@ -128,6 +128,7 @@
     <Content Include="Areas\Admin\Scripts\review\table-height.directive.js" />
     <Content Include="Areas\Admin\Scripts\review\trustAsHtml.filter.js" />
     <Content Include="Areas\Admin\Scripts\shared\loading-screen.directive.js" />
+    <Content Include="Areas\Admin\Scripts\shared\ng-confirm-click.directive.js" />
     <Content Include="Areas\Admin\Scripts\shared\pop-up-window.directive.js" />
     <Content Include="Areas\Admin\Scripts\shared\routing.js" />
     <Content Include="Areas\Admin\Scripts\student\student.controller.js" />
@@ -159,7 +160,7 @@
     <Content Include="Areas\Moderator\Scripts\libs\custom-pagination\custom-pagination.js" />
     <Content Include="Areas\Moderator\Styles\equiz-temp.css" />
     <Content Include="Areas\Student\Images\logo.png" />
-	<Content Include="Areas\Student\Images\mountains.jpg" />
+    <Content Include="Areas\Student\Images\mountains.jpg" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.controller.js" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.service.js" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.pagination.directive.js" />
