@@ -232,7 +232,7 @@
                     }
                 } else {
                     vm.myStyle = {
-                        color: 'black'
+                        color: 'white'
                     }
                 }
                 if (vm.minutes == 0 && vm.seconds == 0) {
@@ -261,7 +261,7 @@
             vm.seconds = vm.tSeconds;
             vm.minutes = vm.tMinutes;
             vm.myStyle = {
-                color: 'black'
+                color: 'white'
             }
         };
 
