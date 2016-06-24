@@ -244,6 +244,7 @@ CREATE TABLE [dbo].[tblUser]
 	[IsEmailConfirmed] [BIT] NOT NULL,
 	[PasswordHash] [VARCHAR](MAX) NULL,
 	[SecurityStamp] [VARCHAR](MAX) NULL,
+	[AspNetUserId] [NVARCHAR](128) NULL,
 	CONSTRAINT [PK_tblUser_Id] PRIMARY KEY ([Id]), 
 	CONSTRAINT [UK_tblUser_Email] UNIQUE ([Email])
 ); 
@@ -527,5 +528,8 @@ ON DELETE CASCADE
 GO
  
 ALTER TABLE [dbo].[AspNetUserRoles] CHECK CONSTRAINT [FK_dbo.AspNetUserRoles_dbo.AspNetUsers_UserId]
+GO
+
+ALTER TABLE [dbo].[tblUser] ADD CONSTRAINT [FK_tblUser_AspNetUsers] FOREIGN KEY([AspNetUserid]) REFERENCES [dbo].[AspNetUsers] ([Id]);
 GO
 
