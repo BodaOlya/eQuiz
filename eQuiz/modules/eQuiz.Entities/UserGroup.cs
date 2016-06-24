@@ -24,14 +24,14 @@ namespace eQuiz.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public byte UserGroupStateId { get; set; }
-        public int CreatedByUserId { get; set; }
+        public string CreatedByUserId { get; set; }
         public System.DateTime CreatedDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Quiz> Quizs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserToUserGroup> UserToUserGroups { get; set; }
-        public virtual User User { get; set; }
         public virtual UserGroupState UserGroupState { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

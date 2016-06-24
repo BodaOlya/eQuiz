@@ -281,7 +281,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserGroupStateId" Type="tinyint" Nullable="false" />
-          <Property Name="CreatedByUserId" Type="int" Nullable="false" />
+          <Property Name="CreatedByUserId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CreatedDate" Type="smalldatetime" Nullable="false" />
         </EntityType>
@@ -749,11 +749,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tblUserGroup_tblUser">
-          <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
+        <Association Name="FK_tblUserGroup_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="tblUserGroup" Type="Self.tblUserGroup" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="tblUser">
+            <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="tblUserGroup">
@@ -985,8 +985,8 @@
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblUserComment" EntitySet="tblUserComment" />
           </AssociationSet>
-          <AssociationSet Name="FK_tblUserGroup_tblUser" Association="Self.FK_tblUserGroup_tblUser">
-            <End Role="tblUser" EntitySet="tblUser" />
+          <AssociationSet Name="FK_tblUserGroup_AspNetUsers" Association="Self.FK_tblUserGroup_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="tblUserGroup" EntitySet="tblUserGroup" />
           </AssociationSet>
           <AssociationSet Name="FK_tblUserGroup_tblUserGroupState" Association="Self.FK_tblUserGroup_tblUserGroupState">
@@ -1223,7 +1223,6 @@
           <NavigationProperty Name="UserToUserGroups" Relationship="Self.FK_tblUserToUserGroup_tblUser" FromRole="tblUser" ToRole="tblUserToUserGroup" />
           <NavigationProperty Name="UserComments" Relationship="eQuizModel.FK_tblUserComment_AdminId_tblUser" FromRole="User" ToRole="tblUserComment" />
           <NavigationProperty Name="QuizEditHistories" Relationship="eQuizModel.FK_tblQuizEditHistory_tblUser" FromRole="User" ToRole="tblQuizEditHistory" />
-          <NavigationProperty Name="UserGroups" Relationship="eQuizModel.FK_tblUserGroup_tblUser" FromRole="User" ToRole="UserGroup" />
           <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUser" Relationship="eQuizModel.FK_tblUser_AspNetUsers" FromRole="User" ToRole="AspNetUser" />
         </EntityType>
@@ -1260,10 +1259,10 @@
           <NavigationProperty Name="Quizs" Relationship="Self.FK_tblQuiz_tblGroup" FromRole="tblUserGroup" ToRole="tblQuiz" />
           <NavigationProperty Name="UserToUserGroups" Relationship="Self.FK_tblUserToUserGroup_tblUserGroup" FromRole="tblUserGroup" ToRole="tblUserToUserGroup" />
           <Property Name="UserGroupStateId" Type="Byte" Nullable="false" />
-          <Property Name="CreatedByUserId" Type="Int32" Nullable="false" />
+          <Property Name="CreatedByUserId" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="User" Relationship="eQuizModel.FK_tblUserGroup_tblUser" FromRole="UserGroup" ToRole="User" />
           <NavigationProperty Name="UserGroupState" Relationship="eQuizModel.FK_tblUserGroup_tblUserGroupState" FromRole="UserGroup" ToRole="tblUserGroupState" />
+          <NavigationProperty Name="AspNetUser" Relationship="eQuizModel.FK_tblUserGroup_AspNetUsers" FromRole="UserGroup" ToRole="AspNetUser" />
         </EntityType>
         <EntityType Name="UserToUserGroup">
           <Key>
@@ -1706,10 +1705,6 @@
             <End Role="UserAnswerScore" EntitySet="UserAnswerScores" />
           </AssociationSet>
           <EntitySet Name="UserGroupStates" EntityType="eQuizModel.UserGroupState" />
-          <AssociationSet Name="FK_tblUserGroup_tblUser" Association="eQuizModel.FK_tblUserGroup_tblUser">
-            <End Role="User" EntitySet="Users" />
-            <End Role="UserGroup" EntitySet="UserGroups" />
-          </AssociationSet>
           <AssociationSet Name="FK_tblUserGroup_tblUserGroupState" Association="eQuizModel.FK_tblUserGroup_tblUserGroupState">
             <End Role="tblUserGroupState" EntitySet="UserGroupStates" />
             <End Role="UserGroup" EntitySet="UserGroups" />
@@ -1733,6 +1728,10 @@
           <AssociationSet Name="FK_tblUser_AspNetUsers" Association="eQuizModel.FK_tblUser_AspNetUsers">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserGroup_AspNetUsers" Association="eQuizModel.FK_tblUserGroup_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="UserGroup" EntitySet="UserGroups" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="UserTextAnswer">
@@ -1951,18 +1950,6 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="UserGroups" Relationship="eQuizModel.FK_tblUserGroup_tblUserGroupState" FromRole="tblUserGroupState" ToRole="UserGroup" />
         </EntityType>
-        <Association Name="FK_tblUserGroup_tblUser">
-          <End Type="eQuizModel.User" Role="User" Multiplicity="1" />
-          <End Type="eQuizModel.UserGroup" Role="UserGroup" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserGroup">
-              <PropertyRef Name="CreatedByUserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_tblUserGroup_tblUserGroupState">
           <End Type="eQuizModel.UserGroupState" Role="tblUserGroupState" Multiplicity="1" />
           <End Type="eQuizModel.UserGroup" Role="UserGroup" Multiplicity="*" />
@@ -2025,6 +2012,7 @@
           <NavigationProperty Name="AspNetUserLogins" Relationship="eQuizModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
           <NavigationProperty Name="AspNetRoles" Relationship="eQuizModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
           <NavigationProperty Name="Users" Relationship="eQuizModel.FK_tblUser_AspNetUsers" FromRole="AspNetUser" ToRole="User" />
+          <NavigationProperty Name="UserGroups" Relationship="eQuizModel.FK_tblUserGroup_AspNetUsers" FromRole="AspNetUser" ToRole="UserGroup" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Type="eQuizModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
@@ -2067,6 +2055,18 @@
             </Principal>
             <Dependent Role="User">
               <PropertyRef Name="AspNetUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUserGroup_AspNetUsers">
+          <End Type="eQuizModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="eQuizModel.UserGroup" Role="UserGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserGroup">
+              <PropertyRef Name="CreatedByUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
