@@ -95,6 +95,9 @@
             for (var i = 0; i < vm.quizClone.length; i++) {
                 vm.quiz[i] = vm.deepCopy(vm.quizClone[i]);
             }
+
+            vm.cancelIsDisabled = true;
+            vm.saveIsDisabled = true;
         }
 
         vm.saveQuizReview = function () {
