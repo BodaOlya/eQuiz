@@ -226,7 +226,7 @@ CREATE TABLE [dbo].[tblUserGroup]
 (
 	[Id] [INT] NOT NULL IDENTITY(1, 1),
 	[UserGroupStateId] [TINYINT] NOT NULL,
-	[CreatedByUserId] [INT] NOT NULL,
+	[CreatedByUserId] [NVARCHAR](128) NOT NULL,
 	[Name] [NVARCHAR](50) NOT NULL,
 	[CreatedDate] [SMALLDATETIME] NOT NULL,
 	CONSTRAINT [PK_tblUserGroup_Id] PRIMARY KEY ([Id]), 
@@ -348,7 +348,7 @@ ALTER TABLE [dbo].[tblQuestionAnswer] ADD  CONSTRAINT [FK_tblQuestionAnswer_tblA
 
 ALTER TABLE [dbo].[tblUserGroup] ADD  CONSTRAINT [FK_tblUserGroup_tblUserGroupState] FOREIGN KEY([UserGroupStateId]) REFERENCES [dbo].[tblUserGroupState] ([Id]);
 
-ALTER TABLE [dbo].[tblUserGroup] ADD  CONSTRAINT [FK_tblUserGroup_tblUser] FOREIGN KEY([CreatedByUserId]) REFERENCES [dbo].[tblUser] ([Id]);
+
 
 GO
 
@@ -533,3 +533,5 @@ GO
 ALTER TABLE [dbo].[tblUser] ADD CONSTRAINT [FK_tblUser_AspNetUsers] FOREIGN KEY([AspNetUserid]) REFERENCES [dbo].[AspNetUsers] ([Id]);
 GO
 
+ALTER TABLE [dbo].[tblUserGroup] ADD  CONSTRAINT [FK_tblUserGroup_AspNetUsers] FOREIGN KEY([CreatedByUserId]) REFERENCES [dbo].[AspNetUsers] ([Id]);
+GO

@@ -1,4 +1,7 @@
-﻿ALTER TABLE [dbo].[tblFacebookUser] DROP CONSTRAINT [FK_tblFacebookUser_tblUser];
+﻿USE [eQuiz];
+GO
+
+ALTER TABLE [dbo].[tblFacebookUser] DROP CONSTRAINT [FK_tblFacebookUser_tblUser];
 
 ALTER TABLE [dbo].[tblQuestionAnswer] DROP CONSTRAINT [FK_tblQuestionAnswer_tblQuestion];
 
@@ -68,7 +71,17 @@ ALTER TABLE [dbo].[tblUserComment] DROP CONSTRAINT [FK_tblUserComment_UserId_tbl
 
 ALTER TABLE [dbo].[tblUserGroup] DROP CONSTRAINT [FK_tblUserGroup_tblUserGroupState];
 
-ALTER TABLE [dbo].[tblUserGroup] DROP CONSTRAINT [FK_tblUserGroup_tblUser];
+ALTER TABLE [dbo].[tblUserGroup] DROP CONSTRAINT [FK_tblUserGroup_AspNetUsers];
+
+ALTER TABLE [dbo].[tblUser] DROP CONSTRAINT [FK_tblUser_AspNetUsers];
+
+ALTER TABLE [dbo].[AspNetUserClaims] DROP CONSTRAINT [FK_dbo.AspNetUserClaims_dbo.AspNetUsers_UserId];
+
+ALTER TABLE [dbo].[AspNetUserLogins] DROP CONSTRAINT [FK_dbo.AspNetUserLogins_dbo.AspNetUsers_UserId];
+
+ALTER TABLE [dbo].[AspNetUserRoles] DROP CONSTRAINT [FK_dbo.AspNetUserRoles_dbo.AspNetRoles_RoleId];
+
+ALTER TABLE [dbo].[AspNetUserRoles] DROP CONSTRAINT [FK_dbo.AspNetUserRoles_dbo.AspNetUsers_UserId];
 
 DROP TABLE [tblUserComment];
 
@@ -121,3 +134,15 @@ DROP TABLE [tblQuizType];
 DROP TABLE [tblQuizEditHistory];
 
 DROP TABLE [tblUserGroupState];
+
+DROP TABLE [__MigrationHistory];
+
+DROP TABLE [AspNetUsers];
+
+DROP TABLE [AspNetRoles];
+
+DROP TABLE [AspNetUserClaims];
+
+DROP TABLE [AspNetUserLogins];
+
+DROP TABLE [AspNetUserRoles];

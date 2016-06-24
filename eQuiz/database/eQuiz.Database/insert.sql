@@ -1,4 +1,56 @@
-﻿USE [eQuiz];
+﻿-- Insert moderators into AspNetUsers and roles into AspNetRoles
+USE [eQuiz];
+GO
+
+INSERT INTO [dbo].[AspNetUsers]
+           ([Id]
+      ,[Hometown]
+      ,[Email]
+      ,[EmailConfirmed]
+      ,[PasswordHash]
+      ,[SecurityStamp]
+      ,[PhoneNumber]
+      ,[PhoneNumberConfirmed]
+      ,[TwoFactorEnabled]
+      ,[LockoutEndDateUtc]
+      ,[LockoutEnabled]
+      ,[AccessFailedCount]
+      ,[UserName])
+     VALUES
+			('052daaf2-0ba5-4708-bf7a-d60d433b617f', NULL, 'olya@gmail.com', 0, 'AJFW/dvdf7yeil/ufmqva/SDRra68DvKN0n7V6rUMLBy0sDxunj27TJ6nRV9V0Y+Tg==', '6203f227-5c20-4a5f-8de6-cd0d47a4221f', NULL, 0, 0, NULL, 1, 0, 'olya@gmail.com'),
+			('3af43ae6-6cd6-4eb3-afad-e783083bec99', NULL, 'oleksandr@gmail.com', 0, 'APMPrIwvO2HzzsUgGBAnqdHqzK0vJPDkX7Kw0mIX0/5KicWv0ZK3s5QUBsdKFnzsZw==', '6ee1f5d4-5c93-4bc8-9a7f-ce80a5aa7db2', NULL, 0, 0, NULL, 1, 0, 'oleksandr@gmail.com'),
+			('4e9515fe-1585-44dc-98c0-dd4b3cac6fa7', NULL, 'serhii@gmail.com', 0, 'ADnBdq3j1ZM5JgIXoD+ZvbvT/06pyuXc1tsPjLMvGE/SVh1IA+CEVZSFW6Cc3o6Etw==', 'f5810537-4eab-4ab1-811b-c2f7bcccc3df', NULL, 0, 0, NULL, 1, 0, 'serhii@gmail.com'),
+			('5a424ab9-a8a5-458b-8838-463485525bea', NULL, 'yura@gmail.com', 0, 'ACSmKNiToEAvwSwWIpcXdksJX7uYismisPeupWXFO3HIJGkGWCaMn77IhmIOpxvZ5w==', 'ee06ede2-c844-4e24-bdc8-5e865b698739', NULL, 0, 0, NULL, 1, 0, 'yura@gmail.com'),
+			('fbe6492b-ddbc-4c1e-9fb6-63c01a2ebcfe', NULL, 'mykola@gmail.com', 0, 'AHb1BBgUauqaXa4b6C7TLMCl8wYXIBvL1ONqjQ7llLzhFh3tCPxHr/vNTzzoStd13g==', '1d665a23-05a4-4e10-8daf-79168a0f3d78', NULL, 0, 0, NULL, 1, 0, 'mykola@gmail.com'),
+			('5c5c9ff8-81e4-4e99-bce9-e3e71a4d8c20', NULL, 'roman@gmail.com', 0, 'ANw3fFWfXzBDm5X3+rjxKT0SCd7fH5UYgGp1VAr/N4v8fhGsPg3mxJANLYx121DA0A==', 'fd582407-a681-45be-b36b-175d9676be3a', NULL, 0, 0, NULL, 1, 0, 'roman@gmail.com');
+GO
+
+USE [eQuiz]
+GO
+
+INSERT INTO [dbo].[AspNetRoles]
+           ([Id], [Name])
+     VALUES
+           ('8D6C21AE-E284-4CEC-B373-C402554C1630', 'Administrator'), 
+		   ('EDF20647-55F2-4384-B3BD-7BF2E0E25D06', 'Moderator'),
+		   ('984A9BAC-BBE6-4B1E-BE15-66E40253D023', 'Student')
+GO
+
+USE [eQuiz]
+GO
+
+INSERT INTO [dbo].[AspNetUserRoles]
+           ([UserId], [RoleId])
+     VALUES
+           ('052daaf2-0ba5-4708-bf7a-d60d433b617f', 'EDF20647-55F2-4384-B3BD-7BF2E0E25D06'),
+		   ('3af43ae6-6cd6-4eb3-afad-e783083bec99', 'EDF20647-55F2-4384-B3BD-7BF2E0E25D06'),
+		   ('4e9515fe-1585-44dc-98c0-dd4b3cac6fa7', 'EDF20647-55F2-4384-B3BD-7BF2E0E25D06'),
+		   ('5a424ab9-a8a5-458b-8838-463485525bea', 'EDF20647-55F2-4384-B3BD-7BF2E0E25D06'),
+		   ('fbe6492b-ddbc-4c1e-9fb6-63c01a2ebcfe', 'EDF20647-55F2-4384-B3BD-7BF2E0E25D06'),
+		   ('5c5c9ff8-81e4-4e99-bce9-e3e71a4d8c20', 'EDF20647-55F2-4384-B3BD-7BF2E0E25D06');
+GO
+
+USE [eQuiz];
 -----------------------------------Oleksii start
 SET IDENTITY_INSERT [dbo].[tblUser] ON
 INSERT INTO [dbo].[tblUser] ([Id],[FirstName],[LastName],[FatheName],[Email],[Phone],[IsEmailConfirmed])
@@ -53,11 +105,11 @@ SET IDENTITY_INSERT [tblUserGroupState] OFF
 SET IDENTITY_INSERT [tblUserGroup] ON
 INSERT INTO [tblUserGroup] ([Id], [UserGroupStateId], [CreatedByUserId], [Name], [CreatedDate])
 VALUES
- (1, 1, 1, 'Application Engineer', CONVERT(DATETIME, '2016.04.25', 102)),
- (2, 1, 2, 'Network Engineer', CONVERT(DATETIME, '2016.04.30', 102)),
- (3, 1, 3, 'Software Programmer', CONVERT(DATETIME, '2016.04.15', 102)),
- (4, 1, 4, 'Software Testing Engineer', CONVERT(DATETIME, '2016.04.22', 102)),
- (5, 1, 5, 'Trainee', CONVERT(DATETIME, '2016.04.21', 102));
+ (1, 1, '052daaf2-0ba5-4708-bf7a-d60d433b617f', 'Application Engineer', CONVERT(DATETIME, '2016.04.25', 102)),
+ (2, 1, '3af43ae6-6cd6-4eb3-afad-e783083bec99', 'Network Engineer', CONVERT(DATETIME, '2016.04.30', 102)),
+ (3, 1, '4e9515fe-1585-44dc-98c0-dd4b3cac6fa7', 'Software Programmer', CONVERT(DATETIME, '2016.04.15', 102)),
+ (4, 1, '5a424ab9-a8a5-458b-8838-463485525bea', 'Software Testing Engineer', CONVERT(DATETIME, '2016.04.22', 102)),
+ (5, 1, 'fbe6492b-ddbc-4c1e-9fb6-63c01a2ebcfe', 'Trainee', CONVERT(DATETIME, '2016.04.21', 102));
 SET IDENTITY_INSERT [tblUserGroup] OFF;
 
 -----------------------------------Oleksii start
@@ -4498,24 +4550,3 @@ VALUES
 (34, 34, 10, 1, CONVERT(DATETIME, '2016-10-01 00:01:00', 120)),
 (35, 35, 6, 1, CONVERT(DATETIME, '2016-10-01 00:01:00', 120));
 SET IDENTITY_INSERT [dbo].[tblQuizPassScore] OFF
-
-USE [eQuiz]
-GO
-
-INSERT INTO [dbo].[AspNetRoles]
-           ([Id], [Name])
-     VALUES
-           ('8D6C21AE-E284-4CEC-B373-C402554C1630', 'Administrator'), 
-		   ('EDF20647-55F2-4384-B3BD-7BF2E0E25D06', 'Moderator'),
-		   ('984A9BAC-BBE6-4B1E-BE15-66E40253D023', 'Student')
-GO
-
-USE [eQuiz]
-GO
-
-INSERT INTO [dbo].[AspNetUserRoles]
-           ([UserId], [RoleId])
-     VALUES
-           ('52440dc5-7ce3-4f27-ae4d-96276d4bd919', '8D6C21AE-E284-4CEC-B373-C402554C1630'),
-		   ('d434ae75-bc46-4b26-85b3-5813d9eadbf5', '984A9BAC-BBE6-4B1E-BE15-66E40253D023')
-GO
