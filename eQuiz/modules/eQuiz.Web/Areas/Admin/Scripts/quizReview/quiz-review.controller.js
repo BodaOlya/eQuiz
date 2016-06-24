@@ -25,25 +25,6 @@
         $scope.showNotification = false;
         $scope.showWarning = false;
 
-        (vm.countStats = function () {
-            vm.quizStatistics.passed = 0;
-            vm.quizStatistics.notPassed = 0;
-            vm.quizStatistics.userSumPoints = 0;
-            vm.quizStatistics.inVerification = 0;
-            //vm.isFinalized = vm.quiz.isFinalized;
-
-            vm.quiz.forEach(function (item) {
-                vm.quizStatistics.userSumPoints += item.UserScore;
-                if (item.UserScore === 0) {
-                    vm.quizStatistics.notPassed += 1;
-                } else if (item.UserScore == null) {
-                    vm.quizStatistics.inVerification += 1;
-                } else {
-                    vm.quizStatistics.passed += 1;
-                }                
-            });
-        })();
-
         vm.deepCopy = function (obj) {
             if (Object.prototype.toString.call(obj) === '[object Array]') {
                 var out = [], i = 0, len = obj.length;
@@ -73,6 +54,25 @@
         };
 
         activate();
+
+        (vm.countStats = function () {
+            vm.quizStatistics.passed = 0;
+            vm.quizStatistics.notPassed = 0;
+            vm.quizStatistics.userSumPoints = 0;
+            vm.quizStatistics.inVerification = 0;
+            //vm.isFinalized = vm.quiz.isFinalized;
+
+            vm.quiz.forEach(function (item) {
+                vm.quizStatistics.userSumPoints += item.UserScore;
+                if (item.UserScore === 0) {
+                    vm.quizStatistics.notPassed += 1;
+                } else if (item.UserScore == null) {
+                    vm.quizStatistics.inVerification += 1;
+                } else {
+                    vm.quizStatistics.passed += 1;
+                }
+            });
+        })();
 
         vm.setAutoQuestionColor = function (UserScore, expectedStatus) { // sets button color
             var status = 2;            
@@ -107,6 +107,7 @@
                 if (vm.quiz[i].WasChanged == true && vm.quiz[i].WasNull == true) {
                     quizReviewDataService.insertQuizAnswer(vm.quiz[i].Id, vm.quiz[i].UserScore, 1); //TODO CHANGE 1 to future admin id
                     vm.quiz[i].WasChanged = false;
+                    vm.quiz[i].WasNull = false;
                 }
             };
             
