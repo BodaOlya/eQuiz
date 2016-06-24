@@ -26,10 +26,20 @@ select {
     width: 110px;
     border-radius: 4px;
 }
-
+#dashboardHeader{
+    height:80px;
+}
 #headerTable {
     table-layout: fixed;
     width: 100%;
+    height:80px;
+    font-size:15pt;
+}
+#headerTable img{
+    height: 70px;
+}
+#logo_wrapper{
+    text-align:center;
 }
 
     #headerTable #User_group_td {
@@ -37,13 +47,46 @@ select {
     }
 
 #quizzesTable {
-    border-collapse: separate;
-    border-spacing: 0 10px;
-    /*border-spacing: 10px;*/
+    border-spacing: 0 1px;
     text-align:left;
-    width: 40%;
+    font-size: 12pt;
+    width:100%;
+}
+#quizzesTable h3{
+    font-size:16pt;
+}
+#quizzesTable td a, #headerTable a{
+    text-decoration: none;
+    color:#1E9CB0;
+}
+
+#quizzesTable td, th{
+    padding-left: 50px;
+}
+#quizzesTable caption{
+    text-align:left;
+}
+
+#tableWrapper{
+    margin-left:50px;
+    margin-right: 50px;
+    /*width:100%;*/
+}
+#quizzesTable thead{
+    background-color: lightgray;
     font-size: 14pt;
 }
+#quizzesTable tr{
+    height:35px;
+}
+
+.dashboard{
+    margin-bottom:20px;
+}
+.dashboardPagination{
+    margin-top:20px;
+}
+
 .theadSort{
     cursor: pointer;
 }
@@ -55,7 +98,10 @@ select {
 }
 
 #content {
-    margin-top: 2%;
+    background-color: #EBEEF0;
+    height:90vh;
+    width:100%;
+    
 }
 #quizButtons {
     position: absolute;

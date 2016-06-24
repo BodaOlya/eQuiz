@@ -13,16 +13,16 @@
     <script src="~/Areas/Student/Scripts/app/pages/dashboard/dashboard.pagination.directive.js"></script>
 }
 @section PageHeader{
-    <header>
+    <header id="dashboardHeader">
         <table id='headerTable'>
             <tr>
                 <td id='Menu_td'><a href="#">Menu</a></td>
+                <td id="logo_wrapper"><img src="~/Areas/Student/Images/logo.png" /></td>
                 <td id='User_group_td'>User Group # <a href="#">FullName</a></td>
             </tr>
         </table>
     </header>
 }
-<hr>
 <div ng-controller="dashboardCtrl as dc" ng-cloak id='content'>
     <!--<div ng-if="isLoading">
         <span id="loadingMessage">Loading...</span>
@@ -31,55 +31,58 @@
         <div class="cssload-whirlpool"></div>
     </div>
 
-    <table id='quizzesTable' ng-if="!dc.isLoading">
-        <caption><h2>Quizzes</h2></caption>
-        <caption class="dashboard">
-            <input type="search" ng-model="dc.searchInfo.searchText" ng-change="dc.search(page)" class="search-by-name" placeholder="Search by name">
-            <input type="checkbox" ng-model="dc.searchInfo.InternetAccess" ng-change="dc.search(page)" ng-false-value="undefined">
-            <span class="search-by-name">
-                Show only active quizzes
-            </span>
-        </caption>
-        <thead>
-            <tr>
-                <th>
-                    <a ng-click="dc.sortBy('Name')" class="theadSort">
-                        Name{{dc.showOrderArrow('Name')}}
-                    </a>
-                </th>
-                <th>
-                    <a ng-click="dc.sortBy('StartDate')" class="theadSort">
-                        Start date{{dc.showOrderArrow('StartDate')}}
-                    </a>
-                </th>
-                <th>
-                    <a ng-click="dc.sortBy('Duration')" class="theadSort">
-                        Duration{{dc.showOrderArrow('Duration')}}
-                    </a>
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <!--| filter:{ Name: searchInfo.searchText } | filter:{ InternetAccess: searchInfo.InternetAccess}-->
-        <tbody>
-            <tr ng-repeat="quiz in dc.pagedQuizzes" ng-class="{ activeQuiz: quiz.InternetAccess, inactiveQuiz: !quiz.InternetAccess }">
-                <td>
-                    {{quiz.Name}}
-                </td>
-                <td>
-                    {{quiz.StartDate != -1 ? quiz.StartDate : 'No start date' | date: 'dd-MM-yyyy HH:mm' }}
-                </td>
-                <td>
-                    {{quiz.TimeLimitMinutes}}
-                </td>
-                <td>
-                    <a href="@Url.Action("QuizInRun", "Default")" ng-if="quiz.InternetAccess" ng-click="dc.setToLocalStorage(quiz.TimeLimitMinutes, quiz.Id)">Start</a>
-                    <div ng-if="!quiz.InternetAccess">Inactive</div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <div ng-if="!dc.isLoading">
-        <quiz-pager page="{{dc.page}}" pages-count="{{dc.pagesCount}}" total-count="{{dc.totalCount}}" search-func="dc.search(page)"></quiz-pager>
+    <div id="tableWrapper">
+        <table id='quizzesTable' ng-if="!dc.isLoading">
+            <caption><h3>QUIZZES</h3></caption>
+            <caption class="dashboard">
+                <input type="search" ng-model="dc.searchInfo.searchText" ng-change="dc.search(page)" class="search-by-name" placeholder="Search by name">
+                <input type="checkbox" ng-model="dc.searchInfo.InternetAccess" ng-change="dc.search(page)" ng-false-value="undefined">
+                <span class="search-by-name">
+                    Show only active quizzes
+                </span>
+            </caption>
+            <thead>
+                <tr>
+                    <th>
+                        <a ng-click="dc.sortBy('Name')" class="theadSort">
+                            QUIZ{{dc.showOrderArrow('Name')}}
+                        </a>
+                    </th>
+                    <th>
+                        <a ng-click="dc.sortBy('StartDate')" class="theadSort">
+                            START{{dc.showOrderArrow('StartDate')}}
+                        </a>
+                    </th>
+                    <th>
+                        <a ng-click="dc.sortBy('Duration')" class="theadSort">
+                            DURATION{{dc.showOrderArrow('Duration')}}
+                        </a>
+                    </th>
+                    <th>STATE</th>
+                </tr>
+            </thead>
+            <!--| filter:{ Name: searchInfo.searchText } | filter:{ InternetAccess: searchInfo.InternetAccess}-->
+            <tbody>
+                <tr ng-repeat="quiz in dc.pagedQuizzes" class="activeQuiz">
+                    <td>
+                        {{quiz.Name}}
+                    </td>
+                    <td>
+                        {{quiz.StartDate != -1 ? quiz.StartDate : 'No start date' | date: 'dd-MM-yyyy HH:mm' }}
+                    </td>
+                    <td>
+                        {{quiz.TimeLimitMinutes}}
+                    </td>
+                    <td>
+                        <a href="@Url.Action("QuizInRun", "Default")" ng-if="quiz.InternetAccess" ng-click="dc.setToLocalStorage(quiz.TimeLimitMinutes, quiz.Id)">Start</a>
+                        <div ng-if="!quiz.InternetAccess">Inactive</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div ng-if="!dc.isLoading" class="dashboardPagination">
+            <quiz-pager page="{{dc.page}}" pages-count="{{dc.pagesCount}}" total-count="{{dc.totalCount}}" search-func="dc.search(page)"></quiz-pager>
+        </div>
     </div>
 </div>
