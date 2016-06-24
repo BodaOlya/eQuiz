@@ -4,6 +4,7 @@
 }
 
 @section HeadStyles{
+    <link href="~/Styles/bootstrap.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Areas/Student/Styles/equiz-temp.css" />
 }
 
@@ -14,7 +15,6 @@
     <script src="~/Areas/Student/Scripts/app/pages/confirm/customConfirm.controller.js"></script>
     <script src="~/Areas/Student/Scripts/app/pages/refreshWarning/refreshWarning.controller.js"></script>
     <script src="~/Areas/Student/Scripts/app/pages/quizInRun/quizInRun.controller.js"></script>
-    <link href="~/Styles/bootstrap.css" rel="stylesheet" />
 }
 @section PageHeader{
     <div class='container-fluid' ng-if="!qc.isLoading" ng-controller="quizInRunCtrl as qc">
