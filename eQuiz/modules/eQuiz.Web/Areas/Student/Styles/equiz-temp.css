@@ -706,6 +706,14 @@ div.cn {
     table-layout: fixed;
     color: white;
 }
+.custom-container-fluid {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    table-layout: fixed;
+    color: white;
+}
 #quizContent {
     background-color: white;
     margin-bottom: 5%;
