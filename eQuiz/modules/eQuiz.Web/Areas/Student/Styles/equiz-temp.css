@@ -527,6 +527,7 @@ caption.dashboard span {
 }
 .header {
     background-color: white;
+    font-family: Oswald;
 }
 .header img {
     height: 70px;
@@ -622,6 +623,18 @@ caption.dashboard span {
 .wrapperDashboard #title {
     font-size: x-large;
     margin-bottom: 10px
+}
+.verticalAlign {
+    line-height: 70px;
+}
+#menu {
+    margin-left: 5vh;
+    font-size: larger;
+    text-decoration:none
+}
+#fullName {
+    margin-right: 5vh;
+    text-decoration:underline
 }
 
 .quizInRunLink {
