@@ -164,6 +164,7 @@
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.controller.js" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.service.js" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.pagination.directive.js" />
+    <Content Include="Areas\Student\Scripts\app\pages\dashboard\dashboard.time.filter.js" />
     <Content Include="Areas\Student\Scripts\app\pages\dashboard\PagerTemplate.html" />
     <Content Include="Areas\Student\Scripts\app\pages\alert\customAlert.controller.js" />
     <Content Include="Areas\Student\Scripts\app\pages\alert\customAlert.html" />
