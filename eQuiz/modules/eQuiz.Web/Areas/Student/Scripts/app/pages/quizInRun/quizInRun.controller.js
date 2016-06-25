@@ -16,13 +16,13 @@
         vm.isLoading = false;
 
         //Timer Data
-        vm.tSeconds = 0;
-        vm.tMinutes = vm.quizDuration;
+        //vm.tSeconds = 0;
+        //vm.tMinutes = vm.quizDuration;
 
-        vm.seconds = vm.tSeconds;
-        vm.minutes = vm.tMinutes;
+        //vm.seconds = vm.tSeconds;
+        //vm.minutes = vm.tMinutes;
         vm.myStyle = {};
-        vm.time = vm.minutes + ":0" + vm.seconds;
+       // vm.time = vm.minutes + ":0" + vm.seconds;
         var stop;
 
 
@@ -64,15 +64,21 @@
                         //openPopUpRefreshWarning();
                         vm.passedQuiz.StartDate = new Date(Date.now());
 
-                        //vm.resetTimer();
-                        vm.startTimer();
+                        vm.resetTimer();
+                        
                         vm.tMinutes = Math.floor(response.data.remainingTime / 60);
                         vm.tSeconds = response.data.remainingTime - vm.tMinutes * 60;
 
                         vm.minutes = vm.tMinutes;
                         vm.seconds = vm.tSeconds;
-                        
+                        if (vm.seconds < 10) {
+                            vm.time = vm.minutes + ":0" + vm.seconds;
+                        }
+                        else {
+                            vm.time = vm.minutes + ":" + vm.seconds;
+                        }
 
+                        vm.startTimer();
                         vm.isLoading = false;
                     }
                 });

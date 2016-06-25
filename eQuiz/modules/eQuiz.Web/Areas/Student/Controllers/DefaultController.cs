@@ -134,6 +134,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                                     .OrderBy(q => q.QuestionOrder)
                                     .ToList();
 
+                
                 return Json(new { remainingTime = timeLeft, questions = quizInfoList }, JsonRequestBehavior.AllowGet);
             }
             catch (DbUpdateException)
