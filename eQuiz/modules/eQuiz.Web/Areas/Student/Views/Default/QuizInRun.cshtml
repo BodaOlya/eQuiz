@@ -16,33 +16,31 @@
     <script src="~/Areas/Student/Scripts/app/pages/refreshWarning/refreshWarning.controller.js"></script>
     <script src="~/Areas/Student/Scripts/app/pages/quizInRun/quizInRun.controller.js"></script>
 }
-@section PageHeader{
-    <div class='container-fluid' ng-if="!qc.isLoading" ng-controller="quizInRunCtrl as qc">
+<body id="quizInRunBody" ng-controller="quizInRunCtrl as qc" ng-cloak>
 
-        <div class='col-md-4 col-sm-4 col-xs-4 col-lg-4 text-left headerText'>
-            <a class="quizInRunLink" href="#">Menu</a>
-        </div>
+    @section PageHeader{
+        <div class='container-fluid' ng-if="!qc.isLoading">
 
-        <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4 text-center">
-            <div id="timerContainer" data-ng-init="qc.startTimer()">
-                <span id="timer" class="headerText" ng-style="qc.myStyle"><span class="arrows">></span> {{qc.time}} <span class="arrows"><</span></span>
+            <div class='col-md-4 col-sm-4 col-xs-4 col-lg-4 text-left headerText'>
+                <a class="quizInRunLink" href="#">Menu</a>
             </div>
-        </div>
 
-        <div class='col-md-4 col-sm-4 col-xs-4 col-lg-4 text-right headerText'>
-            User Group # <a class="quizInRunLink" href="#">FullName</a>
-        </div>
+            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4 text-center">
+                <div id="timerContainer" data-ng-init="qc.startTimer()">
+                    <span id="timer" class="headerText" ng-style="qc.myStyle"><span class="arrows">></span> {{qc.time}} <span class="arrows"><</span></span>
+                </div>
+            </div>
 
+            <div class='col-md-4 col-sm-4 col-xs-4 col-lg-4 text-right headerText'>
+                User Group # <a class="quizInRunLink" href="#">FullName</a>
+            </div>
+
+        </div>
+    }
+    <div class="cssload-container" ng-if="qc.isLoading">
+        <div class="cssload-whirlpool"></div>
     </div>
-}
-<div class="cssload-container" ng-if="qc.isLoading">
-    <div class="cssload-whirlpool"></div>
-</div>
-
-<body id="quizInRunBody">
-  
-    <div ng-controller="quizInRunCtrl as qc" ng-cloak>
-
+    <div>
         <div class="inner" ng-if="!qc.isLoading">
             <div id="quizContent">
                 <div>
