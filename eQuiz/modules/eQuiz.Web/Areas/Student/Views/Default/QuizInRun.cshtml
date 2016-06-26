@@ -21,17 +21,17 @@
     @section PageHeader{
         <div class='container-fluid' ng-if="!qc.isLoading">
 
-            <div class='col-md-4 col-sm-4 col-xs-4 col-lg-4 text-left headerText'>
+            <div class='col-xs-4 text-left headerText'>
                 <a class="quizInRunLink" href="#">Menu</a>
             </div>
 
-            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4 text-center">
+            <div class="col-xs-4 text-center">
                 <div id="timerContainer" data-ng-init="qc.startTimer()">
                     <span id="timer" class="headerText" ng-style="qc.myStyle"><span class="arrows">></span> {{qc.time}} <span class="arrows"><</span></span>
                 </div>
             </div>
 
-            <div class='col-md-4 col-sm-4 col-xs-4 col-lg-4 text-right headerText'>
+            <div class='col-xs-4 text-right headerText'>
                 User Group # <a class="quizInRunLink" href="#">FullName</a>
             </div>
 
