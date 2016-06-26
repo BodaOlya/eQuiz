@@ -636,6 +636,9 @@ caption.dashboard span {
     margin-right: 5vh;
     text-decoration:underline
 }
+.header .row {
+    width: 100%;
+}
 
 .quizInRunLink {
     color: white;
