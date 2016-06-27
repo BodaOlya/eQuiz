@@ -121,8 +121,8 @@ CREATE TABLE [dbo].[tblQuizPass]
 	[Id] [INT] NOT NULL IDENTITY(1, 1),
 	[QuizId] [INT] NOT NULL,
 	[UserId] [INT] NOT NULL,
-	[StartTime] [SMALLDATETIME] NOT NULL,
-	[FinishTime] [SMALLDATETIME] NULL,
+	[StartTime] [DATETIME] NOT NULL,
+	[FinishTime] [DATETIME] NULL,
 	CONSTRAINT [PK_tblQuizPass_Id] PRIMARY KEY ([Id]),
 	CONSTRAINT [UK_tblQuizPass_QuizId_UserId_StartTime] UNIQUE ([QuizId], [UserId], [StartTime])
 );
