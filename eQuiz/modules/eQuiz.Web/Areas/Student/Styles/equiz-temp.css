@@ -646,7 +646,7 @@ caption.dashboard span {
 .headerText {
     margin-top: 1%;
     margin-bottom: 1%;
-    font-family: 'Oswald Regular';
+    font-family: Oswald;
 }
 
 
@@ -690,7 +690,7 @@ div.cn {
     text-align: center;
     font-size: 10pt;
     font-weight: lighter;
-    font-family: 'Oswald Regular';
+    font-family: Oswald;
 }
 
 .liQuestion::before {
@@ -743,7 +743,7 @@ div.cn {
     white-space: nowrap;
     font-size: 13pt;
     font-weight: bold;
-    font-family: 'Oswald Regular';
+    font-family: Oswald;
 }
 #quizHeader {
     /*background-color: #0066FF;*/
