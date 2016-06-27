@@ -18,12 +18,13 @@ namespace eQuiz.Entities
         public User()
         {
             this.FacebookUsers = new HashSet<FacebookUser>();
+            this.QuizEditHistories = new HashSet<QuizEditHistory>();
             this.QuizPasses = new HashSet<QuizPass>();
             this.QuizPassScores = new HashSet<QuizPassScore>();
             this.UserAnswerScores = new HashSet<UserAnswerScore>();
-            this.UserToUserGroups = new HashSet<UserToUserGroup>();
             this.UserComments = new HashSet<UserComment>();
-            this.QuizEditHistories = new HashSet<QuizEditHistory>();
+            this.UserComments1 = new HashSet<UserComment>();
+            this.UserToUserGroups = new HashSet<UserToUserGroup>();
         }
     
         public int Id { get; set; }
@@ -35,10 +36,14 @@ namespace eQuiz.Entities
         public bool IsEmailConfirmed { get; set; }
         public string PasswordHash { get; set; }
         public string SecurityStamp { get; set; }
-        public string AspNetUserId { get; set; }
+        public string AspNetUserid { get; set; }
+        public string CreatedByUserId { get; set; }
     
+        public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FacebookUser> FacebookUsers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QuizEditHistory> QuizEditHistories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuizPass> QuizPasses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -46,11 +51,10 @@ namespace eQuiz.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserAnswerScore> UserAnswerScores { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserToUserGroup> UserToUserGroups { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserComment> UserComments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<QuizEditHistory> QuizEditHistories { get; set; }
-        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual ICollection<UserComment> UserComments1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserToUserGroup> UserToUserGroups { get; set; }
     }
 }

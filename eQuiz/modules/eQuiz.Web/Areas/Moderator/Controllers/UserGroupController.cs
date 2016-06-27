@@ -3,12 +3,10 @@ using eQuiz.Repositories.Abstract;
 using eQuiz.Web.Areas.Moderator.Models;
 using eQuiz.Web.Code;
 using Microsoft.AspNet.Identity;
-using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace eQuiz.Web.Areas.Moderator.Controllers

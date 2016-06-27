@@ -1,9 +1,7 @@
-﻿using System.Data.Entity;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System.Configuration;
 
 namespace eQuiz.Web.Models
 {
@@ -22,7 +20,7 @@ namespace eQuiz.Web.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base(System.Configuration.ConfigurationManager.ConnectionStrings["eQuizDB"].ConnectionString, throwIfV1Schema: false)        
+           : base(System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString, throwIfV1Schema: false)   
         {
         }
 

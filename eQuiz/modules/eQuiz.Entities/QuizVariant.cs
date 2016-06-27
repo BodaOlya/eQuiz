@@ -24,8 +24,8 @@ namespace eQuiz.Entities
         public int QuizId { get; set; }
         public byte VariantNumber { get; set; }
     
+        public virtual Quiz Quiz { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuizQuestion> QuizQuestions { get; set; }
-        public virtual Quiz Quiz { get; set; }
     }
 }

@@ -15,12 +15,12 @@ namespace eQuiz.Entities
     public partial class QuizPassScore
     {
         public int Id { get; set; }
+        public int QuizPassId { get; set; }
         public short PassScore { get; set; }
         public int EvaluatedBy { get; set; }
         public System.DateTime EvaluatedAt { get; set; }
-        public int QuizPassId { get; set; }
     
-        public virtual User User { get; set; }
         public virtual QuizPass QuizPass { get; set; }
+        public virtual User User { get; set; }
     }
 }
