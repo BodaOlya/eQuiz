@@ -58,14 +58,14 @@
             <table class="table" ng-if="!dc.isLoading">
                 <thead>
                     <tr>
-                        <th ng-click="dc.sortBy('Name')">
-                            NAME{{dc.showOrderArrow('Name')}}
+                        <th>
+                            <a ng-click="dc.sortBy('Name')" class="sortBtn">NAME{{dc.showOrderArrow('Name')}}</a>
                         </th>
-                        <th ng-click="dc.sortBy('StartDate')">
-                            START{{dc.showOrderArrow('StartDate')}}
+                        <th>
+                            <a ng-click="dc.sortBy('StartDate')" class="sortBtn">START{{dc.showOrderArrow('StartDate')}}</a>
                         </th>
-                        <th ng-click="dc.sortBy('Duration')">
-                            DURATION{{dc.showOrderArrow('Duration')}}
+                        <th>
+                            <a ng-click="dc.sortBy('Duration')" class="sortBtn">DURATION{{dc.showOrderArrow('Duration')}}</a>
                         </th>
                         <th>
                             STATE

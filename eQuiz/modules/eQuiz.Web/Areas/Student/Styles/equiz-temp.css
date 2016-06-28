@@ -616,6 +616,11 @@ caption.dashboard span {
 .wrapperDashboard thead {
     background-color: #DDDDDD;
 }
+.wrapperDashboard thead a {
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
 .wrapperDashboard tbody {
     font-family: Source Sans Pro;
     background-color: white
@@ -635,6 +640,9 @@ caption.dashboard span {
 #fullName {
     margin-right: 5vh;
     text-decoration:underline
+}
+#fullName:hover {
+    text-decoration:none;
 }
 .header .row {
     width: 100%;
