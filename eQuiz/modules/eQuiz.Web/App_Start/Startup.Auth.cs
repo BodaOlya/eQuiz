@@ -6,6 +6,8 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using eQuiz.Web.Models;
+using Microsoft.Owin.Security.Facebook;
+using Owin.Security.Providers.LinkedIn;
 
 namespace eQuiz.Web
 {
@@ -45,9 +47,18 @@ namespace eQuiz.Web
             // This is similar to the RememberMe option when you log in.
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");           
+            app.UseFacebookAuthentication(new FacebookAuthenticationOptions
+            {
+                AppId = "1740017632953675",
+                AppSecret = "23770d968b1b333d14c909637b9517b9",
+                //CallbackPath = new PathString("/Account/Login?ReturnUrl=%2FAccount")
+            });
+      
+            //app.UseLinkedInAuthentication(new LinkedInAuthenticationOptions
+            //{
+            //    ClientId = "Your API Key",
+            //    ClientSecret = "Your secret key",
+            //});
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {

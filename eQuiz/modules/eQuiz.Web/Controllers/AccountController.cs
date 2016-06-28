@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -431,18 +432,44 @@ namespace eQuiz.Web.Controllers
                     return View("ExternalLoginFailure");
                 }
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+
+                var isSuchEmailExists = UserManager.FindByEmail(user.Email) != null;
+                var usr = UserManager.FindByEmail(user.Email);
+
                 var result = await UserManager.CreateAsync(user);
-                UserManager.AddToRole(user.Id, "Student");
-                if (result.Succeeded)
+
+               
+                if (!isSuchEmailExists && result.Succeeded)
                 {
-                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                    UserManager.AddToRole(user.Id, "Student");
+
                     if (result.Succeeded)
                     {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        return RedirectToAction("Dashboard", "Default", new { area = "Student" });
+                        result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                        if (result.Succeeded)
+                        {
+                            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                            return RedirectToAction("Dashboard", "Default", new {area = "Student"});
+                        }
+                    }
+                    AddErrors(result);
+                }
+                else
+                {
+                    if (isSuchEmailExists)
+                    {
+                        var userToMerge = UserManager.FindByEmail(user.Email);
+
+                        UserManager.AddToRole(userToMerge.Id, "Student");
+
+                        result = await UserManager.AddLoginAsync(userToMerge.Id, info.Login);
+                        if (result.Succeeded)
+                        {
+                            await SignInManager.SignInAsync(userToMerge, isPersistent: false, rememberBrowser: false);
+                            return RedirectToAction("Dashboard", "Default", new { area = "Student" });
+                        }
                     }
                 }
-                AddErrors(result);
             }
 
             ViewBag.ReturnUrl = returnUrl;
