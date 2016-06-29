@@ -3,6 +3,7 @@ using eQuiz.Repositories.Abstract;
 using eQuiz.Repositories.Concrete;
 using eQuiz.Web.Areas.Moderator.Models;
 using eQuiz.Web.Code;
+using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -73,18 +74,18 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             if (latestChange != null)
             {
                 var endLock = latestChange.LastChangeDate.AddMinutes(QuizLockDuration);
-                if (endLock > now) // && USER != latestEdit.User //UPDATE WHEN AUTH
+                if (endLock > now && latestChange.UserId != User.Identity.GetUserId()) // && USER != latestEdit.User //UPDATE WHEN AUTH
                 {
                     locked = true;
                 }
                 else
                 {
-                    latestChange = LockQuiz((int)id, 1, now);
+                    latestChange = LockQuiz((int)id, User.Identity.GetUserId(), now);
                 }
             }
             else
             {
-                latestChange = LockQuiz((int)id, 1, now);
+                latestChange = LockQuiz((int)id, User.Identity.GetUserId(), now);
             }
 
             Quiz quiz = _repository.GetSingle<Quiz>(q => q.Id == id, r => r.UserGroup, s => s.QuizState);
@@ -258,7 +259,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 block.QuizId = quiz.Id;
                 _repository.Insert<QuizBlock>(block);
                 _repository.Insert<QuizVariant>(new QuizVariant() { QuizId = quiz.Id });
-                latestChange = LockQuiz(quiz.Id, 1, now);
+                latestChange = LockQuiz(quiz.Id, User.Identity.GetUserId(), now);
             }
             quiz.QuizState = _repository.GetSingle<QuizState>(q => q.Id == quiz.QuizStateId);
             quiz.UserGroup = _repository.GetSingle<UserGroup>(g => g.Id == quiz.GroupId);
@@ -635,8 +636,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             {
                 user = new
                 {
-                    FirstName = history.User.FirstName,
-                    LastName = history.User.LastName
+                    UserName = history.User.UserName,
                 };
             }
             var minQuizEditHistory = new
@@ -710,7 +710,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             return errorMessages.Count > 0 ? errorMessages : null;
         }
 
-        private QuizEditHistory LockQuiz(int quizId, int userId, DateTime date)
+        private QuizEditHistory LockQuiz(int quizId, string userId, DateTime date)
         {
             var latestEdit = new QuizEditHistory()
             {
@@ -776,11 +776,10 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             {
                 var latestEdit = _repository.Get<QuizEditHistory>(q => q.QuizId == quiz.Id, q => q.User).OrderByDescending(q => q.LastChangeDate).Take(1).FirstOrDefault();
 
-                //IF latestEdit USER ID != CURRENT USER.ID ERROR
-                //if (latestEdit.UserId != 123)
-                //{
-                //    errorMessages.Add("Quiz is being edited by another user, refresh page");
-                //}
+                if (latestEdit.UserId != User.Identity.GetUserId())
+                {
+                    errorMessages.Add("Quiz is being edited by another user, refresh page");
+                }
             }
 
             return errorMessages.Count > 0 ? errorMessages : null;
