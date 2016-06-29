@@ -36,8 +36,7 @@ namespace eQuiz.Entities
         public bool IsEmailConfirmed { get; set; }
         public string PasswordHash { get; set; }
         public string SecurityStamp { get; set; }
-        public string AspNetUserid { get; set; }
-        public string CreatedByUserId { get; set; }
+        public string AspNetUserId { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

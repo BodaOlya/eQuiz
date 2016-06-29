@@ -159,8 +159,8 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="QuizId" Type="int" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="StartTime" Type="smalldatetime" Nullable="false" />
-          <Property Name="FinishTime" Type="smalldatetime" />
+          <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="FinishTime" Type="datetime" />
         </EntityType>
         <EntityType Name="tblQuizPassQuestion">
           <Key>
@@ -244,8 +244,7 @@
           <Property Name="IsEmailConfirmed" Type="bit" Nullable="false" />
           <Property Name="PasswordHash" Type="varchar(max)" />
           <Property Name="SecurityStamp" Type="varchar(max)" />
-          <Property Name="AspNetUserid" Type="nvarchar" MaxLength="128" />
-          <Property Name="CreatedByUserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="AspNetUserId" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="tblUserAnswer">
           <Key>
@@ -282,9 +281,9 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserGroupStateId" Type="tinyint" Nullable="false" />
+          <Property Name="CreatedByUserId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CreatedDate" Type="smalldatetime" Nullable="false" />
-          <Property Name="CreatedByUserId" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="tblUserGroupState">
           <Key>
@@ -674,7 +673,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="tblUser">
-              <PropertyRef Name="AspNetUserid" />
+              <PropertyRef Name="AspNetUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -751,7 +750,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_tblUserGroup_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="tblUserGroup" Type="Self.tblUserGroup" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
@@ -1384,8 +1383,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="QuizId" Type="Int32" Nullable="false" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="FinishTime" Type="DateTime" Precision="0" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FinishTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Quiz" Relationship="eQuizModel.FK_tblQuizPass_tblQuiz" FromRole="tblQuizPass" ToRole="tblQuiz" />
           <NavigationProperty Name="User" Relationship="eQuizModel.FK_tblQuizPass_tblUser" FromRole="tblQuizPass" ToRole="tblUser" />
           <NavigationProperty Name="QuizPassQuestions" Relationship="eQuizModel.FK_tblQuizPassQuestion_tblQuizPass" FromRole="tblQuizPass" ToRole="tblQuizPassQuestion" />
@@ -1491,8 +1490,7 @@
           <Property Name="IsEmailConfirmed" Type="Boolean" Nullable="false" />
           <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="AspNetUserid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedByUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUser" Relationship="eQuizModel.FK_tblUser_AspNetUsers" FromRole="tblUser" ToRole="AspNetUser" />
           <NavigationProperty Name="FacebookUsers" Relationship="eQuizModel.FK_tblFacebookUser_tblUser" FromRole="tblUser" ToRole="tblFacebookUser" />
           <NavigationProperty Name="QuizEditHistories" Relationship="eQuizModel.FK_tblQuizEditHistory_tblUser" FromRole="tblUser" ToRole="tblQuizEditHistory" />
@@ -1546,7 +1544,7 @@
           <Property Name="UserGroupStateId" Type="Byte" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="CreatedByUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedByUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="AspNetUser" Relationship="eQuizModel.FK_tblUserGroup_AspNetUsers" FromRole="tblUserGroup" ToRole="AspNetUser" />
           <NavigationProperty Name="Quizs" Relationship="eQuizModel.FK_tblQuiz_tblGroup" FromRole="tblUserGroup" ToRole="tblQuiz" />
           <NavigationProperty Name="UserGroupState" Relationship="eQuizModel.FK_tblUserGroup_tblUserGroupState" FromRole="tblUserGroup" ToRole="tblUserGroupState" />
@@ -1616,12 +1614,12 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="tblUser">
-              <PropertyRef Name="AspNetUserid" />
+              <PropertyRef Name="AspNetUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_tblUserGroup_AspNetUsers">
-          <End Type="eQuizModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="eQuizModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
           <End Type="eQuizModel.UserGroup" Role="tblUserGroup" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUser">
@@ -2302,8 +2300,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="eQuizModel.User">
               <MappingFragment StoreEntitySet="tblUser">
-                <ScalarProperty Name="CreatedByUserId" ColumnName="CreatedByUserId" />
-                <ScalarProperty Name="AspNetUserid" ColumnName="AspNetUserid" />
+                <ScalarProperty Name="AspNetUserId" ColumnName="AspNetUserId" />
                 <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
                 <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
                 <ScalarProperty Name="IsEmailConfirmed" ColumnName="IsEmailConfirmed" />
