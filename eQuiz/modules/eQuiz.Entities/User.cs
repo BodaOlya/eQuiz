@@ -18,7 +18,6 @@ namespace eQuiz.Entities
         public User()
         {
             this.FacebookUsers = new HashSet<FacebookUser>();
-            this.QuizEditHistories = new HashSet<QuizEditHistory>();
             this.QuizPasses = new HashSet<QuizPass>();
             this.QuizPassScores = new HashSet<QuizPassScore>();
             this.UserAnswerScores = new HashSet<UserAnswerScore>();
@@ -41,8 +40,6 @@ namespace eQuiz.Entities
         public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FacebookUser> FacebookUsers { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<QuizEditHistory> QuizEditHistories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuizPass> QuizPasses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

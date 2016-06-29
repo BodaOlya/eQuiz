@@ -59,7 +59,6 @@
         <AssociationConnector Association="eQuizModel.FK_tblQuizBlock_Topic" />
         <AssociationConnector Association="eQuizModel.FK_tblQuizPassQuestion_QuizBlock" />
         <AssociationConnector Association="eQuizModel.FK_tblQuizQuestion_tblQuizBlock" />
-        <AssociationConnector Association="eQuizModel.FK_tblQuizEditHistory_tblUser" />
         <AssociationConnector Association="eQuizModel.FK_tblQuizPass_tblUser" />
         <AssociationConnector Association="eQuizModel.FK_tblQuizPassQuestion_tblQuizPass" />
         <AssociationConnector Association="eQuizModel.FK_tblQuizPassScore_tblQuizPass" />
@@ -75,6 +74,7 @@
         <AssociationConnector Association="eQuizModel.FK_tblUserGroup_tblUserGroupState" />
         <AssociationConnector Association="eQuizModel.FK_tblUserToUserGroup_tblUserGroup" />
         <AssociationConnector Association="eQuizModel.AspNetUserRoles" />
+        <AssociationConnector Association="eQuizModel.FK_tblQuizEditHistory_AspNetUsers" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
