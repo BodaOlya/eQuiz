@@ -36,7 +36,7 @@ namespace eQuiz.Web
                         validateInterval: TimeSpan.FromMinutes(30),
                         regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                 }
-            });            
+            });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Enables the application to temporarily store user information when they are verifying the second factor in the two-factor authentication process.
@@ -46,14 +46,15 @@ namespace eQuiz.Web
             // Once you check this option, your second step of verification during the login process will be remembered on the device where you logged in from.
             // This is similar to the RememberMe option when you log in.
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
-
-            app.UseFacebookAuthentication(new FacebookAuthenticationOptions
+            var facebookAuthenticationOptions = new FacebookAuthenticationOptions
             {
                 AppId = "1740017632953675",
                 AppSecret = "23770d968b1b333d14c909637b9517b9",
-                //CallbackPath = new PathString("/Account/Login?ReturnUrl=%2FAccount")
-            });
       
+            };
+
+            app.UseFacebookAuthentication(facebookAuthenticationOptions);
+
             //app.UseLinkedInAuthentication(new LinkedInAuthenticationOptions
             //{
             //    ClientId = "Your API Key",
@@ -63,7 +64,21 @@ namespace eQuiz.Web
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
                 ClientId = "947709765832-34vvl7d7b3t1203dj59ok0bkf33hg6qn.apps.googleusercontent.com",
-                ClientSecret = "WF2cmZ2uQzKltaWho0heAYSv"
+                ClientSecret = "WF2cmZ2uQzKltaWho0heAYSv",
+                Provider = new GoogleOAuth2AuthenticationProvider()
+                {
+                    OnAuthenticated = async context =>
+                    {
+                        context.Identity.AddClaim(new System.Security.Claims.Claim("GoogleAccessToken", context.AccessToken));
+                        foreach (var claim in context.User)
+                        {
+                            var claimType = string.Format("urn:google:{0}", claim.Key);
+                            string claimValue = claim.Value.ToString();
+                            if (!context.Identity.HasClaim(claimType, claimValue))
+                                context.Identity.AddClaim(new System.Security.Claims.Claim(claimType, claimValue, "XmlSchemaString", "Google"));
+                        }
+                    }
+                }
             });
         }
     }

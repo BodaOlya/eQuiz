@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using eQuiz.Entities;
+using eQuiz.Repositories.Abstract;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -15,10 +19,14 @@ namespace eQuiz.Web.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private readonly IRepository _repository;
+        private const string FacebookProvider = "facebook";
 
-        public AccountController()
+        public AccountController(IRepository repository)
         {
+            _repository = repository;
         }
+
 
         [HttpGet]
         public ActionResult Index()
@@ -103,7 +111,7 @@ namespace eQuiz.Web.Controllers
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-                       
+
             switch (result)
             {
                 case SignInStatus.Success:
@@ -213,7 +221,7 @@ namespace eQuiz.Web.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
-                
+
                 UserManager.AddToRole(user.Id, model.SelectedRole);
 
                 if (result.Succeeded)
@@ -433,14 +441,21 @@ namespace eQuiz.Web.Controllers
                 }
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
 
-                var isSuchEmailExists = UserManager.FindByEmail(user.Email) != null;
-                var usr = UserManager.FindByEmail(user.Email);
+                var userFromTblUser = _repository.Get<User>(el => el.Email == user.Email);
 
+                var isSuchEmailExists = UserManager.FindByEmail(user.Email) != null;
                 var result = await UserManager.CreateAsync(user);
 
-               
+                var fromTblUser = userFromTblUser as IList<User> ?? userFromTblUser.ToList();
+
+                var provider = info.Login.LoginProvider.ToLower();
+                var name = info.ExternalIdentity.Name;
+                var firstAndLastNames = name.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
                 if (!isSuchEmailExists && result.Succeeded)
                 {
+
+
                     UserManager.AddToRole(user.Id, "Student");
 
                     if (result.Succeeded)
@@ -449,7 +464,18 @@ namespace eQuiz.Web.Controllers
                         if (result.Succeeded)
                         {
                             await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                            return RedirectToAction("Dashboard", "Default", new {area = "Student"});
+
+                            // Merging AspNetUsers and tblUser
+                            MergeAspNetUsersAndUsers(fromTblUser, user, firstAndLastNames, user.Id);
+
+                      
+
+                            // Add facebookUser
+                            ManageFacebookLogin(info, fromTblUser, user, firstAndLastNames, name);
+
+
+
+                            return RedirectToAction("Dashboard", "Default", new { area = "Student" });
                         }
                     }
                     AddErrors(result);
@@ -466,10 +492,20 @@ namespace eQuiz.Web.Controllers
                         if (result.Succeeded)
                         {
                             await SignInManager.SignInAsync(userToMerge, isPersistent: false, rememberBrowser: false);
+
+                            // Merging AspNetUsers and tblUser
+                            MergeAspNetUsersAndUsers(fromTblUser, user, firstAndLastNames, userToMerge.Id);
+                            
+
+                            // Add facebookUser
+                            ManageFacebookLogin(info, fromTblUser, user, firstAndLastNames, name);
+                          
+
                             return RedirectToAction("Dashboard", "Default", new { area = "Student" });
                         }
                     }
                 }
+
             }
 
             ViewBag.ReturnUrl = returnUrl;
@@ -569,6 +605,56 @@ namespace eQuiz.Web.Controllers
                     properties.Dictionary[XsrfKey] = UserId;
                 }
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
+            }
+        }
+
+        private void ManageFacebookLogin(ExternalLoginInfo info, IList<User> fromTblUser, ApplicationUser user, string[] firstAndLastNames, string name)
+        {
+            if (info.Login.LoginProvider.ToLower() == FacebookProvider)
+            {
+                if (fromTblUser.Count == 1)
+                {
+                    var fbUser = new FacebookUser()
+                    {
+                        UserId = fromTblUser.SingleOrDefault().Id,
+                        Email = user.Email,
+                        FirstName = firstAndLastNames[0],
+                        LastName = firstAndLastNames[1],
+                        UserName = name,
+                        ObtainedDate = DateTime.UtcNow
+                    };
+                    _repository.Insert<FacebookUser>(fbUser);
+                }
+            }
+        }
+
+        private void MergeAspNetUsersAndUsers(IList<User> fromTblUser, ApplicationUser user, string[] firstAndLastNames, string userToInputId)
+        {
+            if (fromTblUser.Count == 0)
+            {
+                var userToInsert = new User()
+                {
+                    AspNetUserId = user.Id,
+                    FirstName = firstAndLastNames[0],
+                    LastName = firstAndLastNames[1],
+                    Email = user.Email,
+                    SecurityStamp = user.SecurityStamp,
+                    PasswordHash = user.PasswordHash,
+                    IsEmailConfirmed = user.EmailConfirmed,
+                    Phone = user.PhoneNumber ?? "0",
+
+                };
+                _repository.Insert<User>(userToInsert);
+
+            }
+            else
+            {
+                if (fromTblUser.Count == 1)
+                {
+                    var userToUpd = fromTblUser.First();
+                    userToUpd.AspNetUserId = userToInputId;
+                    _repository.Update<User>(userToUpd);
+                }
             }
         }
         #endregion
