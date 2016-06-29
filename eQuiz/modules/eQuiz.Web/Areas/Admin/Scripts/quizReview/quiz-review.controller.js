@@ -47,7 +47,7 @@
             vm.student = student;
             vm.quizPassInfo = getQuizPassInfo;
             vm.quiz = getQuizTests;            
-
+            
             for (var i = 0; i < vm.quiz.length; i++) {
                 vm.quizClone[i] = vm.deepCopy(vm.quiz[i]);
             }
@@ -84,12 +84,11 @@
 
         vm.setAutoQuestionColor = function (UserScore, expectedStatus) { // sets button color
             var status = 2;            
-            if (UserScore === 0) {
-                status = 2;
-            }
-
-            else {
+            if (UserScore > 0) {
                 status = 1;
+            } 
+            else {
+                status = 2;
             }
 
             if (expectedStatus == status) {
