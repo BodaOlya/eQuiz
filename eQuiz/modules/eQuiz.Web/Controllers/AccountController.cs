@@ -399,9 +399,9 @@ namespace eQuiz.Web.Controllers
             {
                 return RedirectToAction("Login");
             }
-
+         
             // Sign in the user with this external login provider if the user already has a login
-            var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
+                var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -439,73 +439,82 @@ namespace eQuiz.Web.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser {UserName = model.Email, Email = model.Email};
 
                 var userFromTblUser = _repository.Get<User>(el => el.Email == user.Email);
-
-                var isSuchEmailExists = UserManager.FindByEmail(user.Email) != null;
-                var result = await UserManager.CreateAsync(user);
-
                 var fromTblUser = userFromTblUser as IList<User> ?? userFromTblUser.ToList();
 
-                var provider = info.Login.LoginProvider.ToLower();
-                var name = info.ExternalIdentity.Name;
-                var firstAndLastNames = name.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-                if (!isSuchEmailExists && result.Succeeded)
+                if (fromTblUser.Count == 1)
                 {
+                    var isSuchEmailExists = UserManager.FindByEmail(user.Email) != null;
+                    var result = await UserManager.CreateAsync(user);
 
 
-                    UserManager.AddToRole(user.Id, "Student");
+                    var provider = info.Login.LoginProvider.ToLower();
+                    var name = info.ExternalIdentity.Name;
+                    var firstAndLastNames = name.Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
-                    if (result.Succeeded)
+                    if (!isSuchEmailExists && result.Succeeded)
                     {
-                        result = await UserManager.AddLoginAsync(user.Id, info.Login);
+
+
+                        UserManager.AddToRole(user.Id, "Student");
+
                         if (result.Succeeded)
                         {
-                            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                            result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                            if (result.Succeeded)
+                            {
+                                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                            // Merging AspNetUsers and tblUser
-                            MergeAspNetUsersAndUsers(fromTblUser, user, firstAndLastNames, user.Id);
-
-                      
-
-                            // Add facebookUser
-                            ManageFacebookLogin(info, fromTblUser, user, firstAndLastNames, name);
+                                // Merging AspNetUsers and tblUser
+                                MergeAspNetUsersAndUsers(fromTblUser, user, firstAndLastNames, user.Id);
 
 
 
-                            return RedirectToAction("Dashboard", "Default", new { area = "Student" });
+                                // Add facebookUser
+                                ManageFacebookLogin(info, fromTblUser, user, firstAndLastNames, name);
+
+                                return RedirectToAction("Dashboard", "Default", new {area = "Student"});
+
+                            }
+                        }
+                        AddErrors(result);
+                    }
+                    else
+                    {
+                        if (isSuchEmailExists)
+                        {
+                            var userToMerge = UserManager.FindByEmail(user.Email);
+
+                            UserManager.AddToRole(userToMerge.Id, "Student");
+
+                            result = await UserManager.AddLoginAsync(userToMerge.Id, info.Login);
+                            if (result.Succeeded)
+                            {
+                                await
+                                    SignInManager.SignInAsync(userToMerge, isPersistent: false, rememberBrowser: false);
+
+                                // Merging AspNetUsers and tblUser
+                                MergeAspNetUsersAndUsers(fromTblUser, user, firstAndLastNames, userToMerge.Id);
+
+
+                                // Add facebookUser
+                                ManageFacebookLogin(info, fromTblUser, user, firstAndLastNames, name);
+
+                                return RedirectToAction("Dashboard", "Default", new {area = "Student"});
+
+                            }
                         }
                     }
-                    AddErrors(result);
+
                 }
                 else
                 {
-                    if (isSuchEmailExists)
-                    {
-                        var userToMerge = UserManager.FindByEmail(user.Email);
-
-                        UserManager.AddToRole(userToMerge.Id, "Student");
-
-                        result = await UserManager.AddLoginAsync(userToMerge.Id, info.Login);
-                        if (result.Succeeded)
-                        {
-                            await SignInManager.SignInAsync(userToMerge, isPersistent: false, rememberBrowser: false);
-
-                            // Merging AspNetUsers and tblUser
-                            MergeAspNetUsersAndUsers(fromTblUser, user, firstAndLastNames, userToMerge.Id);
-                            
-
-                            // Add facebookUser
-                            ManageFacebookLogin(info, fromTblUser, user, firstAndLastNames, name);
-                          
-
-                            return RedirectToAction("Dashboard", "Default", new { area = "Student" });
-                        }
-                    }
+                    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                    return RedirectToAction("Index", "Home");
                 }
-
             }
 
             ViewBag.ReturnUrl = returnUrl;
@@ -630,32 +639,9 @@ namespace eQuiz.Web.Controllers
 
         private void MergeAspNetUsersAndUsers(IList<User> fromTblUser, ApplicationUser user, string[] firstAndLastNames, string userToInputId)
         {
-            if (fromTblUser.Count == 0)
-            {
-                var userToInsert = new User()
-                {
-                    AspNetUserId = user.Id,
-                    FirstName = firstAndLastNames[0],
-                    LastName = firstAndLastNames[1],
-                    Email = user.Email,
-                    SecurityStamp = user.SecurityStamp,
-                    PasswordHash = user.PasswordHash,
-                    IsEmailConfirmed = user.EmailConfirmed,
-                    Phone = user.PhoneNumber ?? "0",
-
-                };
-                _repository.Insert<User>(userToInsert);
-
-            }
-            else
-            {
-                if (fromTblUser.Count == 1)
-                {
-                    var userToUpd = fromTblUser.First();
-                    userToUpd.AspNetUserId = userToInputId;
-                    _repository.Update<User>(userToUpd);
-                }
-            }
+            var userToUpd = fromTblUser.First();
+            userToUpd.AspNetUserId = userToInputId;
+            _repository.Update<User>(userToUpd);
         }
         #endregion
     }
