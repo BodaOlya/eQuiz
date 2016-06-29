@@ -41,27 +41,47 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var userAnswerScores = _repository.Get<UserAnswerScore>();
             var quizQuestions = _repository.Get<QuizQuestion>();
 
-            int questionCount = (int)_repository.GetSingle<QuizBlock>(qb => qb.QuizId == id).QuestionCount;
+            var questionCountQuery = from qpq in quizPassQuestions
+                                     join qp in quizPasses on qpq.QuizPassId equals qp.Id
+                                     group new { qpq, qp } by qp.Id into changed
+                                     select new
+                                     {
+                                         id = changed.Key,
+                                         questions = changed.Count(ch => ch.qpq.Id > 0)
+                                     };
 
-            var query = from u in users
-                        join qp in quizPasses on u.Id equals qp.UserId
+            var userScores = from uas in userAnswerScores
+                             join qpq in quizPassQuestions on uas.QuizPassQuestionId equals qpq.Id
+                             join qp in quizPasses on qpq.QuizPassId equals qp.Id
+                             join qcq in questionCountQuery on qp.Id equals qcq.id
+                             group new { qp, uas, qcq } by qp.Id into changed
+                             select new
+                             {
+                                 id = changed.Key,
+                                 scores = changed.Sum(ch => ch.uas.Score),
+                                 passed = changed.Count(ch => ch.uas.Score > 0),
+                                 notPassed = changed.Count(ch => ch.uas.Score == 0),
+                                 inVerification = (int)changed.Select(ch => ch.qcq.questions).First() - changed.Count(ch => ch.uas.Score > 0) - changed.Count(ch => ch.uas.Score == 0)
+                             };
+
+            var query = from qp in quizPasses
+                        join u in users on qp.UserId equals u.Id
                         where qp.QuizId == id
-                        join qpq in quizPassQuestions on qp.Id equals qpq.QuizPassId
-                        join uas in userAnswerScores on qpq.Id equals uas.QuizPassQuestionId
-                        group new { u, qp, qpq, uas } by u.Id into changed
+                        join us in userScores on qp.Id equals us.id
+                        join qs in quizScores on qp.Id equals qs.QuizPassId into temp
+                        from t in temp.DefaultIfEmpty()
                         select new
                         {
-                            id = changed.Key,
-                            quizPassId = changed.Select(ch => ch.qp.Id).Distinct(),
-                            student = changed.Select(ch => ch.u.FirstName + " " + ch.u.LastName).Distinct(),
-                            //student = u.FirstName + " " + u.LastName,
-                            email = changed.Select(ch => ch.u.Email).Distinct(),
-                            studentScore = changed.Sum(ch => ch.uas.Score),
-                            quizStatus = changed.Count(ch => ch.uas.Score >= 0) == questionCount ? "Passed" : "In Verification",
+                            id = u.Id,
+                            quizPassId = qp.Id,
+                            student = u.FirstName + " " + u.LastName,
+                            email = u.Email,
+                            studentScore = us.scores,
+                            quizStatus = t == null ? "In Verification" : "Passed",
                             questionDetails = new {
-                                passed = changed.Count(ch => ch.uas.Score > 0),
-                                notPassed = changed.Count(ch => ch.uas.Score == 0),
-                                inVerification = questionCount - changed.Count(ch => ch.uas.Score > 0) - changed.Count(ch => ch.uas.Score == 0)
+                                passed = us.passed,
+                                notPassed = us.notPassed,
+                                inVerification = us.inVerification
                             },
                         };
 

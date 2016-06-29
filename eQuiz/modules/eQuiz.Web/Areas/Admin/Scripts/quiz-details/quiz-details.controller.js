@@ -15,8 +15,6 @@
         vm.resultsPerPage = 10;
         vm.resultsCount = [10, 25, 50, 100];
         vm.tablePage = 0;
-        vm.linkToProfile = "Index/Student?Id=";
-        vm.linkToQuizRewiew = "Index/Quiz?Student=";
         vm.contentsToExport = []; // Contains data for exporting into excel file
         vm.excelPath = 'D:/name.xls'; // Default path and name for excel file
 
@@ -116,11 +114,11 @@
         }; // Orders the data based on the specified predicate
 
         vm.setLink = function (studentId) {
-            vm.linkToProfile += studentId + "#Profile";
+            vm.linkToProfile = "Index/Student?Id=" + studentId + "#Profile";
         };
 
         vm.setLinkToQuiz = function (studentId, quizId) {
-            vm.linkToQuizRewiew += studentId + "&Quiz=" + quizId;
+            vm.linkToQuizRewiew = "Index/Quiz?Student=" + studentId + "&Quiz=" + quizId;
         };
 
         vm.numberOfPages = function () {
