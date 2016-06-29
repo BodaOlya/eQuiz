@@ -25,7 +25,7 @@ ALTER TABLE [dbo].[tblQuiz] DROP CONSTRAINT [FK_tblQuiz_tblGroup];
 
 ALTER TABLE [dbo].[tblQuiz] DROP CONSTRAINT [FK_tblQuiz_tblQuizState];
 
-ALTER TABLE [dbo].[tblQuizEditHistory] DROP CONSTRAINT [FK_tblQuizEditHistory_tblUser];
+ALTER TABLE [dbo].[tblQuizEditHistory] DROP CONSTRAINT [FK_tblQuizEditHistory_AspNetUsers];
 
 ALTER TABLE [dbo].[tblQuizEditHistory] DROP CONSTRAINT [FK_tblQuizEditHistory_tblQuiz];
 

@@ -102,7 +102,7 @@ CREATE TABLE [dbo].[tblQuiz]
  (
 	[Id] [INT] NOT NULL IDENTITY(1, 1),
 	[QuizId] [INT] NOT NULL,
-	[UserId] [INT] NOT NULL,
+	[UserId] [NVARCHAR](128) NOT NULL,
 	[StartDate] [DATETIME] NOT NULL,
 	[LastChangeDate] [DATETIME] NOT NULL,
 	CONSTRAINT [PK_tblQuizEditHistory_Id] PRIMARY KEY ([Id])
@@ -305,8 +305,6 @@ ALTER TABLE [dbo].[tblQuiz] ADD CONSTRAINT [FK_tblQuiz_tblGroup] FOREIGN KEY([Gr
 ALTER TABLE [dbo].[tblQuiz] ADD CONSTRAINT [FK_tblQuiz_tblQuizState] FOREIGN KEY([QuizStateId]) REFERENCES [dbo].[tblQuizState] ([Id]);
 
 ALTER TABLE [dbo].[tblQuizEditHistory] ADD CONSTRAINT [FK_tblQuizEditHistory_tblQuiz] FOREIGN KEY([QuizId]) REFERENCES [dbo].[tblQuiz] ([Id]);
-
-ALTER TABLE [dbo].[tblQuizEditHistory] ADD CONSTRAINT [FK_tblQuizEditHistory_tblUser] FOREIGN KEY([UserId]) REFERENCES [dbo].[tblUser] ([Id]);
 
 ALTER TABLE [dbo].[tblQuizPass] ADD CONSTRAINT [FK_tblQuizPass_tblQuiz] FOREIGN KEY([QuizId]) REFERENCES [dbo].[tblQuiz] ([Id]);
 
@@ -534,4 +532,7 @@ ALTER TABLE [dbo].[tblUser] ADD CONSTRAINT [FK_tblUser_AspNetUsers] FOREIGN KEY(
 GO
 
 ALTER TABLE [dbo].[tblUserGroup] ADD  CONSTRAINT [FK_tblUserGroup_AspNetUsers] FOREIGN KEY([CreatedByUserId]) REFERENCES [dbo].[AspNetUsers] ([Id]);
+GO
+
+ALTER TABLE [dbo].[tblQuizEditHistory] ADD CONSTRAINT [FK_tblQuizEditHistory_AspNetUsers] FOREIGN KEY([UserId]) REFERENCES [dbo].[AspNetUsers] ([Id]);
 GO
