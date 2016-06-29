@@ -70,7 +70,13 @@ VALUES
 	(13,'Bogdan', 'Asaulenko', 'Volodymyrovich', 'bogdan.as.o@mail.ru','0630982634',1),
 	(14,'Oleg', 'Vorotnyak', 'Oleksiyovich', 'oleg.vorotnyak123@gmail.com','0637865400',0),
 	(15,'Vasil', 'Babiy', 'Olegovich', 'vasyl.babiy333@mail.ru','0638796544',1),
-	(16,'Viktoriya', 'Vorobey', 'Olegivna', 'viktoria.olegivna22@gmail.com','0637685541',1)
+	(16,'Viktoriya', 'Vorobey', 'Olegivna', 'viktoria.olegivna22@gmail.com','0637685541',1),
+	(17,'Andrii', 'Zvarych', 'Volodymyrovych', 'fipsher123@gmail.com','0637685541',1),
+	(18,'Marian', 'Maykher', 'Olegovych', 'mr.maykher@gmail.com','0637666541',1),
+	(19,'Marta', 'Maherovska', 'Viktorivna', 'maher.marta.u@gmail.com','0690066541',1),
+	(20,'Oleg', 'Dubanych', 'Vladyslavovych', 'oleg0594@gmail.com','0698866541',1),
+	(21,'Petro', 'Zdebskiy', 'Petrovych', 'petrozd@gmail.com','0670096541',1)
+
 SET IDENTITY_INSERT [dbo].[tblUser] OFF
 
 SET IDENTITY_INSERT [dbo].[tblFacebookUser] ON
