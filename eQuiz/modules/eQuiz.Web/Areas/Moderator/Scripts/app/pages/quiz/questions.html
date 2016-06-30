@@ -27,6 +27,20 @@
                     </button>
                 </div>
             </div>
+            <div class="row" show-error>
+                <div class="col-sm-2 col-md-2">
+                    <p class="control-label">
+                        Score
+                    </p>
+                </div>
+                <div class="col-sm-9 col-md-9">
+                    <input class="form-control" ng-disabled="!vm.isEditingEnabled()" type="number" ng-model="vm.model.questionScores[$index]" required min="1" name="QuestionScore">
+                    <div ng-messages="oneQuestionForm.QuestionScore.$error" class="help-block hide">
+                        <p ng-message="required">Question score is required</p>
+                        <p ng-message="min">Question score must be greater than 0</p>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-sm-3 col-md-2">
                     <p class="control-label">
@@ -45,7 +59,7 @@
                                 Answer
                             </p>
                         </div>
-                        <div  class="col-sm-12 col-md-12">
+                        <div class="col-sm-12 col-md-12">
                             <textarea class="questionText form-control" ng-model="vm.model.answers[$index][vm.getFirstCheckedAnswerIndex($index)].AnswerText" ng-disabled="!vm.isEditingEnabled()" required name="AnswerText">{{ vm.model.answers[$index][0] }}</textarea>
                             <div ng-messages="oneAnswerForm.AnswerText.$error" class="help-block hide">
                                 <p ng-message="required">Answer text is required</p>
@@ -65,9 +79,11 @@
                     <div class="row">
                         <table class="col-sm-12 col-md-12">
                             <thead>
-                            <th class="col-sm-8 col-md-8 control-label" ng-click="vm.order($index, 'AnswerText')">{{ vm.showOrderArrow($index, "AnswerText") }} Answer</th>
-                            <th class="col-sm-2 col-md-2 control-label" ng-click="vm.order($index, 'IsRight')">{{ vm.showOrderArrow($index, "IsRight") }} Is correct</th>
-                            <th class="col-sm-2 col-md-2 control-label">Delete</th>
+                                <tr>
+                                    <th class="col-sm-8 col-md-8 control-label" ng-click="vm.order($index, 'AnswerText')">{{ vm.showOrderArrow($index, "AnswerText") }} Answer</th>
+                                    <th class="col-sm-2 col-md-2 control-label" ng-click="vm.order($index, 'IsRight')">{{ vm.showOrderArrow($index, "IsRight") }} Is correct</th>
+                                    <th class="col-sm-2 col-md-2 control-label">Delete</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 <tr ng-form="oneAnswerForm" ng-repeat="answer in vm.model.answers[$index] | orderBy:vm.model.orderArray[$index].predicate:vm.model.orderArray[$index].reverse">
@@ -116,9 +132,11 @@
                     <div class="row">
                         <table class="col-sm-12 col-md-12">
                             <thead>
-                            <th class="col-sm-8 col-md-8 control-label" ng-click="vm.model.order($index, 'AnswerText')">{{ vm.model.showOrderArrow($index, "AnswerText") }} Answer</th>
-                            <th class="col-sm-2 col-md-2 control-label" ng-click="vm.model.order($index, 'IsRight')">{{ vm.model.showOrderArrow($index, "IsRight") }} Is correct</th>
-                            <th class="col-sm-2 col-md-2 control-label">Delete</th>
+                                <tr>
+                                    <th class="col-sm-8 col-md-8 control-label" ng-click="vm.model.order($index, 'AnswerText')">{{ vm.model.showOrderArrow($index, "AnswerText") }} Answer</th>
+                                    <th class="col-sm-2 col-md-2 control-label" ng-click="vm.model.order($index, 'IsRight')">{{ vm.model.showOrderArrow($index, "IsRight") }} Is correct</th>
+                                    <th class="col-sm-2 col-md-2 control-label">Delete</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 <tr ng-form="oneAnswerForm" ng-repeat="answer in vm.model.answers[$index] | orderBy:vm.model.orderArray[$index].predicate:vm.model.orderArray[$index].reverse">
