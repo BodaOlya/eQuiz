@@ -55,30 +55,16 @@ namespace eQuiz.Web
 
             app.UseFacebookAuthentication(facebookAuthenticationOptions);
 
-            //app.UseLinkedInAuthentication(new LinkedInAuthenticationOptions
-            //{
-            //    ClientId = "Your API Key",
-            //    ClientSecret = "Your secret key",
-            //});
+            app.UseLinkedInAuthentication(new LinkedInAuthenticationOptions
+            {
+                ClientId = "78lra6own3ceus",
+                ClientSecret = "6YvYwYOPKbLlOWmo",
+            });
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
                 ClientId = "947709765832-34vvl7d7b3t1203dj59ok0bkf33hg6qn.apps.googleusercontent.com",
-                ClientSecret = "WF2cmZ2uQzKltaWho0heAYSv",
-                Provider = new GoogleOAuth2AuthenticationProvider()
-                {
-                    OnAuthenticated = async context =>
-                    {
-                        context.Identity.AddClaim(new System.Security.Claims.Claim("GoogleAccessToken", context.AccessToken));
-                        foreach (var claim in context.User)
-                        {
-                            var claimType = string.Format("urn:google:{0}", claim.Key);
-                            string claimValue = claim.Value.ToString();
-                            if (!context.Identity.HasClaim(claimType, claimValue))
-                                context.Identity.AddClaim(new System.Security.Claims.Claim(claimType, claimValue, "XmlSchemaString", "Google"));
-                        }
-                    }
-                }
+                ClientSecret = "WF2cmZ2uQzKltaWho0heAYSv",               
             });
         }
     }

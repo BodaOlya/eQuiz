@@ -469,9 +469,7 @@ namespace eQuiz.Web.Controllers
                                 await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                                 // Merging AspNetUsers and tblUser
-                                MergeAspNetUsersAndUsers(fromTblUser, user, firstAndLastNames, user.Id);
-
-
+                                MergeAspNetUsersAndUsers(fromTblUser, user, firstAndLastNames, user);
 
                                 // Add facebookUser
                                 ManageFacebookLogin(info, fromTblUser, user, firstAndLastNames, name);
@@ -497,7 +495,7 @@ namespace eQuiz.Web.Controllers
                                     SignInManager.SignInAsync(userToMerge, isPersistent: false, rememberBrowser: false);
 
                                 // Merging AspNetUsers and tblUser
-                                MergeAspNetUsersAndUsers(fromTblUser, user, firstAndLastNames, userToMerge.Id);
+                                MergeAspNetUsersAndUsers(fromTblUser, user, firstAndLastNames, userToMerge);
 
 
                                 // Add facebookUser
@@ -637,10 +635,11 @@ namespace eQuiz.Web.Controllers
             }
         }
 
-        private void MergeAspNetUsersAndUsers(IList<User> fromTblUser, ApplicationUser user, string[] firstAndLastNames, string userToInputId)
+        private void MergeAspNetUsersAndUsers(IList<User> fromTblUser, ApplicationUser user, string[] firstAndLastNames, ApplicationUser newUser)
         {
             var userToUpd = fromTblUser.First();
-            userToUpd.AspNetUserId = userToInputId;
+            userToUpd.AspNetUserId = newUser.Id;
+            userToUpd.SecurityStamp = newUser.SecurityStamp;
             _repository.Update<User>(userToUpd);
         }
         #endregion
