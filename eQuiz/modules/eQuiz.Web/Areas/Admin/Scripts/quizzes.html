@@ -1,9 +1,9 @@
 ﻿<div style="height:100vh;">
     <br />
     <br />
-    <div style="display:inline">
+    <div style="display:inline; margin-left: 8px">
         <label>Search</label>
-        <input type="text" ng-model="qc.search" style="width:15em">
+        <input class="input-sm" type="text" ng-model="qc.search" style="width:15em">
 
         <div class="multileveldropdown">
             <button class="dropbtn"> Filters &#x25BC </button>
@@ -21,12 +21,12 @@
     </div>
 
     <div>
-        <table class="reviewTable" style="min-height:200px;">
+        <table class="table table-striped" style="min-height:200px; vertical-align:central">
             <thead>
                 <tr>
                     <th ng-repeat="h in qc.headers">
                         <a href="#" ng-click="qc.refreshPredicate(h.predicateIndex); qc.order(qc.myPredicate[h.predicateIndex],null)">
-                            <span class="sortorder" ng-show="qc.direction(h.predicateIndex) !== null" ng-class="{direction:qc.direction(h.predicateIndex)}"></span>
+                            <span class="sortorder" ng-show="qc.direction(h.pr edicateIndex) !== null" ng-class="{direction:qc.direction(h.predicateIndex)}"></span>
                             {{h.name}}
                         </a>
                     </th>
@@ -44,7 +44,7 @@
         </table>
     </div>
 
-    <div layout="row">
+    <div layout="row" style="margin-left: 8px">
         <span>
             Rows on the page:
             <select style="margin:5px" ng-model="qc.resultsPerPage" ng-options="p for p in qc.resultsCount" ng-change="qc.paginationChanged()"></select>
