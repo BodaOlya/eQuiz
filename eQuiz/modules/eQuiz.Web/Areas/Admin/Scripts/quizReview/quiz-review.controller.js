@@ -16,6 +16,7 @@
         vm.saveIsDisabled = true;
         vm.cancelIsDisabled = true;
         vm.isFinalized = false;
+        vm.quizIsInVerification = true;
         vm.student = {};
         vm.quizPassInfo = [];
         vm.quiz = [];
@@ -82,11 +83,22 @@
             });
         })();
 
+        (vm.checkIfInVerification = function () {
+            for (var i = 0; i < vm.quiz.length; i++) {
+                if (vm.quiz[i].Status == "In Verification") {                    
+                    vm.quizIsInVerification = true;                    
+                    return true;
+                }                
+            }
+
+            vm.quizIsInVerification = false;
+        })();
+
         vm.setAutoQuestionColor = function (UserScore, expectedStatus) { // sets button color
-            var status = 2;            
+            var status = 2;
             if (UserScore > 0) {
                 status = 1;
-            } 
+            }
             else {
                 status = 2;
             }
@@ -96,7 +108,7 @@
             }
         }
 
-        vm.cancelQuizReview = function () {            
+        vm.cancelQuizReview = function () {
             vm.quiz = [];
 
             for (var i = 0; i < vm.quizClone.length; i++) {
@@ -108,13 +120,13 @@
         }
 
         vm.saveQuizReview = function () {
-            for (var i = 0; i < vm.quiz.length; i++) {          
+            for (var i = 0; i < vm.quiz.length; i++) {
                 if (vm.quiz[i].WasChanged == true && vm.quiz[i].WasNull == false) {
                     quizReviewDataService.updateQuizAnswer(vm.quiz[i].Id, vm.quiz[i].UserScore, 1); //TODO CHANGE 1 to future admin id
                     vm.quiz[i].WasChanged = false;
                     vm.reEvaluateQuestionStatus(vm.quiz[i]);
                 }
-                
+
                 if (vm.quiz[i].WasChanged == true && vm.quiz[i].WasNull == true) {
                     quizReviewDataService.insertQuizAnswer(vm.quiz[i].Id, vm.quiz[i].UserScore, 1); //TODO CHANGE 1 to future admin id
                     vm.quiz[i].WasChanged = false;
@@ -122,13 +134,13 @@
                     vm.reEvaluateQuestionStatus(vm.quiz[i]);
                 }
             };
-            
+
             vm.quizCopy = [];
 
             for (var i = 0; i < vm.quiz.length; i++) {
                 vm.quizClone[i] = vm.deepCopy(vm.quiz[i]);
             }
-
+            vm.checkIfInVerification();
             vm.cancelIsDisabled = true;
             vm.saveIsDisabled = true;
             $scope.showNotifyPopUp('Quiz data was sucessfully saved!')
@@ -139,7 +151,7 @@
             for (var i = 0; i < vm.quiz.length; i++) {
                 if (vm.quiz[i].UserScore == null || vm.isFinalized == true) {
                     return false;
-                }
+                }   
             }
             return true;
         }
@@ -152,7 +164,7 @@
             var totalScore = 0;
             for (var i = 0; i < vm.quiz.length; i++) {
                 totalScore += vm.quiz[i].UserScore;
-            }
+        }
             quizReviewDataService.finalizeQuizReview($location.search().Quiz, totalScore);
             vm.isFinalized = true;
             $scope.showNotifyPopUp('Quiz was sucessfully finalized!')
@@ -167,7 +179,7 @@
                     }
                 }
             } else {
-                vm.selectedStatuses.push(id);
+              vm.selectedStatuses.push(id);
             }
             return false;
         };
@@ -175,21 +187,21 @@
         vm.isChecked = function (id) {
             if (vm.selectedStatuses.toString().indexOf(id.toString()) > -1 || vm.selectedStatuses.length === 0) {
                 return true;
-            }
+        }
             return false;
         };
 
         vm.allChecked = function () {
             if (vm.selectedStatuses.length === 0) {
                 return true;
-            }
+        }
             return false;
         };
 
         vm.checkAll = function () {
             for (var i = 0; i < vm.statusList.length; i++) {
                 vm.selectedStatuses.push(vm.statusList[i].id);
-            }
+        }
         };
 
         vm.unCheckAll = function () {
@@ -197,17 +209,16 @@
         };
 
         vm.getDateFromSeconds = function (date_in_seconds) {
-            var milliseconds = parseInt(date_in_seconds.slice(6, date_in_seconds.length - 2)); // getting only numbers without '/Date()'
+            var milliseconds = parseInt(date_in_seconds.slice(6, date_in_seconds.length -2)); // getting only numbers without '/Date()'
             var result = new Date(milliseconds);
             return result;
         }
 
-        // Changing UserScore for auto questions
+            // Changing UserScore for auto questions
         vm.setAutoQuestionStatus = function (id, status) {
             if (vm.isFinalized) {
                 alert("This quiz was finalized");
-            }
-            else {
+            } else {
                 for (var i = 0; i < vm.quiz.length; i++) {
                     if (vm.quiz[i].Id === id) {
                         if (status === 1) {
@@ -226,7 +237,7 @@
             }
         }
 
-        // Checking and changing UserScore for text questions
+            // Checking and changing UserScore for text questions
         vm.checkAndCount = function (mark, maxScore, questionId, questionPosition) {
             if (vm.isFinalized) {
                 alert("This quiz was finalized");
@@ -235,7 +246,7 @@
                     for (var i = 0; i < vm.quiz.length; i++) {
                         if (vm.quiz[i].Id === questionId) {
                             vm.quiz[i].UserScore = mark;
-                            
+
                             vm.quiz[i].WasChanged = true;
                         }
                     }
@@ -251,15 +262,15 @@
                 vm.saveIsDisabled = false;
                 vm.cancelIsDisabled = false;
                 vm.countStats();
-            }            
+            }
         }
 
         vm.reEvaluateQuestionStatus = function (question) {
             if (question.UserScore > 0) {
                 question.Status = "Passed";
-            } else {
-                question.Status = "Not Passed";
-            }
+        } else {
+            question.Status = "Not Passed";
+        }
         };
     };
 })(angular);

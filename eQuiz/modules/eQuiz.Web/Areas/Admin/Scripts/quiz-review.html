@@ -90,7 +90,7 @@
 
     <div class="confirm_btns_section spacing">
         <span class="btn_spacing">
-            <button ng-click="ReviewCtrl.finalizeQuizReview()" ng-disabled="ReviewCtrl.isFinalized" type="button" ng-class="{'btn_finalized': ReviewCtrl.isFinalized}" class="btn_spacing btn_length">Finalize</button>            
+            <button ng-click="ReviewCtrl.finalizeQuizReview()" ng-disabled="ReviewCtrl.isFinalized || ReviewCtrl.quizIsInVerification" type="button" ng-class="{'btn_finalized': ReviewCtrl.isFinalized}" class="btn_spacing btn_length">Finalize</button>            
             <button ng-click="ReviewCtrl.saveQuizReview()" ng-disabled="ReviewCtrl.saveIsDisabled || ReviewCtrl.isFinalized" type="button" class="btn_spacing btn_length">Save</button>
             <button type="button" confirmed-click="ReviewCtrl.returnButton()" ng-confirm-click="Are you sure?" class="btn_spacing btn_length">Return</button>            
             <button ng-click="ReviewCtrl.cancelQuizReview()" ng-disabled="ReviewCtrl.cancelIsDisabled || ReviewCtrl.isFinalized" type="button" class="btn_spacing btn_length">Cancel changes</button>            
