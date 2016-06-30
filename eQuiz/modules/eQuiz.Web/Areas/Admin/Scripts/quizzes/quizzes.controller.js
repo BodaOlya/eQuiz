@@ -12,11 +12,6 @@
         vm.search = '';
         var orderBy = $filter('orderBy');
         vm.filterCategories = [{
-            name: 'Quiz',
-            field: 'quiz_name',
-            CategoryItems: [],
-            selectedGroup: []
-        }, {
             name: 'Group',
             field: 'group_name',
             CategoryItems: [],

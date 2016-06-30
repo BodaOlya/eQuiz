@@ -33,7 +33,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in qc.content = ((qc.quizzesFiltered = (qc.quizzes  | groupFilter: qc.filterCategories[0].selectedGroup:'quiz_name' | groupFilter: qc.filterCategories[2].selectedGroup:'verification_type' | groupFilter: qc.filterCategories[1].selectedGroup:'group_name' | filter: {quiz_name:qc.search})) | startFrom: qc.tablePage*qc.resultsPerPage | limitTo:qc.resultsPerPage)" style="height: 50px">
+                <tr ng-repeat="item in qc.content = ((qc.quizzesFiltered = (qc.quizzes | groupFilter: qc.filterCategories[1].selectedGroup:'verification_type' | groupFilter: qc.filterCategories[0].selectedGroup:'group_name' | filter: {quiz_name:qc.search})) | startFrom: qc.tablePage*qc.resultsPerPage | limitTo:qc.resultsPerPage)" style="height: 50px">
                     <td><a href="Index/Details?Id={{item.id}}" ng-bind-html="item.quiz_name | highlight: qc.search">{{item.quiz_name}}</a></td>
                     <td>{{item.group_name}}</td>
                     <td>{{item.questions_amount}}</td>
