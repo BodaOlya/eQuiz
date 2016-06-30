@@ -94,8 +94,10 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                         {
                             return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, "Question is not found");
                         }
+
                         var existedQuizQuestion = context.QuizQuestions.FirstOrDefault(x => x.QuestionId == existedQuestion.Id);
                         existedQuizQuestion.QuestionScore = (byte)questionScores[i];
+
                         existedQuestion.IsActive = question.IsActive;
                         existedQuestion.QuestionComplexity = question.QuestionComplexity;
                         existedQuestion.QuestionText = question.QuestionText;
@@ -275,7 +277,11 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 foreach (var item in questions)
                 {
                     var questionAnswers = _repository.Get<QuestionAnswer>(x => x.QuestionId == item.Id, x => x.Answer).ToList();
+                    var currentQuestionScore = _repository.GetSingle<QuizQuestion>(x => x.Id == item.Id).QuestionScore;
                     var answerStorage = new ArrayList();
+
+                    questionScores.Add(currentQuestionScore);
+                    
                     foreach (var answer in questionAnswers)
                     {
                         var tempAnswer = GetAnswerForSerialization(answer.Answer);
@@ -307,7 +313,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 }
             }
 
-                var data = JsonConvert.SerializeObject(new { questions = returnQuestion, answers = answers, id = quizId, tags = tags }, Formatting.None,
+                var data = JsonConvert.SerializeObject(new { questions = returnQuestion, answers = answers, id = quizId, tags = tags, questionScores = questionScores }, Formatting.None,
                                                         new JsonSerializerSettings()
                                                         {
                                                             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
