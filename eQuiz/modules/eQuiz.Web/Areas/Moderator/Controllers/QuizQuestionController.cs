@@ -288,10 +288,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                         answerStorage.Add(tempAnswer);
                     }
                     answers.Add(answerStorage);
-                    //}
-
-                    //foreach (var item in questions)
-                    //{
+       
                     var questionTags = _repository.Get<QuestionTag>(x => x.QuestionId == item.Id, x => x.Tag).ToList();
                     var tagStorage = new ArrayList();
 
@@ -301,13 +298,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                         tagStorage.Add(tempTag);
                     }
                     tags.Add(tagStorage);
-                    //  }
-
-                    //}
-                    // var returnQuestion = new ArrayList();
-
-                    //foreach (var question in questions)
-                    //{
+                   
                     var tempQuestion = GetQuestionForSerialization(item);
                     returnQuestion.Add(tempQuestion);
                 }
