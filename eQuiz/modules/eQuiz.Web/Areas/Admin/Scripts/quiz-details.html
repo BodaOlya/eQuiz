@@ -64,32 +64,34 @@
     </div>
 
     <br />
-
-    <div ng-show="qc.exportShow" style="width:1000px; float:inherit; border:solid">
-        <p style="text-decoration:solid; font-size:20px; margin:5px">Exporting to excel file:</p>
-        <table id="exportable" class="table-bordered" style="border:double; margin:auto">
-            <thead id="headers">
-                <tr>
-                    <th>Student</th>
-                    <th>Email</th>
-                    <th>Score</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="c in qc.contentsToExport | orderBy: 'studentScore'">
-                    <td>{{c.student}}</td>
-                    <td>{{c.email}}</td>
-                    <td>{{c.studentScore}}</td>
-                </tr>
-            </tbody>
-        </table>
-        <br />
+    <div ng-show="qc.exportShow">
+        <div style="width:100%; float:inherit; border:solid">
+            <p style="text-decoration:solid; font-size:20px; margin:5px">Exporting to excel file:</p>
+            <table id="exportable" class="table-bordered" style="border:double; margin:auto">
+                <thead id="headers">
+                    <tr>
+                        <th>Student</th>
+                        <th>Email</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="c in qc.contentsToExport | orderBy: 'studentScore'">
+                        <td>{{c.student}}</td>
+                        <td>{{c.email}}</td>
+                        <td>{{c.studentScore}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+        </div>
         <div style="float: left">
-            <button ng-click="qc.exportShow=!qc.exportShow" style="margin: 10px 0px 0px 10px ; text-decoration:solid; font-size:20px">Cancel</button>
+            <button ng-click="qc.exportShow=!qc.exportShow" style="margin: 15px 10px 0px 10px ; text-decoration:solid; font-size:20px">Cancel</button>
+            <input type="file" style="margin:10px 0px 10px 0px ; text-decoration:solid; font-size:20px" /> <!-- TODO: Normal folder searcher must be implemented -->
         </div>
         <div style="float: right">
-            <p style="margin:0px 0px 0px 50px">Total for export: {{qc.contentsToExport.length}}</p>
-            <button ng-click="qc.writeTableToExcel('#exportable')" ng-disabled="qc.contentsToExport.length === 0" style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Save</button>
+            <p style="margin:5px 0px 0px 50px">Total for export: {{qc.contentsToExport.length}}</p>
+            <button ng-click="qc.CreateExcel()" ng-disabled="qc.contentsToExport.length === 0" style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Save</button>
         </div>
     </div>
 </div>
