@@ -4,12 +4,41 @@
     ViewBag.Title = "Log in";
 }
 
-<h2>@ViewBag.Title.</h2>
+@section HeadStyles{
+    <link rel="stylesheet" href="~/Areas/Student/Styles/equiz-temp.css">
+    <link href="~/Styles/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Oswald" />
+}
+
+@section PageHeader {
+    <div class="headerLogin">
+        <div id="epamLogo">
+            <img src="~/Images/logo.png" class="img-responsive center-block" />
+        </div>
+    </div>
+}
+
+@*<h2>@ViewBag.Title.</h2>
 <div class="row">
-   <div class="col-md-12">
+    <div class="col-md-12">
         <section id="socialLoginForm">
             @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
         </section>
+    </div>
+</div>*@
+
+<div class="wrapper background">
+    <div class="container col-sm-offset-3 col-sm-6 jumbotron transperent ">
+        <div class="custom-container-fluid">
+            <label class="col-sm-12" id="equiz">EQUIZ</label>
+            <label class="col-sm-12" id="login">LOG IN</label>
+        </div>
+        @*<div class="custom-container-fluid center">*@
+            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+            @*<button type="button" class="btn btn-lg center-block col-md-3">FACEBOOK</button>
+            <button type="button" class="btn btn-lg center-block col-md-3">GOOGLE</button>
+            <button type="button" class="btn btn-lg center-block col-md-3">LINKEDIN</button>*@
+        @*</div>*@
     </div>
 </div>
 

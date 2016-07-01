@@ -442,6 +442,8 @@
     <Content Include="Areas\Student\Scripts\app\pages\quizInRun\quizInRun.html" />
     <Content Include="Areas\Student\Styles\equiz-temp.css" />
     <Content Include="Global.asax" />
+    <Content Include="Images\logo.png" />
+    <Content Include="Images\mountains.jpg" />
     <Content Include="Scripts\app\shared\equiz.module.js" />
     <Content Include="Scripts\libs\angularjs\angular-messages.js" />
     <Content Include="Scripts\libs\angularjs\angular-route.js" />

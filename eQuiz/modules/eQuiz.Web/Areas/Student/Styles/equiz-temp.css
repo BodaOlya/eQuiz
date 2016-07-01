@@ -417,3 +417,170 @@ caption.dashboard span {
     vertical-align: bottom;
     font-size:14pt;
 }
+
+/*Login view, Dashboard view, Details view styles*/
+
+.wrapper .container {
+    background-color: white;
+    padding: 1% 1% 1% 1%;
+}
+.wrapper {
+    background-color: whitesmoke;
+    font-family: Oswald;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+    z-index: -100;
+    display: flex;
+    align-items: center;
+}
+.wrapper .formHeader {
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+}
+.header {
+    background-color: white;
+    font-family: Oswald;
+}
+.header img {
+    height: 70px;
+}
+.header hr {
+    margin: 0 0 0 0;
+}
+.wrapper .form-control{
+    -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+            border-radius: 0;
+}
+.wrapper input[type=email]{
+    cursor: text;
+}
+.wrapper .form-control-label {
+    font-weight: normal;
+}
+.headerLogin img {
+    height: 70px;
+}
+.background {
+    background-image: url(../../../Images/mountains.jpg);
+    background-repeat:no-repeat;
+    background-size:cover;
+}
+.wrapper .transperent {
+    background-color: rgba(200, 200, 200, 0.3);
+}
+.wrapper #equiz {
+    text-align: center;
+    font-size: x-large;
+    font-weight: bold;
+    color: white;
+    margin-top: 10vh;
+}
+.wrapper #login {
+    text-align: center;
+    font-size: medium;
+    font-weight: lighter;
+    color: white;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+}
+.wrapper button[type=button] {
+    -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+            border-radius: 0;
+}
+.wrapper button[type=submit] {
+    -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+            border-radius: 0;
+}
+.wrapper .center {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10vh;
+}
+.wrapper .btn {
+    padding: 14px 24px;
+    border: 0 none;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.wrapperDashboard input[type=search]{
+    cursor: text;
+    width: 300px;
+    -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+            border-radius: 0;
+}
+.wrapperDashboard {
+    background-color: whitesmoke;
+    font-family: Oswald;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -100;
+}
+.wrapperDashboard #inputsContainer {
+    margin-top: 100px;
+}
+.wrapperDashboard .box {
+    margin-top: 10px;
+}
+.wrapperDashboard input[type=search] {
+    margin-right: 10px
+}
+.wrapperDashboard input[type=checkbox] {
+    position: relative; 
+    vertical-align: middle; 
+    bottom: 4px
+}
+.wrapperDashboard thead {
+    background-color: #DDDDDD;
+}
+.wrapperDashboard thead a {
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+.wrapperDashboard tbody {
+    font-family: Source Sans Pro;
+    background-color: white
+}
+.wrapperDashboard #title {
+    font-size: x-large;
+    margin-bottom: 10px
+}
+.verticalAlign {
+    line-height: 70px;
+}
+#menu {
+    margin-left: 5vh;
+    font-size: larger;
+    text-decoration:none
+}
+#fullName {
+    margin-right: 5vh;
+    text-decoration:underline
+}
+#fullName:hover {
+    text-decoration:none;
+}
+.header .row {
+    width: 100%;
+}
+.custom-container-fluid {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    table-layout: fixed;
+    color: white;
+}
