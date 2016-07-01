@@ -26,7 +26,7 @@
                 <tr>
                     <th ng-repeat="h in qc.headers">
                         <a href="#" ng-click="qc.refreshPredicate(h.predicateIndex); qc.order(qc.myPredicate[h.predicateIndex],null)">
-                            <span class="sortorder" ng-show="qc.direction(h.pr edicateIndex) !== null" ng-class="{direction:qc.direction(h.predicateIndex)}"></span>
+                            <span class="sortorder" ng-show="qc.direction(h.predicateIndex) !== null" ng-class="{direction:qc.direction(h.predicateIndex)}"></span>
                             {{h.name}}
                         </a>
                     </th>
