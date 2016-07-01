@@ -48,16 +48,16 @@
         </table>
 
     </div>
-    <div layout="row">
+    <div layout="row" style="margin-left: 8px">
         <span>
             Rows on the page:
             <select style="margin:5px" ng-model="qc.resultsPerPage" ng-options="p for p in qc.resultsCount" ng-change="qc.paginationChanged()"></select>
             <span ng-show="qc.numberOfPages() &gt; 1">
-                <button ng-disabled="qc.tablePage==0" ng-click="qc.tablePage=qc.tablePage-1">Previous page</button>
+                <button class="btn btn-default" ng-disabled="qc.tablePage==0" ng-click="qc.tablePage=qc.tablePage-1">Previous page</button>
                 <span ng-repeat="i in qc.getNumber(qc.numberOfPages()) track by $index">
-                    <button ng-click="qc.goToPage($index)"><span ng-class="{ 'table-active-page' : qc.tablePage==$index}">{{$index+1}}</span></button>
+                    <button class="btn btn-default" ng-click="qc.goToPage($index)"><span ng-class="{ 'table-active-page' : qc.tablePage==$index}">{{$index+1}}</span></button>
                 </span>
-                <button ng-disabled="qc.tablePage==qc.numberOfPages()-1" ng-click="qc.tablePage=qc.tablePage+1">Next page</button>
+                <button class="btn btn-default" ng-disabled="qc.tablePage==qc.numberOfPages()-1" ng-click="qc.tablePage=qc.tablePage+1">Next page</button>
             </span>
             Total: {{qc.studentsFiltered.length}}
         </span>
@@ -65,9 +65,9 @@
 
     <br />
 
-    <div ng-show="qc.exportShow" style="width:1000px; float:inherit; border:solid">
+    <div class="col-lg-12" ng-show="qc.exportShow">
         <p style="text-decoration:solid; font-size:20px; margin:5px">Exporting to excel file:</p>
-        <table id="exportable" class="table-bordered" style="border:double; margin:auto">
+        <table id="exportable" class="table table-bordered table-striped" style="border:double; margin:auto">
             <thead id="headers">
                 <tr>
                     <th>Student</th>
@@ -85,11 +85,11 @@
         </table>
         <br />
         <div style="float: left">
-            <button ng-click="qc.exportShow=!qc.exportShow" style="margin: 10px 0px 0px 10px ; text-decoration:solid; font-size:20px">Cancel</button>
+            <button class="btn btn-danger" ng-click="qc.exportShow=!qc.exportShow" style="font-size:20px">Cancel</button>
         </div>
         <div style="float: right">
             <p style="margin:0px 0px 0px 50px">Total for export: {{qc.contentsToExport.length}}</p>
-            <button ng-click="qc.writeTableToExcel('#exportable')" ng-disabled="qc.contentsToExport.length === 0" style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Save</button>
+            <button class="btn btn-success" ng-click="qc.writeTableToExcel('#exportable')" ng-disabled="qc.contentsToExport.length === 0" style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Save</button>
         </div>
     </div>
 </div>
