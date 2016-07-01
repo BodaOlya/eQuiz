@@ -16,11 +16,11 @@ namespace eQuiz.Entities
     {
         public int Id { get; set; }
         public int QuizId { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public System.DateTime StartDate { get; set; }
         public System.DateTime LastChangeDate { get; set; }
     
         public virtual Quiz Quiz { get; set; }
-        public virtual User User { get; set; }
+        public virtual AspNetUser User { get; set; }
     }
 }

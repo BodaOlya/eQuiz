@@ -2,16 +2,16 @@
 using eQuiz.Repositories.Abstract;
 using eQuiz.Web.Areas.Moderator.Models;
 using eQuiz.Web.Code;
-using Newtonsoft.Json;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace eQuiz.Web.Areas.Moderator.Controllers
 {
+    [Authorize(Roles = "Moderator")]
     public class UserGroupController : BaseController
     {
         #region Fields
@@ -102,6 +102,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             }
 
             var users = _repository.Get<User>();
+            var moderators = _repository.Get<AspNetUser>();
             var userGroups = _repository.Get<UserGroup>();
             var userToUserGroups = _repository.Get<UserToUserGroup>();
             var quizzes = _repository.Get<Quiz>();
@@ -114,13 +115,13 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                               join q in quizzes on ug.Id equals q.GroupId into qOuter
                               from quiz in qOuter.DefaultIfEmpty()
                               join ugs in userGroupStates on ug.UserGroupStateId equals ugs.Id
-                              join uc in users on ug.CreatedByUserId equals uc.Id
-                              group new { ug, user, quiz, ugs, uc }
+                              join m in moderators on ug.CreatedByUserId equals m.Id
+                              group new { ug, user, quiz, ugs, m }
                               by new
                               {
                                   ugId = ug.Id,
                                   ugName = ug.Name,
-                                  ugCreatedBy = string.Format("{0} {1} {2}", uc.LastName, uc.FirstName, uc.FatheName),
+                                  ugCreatedBy = m.UserName,
                                   ugCreatedDate = ug.CreatedDate,
                                   ugStateName = ugs.Name
                               }
@@ -204,7 +205,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             else
             {
                 userGroup.UserGroupStateId = _repository.GetSingle<UserGroupState>(x => x.Name == "Active").Id;
-                userGroup.CreatedByUserId = 1; //temporary
+                userGroup.CreatedByUserId = User.Identity.GetUserId(); //temporary
                 userGroup.CreatedDate = DateTime.Now;
                 _repository.Insert<UserGroup>(userGroup);
                 var id = _repository.GetSingle<UserGroup>(g => g.Name == userGroup.Name).Id;

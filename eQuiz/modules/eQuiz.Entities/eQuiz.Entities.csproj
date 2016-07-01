@@ -54,6 +54,18 @@
     <Compile Include="Answer.cs">
       <DependentUpon>eQuizEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="AspNetRole.cs">
+      <DependentUpon>eQuizEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUser.cs">
+      <DependentUpon>eQuizEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUserClaim.cs">
+      <DependentUpon>eQuizEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUserLogin.cs">
+      <DependentUpon>eQuizEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="eQuizEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

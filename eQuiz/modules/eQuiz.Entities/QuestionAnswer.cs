@@ -14,19 +14,11 @@ namespace eQuiz.Entities
     
     public partial class QuestionAnswer
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public QuestionAnswer()
-        {
-            this.UserAnswers = new HashSet<UserAnswer>();
-        }
-    
         public int Id { get; set; }
         public int QuestionId { get; set; }
         public int AnswerId { get; set; }
     
-        public virtual Question Question { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserAnswer> UserAnswers { get; set; }
         public virtual Answer Answer { get; set; }
+        public virtual Question Question { get; set; }
     }
 }

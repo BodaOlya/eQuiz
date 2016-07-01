@@ -12,6 +12,7 @@ using System.Collections;
 
 namespace eQuiz.Web.Areas.Moderator.Controllers
 {
+    [Authorize(Roles = "Moderator")]
     public class QuizQuestionController : BaseController
     {
         #region Fields

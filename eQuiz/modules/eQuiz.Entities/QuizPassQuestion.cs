@@ -18,8 +18,8 @@ namespace eQuiz.Entities
         public QuizPassQuestion()
         {
             this.UserAnswers = new HashSet<UserAnswer>();
-            this.UserTextAnswers = new HashSet<UserTextAnswer>();
             this.UserAnswerScores = new HashSet<UserAnswerScore>();
+            this.UserTextAnswers = new HashSet<UserTextAnswer>();
         }
     
         public int Id { get; set; }
@@ -34,8 +34,8 @@ namespace eQuiz.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserAnswer> UserAnswers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserTextAnswer> UserTextAnswers { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserAnswerScore> UserAnswerScores { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserTextAnswer> UserTextAnswers { get; set; }
     }
 }
