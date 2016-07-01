@@ -475,7 +475,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                         userAnswerScoreToInsert = new UserAnswerScore
                         {
                             QuizPassQuestionId = elem.Id,
-                            Score = 1,//TODO
+                            Score = _repository.GetSingle<QuizQuestion>(qq => qq.Id == elem.Question.Id).QuestionScore,
                             EvaluatedBy = 1,
                             EvaluatedAt = DateTime.UtcNow
                         };
@@ -507,7 +507,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                         {
                             QuizPassQuestionId = elem.Id,
                             Score = 0,
-                            EvaluatedBy = 1,
+                            EvaluatedBy = 1, // TODO
                             EvaluatedAt = DateTime.UtcNow
                         };
                         _repository.Insert<UserAnswerScore>(userAnswerScoreToInsert);
@@ -516,28 +516,32 @@ namespace eQuiz.Web.Areas.Student.Controllers
                     else
                     {
                         sbyte mark = 0;
+                        byte questionScore = _repository.GetSingle<QuizQuestion>(qq => qq.Id == elem.Question.Id).QuestionScore;
 
                         foreach (var answer in userAnswers)
                         {
                             if (answer.Answer.IsRight.HasValue && answer.Answer.IsRight.Value)
                             {
-                                mark++;
+                                //mark++;
+                                mark = (sbyte)questionScore;
                             }
                             else
                             {
-                                mark--;
+                                //mark--;
+                                mark = 0;
+                                break;
                             }
                         }
 
-                        if (mark <= 0)
-                        {
-                            mark = 0;
-                        }
+                        //if (mark <= 0)
+                        //{
+                        //    mark = 0;
+                        //}
 
                         userAnswerScoreToInsert = new UserAnswerScore
                         {
                             QuizPassQuestionId = elem.Id,
-                            Score = Convert.ToByte(mark),
+                            Score = Convert.ToByte(mark), // TODO
                             EvaluatedBy = 1,//TODO
                             EvaluatedAt = DateTime.UtcNow
                         };
