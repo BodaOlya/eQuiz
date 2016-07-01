@@ -145,15 +145,18 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var textAnswers = from q in questions
                               join qt in questionTypes on q.QuestionTypeId equals qt.Id
                               join qpq in quizPassQuestions on q.Id equals qpq.QuestionId
-                              join uta in userTextAnswers on qpq.Id equals uta.QuizPassQuestionId
+                              join uta in userTextAnswers on qpq.Id equals uta.QuizPassQuestionId into temp_ans
+                              from t_uta in temp_ans.DefaultIfEmpty()
                               join qq in quizQuestions on q.Id equals qq.QuestionId
                               join qa in questionAnswers on q.Id equals qa.QuestionId
                               join a in answers on qa.AnswerId equals a.Id
-                              join uas in userAnswerScore on qpq.Id equals uas.QuizPassQuestionId into result
-                              from res in result.DefaultIfEmpty()
+                              join uas in userAnswerScore on qpq.Id equals uas.QuizPassQuestionId into temp_score
+                              from t_uas in temp_score.DefaultIfEmpty()
                               where qt.IsAutomatic == false                       
-                              select new TextQuestion(qpq.Id, qq.QuestionScore, res == null ? (int?)null : res.Score, q.QuestionText, uta.AnswerText, TextQuestion.GetAnswer(a.AnswerText), qq.QuestionOrder, false, res == null ? true : false);
-                            
+                              select new TextQuestion(qpq.Id, qq.QuestionScore, t_uas == null ? (int?)null : t_uas.Score, 
+                                                        q.QuestionText, t_uta == null ? "" : t_uta.AnswerText, 
+                                                        TextQuestion.GetAnswer(a.AnswerText), 
+                                                        qq.QuestionOrder, false, t_uas == null ? true : false);
 
             //gets all user answers
             var testAnswers = from q in questions
