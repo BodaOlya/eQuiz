@@ -6,7 +6,7 @@
     function quizInRunCtrl($scope, quizService, trackUserResultService, $routeParams, $interval, $window, $location, $uibModal) {
         var vm = this;
         vm.quizQuestions = null;
-        vm.quizId = parseInt($routeParams.id);
+        vm.quizId = parseInt(localStorage.getItem('quizId'));
         vm.quizDuration = localStorage.getItem('duration');
         vm.currentQuestion = localStorage.getItem('currentQuestion' + vm.quizId) || 0;
         vm.passedQuiz = JSON.parse(localStorage.getItem('passQuiz' + vm.quizId)) || trackUserResultService.passedQuiz;
@@ -16,13 +16,13 @@
         vm.isLoading = false;
 
         //Timer Data
-        vm.tSeconds = 0;
-        vm.tMinutes = vm.quizDuration;
+        //vm.tSeconds = 0;
+        //vm.tMinutes = vm.quizDuration;
 
-        vm.seconds = vm.tSeconds;
-        vm.minutes = vm.tMinutes;
+        //vm.seconds = vm.tSeconds;
+        //vm.minutes = vm.tMinutes;
         vm.myStyle = {};
-        vm.time = vm.minutes + ":0" + vm.seconds;
+       // vm.time = vm.minutes + ":0" + vm.seconds;
         var stop;
 
 
@@ -57,22 +57,28 @@
             quizService.getQuestionsById(questionId, duration)
                 .then(function (response) {
                     if (response.data.length === 0 || response.data === "SaveChangeException") {
-                        $location.path("/Dashboard");
+                        location.assign("/Student/Default/Dashboard");
                     }
                     else {
                         vm.quizQuestions = response.data.questions;   
                         //openPopUpRefreshWarning();
                         vm.passedQuiz.StartDate = new Date(Date.now());
 
-                        //vm.resetTimer();
-                        vm.startTimer();
+                        vm.resetTimer();
+                        
                         vm.tMinutes = Math.floor(response.data.remainingTime / 60);
                         vm.tSeconds = response.data.remainingTime - vm.tMinutes * 60;
 
                         vm.minutes = vm.tMinutes;
                         vm.seconds = vm.tSeconds;
-                        
+                        if (vm.seconds < 10) {
+                            vm.time = vm.minutes + ":0" + vm.seconds;
+                        }
+                        else {
+                            vm.time = vm.minutes + ":" + vm.seconds;
+                        }
 
+                        vm.startTimer();
                         vm.isLoading = false;
                     }
                 });
@@ -169,7 +175,7 @@
                 setFinishTime(vm.quizQuestions[vm.currentQuestion].QuizPassId);
                 vm.resetTimer();
                 trackUserResultService.passedQuiz.UserAnswers = null;
-                $location.path("/Dashboard");
+                location.assign("/Student/Default/Dashboard");
             }, function () {
                 return;
             });
@@ -186,7 +192,7 @@
             });
 
             modalInstance.result.then(function () {
-                $location.path("/Dashboard");
+                location.assign("/Student/Default/Dashboard");
             });
         };
 
@@ -232,7 +238,7 @@
                     }
                 } else {
                     vm.myStyle = {
-                        color: 'black'
+                        color: 'white'
                     }
                 }
                 if (vm.minutes == 0 && vm.seconds == 0) {
@@ -261,7 +267,7 @@
             vm.seconds = vm.tSeconds;
             vm.minutes = vm.tMinutes;
             vm.myStyle = {
-                color: 'black'
+                color: 'white'
             }
         };
 

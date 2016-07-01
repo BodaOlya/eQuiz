@@ -8,37 +8,41 @@
 }
 @section PageHeader
 {
-<div ng-app="equizModule">
-    <div layout="row" style="padding:10px">
-        <div>
-            <button onclick="location.href='/Admin/Default/Index'" style="text-decoration:solid; font-size:20px">
-                Quizzes
-            </button>
-            <button onclick="location.href='/Admin/Default/Index/Students'"; style="text-decoration:solid; font-size:20px" ng-click="lc.GoToReview()">
-                Students
-            </button>
-            <label style="text-decoration:solid; font-size:20px; float:right">
-                Full Name
-            </label>
-        </div>
-        }
-        <div style="z-index: 5" data-loading class="cssload-container centered">
-            <div class="cssload-speeding-wheel"></div>
-        </div>
-        <div style="z-index: 2" ng-view> </div>
-    </div>
+    <div ng-app="equizModule">
+        <div layout="row" style="padding:10px">
+            <div style="align-items: center">
+                <button onclick="location.href='/Admin/Default/Index'" class="btn btn-default" style="font-size:20px">
+                    Quizzes
+                </button>
+                <button onclick="location.href='/Admin/Default/Index/Students'" class="btn btn-default" style="font-size:20px" ng-click="lc.GoToReview()">
+                    Students
+                </button>
+                <label class="label label-primary" style="font-size:20px; float:right; padding-top: 12px; padding-bottom: 10px">
+                    Full Name
+                </label>
+            </div>
+}
+<div style="z-index: 5" data-loading class="cssload-container centered">
+    <div class="cssload-speeding-wheel"></div>
 </div>
+<div style="z-index: 2" ng-view> </div>
+</div>
+</div>
+
 @section FootScripts
 {
     <script src="~/Areas/Admin/Scripts/shared/routing.js"></script>
     <script src="~/Areas/Admin/Scripts/shared/loading-screen.directive.js"></script>
     <script src="~/Areas/Admin/Scripts/review/table-height.directive.js"></script>
-<script src="~/Areas/Admin/Scripts/shared/pop-up-window.directive.js"></script>
+    <script src="~/Areas/Admin/Scripts/shared/pop-up-window.directive.js"></script>
+    <script src="~/Areas/Admin/Scripts/shared/ng-confirm-click.directive.js"></script>
+
     <script src="~/Areas/Admin/Scripts/review/group.filter.js"></script>
     <script src="~/Areas/Admin/Scripts/review/highlight.filter.js"></script>
     <script src="~/Areas/Admin/Scripts/review/start-from.filter.js"></script>
     <script src="~/Areas/Admin/Scripts/quizReview/question-status.filter.js"></script>
     <script src="~/Areas/Admin/Scripts/review/trustAsHtml.filter.js"></script>
+
     <script src="~/Areas/Admin/Scripts/quizReview/quiz-review-data.service.js"></script>
     <script src="~/Areas/Admin/Scripts/review/review-data.service.js"></script>
     <script src="~/Areas/Admin/Scripts/student/student-data.service.js"></script>
@@ -50,6 +54,11 @@
     <script src="~/Areas/Admin/Scripts/student/student.controller.js"></script>
     <script src="~/Areas/Admin/Scripts/quiz-details/quiz-details.controller.js"></script>
     <script src="~/Areas/Admin/Scripts/quizzes/quizzes.controller.js"></script>
-    
+
+}
+
+@section HeadStyles
+{
+    <link href="~/Styles/bootstrap.css" rel="stylesheet" />
     <link href="~/Areas/Admin/Styles/equiz-temp.css" rel="stylesheet" />
 }

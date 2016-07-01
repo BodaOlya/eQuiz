@@ -9,11 +9,11 @@
                 var tempQuestions = [];
                 angular.forEach(selectedStatuses, function (id) {
                     angular.forEach(questions, function (question) {
-                        if (question.UserScore === 0 && id === 2) {
+                        if (question.Status === "Not Passed" && id === 2) {
                             tempQuestions.push(question);
-                        } else if (question.UserScore == null && id === 0) {
+                        } else if (question.Status === "In Verification" && id === 0) {
                             tempQuestions.push(question);
-                        } else if (question.UserScore > 0 && id === 1) {
+                        } else if (question.Status === "Passed" && id === 1) {
                             tempQuestions.push(question);
                         }
                     });

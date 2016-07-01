@@ -12,8 +12,10 @@
             getStudent: getStudentAjax,
             getQuizBlock: getQuizBlockAjax,
             getQuizInfo: getQuizInfoAjax,
-            saveQuizReview: saveQuizReviewAjax,
-            finalizeQuizReview: finalizeQuizReviewAjax
+            updateQuizAnswer: updateQuizAnswerAjax,
+            insertQuizAnswer: insertQuizAnswerAjax,
+            finalizeQuizReview: finalizeQuizReviewAjax,
+            getQuizPassScore : getQuizPassScoreAjax
         };
 
         return service;
@@ -48,12 +50,43 @@
             return promise;
         }
 
-        function saveQuizReviewAjax(quizToSave) {
-            //TODO save quiz review data
+        function updateQuizAnswerAjax(quizPassQuestionId, userScore, evaluatedBy) {            
+            var promise = $http({
+                url: '/Admin/Quizzes/UpdateAnswer',
+                method: "POST",
+                params: { quizPassQuestionId: quizPassQuestionId, newMark: userScore, evaluatedBy: evaluatedBy }
+            });
+
+            return promise;
         }
 
-        function finalizeQuizReviewAjax(quizToFinalize) {
-            // TODO finalize quiz
+        function insertQuizAnswerAjax(quizPassQuestionId, userScore, evaluatedBy) {
+            var promise = $http({
+                url: '/Admin/Quizzes/InsertAnswer',
+                method: "POST",
+                params: { quizPassQuestionId: quizPassQuestionId, newMark: userScore, evaluatedBy: evaluatedBy }
+            });
+
+            return promise;
+        }
+
+        function finalizeQuizReviewAjax(quizId, totalScore) {
+            var promise = $http({
+                url: '/Admin/Quizzes/FinalizeQuiz',
+                method: "POST",
+                params: { quizId: quizId, totalScore: totalScore, userId: 1 }
+            });
+
+            return promise;
+        }
+
+        function getQuizPassScoreAjax(quizPassId) {
+            var promise = $http({
+                url: '/Admin/Quizzes/GetQuizPassScore',
+                method: "POST",
+                params: { quizPassId: quizPassId }
+            });
+            return promise;
         }
     }
 

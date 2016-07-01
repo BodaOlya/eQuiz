@@ -4,18 +4,30 @@
 }
 
 @section HeadStyles{
-    
+    <link rel="stylesheet" href="~/Areas/Student/Styles/equiz-temp.css">
+    <link href="~/Styles/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Oswald" />
 }
 
-<div id='loginContent'>
-    <table id="loginTbl">
-        <tr>
-            <td><h1>Student Login</h1></td>
-            <td id='empty'></td>
-            <td><a href="#"><input type="button" value="Facebook" class="LoginBtn"></a></td>
-            <td><a href="#"><input type="button" value="Google" class="LoginBtn"></a></td>
-            <td><a href="#"><input type="button" value="LinkedIn" class="LoginBtn"></a></td>
-        </tr>
-    </table>
+
+@section PageHeader{
+    <div class="headerLogin">
+        <div id="epamLogo">
+            <img src="~/Areas/Student/Images/logo.png" class="img-responsive center-block" />
+        </div>
+    </div>
+}
+<div class="wrapper background">
+    <div class="container col-sm-offset-3 col-sm-6 jumbotron transperent ">
+            <div class="custom-container-fluid">
+                <label class="col-sm-12" id="equiz">EQUIZ</label>
+                <label class="col-sm-12" id="login">LOG IN</label>
+            </div>
+            <div class="custom-container-fluid center">
+                    <button type="button" class="btn btn-lg btn-danger center-block col-md-3" id="facebookBtn">FACEBOOK</button>
+                    <button type="button" class="btn btn-lg btn-warning center-block col-md-3" id="googleBtn">GOOGLE</button>
+                    <button type="button" class="btn btn-lg btn-success center-block col-md-3" id="linkedinBtn">LINKEDIN</button>
+            </div>
+    </div>
 </div>
 

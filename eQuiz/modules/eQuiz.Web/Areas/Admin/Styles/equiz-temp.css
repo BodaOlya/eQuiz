@@ -7,7 +7,7 @@
     min-width: 120px;
     bottom: 0;
     right: 0;
-    position: absolute;
+    position: fixed;
 }
 
 .closePopUp {
@@ -76,6 +76,7 @@
         width: 100%;
         height: auto;
         text-align: left;
+        align-items: center;
 }
 
 th, td {

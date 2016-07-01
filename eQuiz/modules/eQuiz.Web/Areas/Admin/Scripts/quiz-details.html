@@ -1,18 +1,18 @@
 ﻿<div>
     <br />
     <div layout="row">
-        <label style="text-decoration:solid; font-size:18px; float:left">{{qc.quizInfo[0].quizName}}, {{qc.quizInfo[0].groupName}}</label>
-        <button ng-click="qc.exportShow=!qc.exportShow" style="text-decoration:solid; font-size:20px; float:right">
+        <label style="text-decoration:solid; margin-left: 8px; font-size:18px; float:left">{{qc.quizInfo[0].quizName}}, {{qc.quizInfo[0].groupName}}</label>
+        <button class="btn btn-default" ng-click="qc.exportShow=!qc.exportShow" style="text-decoration:solid; font-size:20px; float:right; margin-right: 13px">
             Export
         </button>
     </div>
     <br />
     <br />
-    <label>Search</label>
-    <input type="text" ng-model="qc.search" style="width:15em">
+    <label style="margin-left: 8px">Search</label>
+    <input class="input-sm" type="text" ng-model="qc.search" style="width:15em">
     <div style="overflow-x:auto;">
 
-        <table class="reviewTable">
+        <table class="table table-striped" style="text-align:left">
             <thead>
                 <tr>
                     <th><a href="#" ng-show="qc.exportShow" ng-click="qc.addOrRemoveFromExportAll(qc.contents)">{{qc.multipleExportToDo(qc.contents)}}</a></th>

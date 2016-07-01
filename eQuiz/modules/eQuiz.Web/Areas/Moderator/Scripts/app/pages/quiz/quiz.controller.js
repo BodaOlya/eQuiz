@@ -25,6 +25,7 @@
             questions: [],
             answers: [],
             tags: [],
+            questionScores: [],
             orderArray: [],
             questionTypes: [],
             answersDirty: [],
@@ -57,6 +58,7 @@
         vm.AddExistingQuestions = AddExistingQuestions;
         vm.getAnswersForQuestion = getAnswersForQuestion;
         vm.getTagsForQuestion = getTagsForQuestion;
+        vm.getScoreForQuestion = getScoreForQuestion;
         vm.getFirstCheckedAnswerIndex = getFirstCheckedAnswerIndex;
 
         vm.toggleQuizzesForCopy = toggleQuizzesForCopy;
@@ -126,6 +128,9 @@
                 vm.model.questions = [];
                 vm.model.answers = [];
                 vm.model.tags = [];
+                vm.model.questionScores = [];
+                vm.model.orderArray = [];
+                vm.model.answersDirty = [];
                 vm.model.quizBlock.QuestionCount = 0;
             }
             else {
@@ -180,6 +185,7 @@
                     vm.model.questions = model.questions;
                     vm.model.answers = model.answers;
                     vm.model.tags = model.tags;
+                    vm.model.questionScores = model.questionScores;
                     vm.hideLoading();
                     vm.showSuccess();
                     if (callback) {
@@ -301,6 +307,8 @@
                 IsActive: true
             });
 
+            vm.model.questionScores.push(0);
+
             var answersForQuestion = [
                 {
                     Id: 0,
@@ -362,6 +370,7 @@
             vm.model.questions.splice(questionIndex, 1);
             vm.model.answers.splice(questionIndex, 1);
             vm.model.tags.splice(questionIndex, 1);
+            vm.model.questionScores.splice(questionIndex, 1);
             vm.model.orderArray.splice(questionIndex, 1);
             vm.model.answersDirty.splice(questionIndex, 1);
         }
@@ -396,7 +405,8 @@
                 id: modelFromServer.id,
                 questions: modelFromServer.questions,
                 answers: modelFromServer.answers,
-                tags: tags
+                tags: tags,
+                questionScores: modelFromServer.questionScores
             };
         }
 
@@ -444,7 +454,8 @@
             return {
                 questions: vm.model.questions,
                 tags: tags,
-                answers: answers
+                answers: answers,
+                questionScores: vm.model.questionScores
             };
         }
 
@@ -456,6 +467,7 @@
                 vm.model.questions = model.questions;
                 vm.model.answers = model.answers;
                 vm.model.tags = model.tags;
+                vm.model.questionScores = model.questionScores;
                 vm.model.orderArray = Array.apply(null, Array(vm.model.questions.length)).map(function () {
                     return {
                         reverse: false,
@@ -481,6 +493,7 @@
                 vm.model.questions = model.questions;
                 vm.model.answers = model.answers;
                 vm.model.tags = model.tags;
+                vm.model.questionScores = model.questionScores;
                 vm.model.orderArray = Array.apply(null, Array(vm.model.questions.length)).map(function () {
                     return {
                         reverse: false,
@@ -657,6 +670,8 @@
 
                     vm.model.tags.push(vm.model.questionsForAdding.tags[i]);
 
+                    vm.model.questionScores.push(vm.model.questionsForAdding.questionScores[i]);
+
                     vm.model.orderArray.push({
                         reverse: false,
                         predicate: ""
@@ -681,6 +696,12 @@
             var questionIndex = vm.model.questionsForAdding.questions.indexOf(question);
 
             return vm.model.questionsForAdding.tags[questionIndex].join(', ');
+        }
+
+        function getScoreForQuestion(question) {
+            var questionIndex = vm.model.questionsForAdding.questions.indexOf(question);
+
+            return vm.model.questionsForAdding.questionScores[questionIndex];
         }
 
         function getFirstCheckedAnswerIndex(questionIndex) {
