@@ -66,7 +66,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                     return RedirectToAction("Get", new { id = id });
                 }
 
-                IEnumerable<string> errors = QuestionsValidate(id, questions, answers, tags);
+                IEnumerable<string> errors = QuestionsValidate(id, questions, answers, tags, questionScores);
                 if (errors != null)
                 {
                     string mergedErrors = string.Join(". ", errors.ToArray());
@@ -346,7 +346,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             }
         }
 
-        private IEnumerable<string> QuestionsValidate(int quizId, Question[] questions, Answer[][] answers, Tag[][] tags)
+        private IEnumerable<string> QuestionsValidate(int quizId, Question[] questions, Answer[][] answers, Tag[][] tags, int[] questionScores)
         {
             var errorMessages = new List<string>();
 
@@ -360,6 +360,11 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 errorMessages.Add("No questions");
             }
 
+            if (questionScores == null)
+            {
+                errorMessages.Add("No question scores");
+            }
+
             if (answers == null)
             {
                 errorMessages.Add("No answers");
@@ -370,12 +375,13 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 errorMessages.Add("No tags");
             }
 
-            if (questions.Length != answers.Length || questions.Length != tags.Length || answers.Length != tags.Length)
+            if (questions.Length != answers.Length || questions.Length != tags.Length || answers.Length != tags.Length || questions.Length != questionScores.Length)
             {
                 errorMessages.Add("Different length of questions, answers or tags");
             }
 
             var isAllQuestionsHaveText = true;
+            var isAllQuestionsHaveCorrectScore = true;
             var isExistsAnswers = true;
             var isAllAnswersHaveText = true;
             var isExistsCheckedAnswerForAllQuestions = true;
@@ -385,6 +391,10 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 if (string.IsNullOrEmpty(questions[i].QuestionText))
                 {
                     isAllQuestionsHaveText = false;
+                }
+                if (questionScores[i] < 1)
+                {
+                    isAllQuestionsHaveCorrectScore = false;
                 }
                 if (questions[i].QuestionTypeId == 2 || questions[i].QuestionTypeId == 3)
                 {
@@ -426,6 +436,11 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             if (!isAllQuestionsHaveText)
             {
                 errorMessages.Add("Not all questions have text");
+            }
+
+            if (!isAllQuestionsHaveCorrectScore)
+            {
+                errorMessages.Add("Not all questions have correct score");
             }
 
             if (!isExistsAnswers)
