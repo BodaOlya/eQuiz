@@ -81,6 +81,14 @@ namespace eQuiz.Web.Controllers
         }
 
         //
+        // GET: /Account/Details
+        public ActionResult Details(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
+
+        //
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
