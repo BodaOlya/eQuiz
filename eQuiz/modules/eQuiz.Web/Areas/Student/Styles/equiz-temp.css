@@ -507,6 +507,13 @@ caption.dashboard span {
     background-color: white;
     padding: 1% 1% 1% 1%;
 }
+.wrapper .btn {
+    padding: 14px 24px;
+    border: 0 none;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
 .wrapper {
     background-color: whitesmoke;
     font-family: Oswald;
@@ -573,6 +580,11 @@ caption.dashboard span {
     margin-bottom: 5vh;
 }
 .wrapper button[type=button] {
+    -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+            border-radius: 0;
+}
+.wrapper button[type=submit] {
     -webkit-border-radius: 0;
         -moz-border-radius: 0;
             border-radius: 0;
