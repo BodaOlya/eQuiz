@@ -3,9 +3,9 @@
         .module('equizModule')
         .controller('QuizDetailsController', quizDetailsController);
 
-    quizDetailsController.$inject = ['$scope', '$filter', 'quizDetailsDataService', 'quizInfo', 'quizStudents', 'Excel', '$timeout'];
+    quizDetailsController.$inject = ['$scope', '$filter', '$http', 'quizDetailsDataService', 'quizInfo', 'quizStudents'];
 
-    function quizDetailsController($scope, $filter, quizDetailsDataService, quizInfo, quizStudents, Excel, $timeout) {
+    function quizDetailsController($scope, $filter, $http, quizDetailsDataService, quizInfo, quizStudents) {
         var vm = this;
 
         var orderBy = $filter('orderBy');
@@ -46,7 +46,7 @@
                 currVal.studentScore = currVal.studentScore.toString();
                 currVal.quizStatus = currVal.quizStatus.toString();
             });
-            
+
 
             vm.quizInfo.forEach(function (currVal, index, array) {
                 currVal.quizId = currVal.quizId.toString();
@@ -140,7 +140,7 @@
                 return 'Export';
             };
             return 'Cancel';
-        }; // Says for method below what it must do
+        }; // Says for method below what it should do
 
         vm.addOrRemoveFromExport = function (student) {
             if (vm.singleExportToDo(student) === 'Cancel') {
@@ -161,7 +161,7 @@
                 };
             };
             return 'Export All';
-        }; // Says for method below what it must do
+        }; // Says for method below what it should do
 
         vm.addOrRemoveFromExportAll = function (students) {
             if (vm.multipleExportToDo(students) === 'Cancel All') {
@@ -183,14 +183,32 @@
         };// Adds/removes students to/from the object vm.contentsToExport,
         // which contains all information, that will be putted into excel file
 
-        vm.writeTableToExcel = function (tableId) {
-            var exportHref = Excel.tableToExcel(tableId, 'Sheet1');
-            $timeout(function () {
-                var link = document.createElement('a');
-                link.download = vm.quizInfo[0].quizName + " by " + vm.quizInfo[0].groupName + ".xml";
-                link.href = exportHref;
-                link.click();
-            }, 100);
-        }; // Method that
+        vm.CreateExcel = function () {
+            var dataForExport = [];
+            vm.contentsToExport.forEach(function (currVal, index, array) {
+                dataForExport.push({
+                    'student': currVal.student,
+                    'email': currVal.email,
+                    'score': currVal.studentScore
+                });
+            });
+            vm.contentsToExport.sort(function () { // TODO: write a compare function!!!
+            });
+
+            var promise = $http({
+                method: 'GET',
+                url: '/Admin/QuizDetails/ExportToExcel',
+                params: {
+                    nameOfFile: vm.quizInfo[0].quizName + " by " + vm.quizInfo[0].groupName,
+                    pathToFile: 'D:\\',
+                    data: dataForExport
+                },
+                headers: { 'Content-Type': 'application/json' }
+            }).then(function successCallback(response) {
+                console.log(response);
+            }, function errorCallback(response) {
+                console.log(response);
+            });
+        }; // Method that sends data to the server
     };
 })(angular);

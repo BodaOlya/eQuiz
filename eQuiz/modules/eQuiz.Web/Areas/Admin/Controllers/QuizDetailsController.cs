@@ -1,11 +1,18 @@
 ﻿using eQuiz.Entities;
 using eQuiz.Repositories.Abstract;
 using eQuiz.Web.Code;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.OleDb;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services;
 
 namespace eQuiz.Web.Areas.Admin.Controllers
 {
@@ -154,6 +161,81 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             }
 
             return Json(res, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        [WebMethod]
+        public void ExportToExcel(string nameOfFile, string pathToFile, string[] data)
+        {
+            if (data != null && data.Length > 0)
+            {
+                // Removeing of symbols, which may lead to error
+                while (nameOfFile.IndexOf(':') != -1)
+                {
+                    nameOfFile = nameOfFile.Remove(nameOfFile.IndexOf(':'), 1);
+                }
+                while (nameOfFile.IndexOf('?') != -1)
+                {
+                    nameOfFile = nameOfFile.Remove(nameOfFile.IndexOf('?'), 1);
+                }
+                while (nameOfFile.IndexOf('#') != -1)
+                {
+                    nameOfFile = nameOfFile.Replace("#", "Sharp");
+                }
+                nameOfFile += ".xlsx";
+
+                // Creating a variable with path to file on server side
+                string fileName = Path.Combine(Server.MapPath("~/Areas/Admin/"), nameOfFile);
+                if (System.IO.File.Exists(fileName))
+                {
+                    System.IO.File.Delete(fileName);
+                }
+
+                // Creating an excel file and filling it with data
+                string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileName + ";Extended Properties='Excel 12.0 Xml;HDR=Yes'";
+                using (OleDbConnection connection = new OleDbConnection(connectionString))
+                {
+                    string createTable = "Create table Rezults1 (" +
+                        "[Student] varchar(200), " +
+                        "[Email] varchar(50), " +
+                        "[Score] int)";
+                    if (connection.State == ConnectionState.Closed)
+                    {
+                        connection.Open();
+                    }
+
+                    OleDbCommand command = new OleDbCommand(createTable, connection);
+                    command.ExecuteNonQuery();
+
+                    string insertData = "Insert into Rezults1([Student], [Email], [Score]) values(?,?,?)";
+                    OleDbCommand insertCommand = new OleDbCommand(insertData, connection);
+                    insertCommand.Parameters.Add("?", OleDbType.VarChar, 200);
+                    insertCommand.Parameters.Add("?", OleDbType.VarChar, 50);
+                    insertCommand.Parameters.Add("?", OleDbType.Integer);
+
+                    for (int i = 0; i < data.Length; i++)
+                    {
+                        var student = JObject.Parse(data[i]);
+
+                        insertCommand.Parameters[0].Value = (string)student["student"];
+                        insertCommand.Parameters[1].Value = (string)student["email"];
+                        insertCommand.Parameters[2].Value = (int)student["score"];
+
+                        insertCommand.ExecuteNonQuery();
+                    }
+                }
+
+                // Downloading created file
+                Uri fileUri = new Uri(@"http://localhost:57194/Areas/Admin/" + nameOfFile); // TODO: to remove literal
+                using (WebClient client = new WebClient())
+                {
+                    client.DownloadFile(fileUri,
+                        pathToFile + nameOfFile);
+                }
+
+                // Deleting created file from server
+                System.IO.File.Delete(fileName);
+            }
         }
 
         #endregion
