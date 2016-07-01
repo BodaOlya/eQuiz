@@ -165,6 +165,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                               join a in answers on qa.AnswerId equals a.Id
                               join qq in quizQuestions on q.Id equals qq.QuestionId
                               join ua in userAnswers on a.Id equals ua.AnswerId
+                              join qpq in quizPassQuestions on ua.QuizPassQuestionId equals qpq.Id
                               where qt.IsAutomatic == true
                               select new TestAnswer(a.Id, q.Id, a.AnswerText, (bool)a.IsRight, a.AnswerOrder, true);
 
