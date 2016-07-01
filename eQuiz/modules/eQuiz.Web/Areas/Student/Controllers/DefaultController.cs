@@ -13,6 +13,7 @@ using System.Data.Entity.Infrastructure;
 
 namespace eQuiz.Web.Areas.Student.Controllers
 {
+    [Authorize(Roles = "Student")]
     public class DefaultController : BaseController
     {
         #region Private Members
