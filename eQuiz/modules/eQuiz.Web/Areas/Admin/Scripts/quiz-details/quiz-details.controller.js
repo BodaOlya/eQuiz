@@ -200,7 +200,7 @@
                 url: '/Admin/QuizDetails/ExportToExcel',
                 params: {
                     nameOfFile: vm.quizInfo[0].quizName + " by " + vm.quizInfo[0].groupName,
-                    pathToFile: 'D:\\Мої документи\\',
+                    pathToFile: 'D:\\',
                     data: dataForExport
                 },
                 headers: { 'Content-Type': 'application/json' }
