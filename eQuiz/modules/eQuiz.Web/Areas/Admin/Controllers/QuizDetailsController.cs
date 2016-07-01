@@ -85,7 +85,8 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                             email = u.Email,
                             studentScore = us.scores,
                             quizStatus = t == null ? "In Verification" : "Passed",
-                            questionDetails = new {
+                            questionDetails = new
+                            {
                                 passed = us.passed,
                                 notPassed = us.notPassed,
                                 inVerification = us.inVerification
@@ -105,9 +106,9 @@ namespace eQuiz.Web.Areas.Admin.Controllers
         {
             var result = new List<object>();
 
-            var quizzPasses = _repository.Get<QuizPass>();            
+            var quizzPasses = _repository.Get<QuizPass>();
             var quiz = _repository.Get<Quiz>();
-            var ugroup = _repository.Get<UserGroup>();            
+            var ugroup = _repository.Get<UserGroup>();
             var quizBlock = _repository.Get<QuizBlock>();
             var quizQuestions = _repository.Get<QuizQuestion>();
 
@@ -165,7 +166,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
 
         [HttpGet]
         [WebMethod]
-        public void ExportToExcel(string nameOfFile, string pathToFile, string currentUrl, string[] data)
+        public string ExportToExcel(string nameOfFile, string pathToFile, string currentUrl, string[] data)
         {
             if (data != null && data.Length > 0)
             {
@@ -192,18 +193,26 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                 }
 
                 // Sorting data
-                var dataForExport = new JObject[data.Length];
-                for (int i = 0; i < data.Length; i++)
+                JObject[] dataForExport;
+                try
                 {
-                    dataForExport[i] = JObject.Parse(data[i]);
+                    dataForExport = new JObject[data.Length];
+                    for (int i = 0; i < data.Length; i++)
+                    {
+                        dataForExport[i] = JObject.Parse(data[i]);
+                    }
+                    dataForExport.OrderBy(obj => obj["score"]);
                 }
-                dataForExport.OrderBy(obj => obj["student"]);
+                catch (Exception ex)
+                {
+                    return "While data was parsing or sorting an error occured!\n" + ex.Message;
+                }
 
                 // Creating an excel file and filling it with data
                 string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileName + ";Extended Properties='Excel 12.0 Xml;HDR=Yes'";
                 using (OleDbConnection connection = new OleDbConnection(connectionString))
                 {
-                    string createTable = "Create table Rezults1 (" +
+                    string createTable = "Create table Rezults (" +
                         "[Student] varchar(200), " +
                         "[Email] varchar(50), " +
                         "[Score] int)";
@@ -212,37 +221,60 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                         connection.Open();
                     }
 
-                    OleDbCommand command = new OleDbCommand(createTable, connection);
-                    command.ExecuteNonQuery();
-
-                    string insertData = "Insert into Rezults1([Student], [Email], [Score]) values(?,?,?)";
-                    OleDbCommand insertCommand = new OleDbCommand(insertData, connection);
-                    insertCommand.Parameters.Add("?", OleDbType.VarChar, 200);
-                    insertCommand.Parameters.Add("?", OleDbType.VarChar, 50);
-                    insertCommand.Parameters.Add("?", OleDbType.Integer);
-
-                    for (int i = 0; i < dataForExport.Length; i++)
+                    try
                     {
-                        insertCommand.Parameters[0].Value = (string)dataForExport[i]["student"];
-                        insertCommand.Parameters[1].Value = (string)dataForExport[i]["email"];
-                        insertCommand.Parameters[2].Value = (int)dataForExport[i]["score"];
+                        OleDbCommand command = new OleDbCommand(createTable, connection);
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        return "Sheet in file was not created!\n" + ex.Message;
+                    }
 
-                        insertCommand.ExecuteNonQuery();
+                    try
+                    {
+                        string insertData = "Insert into Rezults([Student], [Email], [Score]) values(?,?,?)";
+                        OleDbCommand insertCommand = new OleDbCommand(insertData, connection);
+                        insertCommand.Parameters.Add("?", OleDbType.VarChar, 200);
+                        insertCommand.Parameters.Add("?", OleDbType.VarChar, 50);
+                        insertCommand.Parameters.Add("?", OleDbType.Integer);
+
+                        for (int i = 0; i < dataForExport.Length; i++)
+                        {
+                            insertCommand.Parameters[0].Value = (string)dataForExport[i]["student"];
+                            insertCommand.Parameters[1].Value = (string)dataForExport[i]["email"];
+                            insertCommand.Parameters[2].Value = (int)dataForExport[i]["score"];
+
+                            insertCommand.ExecuteNonQuery();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        return "While data inserting an error occured: \n" + ex.Message;
                     }
                 }
 
                 // Downloading created file
-                currentUrl = currentUrl.Remove(currentUrl.IndexOf("Admin/")) + "/Areas/Admin/";
-                Uri fileUri = new Uri(currentUrl + nameOfFile);
-                using (WebClient client = new WebClient())
+                try
                 {
-                    client.DownloadFile(fileUri,
-                        pathToFile + nameOfFile);
+                    currentUrl = currentUrl.Remove(currentUrl.IndexOf("Admin/")) + "/Areas/Admin/";
+                    Uri fileUri = new Uri(currentUrl + nameOfFile);
+                    using (WebClient client = new WebClient())
+                    {
+                        client.DownloadFile(fileUri,
+                            pathToFile + nameOfFile);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return "While file downloading from server, an error occured:\n" + ex.Message;
                 }
 
                 // Deleting created file from server
                 System.IO.File.Delete(fileName);
+                return "File was successfully saved to:\n" + pathToFile + nameOfFile;
             }
+            return "There was no data to write into the file!";
         }
 
         #endregion

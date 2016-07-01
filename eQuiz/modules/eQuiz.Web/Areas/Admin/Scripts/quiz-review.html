@@ -1,5 +1,4 @@
 ﻿<div>
-    <div pop-up-window></div>
     <div class="spacing">
         <h4 ng-cloak>
             {{ReviewCtrl.student.firstName + " " + ReviewCtrl.student.lastName + " " + ReviewCtrl.student.fatherName}}, {{ReviewCtrl.quizPassInfo[0].group_name}}, {{ReviewCtrl.quizPassInfo[0].quiz_name}}
@@ -96,4 +95,5 @@
             <button ng-click="ReviewCtrl.cancelQuizReview()" ng-disabled="ReviewCtrl.cancelIsDisabled || ReviewCtrl.isFinalized" type="button" class="btn_spacing btn_length">Cancel changes</button>            
         </span>
     </div>
+    <div pop-up-window></div>
 </div>

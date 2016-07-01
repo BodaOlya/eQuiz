@@ -3,9 +3,9 @@
         .module('equizModule')
         .controller('QuizDetailsController', quizDetailsController);
 
-    quizDetailsController.$inject = ['$scope', '$filter', '$http', '$location', 'quizDetailsDataService', 'quizInfo', 'quizStudents'];
+    quizDetailsController.$inject = ['$scope', '$filter', '$http', '$location', '$timeout', 'quizDetailsDataService', 'quizInfo', 'quizStudents'];
 
-    function quizDetailsController($scope, $filter, $http, $location, quizDetailsDataService, quizInfo, quizStudents) {
+    function quizDetailsController($scope, $filter, $http, $location, $timeout, quizDetailsDataService, quizInfo, quizStudents) {
         var vm = this;
 
         var orderBy = $filter('orderBy');
@@ -16,7 +16,9 @@
         vm.resultsCount = [10, 25, 50, 100];
         vm.tablePage = 0;
         vm.contentsToExport = []; // Contains data for exporting into excel file
-        vm.excelPath = 'D:/name.xls'; // Default path and name for excel file
+        vm.excelPath = 'C:/'; // Default path for excel file
+        $scope.showNotification = false;
+        $scope.showWarning = false;
 
         vm.headers = [
             {
@@ -198,15 +200,21 @@
                 url: '/Admin/QuizDetails/ExportToExcel',
                 params: {
                     nameOfFile: vm.quizInfo[0].quizName + " by " + vm.quizInfo[0].groupName,
-                    pathToFile: 'D:\\',
+                    pathToFile: vm.excelPath,
                     currentUrl: $location.$$absUrl,
                     data: dataForExport
                 },
                 headers: { 'Content-Type': 'application/json' }
             }).then(function successCallback(response) {
-                console.log(response);
+                if (response.data.indexOf('File was successfully saved to:') > -1) {
+                    $scope.showNotifyPopUp(response.data);
+                    $timeout($scope.closePopUp, 5000);
+                } else {
+                    $scope.showErrorPopUp(response.data);
+                    $timeout($scope.closePopUp, 30000);
+                }
             }, function errorCallback(response) {
-                console.log(response);
+                document.write(response.data);
             });
         }; // Method that sends data to the server
     };

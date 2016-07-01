@@ -88,8 +88,15 @@
             <button class="btn btn-danger" ng-click="qc.exportShow=!qc.exportShow" style="font-size:20px">Cancel</button>
         </div>
         <div style="float: right">
-            <p style="margin:0px 0px 0px 50px">Total for export: {{qc.contentsToExport.length}}</p>
-            <button class="btn btn-success" ng-click="qc.CreateExcel()" ng-disabled="qc.contentsToExport.length === 0" style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Save</button>
+            <div style="float: left; margin: auto">
+                <p style="margin:0px 0px 0px 50px">Saving path:</p>
+                <input class="input-sm" type="text" value="C:\\" ng-model="qc.excelPath" />
+            </div>
+            <div style="float: right; margin: auto">
+                <p style="margin:0px 0px 0px 50px">Total for export: {{qc.contentsToExport.length}}</p>
+                <button class="btn btn-success" ng-click="qc.CreateExcel()" ng-disabled="qc.contentsToExport.length === 0" style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Save</button>
+            </div>
         </div>
     </div>
+    <div pop-up-window></div>
 </div>

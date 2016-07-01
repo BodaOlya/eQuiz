@@ -10,6 +10,19 @@
     position: fixed;
 }
 
+.notifyPopUpErrorMessage {
+    border:solid;
+    border-color:red;
+    background-color:lightcoral;
+    width:auto;
+    min-height:60px;
+    min-width: 120px;
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    font-size:larger;
+}
+
 .closePopUp {
     float:right;
     border:medium;
