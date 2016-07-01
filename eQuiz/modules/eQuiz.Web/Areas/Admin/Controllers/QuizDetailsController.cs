@@ -165,7 +165,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
 
         [HttpGet]
         [WebMethod]
-        public void ExportToExcel(string nameOfFile, string pathToFile, string[] data)
+        public void ExportToExcel(string nameOfFile, string pathToFile, string currentUrl, string[] data)
         {
             if (data != null && data.Length > 0)
             {
@@ -191,6 +191,14 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                     System.IO.File.Delete(fileName);
                 }
 
+                // Sorting data
+                var dataForExport = new JObject[data.Length];
+                for (int i = 0; i < data.Length; i++)
+                {
+                    dataForExport[i] = JObject.Parse(data[i]);
+                }
+                dataForExport.OrderBy(obj => obj["student"]);
+
                 // Creating an excel file and filling it with data
                 string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileName + ";Extended Properties='Excel 12.0 Xml;HDR=Yes'";
                 using (OleDbConnection connection = new OleDbConnection(connectionString))
@@ -213,20 +221,19 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                     insertCommand.Parameters.Add("?", OleDbType.VarChar, 50);
                     insertCommand.Parameters.Add("?", OleDbType.Integer);
 
-                    for (int i = 0; i < data.Length; i++)
+                    for (int i = 0; i < dataForExport.Length; i++)
                     {
-                        var student = JObject.Parse(data[i]);
-
-                        insertCommand.Parameters[0].Value = (string)student["student"];
-                        insertCommand.Parameters[1].Value = (string)student["email"];
-                        insertCommand.Parameters[2].Value = (int)student["score"];
+                        insertCommand.Parameters[0].Value = (string)dataForExport[i]["student"];
+                        insertCommand.Parameters[1].Value = (string)dataForExport[i]["email"];
+                        insertCommand.Parameters[2].Value = (int)dataForExport[i]["score"];
 
                         insertCommand.ExecuteNonQuery();
                     }
                 }
 
                 // Downloading created file
-                Uri fileUri = new Uri(@"http://localhost:57194/Areas/Admin/" + nameOfFile); // TODO: to remove literal
+                currentUrl = currentUrl.Remove(currentUrl.IndexOf("Admin/")) + "/Areas/Admin/";
+                Uri fileUri = new Uri(currentUrl + nameOfFile);
                 using (WebClient client = new WebClient())
                 {
                     client.DownloadFile(fileUri,

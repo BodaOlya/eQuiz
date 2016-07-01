@@ -3,9 +3,9 @@
         .module('equizModule')
         .controller('QuizDetailsController', quizDetailsController);
 
-    quizDetailsController.$inject = ['$scope', '$filter', '$http', 'quizDetailsDataService', 'quizInfo', 'quizStudents'];
+    quizDetailsController.$inject = ['$scope', '$filter', '$http', '$location', 'quizDetailsDataService', 'quizInfo', 'quizStudents'];
 
-    function quizDetailsController($scope, $filter, $http, quizDetailsDataService, quizInfo, quizStudents) {
+    function quizDetailsController($scope, $filter, $http, $location, quizDetailsDataService, quizInfo, quizStudents) {
         var vm = this;
 
         var orderBy = $filter('orderBy');
@@ -192,8 +192,6 @@
                     'score': currVal.studentScore
                 });
             });
-            vm.contentsToExport.sort(function () { // TODO: write a compare function!!!
-            });
 
             var promise = $http({
                 method: 'GET',
@@ -201,6 +199,7 @@
                 params: {
                     nameOfFile: vm.quizInfo[0].quizName + " by " + vm.quizInfo[0].groupName,
                     pathToFile: 'D:\\',
+                    currentUrl: $location.$$absUrl,
                     data: dataForExport
                 },
                 headers: { 'Content-Type': 'application/json' }
