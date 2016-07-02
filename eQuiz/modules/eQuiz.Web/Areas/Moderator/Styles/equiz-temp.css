@@ -1,6 +1,39 @@
 ﻿th {
     text-align: left;
 }
+.wrapper .container {
+    background-color: white;
+    padding: 1% 1% 1% 1%;
+}
+.wrapper {
+    background-color: whitesmoke;
+    font-family: Oswald;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+    z-index: -100;
+    display: flex;
+    align-items: center;
+}
+.wrapper .formHeader {
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+}
+
+.header {
+    background-color: white;
+    font-family: Oswald;
+}
+.header img {
+    height: 70px;
+}
+.header hr {
+    margin: 0 0 0 0;
+}
 
 .inline-block {
     display: inline-block;
@@ -15,7 +48,17 @@
     height: 100%;
     background-color: rgba(0,0,0,0.5);
 }
+#details table {
+    position: fixed;
+    top: 30%;
+    left: 40%;
+    border-collapse: separate;
+    border-spacing: 0 1em;
+}
 
+#details table td {
+    text-align: left;
+}
 a {
     color: #337ab7;
     text-decoration: none;
@@ -74,7 +117,7 @@ a {
 }
 
 .tab {
-    background-color: lightgray;
+    background-color: white;
 }
 
 .float-right {
@@ -119,14 +162,14 @@ a {
     padding: 10px;
     background-color: white;
     color: black;
-    border-color: black;
+    border-color: whitesmoke;
     border-width: 2px;
     border-style: solid;
     border-bottom: none;
 }
 
     .tab-navigation-button.active {
-        background-color: lightgray;
+        background-color: whitesmoke;
     }
 
 .control-label {
@@ -152,7 +195,7 @@ a {
 
 .tab {
     padding: 5px;
-    border-color: black;
+    border-color: whitesmoke;
     border-width: 2px;
     border-style: solid;
     margin-bottom: 20px;
@@ -187,31 +230,111 @@ ul.moderator-top-header li:last-child {
     float: right;
 }
 
+.body-color{
+    background-color: whitesmoke;
+}
+
 #container {
     width: 60%;
     margin: 0 auto;
+    background-color: white;
 }
 
-thead, th, td {
+/*thead, th, td {
     border: 1px solid black;
-}
+}*/
 
 .questionText {
     max-width: 100%;
     width: 100%;
 }
 
-.moderator-dashboard-left {
+.wrapperDashboard1 {
+    background-color: whitesmoke;
+    font-family: Oswald;
     position: absolute;
+    top: 81px;
+    left: 0;
+    right: 0;
+    z-index: -100;
+    min-height: 100%;
+    
+}
+
+.wrapperForm{
+    margin-top:20px;
+    padding:1px 20px 60px 20px;
+    background-color: none;
+    font-family: Oswald;
+}
+
+.wrapperForm input {
+    border-radius: 0;
+}
+
+.wrapperForm select {
+    border-radius: 0;
+}
+
+.wrapperForm textarea {
+    border-radius: 0;
+}
+
+.wrapperForm button {
+    border-radius: 0;
+}
+
+.wrapperForm a {
+    border-radius: 0;
+}
+
+.wrapperDashboard1 input[type=search]{
+    cursor: text;
+    width: 300px;
+    -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+            border-radius: 0;
+}
+
+.wrapperDashboard1 .box {
+    margin-top: 10px;
+}
+.wrapperDashboard1 input[type=search] {
+    margin-right: 10px
+}
+.wrapperDashboard1 input[type=checkbox] {
+    position: relative; 
+    vertical-align: middle; 
+    bottom: 4px
+}
+.wrapperDashboard1 thead {
+    background-color: #DDDDDD;
+}
+.wrapperDashboard1 thead a {
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+.wrapperDashboard1 tbody {
+    font-family: Source Sans Pro;
+    background-color: white
+}
+.wrapperDashboard1 #title {
+    font-size: x-large;
+    margin-bottom: 10px
+}
+
+.moderator-dashboard-left {
+    position: inherit;
     left: 5%;
-    top: 5%;
+    top: auto;
     width: 50%;
 }
 
 .moderator-dashboard-right {
-    position: absolute;
+    position: inherit;
     right: 5%;
-    top: 5%;
+    top:auto;
     width: 50%;
 }
 
@@ -239,7 +362,9 @@ thead, th, td {
     .table-quizzes th, td {
         text-align: left;
         padding: 10px;
-        border: 1px solid black;
+        /*border: 1px solid black;*/
+        background-color: white;
+        border-bottom: 1px solid lightgray ;
     }
 
     .table-quizzes thead {
@@ -454,7 +579,7 @@ thead, th, td {
 .bordered{
     padding: 10px;
     margin: 0px -10px;
-    border: solid 1px black;
+    border: solid 1px #ddd;
 }
 
 .question-block{
@@ -561,6 +686,42 @@ thead, th, td {
 	}
 }
 
+.verticalAlign {
+    line-height: 70px;
+}
+
 .radio-vertical-center{
     top: -10px;
  }
+
+.answer-table{
+    border: 1px solid #ddd;
+}
+
+.answer-table th{
+    text-align: center;
+}
+
+.answer-table th,
+.answer-table td,
+.answer-table thead
+{
+    border-bottom: 1px solid #ddd;
+}
+
+.right-margin{
+    margin-right: 0px;
+}
+
+.right-align-div{
+    margin-right: 15px;
+    float: right;
+}
+
+.add-question-container{
+    margin:15px;
+}
+
+.question-padding{
+    padding-bottom: 15px;
+}

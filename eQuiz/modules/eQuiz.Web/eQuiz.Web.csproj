@@ -401,6 +401,7 @@
     <Content Include="Areas\Admin\Scripts\student.html" />
     <Content Include="Areas\Admin\Styles\equiz-temp.css" />
     <Content Include="Areas\Admin\Scripts\review.html" />
+    <Content Include="Areas\Moderator\Images\logo.png" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quiz-schedule\quiz.controller.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quizzes-list\quizzes.controller.js" />
     <Content Include="Areas\Moderator\Scripts\app\pages\quizzes-list\quizzes.filters.js" />

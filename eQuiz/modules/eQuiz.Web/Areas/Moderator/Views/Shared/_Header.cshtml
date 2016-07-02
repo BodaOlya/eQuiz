@@ -1,11 +1,29 @@
-﻿<ul class="moderator-top-header">
-    <li>
-        @Html.ActionLink(linkText: "Quizzes", actionName: "Index", controllerName: "Quiz")
-    </li>
-    <li>
-        @Html.ActionLink(linkText: "User Groups", actionName: "Index", controllerName: "UserGroup")
-    </li>
-    <li>
-        <label>Moderator</label>
-    </li>
-</ul>
+﻿@using Microsoft.AspNet.Identity;
+<div class="header">
+    <div>
+        <div class="text-left col-xs-4 verticalAlign">
+            @Html.ActionLink(linkText: "QUIZZES", actionName: "Index", controllerName: "Quiz")
+
+            @Html.ActionLink(linkText: "USER GROUP", actionName: "Index", controllerName: "UserGroup")
+        </div>
+        <div class="col-xs-4" style="z-index:-1;">
+            <img src="~/Areas/Moderator/Images/logo.png" class="img-responsive center-block" />
+        </div>
+    </div>
+    <hr />
+
+    @using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="text-left col-xs-4 verticalAlign">
+            <div class="right-align-div">
+                @User.Identity.GetUserName()
+                <a href="javascript:document.getElementById('logoutForm').submit()">LOG OFF</a>
+            </div>
+        </div>
+    }
+
+</div>
+
+

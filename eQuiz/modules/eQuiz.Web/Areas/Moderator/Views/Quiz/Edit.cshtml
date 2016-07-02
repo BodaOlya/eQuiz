@@ -3,66 +3,65 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/Layout.cshtml";
 }
+<section class="wrapperDashboard1">
+    <div id="container">
+        <div class="wrapperForm" ng-controller="QuizController as vm" ng-cloak>
+            <h2>Create/Edit {{vm.model.quiz.Name}}</h2>
+            <div ng-show="vm.model.locked">
+                <h2>Sorry, this quiz is being edited by {{vm.model.latestChange.User.FirstName}} {{vm.model.latestChange.User.LastName}}</h2>
+                <p>try refreshing page at {{vm.model.latestChange.EndLockDate}}</p>
+            </div>
+            <div>
+                <button class="tab-navigation-button" ng-class="{active : vm.tab=='quiz'}" ng-click="vm.switchTab('quiz')">Quiz</button>
+                <button class="tab-navigation-button" ng-class="{active : vm.tab=='questions'}" ng-click="vm.switchTab('questions')">Questions ({{vm.model.questions.length}}/{{vm.model.quizBlock.QuestionCount}})</button>
+            </div>
+            <div class="tab-container">
+                <ng-include src="'/Areas/Moderator/Scripts/app/pages/quiz/quiz.html'"></ng-include>
+                <ng-include src="'/Areas/Moderator/Scripts/app/pages/quiz/questions.html'"></ng-include>
+            </div>
 
-<div id="container">
-    <div ng-controller="QuizController as vm" ng-cloak>
-        <h2>Create/Edit {{vm.model.quiz.Name}}</h2>
-        <div ng-show="vm.model.locked">
-            <h2>Sorry, this quiz is being edited by {{vm.model.latestChange.User.UserName}}</h2>
-            <p>try refreshing page at {{vm.model.latestChange.EndLockDate}}</p>
-        </div>
-        <div>
-            <button class="tab-navigation-button" ng-class="{active : vm.tab=='quiz'}" ng-click="vm.switchTab('quiz')">Quiz</button>
-            <button class="tab-navigation-button" ng-class="{active : vm.tab=='questions'}" ng-click="vm.switchTab('questions')">Questions ({{vm.model.questions.length}}/{{vm.model.quizBlock.QuestionCount}})</button>
-        </div>
-        <div class="tab-container">
-            <ng-include src="'/Areas/Moderator/Scripts/app/pages/quiz/quiz.html'"></ng-include>
-            <ng-include src="'/Areas/Moderator/Scripts/app/pages/quiz/questions.html'"></ng-include>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-2 col-sm-offset-3">
-                <button class="btn btn-default form-control lightgray" ng-click="vm.save()" ng-disabled="!vm.isEditingEnabled()">Save</button>
-            </div>
-            <div class="col-sm-2">
-                <button class="btn btn-default form-control lightgray" ng-hide="vm.archiveQuizCanExecute()" ng-click="vm.deleteQuiz()" ng-disabled="!vm.deleteCanExecute()">Delete</button>
-                <button class="btn btn-default form-control lightgray" ng-hide="!vm.archiveQuizCanExecute()" ng-click="vm.archiveQuiz()" ng-disabled="!vm.archiveQuizCanExecute()">Archive</button>
-            </div>
-            <div class="col-sm-2">
-                @Html.ActionLink(linkText: "Cancel", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-default lightgray" })
-            </div>
-        </div>
+            <div class="col-sm-offset-3">
+                @*<div class="col-sm-2 col-sm-offset-3">*@
+                <button class="btn btn-success col-md-2" ng-click="vm.save()" ng-disabled="!vm.isEditingEnabled()">Save</button>
 
 
-        <div ng-cloak class="loading-background" ng-show="vm.loadingVisible">
-            <div class="loading-content">
-                <p>
-                    Processing...
-                </p>
+                <button class="btn btn-warning col-sm-offset-1 col-md-2" ng-hide="vm.archiveQuizCanExecute()" ng-click="vm.deleteQuiz()" ng-disabled="!vm.deleteCanExecute()">Delete</button>
+                <button class="btn btn-info col-sm-offset-1 col-md-2" ng-hide="!vm.archiveQuizCanExecute()" ng-click="vm.archiveQuiz()" ng-disabled="!vm.archiveQuizCanExecute()">Archive</button>
+
+                @Html.ActionLink(linkText: "Cancel", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-info col-sm-offset-1 col-md-2" })
             </div>
-        </div>
-        <div ng-cloak class="message-container" ng-show="vm.errorMessageVisible">
-            <div class="message-content">
-                <p>
-                    Changes have not been saved due to
-                </p>
-                <p class="red text-center">
-                    SERVER ERROR
-                </p>
+
+
+            <div ng-cloak class="loading-background" ng-show="vm.loadingVisible">
+                <div class="loading-content">
+                    <p>
+                        Processing...
+                    </p>
+                </div>
             </div>
-        </div>
-        <div ng-cloak class="message-container" ng-show="vm.successMessageVisible">
-            <div class="message-content">
-                <p>
-                    All changes have been
-                </p>
-                <p class="green">
-                    SUCCESSFULLY SAVED
-                </p>
+            <div ng-cloak class="message-container" ng-show="vm.errorMessageVisible">
+                <div class="message-content">
+                    <p>
+                        Changes have not been saved due to
+                    </p>
+                    <p class="red text-center">
+                        SERVER ERROR
+                    </p>
+                </div>
+            </div>
+            <div ng-cloak class="message-container" ng-show="vm.successMessageVisible">
+                <div class="message-content">
+                    <p>
+                        All changes have been
+                    </p>
+                    <p class="green">
+                        SUCCESSFULLY SAVED
+                    </p>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 @section FootScripts{
     <script src="~/Scripts/app/shared/equiz.module.js"></script>
@@ -79,6 +78,8 @@
 @section HeadStyles{
     <link href="~/Styles/bootstrap.css" rel="stylesheet" />
     <link href="~/Areas/Moderator/Styles/equiz-temp.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Oswald" />
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 }
 
 @section PageHeader{

@@ -4,80 +4,99 @@
     Layout = "~/Views/Shared/Layout.cshtml";
 }
 
-<section class="listQuizzes-wrapper" ng-controller="QuizzesController as q" ng-cloak>
+<section class="wrapperDashboard1" ng-controller="QuizzesController as q" ng-cloak>
 
-    <h2>@Html.ActionLink(linkText:"Create new", actionName: "Create")</h2>
-    <h2>@Html.ActionLink(linkText: "Schedule", actionName: "Schedule")</h2>
-    <br />
+
     <div class="cssload-container" ng-show="q.isLoading">
         <div class="cssload-whirlpool"></div>
     </div>
 
-    <div class="container-quizzes" ng-show="!q.isLoading">
-        <label>Search</label>
-        <input type="text" ng-model="q.pagingInfo.searchText" ng-change="q.reloadQuizzes()" style="width:12em; margin-bottom: 10px">
-        <label style="margin-left:20px">Select status</label>
-        <select style="height:30px;" ng-model="q.pagingInfo.selectedStatus" ng-change="q.changedValue(q.pagingInfo.selectedStatus)">
-            <option ng-repeat="status in q.statuses">{{status}}</option>
-        </select>
-        <table class="table-quizzes">
-            <thead>
-                <tr>
-                    <th>
-                        <a href="#" ng-click="q.sortBy('Name')">
-                            {{q.showOrderArrow('Name')}}Quiz
-                        </a>
-                    </th>
-                    <th>
-                        <a href="#" ng-click="q.sortBy('CountOfQuestions')">
-                            {{q.showOrderArrow('CountOfQuestions')}}Questions
-                        </a>
-                    </th>
-                    <th>
-                        <a href="#" ng-click="q.sortBy('StartDate')">
-                            {{q.showOrderArrow('StartDate')}}Start Date
-                        </a>
-                    </th>
-                    <th>
-                        <a href="#" ng-click="q.sortBy('Duration')">
-                            {{q.showOrderArrow('Duration')}}Duration, m
-                        </a>
-                    </th>
-                    <th>
-                        <a href="#" ng-click="q.sortBy('StateName')">
-                            {{q.showOrderArrow('StateName')}}Status
-                        </a>                        
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="quiz in q.quizzes">
-                    <td><a ng-href="/moderator/quiz/edit?id={{quiz.Id}}">{{ quiz.Name }}</a></td>
-                    <td>{{ quiz.CountOfQuestions }}</td>
-                    <td>{{ quiz.StartDate | ctime | date:"dd-MM-yyyy HH:mm" }}</td>
-                    <td>{{ quiz.Duration || 'No duration' }}</td>
-                    <td>{{ quiz.StateName }}</td>
-                </tr>
-            </tbody>
-        </table>
-        <br />
-        <uib-pagination total-items="q.pagingInfo.quizzesTotal" ng-model="q.pagingInfo.currentPage" ng-change="q.reloadQuizzes()"
-                        items-per-page="q.pagingInfo.quizzesPerPage" max-size="5" class="pagination-sm" boundary-link-numbers="true">
-        </uib-pagination>
+    <div class="row right-margin" ng-if="!q.isLoading">
+        <div class="col-md-offset-1 col-md-10 col-xs-offset-0 col-xs-12">
+            <h2>@Html.ActionLink(linkText: "Create new", actionName: "Create")</h2>
+            <h2>@Html.ActionLink(linkText: "Schedule", actionName: "Schedule")</h2>
+            <br />
+            <div class="form-inline">
+                <label>Search</label>
+                <input type="search" ng-model="q.pagingInfo.searchText" ng-change="q.reloadQuizzes()" class="form-control">
+                <label style="margin-left:20px">Select status</label>
+                <select ng-model="q.pagingInfo.selectedStatus" class="form-control" style="border-radius:0" ng-change="q.changedValue(q.pagingInfo.selectedStatus)">
+                    <option ng-repeat="status in q.statuses">{{status}}</option>
+                </select>
+            </div>
+        </div>
     </div>
+    <div class="row box right-margin">
+        <div ng-cloak class="col-md-offset-1 col-md-10 col-xs-offset-0 col-xs-12 table-responsive">
 
+            <table class="table" ng-if="!q.isLoading">
+                <thead>
+                    <tr>
+                        <th>
+                            <a href="#" class="sortBtn" ng-click="q.sortBy('Name')">
+                                {{q.showOrderArrow('Name')}}Quiz
+                            </a>
+                        </th>
+                        <th>
+                            <a href="#" ng-click="q.sortBy('CountOfQuestions')">
+                                {{q.showOrderArrow('CountOfQuestions')}}Questions
+                            </a>
+                        </th>
+                        <th>
+                            <a href="#" ng-click="q.sortBy('StartDate')">
+                                {{q.showOrderArrow('StartDate')}}Start Date
+                            </a>
+                        </th>
+                        <th>
+                            <a href="#" ng-click="q.sortBy('Duration')">
+                                {{q.showOrderArrow('Duration')}}Duration, m
+                            </a>
+                        </th>
+                        <th>
+                            <a href="#" ng-click="q.sortBy('StateName')">
+                                {{q.showOrderArrow('StateName')}}Status
+                            </a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="quiz in q.quizzes">
+                        <td><a ng-href="/moderator/quiz/edit?id={{quiz.Id}}">{{ quiz.Name }}</a></td>
+                        <td>{{ quiz.CountOfQuestions }}</td>
+                        <td>{{ quiz.StartDate | ctime | date:"dd-MM-yyyy HH:mm" }}</td>
+                        <td>{{ quiz.Duration || 'No duration' }}</td>
+                        <td>{{ quiz.StateName }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+    <div class="row box right-margin">
+        <div ng-if="!q.isLoading" class="col-md-offset-1 col-md-10 col-xs-offset-0 col-xs-12">
+            <uib-pagination total-items="q.pagingInfo.quizzesTotal" ng-model="q.pagingInfo.currentPage" ng-change="q.reloadQuizzes()"
+                            items-per-page="q.pagingInfo.quizzesPerPage" max-size="5" class="pagination-sm" boundary-link-numbers="true">
+            </uib-pagination>
+        </div>
+    </div>
 </section>
+
 
 @section FootScripts{
     <script src="~/Areas/Moderator/Scripts/libs/custom-pagination/custom-pagination.js"></script>
     <script src="~/Areas/Moderator/Scripts/app/pages/quizzes-list/quizzes.service.js"></script>
     <script src="~/Areas/Moderator/Scripts/app/pages/quizzes-list/quizzes.controller.js"></script>
     <script src="~/Areas/Moderator/Scripts/app/pages/quizzes-list/quizzes.filters.js"></script>
+
 }
 
 @section HeadStyles{
     <link href="~/Styles/bootstrap.css" rel="stylesheet" />
+    @*<link rel="stylesheet" href="~/Areas/Student/Styles/equiz-temp.css" />*@
     <link href="~/Areas/Moderator/Styles/equiz-temp.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Oswald" />
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 }
 
 @section PageHeader{
