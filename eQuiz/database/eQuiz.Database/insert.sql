@@ -17,6 +17,7 @@ INSERT INTO [dbo].[AspNetUsers]
       ,[AccessFailedCount]
       ,[UserName])
      VALUES
+			('08ac153d-db88-4a5c-b6f0-0433a8c29dac', NULL, 'xxmdvxx@gmail.com', 0, 'AGYcKx72ASq1suSAActHyw6H8H9MojHUseDGI0GJFGHbORhMD2glVR/n2AZwmLUrtA==',	'29d83256-0cce-43d6-a961-73479092eb13', NULL, 0, 0, NULL, 1, 0, 'xxmdvxx@gmail.com'),
 			('052daaf2-0ba5-4708-bf7a-d60d433b617f', NULL, 'olya@gmail.com', 0, 'AJFW/dvdf7yeil/ufmqva/SDRra68DvKN0n7V6rUMLBy0sDxunj27TJ6nRV9V0Y+Tg==', '6203f227-5c20-4a5f-8de6-cd0d47a4221f', NULL, 0, 0, NULL, 1, 0, 'olya@gmail.com'),
 			('3af43ae6-6cd6-4eb3-afad-e783083bec99', NULL, 'oleksandr@gmail.com', 0, 'APMPrIwvO2HzzsUgGBAnqdHqzK0vJPDkX7Kw0mIX0/5KicWv0ZK3s5QUBsdKFnzsZw==', '6ee1f5d4-5c93-4bc8-9a7f-ce80a5aa7db2', NULL, 0, 0, NULL, 1, 0, 'oleksandr@gmail.com'),
 			('4e9515fe-1585-44dc-98c0-dd4b3cac6fa7', NULL, 'serhii@gmail.com', 0, 'ADnBdq3j1ZM5JgIXoD+ZvbvT/06pyuXc1tsPjLMvGE/SVh1IA+CEVZSFW6Cc3o6Etw==', 'f5810537-4eab-4ab1-811b-c2f7bcccc3df', NULL, 0, 0, NULL, 1, 0, 'serhii@gmail.com'),
@@ -4556,3 +4557,4 @@ VALUES
 (34, 34, 10, 1, CONVERT(DATETIME, '2016-10-01 00:01:00', 120)),
 (35, 35, 6, 1, CONVERT(DATETIME, '2016-10-01 00:01:00', 120));
 SET IDENTITY_INSERT [dbo].[tblQuizPassScore] OFF
+
