@@ -91,6 +91,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
 
         public ActionResult GetQuestionsByQuizId(int id, int duration)
         {
+            User currentUser = _repository.GetSingle<User>(u => u.Email == User.Identity.Name);
             try
             {
                 // Because duration is in minutes.
@@ -119,7 +120,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                     QuizPass quizPassToInsert = new QuizPass
                     {
                         QuizId = id,
-                        UserId = 1,//TODO will be fixed after authentification
+                        UserId = currentUser.Id,//TODO will be fixed after authentification
                         StartTime = DateTime.UtcNow,
                         FinishTime = null
                     };
@@ -178,92 +179,11 @@ namespace eQuiz.Web.Areas.Student.Controllers
             {
                 return Json("Exception", JsonRequestBehavior.AllowGet);
             }
-
-
         }
-
-        //public void InsertQuizResult(QuizResultModel passedQuiz)
-        //{
-        //    QuizPass quizPassToInsert = new QuizPass
-        //    {
-        //        QuizId = passedQuiz.QuizId,
-        //        UserId = 1,
-        //        StartTime = passedQuiz.StartDate,
-        //        FinishTime = passedQuiz.FinishDate
-        //    };
-        //    _repository.Insert<QuizPass>(quizPassToInsert);
-
-        //    if (passedQuiz.UserAnswers != null)
-        //    {
-        //        var lastQuizPassIdentity = quizPassToInsert.Id;
-
-        //        foreach (var userAnswer in passedQuiz.UserAnswers)
-        //        {
-        //            if (userAnswer != null)
-        //            {
-        //                QuizPassQuestion quizPassQuestionToInsert = new QuizPassQuestion
-        //                {
-        //                    QuizPassId = lastQuizPassIdentity,
-        //                    QuestionId = userAnswer.QuestionId,
-        //                    QuizBlockId = userAnswer.QuizBlock,
-        //                    //Remade GetQuestionsByQuizId method to send questionOrder property on the client
-        //                    QuestionOrder = userAnswer.QuestionOrder
-        //                };
-
-        //                _repository.Insert<QuizPassQuestion>(quizPassQuestionToInsert);
-
-        //                var lastQuizPassQuestionIdentity = quizPassQuestionToInsert.Id;
-
-        //                if (userAnswer.IsAutomatic)
-        //                {
-        //                    UserAnswer userAnswerToInsert;
-        //                    if (userAnswer.AnswerId != null)
-        //                    {
-        //                        userAnswerToInsert = new UserAnswer
-        //                        {
-        //                            QuizPassQuestionId = lastQuizPassQuestionIdentity,
-        //                            AnswerId = (int)userAnswer.AnswerId,
-        //                            AnswerTime = userAnswer.AnswerTime
-        //                        };
-        //                        _repository.Insert<UserAnswer>(userAnswerToInsert);
-        //                    }
-        //                    else
-        //                    {
-        //                        foreach (var answerId in userAnswer.Answers)
-        //                        {
-        //                            if (answerId != null)
-        //                            {
-        //                                userAnswerToInsert = new UserAnswer
-        //                                {
-        //                                    QuizPassQuestionId = lastQuizPassQuestionIdentity,
-        //                                    AnswerId = (int) answerId,
-        //                                    AnswerTime = userAnswer.AnswerTime
-        //                                };
-        //                                _repository.Insert<UserAnswer>(userAnswerToInsert);
-        //                            }
-        //                        }
-        //                    }
-
-        //                }
-        //                else
-        //                {
-        //                    UserTextAnswer userTextAnswerToInsert = new UserTextAnswer
-        //                    {
-        //                        QuizPassQuestionId = lastQuizPassQuestionIdentity,
-        //                        AnswerText = userAnswer.AnswerText,
-        //                        AnswerTime = userAnswer.AnswerTime
-        //                    };
-
-        //                    _repository.Insert<UserTextAnswer>(userTextAnswerToInsert);
-        //                }
-        //            }
-
-        //        }
-        //    }
-        //}
 
         public void InsertQuestionResult(QuestionResultModel passedQuestion)
         {
+            User currentUser = _repository.GetSingle<User>(u => u.Email == User.Identity.Name);
             passedQuestion.AnswerTime = DateTime.UtcNow;
             if (passedQuestion.QuestionType == "Descriptive")
             {
@@ -272,7 +192,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                     passedQuestion.AnswerText = "";
                 }
                 var textAnswer = _repository.GetSingle<UserTextAnswer>(a => a.QuizPassQuestion.QuestionId == passedQuestion.QuestionId
-                                                && a.QuizPassQuestion.QuizPass.UserId == 1
+                                                && a.QuizPassQuestion.QuizPass.UserId == currentUser.Id
                                                 && a.QuizPassQuestion.QuizPassId == passedQuestion.QuizPassId);
 
                 if (textAnswer != null)
@@ -295,25 +215,6 @@ namespace eQuiz.Web.Areas.Student.Controllers
                     var quizzPassQuestionToCheck =
                         _repository.GetSingle<QuizPassQuestion>(el => el.QuizPassId == passedQuestion.QuizPassId
                                                                       && el.QuestionId == passedQuestion.QuestionId);
-
-                    //QuizPassQuestion quizPassQuestionToInsert;
-                    //if (quizzPassQuestionToCheck == null)
-                    //{
-                    //    quizPassQuestionToInsert = new QuizPassQuestion
-                    //    {
-                    //        QuizPassId = passedQuestion.QuizPassId,
-                    //        QuestionId = passedQuestion.QuestionId,
-                    //        QuizBlockId = passedQuestion.QuizBlock,
-                    //        QuestionOrder = passedQuestion.QuestionOrder
-                    //    };
-                    //    _repository.Insert<QuizPassQuestion>(quizPassQuestionToInsert);
-                    //}
-                    //else
-                    //{
-                    //    quizPassQuestionToInsert = quizzPassQuestionToCheck;
-                    //}
-                    //var lastGeneratedQuizPassQuestionId = quizzPassQuestionToCheck.Id;
-
                     var userTextAnswerToInsert = new UserTextAnswer
                     {
                         QuizPassQuestionId = quizzPassQuestionToCheck.Id,
@@ -327,7 +228,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
             else if (passedQuestion.QuestionType == "Select one")
             {
                 var radioAnswer = _repository.GetSingle<UserAnswer>(a => a.QuizPassQuestion.QuestionId == passedQuestion.QuestionId
-                                                && a.QuizPassQuestion.QuizPass.UserId == 1
+                                                && a.QuizPassQuestion.QuizPass.UserId == currentUser.Id
                                                 && a.QuizPassQuestion.QuizPassId == passedQuestion.QuizPassId);
                 if (radioAnswer != null)
                 {
@@ -341,26 +242,6 @@ namespace eQuiz.Web.Areas.Student.Controllers
                     var quizzPassQuestionToCheck =
                         _repository.GetSingle<QuizPassQuestion>(el => el.QuizPassId == passedQuestion.QuizPassId
                                                                       && el.QuestionId == passedQuestion.QuestionId);
-
-                    //QuizPassQuestion quizPassQuestionToInsert;
-                    //if (quizzPassQuestionToCheck == null)
-                    //{
-                    //    quizPassQuestionToInsert = new QuizPassQuestion
-                    //    {
-                    //        QuizPassId = passedQuestion.QuizPassId,
-                    //        QuestionId = passedQuestion.QuestionId,
-                    //        QuizBlockId = passedQuestion.QuizBlock,
-                    //        QuestionOrder = passedQuestion.QuestionOrder
-                    //    };
-                    //    _repository.Insert<QuizPassQuestion>(quizPassQuestionToInsert);
-                    //}
-                    //else
-                    //{
-                    //    quizPassQuestionToInsert = quizzPassQuestionToCheck;
-                    //}
-
-
-                    //var lastGeneratedQuizPassQuestionId = quizzPassQuestionToCheck.Id;
                     if (passedQuestion.AnswerId != null)
                     {
                         var userAnswerToInsert = new UserAnswer
@@ -377,7 +258,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
             else
             {
                 var checkAnswers = _repository.Get<UserAnswer>(a => a.QuizPassQuestion.QuestionId == passedQuestion.QuestionId
-                                                && a.QuizPassQuestion.QuizPass.UserId == 1
+                                                && a.QuizPassQuestion.QuizPass.UserId == currentUser.Id
                                                 && a.QuizPassQuestion.QuizPassId == passedQuestion.QuizPassId);
                 if (checkAnswers != null && checkAnswers.Count != 0)
                 {
@@ -396,7 +277,6 @@ namespace eQuiz.Web.Areas.Student.Controllers
                         {
                             _repository.Delete<int, UserAnswer>("Id", existingCheckAnswer.Id);
                         }
-                        //_repository.Delete<int, QuizPassQuestion>("Id", checkAnswers.First().QuizPassQuestionId);
                     }
                     else
                     {
@@ -426,25 +306,6 @@ namespace eQuiz.Web.Areas.Student.Controllers
                     var quizzPassQuestionToCheck =
                       _repository.GetSingle<QuizPassQuestion>(el => el.QuizPassId == passedQuestion.QuizPassId
                                                                     && el.QuestionId == passedQuestion.QuestionId);
-
-                    //QuizPassQuestion quizPassQuestionToInsert;
-                    //if (quizzPassQuestionToCheck == null)
-                    //{
-                    //    quizPassQuestionToInsert = new QuizPassQuestion
-                    //    {
-                    //        QuizPassId = passedQuestion.QuizPassId,
-                    //        QuestionId = passedQuestion.QuestionId,
-                    //        QuizBlockId = passedQuestion.QuizBlock,
-                    //        QuestionOrder = passedQuestion.QuestionOrder
-                    //    };
-                    //    _repository.Insert<QuizPassQuestion>(quizPassQuestionToInsert);
-                    //}
-                    //else
-                    //{
-                    //    quizPassQuestionToInsert = quizzPassQuestionToCheck;
-                    //}                               
-                    //var lastGeneratedQuizPassQuestionId = quizzPassQuestionToCheck.Id;
-
                     foreach (var checkAnswer in passedQuestion.Answers)
                     {
                         if (checkAnswer != null)
