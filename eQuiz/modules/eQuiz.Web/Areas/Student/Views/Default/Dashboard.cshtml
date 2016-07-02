@@ -49,7 +49,7 @@
                 <div class="form-inline">
                     <input type="search" class="form-control" ng-model="dc.searchInfo.searchText" ng-change="dc.search(page)" placeholder="Search by name">
                     <div class="checkbox">
-                        <label><input type="checkbox" ng-model="dc.searchInfo.InternetAccess" ng-change="dc.search(page)" ng-false-value="undefined"> Show only active quizzes</label>
+                        <label><input type="checkbox" ng-model="dc.searchInfo.IsActive" ng-change="dc.search(page)" ng-false-value="undefined"> Show only active quizzes</label>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                     </thead>
                     <!--| filter:{ Name: searchInfo.searchText } | filter:{ InternetAccess: searchInfo.InternetAccess}-->
                     <tbody>
-                        <tr ng-repeat="quiz in dc.pagedQuizzes" ng-class="{ warning: quiz.InternetAccess, warning: !quiz.InternetAccess }">
+                        <tr ng-repeat="quiz in dc.pagedQuizzes" ng-class="{ warning: quiz.IsActive, warning: !quiz.IsActive }">
                             <td>
                                 {{quiz.Name}}
                             </td>
@@ -87,8 +87,8 @@
                                 {{quiz.TimeLimitMinutes | timeFromMinutes}}
                             </td>
                             <td>
-                                <a href="@Url.Action("QuizInRun", "Default")" ng-if="quiz.InternetAccess" ng-click="dc.setToLocalStorage(quiz.TimeLimitMinutes, quiz.Id)">Start</a>
-                                <div ng-if="!quiz.InternetAccess">Inactive</div>
+                                <a href="@Url.Action("QuizInRun", "Default")" ng-if="quiz.IsActive" ng-click="dc.setToLocalStorage(quiz.TimeLimitMinutes, quiz.Id)">Start</a>
+                                <div ng-if="!quiz.IsActive">Inactive</div>
                             </td>
                         </tr>
                     </tbody>

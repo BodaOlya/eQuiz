@@ -66,11 +66,11 @@
                     return quiz.Name.toLowerCase().indexOf(vm.searchInfo.searchText.toLowerCase()) > -1 ? true : false;
                 });
 
-            // Filter by quiz internet access.
-            if (vm.searchInfo.InternetAccess != undefined) {
+            // Filter by quiz IsActive
+            if (vm.searchInfo.IsActive != undefined) {
                 filteredQuizzes = filteredQuizzes.filter(
                     function (quiz) {
-                        return quiz.InternetAccess === vm.searchInfo.InternetAccess ? true : false;
+                        return quiz.IsActive === vm.searchInfo.IsActive ? true : false;
                     });
             }
 
