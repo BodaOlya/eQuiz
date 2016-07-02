@@ -193,15 +193,15 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                 }
 
                 // Sorting data
-                JObject[] dataForExport;
+                JArray sortedDataForExport;
                 try
                 {
-                    dataForExport = new JObject[data.Length];
+                    JArray dataForExport = new JArray();
                     for (int i = 0; i < data.Length; i++)
                     {
-                        dataForExport[i] = JObject.Parse(data[i]);
+                        dataForExport.Add(JObject.Parse(data[i]));
                     }
-                    dataForExport.OrderBy(obj => obj["score"]);
+                    sortedDataForExport = new JArray(dataForExport.OrderBy(obj => obj["score"]));
                 }
                 catch (Exception ex)
                 {
@@ -239,11 +239,11 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                         insertCommand.Parameters.Add("?", OleDbType.VarChar, 50);
                         insertCommand.Parameters.Add("?", OleDbType.Integer);
 
-                        for (int i = 0; i < dataForExport.Length; i++)
+                        for (int i = 0; i < sortedDataForExport.Count; i++)
                         {
-                            insertCommand.Parameters[0].Value = (string)dataForExport[i]["student"];
-                            insertCommand.Parameters[1].Value = (string)dataForExport[i]["email"];
-                            insertCommand.Parameters[2].Value = (int)dataForExport[i]["score"];
+                            insertCommand.Parameters[0].Value = (string)sortedDataForExport[i]["student"];
+                            insertCommand.Parameters[1].Value = (string)sortedDataForExport[i]["email"];
+                            insertCommand.Parameters[2].Value = (int)sortedDataForExport[i]["score"];
 
                             insertCommand.ExecuteNonQuery();
                         }
