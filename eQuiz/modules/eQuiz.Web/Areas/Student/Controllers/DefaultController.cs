@@ -451,7 +451,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
             quizPassWithFinishTime.FinishTime = DateTime.UtcNow;
             _repository.Update<QuizPass>(quizPassWithFinishTime);
 
-            var userResult = _repository.Get<QuizPassQuestion>(q => q.QuizPassId == quizPassId, q => q.Question.QuestionType);
+            var userResult = _repository.Get<QuizPassQuestion>(q => q.QuizPassId == quizPassId, q => q.Question.QuestionType, q => q.QuizPass);
 
             foreach (var elem in userResult)
             {
@@ -498,7 +498,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                 }
                 else if (elem.Question.QuestionType.TypeName == "Select many")
                 {
-                    var userAnswers = _repository.Get<UserAnswer>(ur => ur.QuizPassQuestionId == elem.Id, ur => ur.Answer);
+                    var userAnswers = _repository.Get<UserAnswer>(ur => ur.QuizPassQuestionId == elem.Id, ur => ur.Answer, ur => ur.QuizPassQuestion);                   
 
                     UserAnswerScore userAnswerScoreToInsert;
                     if (userAnswers == null || userAnswers.Count == 0)
@@ -516,28 +516,42 @@ namespace eQuiz.Web.Areas.Student.Controllers
                     }
                     else
                     {
-                        sbyte mark = 0;
+                        double mark = 0;
                         byte questionScore = _repository.GetSingle<QuizQuestion>(qq => qq.Id == elem.Question.Id).QuestionScore;
+
+                        var quizInfo = _repository.Get<QuizQuestion>(q => q.QuizVariant.QuizId == elem.QuizPass.QuizId && q.QuestionId == elem.QuestionId,
+                                                                 q => q.Question,
+                                                                 q => q.Question.QuestionAnswers).SingleOrDefault();
+                        var questionAnswers = quizInfo.Question.QuestionAnswers;
+                        int amountOfTrueAns = 0;
+
+                        foreach (var qa in questionAnswers)
+                        {
+                            qa.Answer =
+                                _repository.GetSingle<QuestionAnswer>(el => el.Id == qa.Id, el => el.Answer)
+                                    .Answer;
+                            if (qa.Answer.IsRight.HasValue && qa.Answer.IsRight.Value)
+                            {
+                                amountOfTrueAns++;
+                            }
+                        }
+                        double pointsPerRightAnswer = Convert.ToDouble(questionScore) / Convert.ToDouble(questionAnswers.Count);
+
+                        var checkedTrueAns = 0;
 
                         foreach (var answer in userAnswers)
                         {
                             if (answer.Answer.IsRight.HasValue && answer.Answer.IsRight.Value)
                             {
-                                //mark++;
-                                mark = (sbyte)questionScore;
-                            }
-                            else
-                            {
-                                //mark--;
-                                mark = 0;
-                                break;
-                            }
+                                mark += pointsPerRightAnswer;
+                                checkedTrueAns++;
+                            }                           
                         }
+                        var notCheckedTrueAns = amountOfTrueAns - checkedTrueAns;
 
-                        //if (mark <= 0)
-                        //{
-                        //    mark = 0;
-                        //}
+                        var pointsToAdd = ((questionAnswers.Count - userAnswers.Count) - notCheckedTrueAns) * pointsPerRightAnswer;
+
+                        mark += pointsToAdd;
 
                         userAnswerScoreToInsert = new UserAnswerScore
                         {
