@@ -7,7 +7,8 @@
             getQuestionsById: getQuestionsByIdAjax,
             sendUserResult: sendUserResultAjax,
             sendQuestionResult: sendQuestionResultAjax,
-            setFinishTime: setFinishTimeAjax
+            setFinishTime: setFinishTimeAjax,
+            getUserGroups: getGroups
         };
 
         return service;
@@ -45,6 +46,9 @@
             return promise;
         };
 
-       
+        function getGroups() {
+            var promise = $http.get("GetUserGroups");
+            return promise;
+        };
     }]);
 })(angular);

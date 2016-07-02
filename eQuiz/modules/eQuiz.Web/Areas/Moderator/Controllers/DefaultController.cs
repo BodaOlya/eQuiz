@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace eQuiz.Web.Areas.Moderator.Controllers
 {
+    [Authorize(Roles = "Moderator")]
     public class DefaultController : BaseController
     {
         #region Fields

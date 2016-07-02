@@ -17,12 +17,12 @@ namespace eQuiz.Entities
         public int Id { get; set; }
         public int QuizBlockId { get; set; }
         public Nullable<int> QuizVariantId { get; set; }
+        public int QuestionId { get; set; }
         public byte QuestionScore { get; set; }
         public Nullable<short> QuestionOrder { get; set; }
-        public int QuestionId { get; set; }
     
-        public virtual QuizBlock QuizBlock { get; set; }
         public virtual Question Question { get; set; }
+        public virtual QuizBlock QuizBlock { get; set; }
         public virtual QuizVariant QuizVariant { get; set; }
     }
 }

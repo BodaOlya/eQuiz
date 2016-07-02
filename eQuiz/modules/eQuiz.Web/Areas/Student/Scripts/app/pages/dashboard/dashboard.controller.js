@@ -18,6 +18,7 @@
             reverse: false,
             searchText: ''
         };
+        vm.userGroups = [];
 
         vm.isLoading = true;
 
@@ -27,21 +28,34 @@
         }
 
         activate();
-        function activate() {
-            var _onSuccess = function (value) {
-                vm.allQuizzes = value.data;
+        //function activate() {
+        //    var _onSuccess = function (value) {
+        //        vm.allQuizzes = value.data;
 
+        //        vm.isLoading = false;
+        //        vm.search(0);
+        //    };
+        //    var _onError = function () {
+        //        vm.isLoading = false;
+        //        console.log("Cannot load quizzes list");
+        //    };
+
+        //    var quizPromise = dashboardService.getQuizzes();
+        //    quizPromise.then(_onSuccess, _onError);
+        //};
+        function activate() {
+            dashboardService.getQuizzes()
+            .then(function (responce) {
+                vm.allQuizzes = responce.data.quizzes;
                 vm.isLoading = false;
                 vm.search(0);
-            };
-            var _onError = function () {
-                vm.isLoading = false;
-                console.log("Cannot load quizzes list");
-            };
+            });
 
-            var quizPromise = dashboardService.getQuizzes();
-            quizPromise.then(_onSuccess, _onError);
-        };
+            dashboardService.getUserGroups()
+            .then(function (responce) {
+                vm.userGroups = responce.data;
+            });
+        }
 
         vm.search = function (page) {
             vm.page = page || 0;

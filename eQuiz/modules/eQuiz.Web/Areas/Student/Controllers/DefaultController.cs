@@ -13,6 +13,7 @@ using System.Data.Entity.Infrastructure;
 
 namespace eQuiz.Web.Areas.Student.Controllers
 {
+    [Authorize(Roles = "Student")]
     public class DefaultController : BaseController
     {
         #region Private Members
@@ -52,11 +53,30 @@ namespace eQuiz.Web.Areas.Student.Controllers
         }
 
         [HttpGet]
+        public ActionResult GetUserGroups()
+        {
+            User currentUser = _repository.GetSingle<User>(u => u.Email == User.Identity.Name);
+
+            var userGroups = _repository.Get<UserToUserGroup>(u => u.UserId == currentUser.Id, u => u.UserGroup)
+                .Select(u => u.UserGroup.Name).ToList();
+
+            return Json(userGroups, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
         public ActionResult GetAllQuizzes()
         {
+            User currentUser = _repository.GetSingle<User>(u => u.Email == User.Identity.Name);
+            IEnumerable<User> users = _repository.Get<User>();
+            IEnumerable<UserToUserGroup> userToUserGroup = _repository.Get<UserToUserGroup>();
+            IEnumerable<UserGroup> userGroup = _repository.Get<UserGroup>();  
             IEnumerable<Quiz> allQuizzes = _repository.Get<Quiz>();
 
-            var result = from q in allQuizzes
+            var result = from u in users
+                         where u.Id == currentUser.Id
+                         join utug in userToUserGroup on u.Id equals utug.UserId
+                         join g in userGroup on utug.GroupId equals g.Id
+                         join q in allQuizzes on g.Id equals q.GroupId
                          select new
                          {
                              Id = q.Id,
@@ -64,10 +84,10 @@ namespace eQuiz.Web.Areas.Student.Controllers
                              // Unix time convertation.
                              StartDate = q.StartDate.HasValue ? (long)(q.StartDate.Value.Subtract(new DateTime(1970, 1, 1))).TotalMilliseconds : -1,
                              TimeLimitMinutes = q.TimeLimitMinutes,
-                             InternetAccess = q.InternetAccess
+                             InternetAccess = q.InternetAccess                                         
                          };
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(new { quizzes = result }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetQuestionsByQuizId(int id, int duration)
@@ -450,7 +470,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
             quizPassWithFinishTime.FinishTime = DateTime.UtcNow;
             _repository.Update<QuizPass>(quizPassWithFinishTime);
 
-            var userResult = _repository.Get<QuizPassQuestion>(q => q.QuizPassId == quizPassId, q => q.Question.QuestionType);
+            var userResult = _repository.Get<QuizPassQuestion>(q => q.QuizPassId == quizPassId, q => q.Question.QuestionType, q => q.QuizPass);
 
             foreach (var elem in userResult)
             {
@@ -475,7 +495,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                         userAnswerScoreToInsert = new UserAnswerScore
                         {
                             QuizPassQuestionId = elem.Id,
-                            Score = 1,//TODO
+                            Score = _repository.GetSingle<QuizQuestion>(qq => qq.Id == elem.Question.Id).QuestionScore,
                             EvaluatedBy = 1,
                             EvaluatedAt = DateTime.UtcNow
                         };
@@ -497,7 +517,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                 }
                 else if (elem.Question.QuestionType.TypeName == "Select many")
                 {
-                    var userAnswers = _repository.Get<UserAnswer>(ur => ur.QuizPassQuestionId == elem.Id, ur => ur.Answer);
+                    var userAnswers = _repository.Get<UserAnswer>(ur => ur.QuizPassQuestionId == elem.Id, ur => ur.Answer, ur => ur.QuizPassQuestion);                   
 
                     UserAnswerScore userAnswerScoreToInsert;
                     if (userAnswers == null || userAnswers.Count == 0)
@@ -507,7 +527,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                         {
                             QuizPassQuestionId = elem.Id,
                             Score = 0,
-                            EvaluatedBy = 1,
+                            EvaluatedBy = 1, // TODO
                             EvaluatedAt = DateTime.UtcNow
                         };
                         _repository.Insert<UserAnswerScore>(userAnswerScoreToInsert);
@@ -515,29 +535,47 @@ namespace eQuiz.Web.Areas.Student.Controllers
                     }
                     else
                     {
-                        sbyte mark = 0;
+                        double mark = 0;
+                        byte questionScore = _repository.GetSingle<QuizQuestion>(qq => qq.Id == elem.Question.Id).QuestionScore;
+
+                        var quizInfo = _repository.Get<QuizQuestion>(q => q.QuizVariant.QuizId == elem.QuizPass.QuizId && q.QuestionId == elem.QuestionId,
+                                                                 q => q.Question,
+                                                                 q => q.Question.QuestionAnswers).SingleOrDefault();
+                        var questionAnswers = quizInfo.Question.QuestionAnswers;
+                        int amountOfTrueAns = 0;
+
+                        foreach (var qa in questionAnswers)
+                        {
+                            qa.Answer =
+                                _repository.GetSingle<QuestionAnswer>(el => el.Id == qa.Id, el => el.Answer)
+                                    .Answer;
+                            if (qa.Answer.IsRight.HasValue && qa.Answer.IsRight.Value)
+                            {
+                                amountOfTrueAns++;
+                            }
+                        }
+                        double pointsPerRightAnswer = Convert.ToDouble(questionScore) / Convert.ToDouble(questionAnswers.Count);
+
+                        var checkedTrueAns = 0;
 
                         foreach (var answer in userAnswers)
                         {
                             if (answer.Answer.IsRight.HasValue && answer.Answer.IsRight.Value)
                             {
-                                mark++;
-                            }
-                            else
-                            {
-                                mark--;
-                            }
+                                mark += pointsPerRightAnswer;
+                                checkedTrueAns++;
+                            }                           
                         }
+                        var notCheckedTrueAns = amountOfTrueAns - checkedTrueAns;
 
-                        if (mark <= 0)
-                        {
-                            mark = 0;
-                        }
+                        var pointsToAdd = ((questionAnswers.Count - userAnswers.Count) - notCheckedTrueAns) * pointsPerRightAnswer;
+
+                        mark += pointsToAdd;
 
                         userAnswerScoreToInsert = new UserAnswerScore
                         {
                             QuizPassQuestionId = elem.Id,
-                            Score = Convert.ToByte(mark),
+                            Score = mark, // TODO
                             EvaluatedBy = 1,//TODO
                             EvaluatedAt = DateTime.UtcNow
                         };

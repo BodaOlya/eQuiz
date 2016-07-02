@@ -26,14 +26,10 @@
     </div>
 
     <div class="spacing">
-        <span>
             Filter:
-            <a style="margin-right:5px" ng-click="ReviewCtrl.unCheckAll()">All</a><input style="margin-bottom:5px" type="checkbox" ng-checked="ReviewCtrl.allChecked()" onclick="return false;">
-            <a style="margin-right:5px" ng-click="ReviewCtrl.selectStatusId(0)">In verification</a>
-        <input style="margin-bottom:5px" type="checkbox" ng-checked="ReviewCtrl.isChecked(0)" onclick="return false;">
-        <a style="margin-right:5px" ng-click="ReviewCtrl.selectStatusId(1)">Passed</a><input style="margin-bottom:5px" type="checkbox" ng-checked="ReviewCtrl.isChecked(1)" onclick="return false;">
-        <a style="margin-right:5px" ng-click="ReviewCtrl.selectStatusId(2)">Not passed</a><input style="margin-bottom:5px" type="checkbox" ng-checked="ReviewCtrl.isChecked(2)" onclick="return false;">
-        </span>
+        <label class="checkbox-inline"><input type="checkbox" ng-click="ReviewCtrl.selectStatusId(0)">In verification</label>
+        <label class="checkbox-inline"><input type="checkbox" ng-click="ReviewCtrl.selectStatusId(1)">Passed</label>
+        <label class="checkbox-inline"><input type="checkbox" ng-click="ReviewCtrl.selectStatusId(2)">Not passed</label>
     </div>
 
     <div class="spacing">  

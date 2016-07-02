@@ -1,0 +1,33 @@
+﻿@using eQuiz.Web.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+}
+
+@section HeadStyles{
+    <link rel="stylesheet" href="~/Areas/Student/Styles/equiz-temp.css">
+    <link href="~/Styles/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Oswald" />
+}
+
+
+@section PageHeader{
+    <div class="headerLogin">
+        <div id="epamLogo">
+            <img src="~/Areas/Student/Images/logo.png" class="img-responsive center-block" />
+        </div>
+    </div>
+}
+<div class="wrapper background">
+    <div class="container col-sm-offset-3 col-sm-6 jumbotron transperent ">
+        <div class="custom-container-fluid">
+            <label class="col-sm-12" id="equiz">EQUIZ</label>
+            <label class="col-sm-12" id="login">LOG IN</label>
+        </div>
+        @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
