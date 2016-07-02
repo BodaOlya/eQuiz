@@ -16,7 +16,7 @@ namespace eQuiz.Entities
     {
         public int Id { get; set; }
         public int QuizPassQuestionId { get; set; }
-        public byte Score { get; set; }
+        public double Score { get; set; }
         public int EvaluatedBy { get; set; }
         public System.DateTime EvaluatedAt { get; set; }
     

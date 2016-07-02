@@ -261,7 +261,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="QuizPassQuestionId" Type="int" Nullable="false" />
-          <Property Name="Score" Type="tinyint" Nullable="false" />
+          <Property Name="Score" Type="float" Nullable="false" />
           <Property Name="EvaluatedBy" Type="int" Nullable="false" />
           <Property Name="EvaluatedAt" Type="smalldatetime" Nullable="false" />
         </EntityType>
@@ -1371,7 +1371,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="QuizId" Type="Int32" Nullable="false" />
-          <Property Name="UserId" Type="String" Nullable="false" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastChangeDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Quiz" Relationship="eQuizModel.FK_tblQuizEditHistory_tblQuiz" FromRole="tblQuizEditHistory" ToRole="tblQuiz" />
@@ -1518,7 +1518,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="QuizPassQuestionId" Type="Int32" Nullable="false" />
-          <Property Name="Score" Type="Byte" Nullable="false" />
+          <Property Name="Score" Type="Double" Nullable="false" />
           <Property Name="EvaluatedBy" Type="Int32" Nullable="false" />
           <Property Name="EvaluatedAt" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="QuizPassQuestion" Relationship="eQuizModel.FK_tblUserAnswerScore_tblQuizPassQuestion" FromRole="tblUserAnswerScore" ToRole="tblQuizPassQuestion" />

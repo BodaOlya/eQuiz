@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="0b635835e46d46fb8a280aaf6c27e7cf" Name="Diagram1" ZoomLevel="45">
+      <Diagram DiagramId="0b635835e46d46fb8a280aaf6c27e7cf" Name="Diagram1" ZoomLevel="75">
         <EntityTypeShape EntityType="eQuizModel.AspNetRole" Width="1.5" PointX="0.75" PointY="19.625" />
         <EntityTypeShape EntityType="eQuizModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="14.875" />
         <EntityTypeShape EntityType="eQuizModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="21.125" />
@@ -29,7 +29,6 @@
         <EntityTypeShape EntityType="eQuizModel.Topic" Width="1.5" PointX="13.5" PointY="15.5" />
         <EntityTypeShape EntityType="eQuizModel.User" Width="1.5" PointX="5.25" PointY="24.125" />
         <EntityTypeShape EntityType="eQuizModel.UserAnswer" Width="1.5" PointX="15" PointY="25.5" />
-        <EntityTypeShape EntityType="eQuizModel.UserAnswerScore" Width="1.5" PointX="15" PointY="22.375" />
         <EntityTypeShape EntityType="eQuizModel.UserComment" Width="1.5" PointX="7.5" PointY="33" />
         <EntityTypeShape EntityType="eQuizModel.UserGroup" Width="1.5" PointX="8.25" PointY="19.125" />
         <EntityTypeShape EntityType="eQuizModel.UserGroupState" Width="1.5" PointX="6" PointY="18.625" />
@@ -63,11 +62,9 @@
         <AssociationConnector Association="eQuizModel.FK_tblQuizPassQuestion_tblQuizPass" />
         <AssociationConnector Association="eQuizModel.FK_tblQuizPassScore_tblQuizPass" />
         <AssociationConnector Association="eQuizModel.FK_tblUserAnswer_tblQuizPassQuestion" />
-        <AssociationConnector Association="eQuizModel.FK_tblUserAnswerScore_tblQuizPassQuestion" />
         <AssociationConnector Association="eQuizModel.FK_tblUserTextAnswer_tblQuizPassQuestion" />
         <AssociationConnector Association="eQuizModel.FK_tblQuizPassScore_tblUser" />
         <AssociationConnector Association="eQuizModel.FK_tblQuizQuestion_tblQuizVariant" />
-        <AssociationConnector Association="eQuizModel.FK_tblUserAnswerScore_tblUser" />
         <AssociationConnector Association="eQuizModel.FK_tblUserComment_AdminId_tblUser" />
         <AssociationConnector Association="eQuizModel.FK_tblUserComment_UserId_tblUser" />
         <AssociationConnector Association="eQuizModel.FK_tblUserToUserGroup_tblUser" />
@@ -75,6 +72,9 @@
         <AssociationConnector Association="eQuizModel.FK_tblUserToUserGroup_tblUserGroup" />
         <AssociationConnector Association="eQuizModel.AspNetUserRoles" />
         <AssociationConnector Association="eQuizModel.FK_tblQuizEditHistory_AspNetUsers" />
+        <EntityTypeShape EntityType="eQuizModel.UserAnswerScore" Width="1.5" PointX="15" PointY="22.125" />
+        <AssociationConnector Association="eQuizModel.FK_tblUserAnswerScore_tblQuizPassQuestion" />
+        <AssociationConnector Association="eQuizModel.FK_tblUserAnswerScore_tblUser" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

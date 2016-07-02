@@ -556,7 +556,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                         userAnswerScoreToInsert = new UserAnswerScore
                         {
                             QuizPassQuestionId = elem.Id,
-                            Score = Convert.ToByte(mark), // TODO
+                            Score = mark, // TODO
                             EvaluatedBy = 1,//TODO
                             EvaluatedAt = DateTime.UtcNow
                         };

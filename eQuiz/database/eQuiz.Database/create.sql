@@ -207,7 +207,7 @@ CREATE TABLE [dbo].[tblUserAnswerScore]
 (
 	[Id] [INT] NOT NULL IDENTITY(1, 1), 
 	[QuizPassQuestionId] [INT] NOT NULL, 
-	[Score] [TINYINT] NOT NULL,
+	[Score] [FLOAT] NOT NULL,
 	[EvaluatedBy] [INT] NOT NULL,
 	[EvaluatedAt] [SMALLDATETIME] NOT NULL,
 	CONSTRAINT [PK_tblUserAnswerScore_Id] PRIMARY KEY ([Id]),
