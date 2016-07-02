@@ -257,7 +257,7 @@ ul.moderator-top-header li:last-child {
     left: 0;
     right: 0;
     z-index: -100;
-    min-height: 100%;
+    min-height: calc(100% - 81px);
     
 }
 
@@ -724,4 +724,8 @@ ul.moderator-top-header li:last-child {
 
 .question-padding{
     padding-bottom: 15px;
+}
+
+.loking-message{
+    color: orange;
 }

@@ -7,8 +7,8 @@
     <div id="container">
         <div class="wrapperForm" ng-controller="QuizController as vm" ng-cloak>
             <h2>Create/Edit {{vm.model.quiz.Name}}</h2>
-            <div ng-show="vm.model.locked">
-                <h2>Sorry, this quiz is being edited by {{vm.model.latestChange.User.FirstName}} {{vm.model.latestChange.User.LastName}}</h2>
+            <div ng-show="vm.model.locked" class="loking-message">
+                <h4>Sorry, this quiz is being edited by {{vm.model.latestChange.User.UserName}}</h4>
                 <p>try refreshing page at {{vm.model.latestChange.EndLockDate}}</p>
             </div>
             <div>
