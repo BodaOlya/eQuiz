@@ -42,7 +42,7 @@ namespace eQuiz.Web.Controllers
             }
             else if (UserManager.IsInRole(User.Identity.GetUserId(), "Student"))
             {
-                return RedirectToAction("Index", "Default", new { area = "Student" });
+                return RedirectToAction("Dashboard", "Default", new { area = "Student" });
             }
             return View();
         }
