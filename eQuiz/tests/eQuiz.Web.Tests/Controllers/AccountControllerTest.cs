@@ -17,7 +17,7 @@ namespace eQuiz.Web.Tests.Controllers
         [TestInitialize]
         public void BeforeTestMethod()
         {
-            _controller = new AccountController();
+            //_controller = new AccountController();
         }
 
         [TestCleanup]

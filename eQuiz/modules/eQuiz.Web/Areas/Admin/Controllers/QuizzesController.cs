@@ -153,7 +153,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                               join uas in userAnswerScore on qpq.Id equals uas.QuizPassQuestionId into temp_score
                               from t_uas in temp_score.DefaultIfEmpty()
                               where qt.IsAutomatic == false                       
-                              select new TextQuestion(qpq.Id, qq.QuestionScore, t_uas == null ? (int?)null : t_uas.Score, 
+                              select new TextQuestion(qpq.Id, qq.QuestionScore, t_uas == null ? (double?)null : t_uas.Score, 
                                                         q.QuestionText, t_uta == null ? "" : t_uta.AnswerText, 
                                                         TextQuestion.GetAnswer(a.AnswerText), 
                                                         qq.QuestionOrder, false, t_uas == null ? true : false);

@@ -10,7 +10,7 @@ namespace eQuiz.Web.Areas.Admin.Models
         public int Id { get; set; }
         public string Type { get; set; }
         public byte MaxScore { get; set; }
-        public int? UserScore { get; set; }
+        public double? UserScore { get; set; }
         public string QuestionText { get; set; }
         public short? Order { get; set; }
         public bool WasChanged { get; set; }
@@ -18,7 +18,7 @@ namespace eQuiz.Web.Areas.Admin.Models
         public string Status { get; set; }
 
         // Base constructor
-        public QuestionBase (int id, byte maxScore, int? userScore, string questionText, short? order, bool wasChanged, bool wasNull)
+        public QuestionBase (int id, byte maxScore, double? userScore, string questionText, short? order, bool wasChanged, bool wasNull)
         {
             Id = id;
             MaxScore = maxScore;
