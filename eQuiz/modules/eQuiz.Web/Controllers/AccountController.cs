@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using eQuiz.Web.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace eQuiz.Web.Controllers
 {
@@ -31,12 +32,24 @@ namespace eQuiz.Web.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            if(UserManager.IsInRole(User.Identity.GetUserId(), "Administrator"))
+            {
+                return RedirectToAction("Index", "Default", new { area = "Admin" });
+            }
+            else if (UserManager.IsInRole(User.Identity.GetUserId(), "Moderator"))
+            {
+                return RedirectToAction("Index", "Default", new { area = "Moderator" });
+            }
+            else if (UserManager.IsInRole(User.Identity.GetUserId(), "Student"))
+            {
+                return RedirectToAction("Index", "Default", new { area = "Student" });
+            }
             return View();
         }
 
         [HttpPost]
         public ActionResult Index(string role)
-        {
+        { 
             switch (role)
             {
                 case "moderator":
