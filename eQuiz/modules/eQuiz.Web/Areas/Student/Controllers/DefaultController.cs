@@ -70,6 +70,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
             IEnumerable<UserToUserGroup> userToUserGroup = _repository.Get<UserToUserGroup>();
             IEnumerable<UserGroup> userGroup = _repository.Get<UserGroup>();
             IEnumerable<Quiz> allQuizzes = _repository.Get<Quiz>();
+            IEnumerable<QuizPass> quizPass = _repository.Get<QuizPass>();
 
             var result = from u in users
                          where u.Id == currentUser.Id
@@ -83,7 +84,11 @@ namespace eQuiz.Web.Areas.Student.Controllers
                              // Unix time convertation.
                              StartDate = q.StartDate.HasValue ? (long)(q.StartDate.Value.Subtract(new DateTime(1970, 1, 1))).TotalMilliseconds : -1,
                              TimeLimitMinutes = q.TimeLimitMinutes,
-                             IsActive = q.StartDate.HasValue && q.StartDate.Value <= DateTime.Now ? true : false
+                             IsActive = (q.StartDate.HasValue && q.StartDate.Value <= DateTime.Now) &&
+                             ((from qp in quizPass
+                              where qp.QuizId == q.Id && qp.UserId == currentUser.Id
+                              && qp.StartTime != null && qp.FinishTime != null
+                              select qp).Count() == 0) ? true : false
                          };
 
             return Json(new { quizzes = result }, JsonRequestBehavior.AllowGet);
