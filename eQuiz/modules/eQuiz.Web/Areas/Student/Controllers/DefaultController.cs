@@ -53,11 +53,30 @@ namespace eQuiz.Web.Areas.Student.Controllers
         }
 
         [HttpGet]
+        public ActionResult GetUserGroups()
+        {
+            User currentUser = _repository.GetSingle<User>(u => u.Email == User.Identity.Name);
+
+            var userGroups = _repository.Get<UserToUserGroup>(u => u.UserId == currentUser.Id, u => u.UserGroup)
+                .Select(u => u.UserGroup.Name).ToList();
+
+            return Json(userGroups, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
         public ActionResult GetAllQuizzes()
         {
+            User currentUser = _repository.GetSingle<User>(u => u.Email == User.Identity.Name);
+            IEnumerable<User> users = _repository.Get<User>();
+            IEnumerable<UserToUserGroup> userToUserGroup = _repository.Get<UserToUserGroup>();
+            IEnumerable<UserGroup> userGroup = _repository.Get<UserGroup>();  
             IEnumerable<Quiz> allQuizzes = _repository.Get<Quiz>();
 
-            var result = from q in allQuizzes
+            var result = from u in users
+                         where u.Id == currentUser.Id
+                         join utug in userToUserGroup on u.Id equals utug.UserId
+                         join g in userGroup on utug.GroupId equals g.Id
+                         join q in allQuizzes on g.Id equals q.GroupId
                          select new
                          {
                              Id = q.Id,
@@ -65,10 +84,10 @@ namespace eQuiz.Web.Areas.Student.Controllers
                              // Unix time convertation.
                              StartDate = q.StartDate.HasValue ? (long)(q.StartDate.Value.Subtract(new DateTime(1970, 1, 1))).TotalMilliseconds : -1,
                              TimeLimitMinutes = q.TimeLimitMinutes,
-                             InternetAccess = q.InternetAccess
+                             InternetAccess = q.InternetAccess                                         
                          };
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(new { quizzes = result }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetQuestionsByQuizId(int id, int duration)

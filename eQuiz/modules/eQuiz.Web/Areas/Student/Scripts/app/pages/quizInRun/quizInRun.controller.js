@@ -12,19 +12,13 @@
         vm.passedQuiz = JSON.parse(localStorage.getItem('passQuiz' + vm.quizId)) || trackUserResultService.passedQuiz;
         vm.passedQuiz.QuizId = vm.quizId;
         vm.windowHeight = $window.innerHeight;
+        vm.userGroups = [];
         
         vm.isLoading = false;
-
         //Timer Data
-        //vm.tSeconds = 0;
-        //vm.tMinutes = vm.quizDuration;
-
-        //vm.seconds = vm.tSeconds;
-        //vm.minutes = vm.tMinutes;
         vm.myStyle = {};
-       // vm.time = vm.minutes + ":0" + vm.seconds;
-        var stop;
 
+        var stop;
 
         vm.setCurrentQuestion = function (currentQuestionId, index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
 
@@ -84,6 +78,14 @@
                 });
         };
 
+        getUserGroups();
+        function getUserGroups() {
+            quizService.getUserGroups()
+            .then(function (responce) {
+                vm.userGroups = responce.data;
+            });
+        };
+
         function sendQuestionResult(passedQuestion) {
             var promise = quizService.sendQuestionResult(passedQuestion);
             return promise;
@@ -136,25 +138,7 @@
                     console.log(JSON.stringify(questionResult));
                     sendQuestionResult(questionResult);
                 }
-            }
-            //vm.passedQuiz.FinishDate = new Date(Date.now());
-            //var passedQuiz = vm.passedQuiz;
-            //for (var i in passedQuiz.UserAnswers) {
-            //    if (passedQuiz.UserAnswers[i] != null && passedQuiz.UserAnswers[i] != undefined) {
-            //        if (passedQuiz.UserAnswers.hasOwnProperty(i)) {
-            //            var arr = [];
-            //            if (passedQuiz.UserAnswers[i].Answers != undefined || passedQuiz.UserAnswers[i].Answers != null) {
-            //                for (var j in passedQuiz.UserAnswers[i].Answers) {
-            //                    arr.push(passedQuiz.UserAnswers[i].Answers[j]);
-            //                }
-            //                passedQuiz.UserAnswers[i].Answers = arr;
-            //            }
-            //        }
-            //    }
-            //}
-            //quizService.sendUserResult(passedQuiz)
-            //    .success(function (data) {
-            //    });     
+            }   
         };
 
         //Custom confirm function
@@ -196,7 +180,6 @@
             });
         };
 
-
         //FINISH BUTTON
         vm.finishQuiz = function (index, questionId, isAutomatic, quizBlock, questionOrder, answerText) {
             if (!vm.quizQuestions[index].isAutomatic) {
@@ -210,7 +193,6 @@
         }, function (value) {
             vm.windowHeight = value;
         });
-
 
         //Timer Methods
         vm.startTimer = function () {
