@@ -4,153 +4,160 @@
     ViewBag.showButton = !Model.State.Equals("Scheduled");
 }
 
-<div align="center">
-    <h2>@Model.Name</h2>
-    <p ng-controller="QuizController as qc">
-        <a href="/moderator/quiz/edit/#/quiz?id=@Model.Id">Edit</a>
-        <a href="" ng-show="@ViewBag.showButton" ng-click="qc.model.quiz.Id=@Model.Id; qc.deleteQuiz()">Delete</a>
-    </p>
-    <p>
-        <i>@Model.Descriprtion</i>
-    </p>
-    <table class="table-quiz-info" >
-        <tr>
-            <td><b>Type:</b></td>
-            <td>@Model.Type</td>
-        </tr>
+<section class="wrapperDashboard1">
+    <div align="center">
+        <h2>@Model.Name</h2>
+        <p ng-controller="QuizController as qc">
+           <h4> <a href="/moderator/quiz/edit/#/quiz?id=@Model.Id">Edit </a>
+            <a href="" ng-show="@ViewBag.showButton" ng-click="qc.model.quiz.Id=@Model.Id; qc.deleteQuiz()">Delete</a></h4>
+        </p>
+        <p>
+            <i>@Model.Descriprtion</i>
+        </p>
+        <div class="row right-margin">
+            <div class="col-md-offset-1 col-md-10 col-xs-offset-0 col-xs-12">
 
-        <tr>
-            <td><b>State:</b></td>
-            <td>@Model.State</td>
-        </tr>
+                <table class="table-quiz-info">
+                    <tr>
+                        <td><b>Type:</b></td>
+                        <td>@Model.Type</td>
+                    </tr>
 
-        <tr>
-            <td><b>Group name:</b></td>
-            <td>@Model.Group</td>
-        </tr>
+                    <tr>
+                        <td><b>State:</b></td>
+                        <td>@Model.State</td>
+                    </tr>
 
-        <tr>
-            <td><b>Start date:</b></td>
-            <td>@Model.StartDate</td>
-        </tr>
+                    <tr>
+                        <td><b>Group name:</b></td>
+                        <td>@Model.Group</td>
+                    </tr>
 
-        <tr>
-            <td><b>End date:</b></td>
-            <td>@Model.EndDate</td>
-        </tr>
+                    <tr>
+                        <td><b>Start date:</b></td>
+                        <td>@Model.StartDate</td>
+                    </tr>
 
-        <tr>
-            <td><b>Time limit in minutes:</b></td>
-            <td>@Model.TimeLimitMinutes</td>
-        </tr>
+                    <tr>
+                        <td><b>End date:</b></td>
+                        <td>@Model.EndDate</td>
+                    </tr>
 
-        <tr>
-            <td><b>Internet access:</b></td>
-            <td>@Model.InternetAccess.ToString()</td>
-        </tr>
+                    <tr>
+                        <td><b>Time limit in minutes:</b></td>
+                        <td>@Model.TimeLimitMinutes</td>
+                    </tr>
 
-        <tr>
-            <td><b>Topic:</b></td>
-            <td>@Model.Topic</td>
-        </tr>
+                    <tr>
+                        <td><b>Internet access:</b></td>
+                        <td>@Model.InternetAccess.ToString()</td>
+                    </tr>
 
-        <tr>
-            <td><b>Is random:</b></td>
-            <td>@Model.IsRandom.ToString()</td>
-        </tr>
+                    <tr>
+                        <td><b>Topic:</b></td>
+                        <td>@Model.Topic</td>
+                    </tr>
 
-        <tr>
-            <td><b>Question min complexity:</b></td>
-            <td>@Model.QuestionMinComplexity</td>
-        </tr>
+                    <tr>
+                        <td><b>Is random:</b></td>
+                        <td>@Model.IsRandom.ToString()</td>
+                    </tr>
 
-        <tr>
-            <td><b>Question max complexity:</b></td>
-            <td>@Model.QuestionMaxComplexity</td>
-        </tr>
+                    @*<tr>
+                            <td><b>Question min complexity:</b></td>
+                            <td>@Model.QuestionMinComplexity</td>
+                        </tr>
 
-        <tr>
-            <td><b>Question count:</b></td>
-            <td>@Model.QuestionCount</td>
-        </tr>
-    </table>
+                        <tr>
+                            <td><b>Question max complexity:</b></td>
+                            <td>@Model.QuestionMaxComplexity</td>
+                        </tr>*@
 
-    @foreach (var question in Model.Questions)
-    {
-        <table class="table-quiz-info">
-            <tr>
-                <td><b>Question Score:</b></td>
-                <td>@question.QuestionScore</td>
-            </tr>
-            <tr>
-                <td><b>Question complexity:</b></td>
-                <td>@question.QuestionComplexity</td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <p>
-                        <i>@question.Text</i>
-                    </p>
-                    @switch (question.Type)
-                    {
-                        case "Descriptive":
-                            {
-                                <p>@question.Answers[0].AnswerText</p>
-                            }
-                            break;
-                        case "Select one":
-                            {
-                                <form>
-                                    @foreach (var answer in question.Answers)
-                                    {
-                                        if (answer.IsRight == true)
-                                         {
-                                             <input type="radio" disabled="disabled" checked/>
-                                             @answer.AnswerText
-                                             ;
-                                             <br>
-                                        }
-                                        else
+                    <tr>
+                        <td><b>Question count:</b></td>
+                        <td>@Model.QuestionCount</td>
+                    </tr>
+                </table>
+
+
+                @foreach (var question in Model.Questions)
+                {
+                    <table class="table-quiz-info">
+                        <tr>
+                            <td><b>Question Score:</b></td>
+                            <td>@question.QuestionScore</td>
+                        </tr>
+                        @*<tr>
+                                <td><b>Question complexity:</b></td>
+                                <td>@question.QuestionComplexity</td>
+                            </tr>*@
+                        <tr>
+                            <td colspan="2">
+                                <p>
+                                    <i>@question.Text</i>
+                                </p>
+                                @switch (question.Type)
+                                {
+                                    case "Descriptive":
                                         {
-                                            <input type="radio" disabled="disabled"/>
-                                            @answer.AnswerText
-                                            ;
-                                            <br>
+                                            <p>@question.Answers[0].AnswerText</p>
                                         }
-                                    }
-                                </form>
-                                break;
-                            }
-                        case "Select many":
-                            {
-                                <form>
-                                    @foreach (var answer in question.Answers)
-                                    {
-                                        if (answer.IsRight == true)
+                                        break;
+                                    case "Select one":
                                         {
-                                            <input type="checkbox" disabled="disabled" checked />
-                                            @answer.AnswerText
-                                            ;
-                                            <br>
+                                            <form>
+                                                @foreach (var answer in question.Answers)
+                                                {
+                                                    if (answer.IsRight == true)
+                                                    {
+                                                        <input type="radio" disabled="disabled" checked />
+                                                        @answer.AnswerText
+                                                        ;
+                                                        <br>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="radio" disabled="disabled" />
+                                                        @answer.AnswerText
+                                                        ;
+                                                        <br>
+                                                    }
+                                                }
+                                            </form>
+                                            break;
                                         }
-                                        else
+                                    case "Select many":
                                         {
-                                            <input type="checkbox" disabled="disabled" />
-                                            @answer.AnswerText
-                                            ;
-                                            <br>
+                                            <form>
+                                                @foreach (var answer in question.Answers)
+                                                {
+                                                    if (answer.IsRight == true)
+                                                    {
+                                                        <input type="checkbox" disabled="disabled" checked />
+                                                        @answer.AnswerText
+                                                        ;
+                                                        <br>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="checkbox" disabled="disabled" />
+                                                        @answer.AnswerText
+                                                        ;
+                                                        <br>
+                                                    }
+                                                }
+                                            </form>
+                                            break;
                                         }
-                                    }
-                                </form>
-                                break;
-                            }
-                    }
-                </td>
-            </tr>
-        </table>
-    }
-</div>
-
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</section>
 @section FootScripts{
     <script src="~/Scripts/app/shared/equiz.module.js"></script>
     <script src="~/Areas/Moderator/Scripts/app/pages/shared/mvc-location.js"></script>
@@ -161,9 +168,11 @@
     <script src="~/Areas/Moderator/Scripts/app/pages/quiz/unique-quiz-name.directive.js"></script>
 }
 
-@section HeadStyles{    
+@section HeadStyles{
     <link href="~/Styles/bootstrap.css" rel="stylesheet" />
     <link href="~/Areas/Moderator/Styles/equiz-temp.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Oswald" />
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 }
 
 @section PageHeader{

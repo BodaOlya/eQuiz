@@ -542,7 +542,7 @@ ul.moderator-top-header li:last-child {
 .table-quiz-info {
     table-layout: fixed;
     border-collapse: collapse;
-    border: 1px solid black;
+    border: 1px solid #ddd;
     width: 50%;
     margin-bottom: 50px;
 }
