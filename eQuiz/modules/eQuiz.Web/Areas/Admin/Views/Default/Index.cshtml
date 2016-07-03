@@ -17,9 +17,15 @@
                 <button onclick="location.href='/Admin/Default/Index/Students'" class="btn btn-default" style="font-size:20px" ng-click="lc.GoToReview()">
                     Students
                 </button>
-                <label class="label label-primary" style="font-size:20px; float:right; padding-top: 12px; padding-bottom: 10px">
-                    Full Name
-                </label>
+                <div style="float: right">
+                    @using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <button class="btn btn-default" style="font-size: 20px">@User.Identity.Name</button>
+                        <a href="javascript:document.getElementById('logoutForm').submit()">Log Out</a>
+                    }
+                </div>
             </div>
 }
 <div style="z-index: 5" data-loading class="cssload-container centered">

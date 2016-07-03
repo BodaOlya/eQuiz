@@ -1,13 +1,14 @@
 ﻿<div>
-    <h2>{{sc.studentInfo.firstName + ' ' + sc.studentInfo.lastName}}</h2>
-    <div>
+    <h2 style="margin-left: 13px">{{sc.studentInfo.firstName + ' ' + sc.studentInfo.lastName}}</h2>
+    <div class="col-lg-12">
+        <!--<ul class="tabLabels">-->
         <ul class="tabLabels">
             <li><a href="#Profile" ng-class="sc.currentTab=='Profile'&&'selected'" ng-click="sc.currentTab='Profile'">Profile</a></li>
             <li><a href="#Quizzes" ng-class="sc.currentTab=='Quizzes'&&'selected'" ng-click="sc.currentTab='Quizzes'">Quizzes ({{sc.getPassedQuizzes()}})</a></li>
-            <li><a href="#Comments" ng-class="sc.currentTab=='Comments'&&'selected'"ng-click="sc.currentTab='Comments'">Comments ({{sc.studentComments.length}})</a></li>
+            <li><a href="#Comments" ng-class="sc.currentTab=='Comments'&&'selected'" ng-click="sc.currentTab='Comments'">Comments ({{sc.studentComments.length}})</a></li>
         </ul>
     </div>
-  
+
     <div id="tabContainer" style="width:auto">
         <div id="profileTab" ng-show="sc.currentTab=='Profile'">
             <form name='profileInfo' style="width:auto; max-width:700px" novalidate>
@@ -31,26 +32,26 @@
         <div id="quizzesTab" ng-show="sc.currentTab=='Quizzes'">
             <div style="height:300px; overflow:auto">
                 <table class="reviewTable">
-                <thead>
-                    <tr>
-                        <th ng-repeat="h in sc.studentQuizzesHeaders">
-                            <a href="#" class="link" ng-click="sc.refreshPredicate(h.predicateIndex); sc.order(sc.myPredicate[h.predicateIndex],null)">
-                                <span class="sortorder" ng-show="sc.direction(h.predicateIndex) !== null" ng-class="{direction:sc.direction(h.predicateIndex)}"></span>
-                                {{h.name}}
-                            </a>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="q in sc.studentQuizzes | startFrom: sc.tablePage*sc.resultsPerPage | limitTo:sc.resultsPerPage" style="height: 50px">
-                        <td><a href="Index/Quiz?Student={{sc.studentInfo.id}}&Quiz={{q.id}}" class="link" ng-click="sc.setQuizLink(q.id)">{{q.name}}</a></td>
-                        <td>{{q.state}}</td>
-                        <td>{{q.questions}}</td>
-                        <td>{{q.verificationType}}</td>
-                        <td>{{q.otherDetails}}</td>
-                    </tr>
-                </tbody>
-            </table>
+                    <thead>
+                        <tr>
+                            <th ng-repeat="h in sc.studentQuizzesHeaders">
+                                <a href="#" class="link" ng-click="sc.refreshPredicate(h.predicateIndex); sc.order(sc.myPredicate[h.predicateIndex],null)">
+                                    <span class="sortorder" ng-show="sc.direction(h.predicateIndex) !== null" ng-class="{direction:sc.direction(h.predicateIndex)}"></span>
+                                    {{h.name}}
+                                </a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="q in sc.studentQuizzes | startFrom: sc.tablePage*sc.resultsPerPage | limitTo:sc.resultsPerPage" style="height: 50px">
+                            <td><a href="Index/Quiz?Student={{sc.studentInfo.id}}&Quiz={{q.id}}" class="link" ng-click="sc.setQuizLink(q.id)">{{q.name}}</a></td>
+                            <td>{{q.state}}</td>
+                            <td>{{q.questions}}</td>
+                            <td>{{q.verificationType}}</td>
+                            <td>{{q.otherDetails}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div layout="row">
                 <span>
@@ -94,7 +95,7 @@
             <a class="link" style="font-size:large" ng-click="sc.toggleNewCommentFrame()">Add new</a>
             <div style="position:relative" ng-show="sc.newCommentFrame">
                 <label>Text:</label>
-                <form name="addNewCommentForm"  novalidate>
+                <form name="addNewCommentForm" novalidate>
                     <span>
                         <textarea ng-keydown="sc.addCommentKeyDown()" ng-keyup="sc.addCommentKeyUp()" class="commentTextBox" name="commentText" ng-model="sc.newComment.text" cols="80" rows="5" required></textarea>
                     </span>
