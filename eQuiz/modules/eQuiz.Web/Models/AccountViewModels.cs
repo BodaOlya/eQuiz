@@ -50,7 +50,7 @@ namespace eQuiz.Web.Models
     {
         [Required]
         [Display(Name = "Email")]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Invalid email")]
         public string Email { get; set; }
 
         [Required]
