@@ -9,6 +9,7 @@ using eQuiz.Entities;
 
 namespace eQuiz.Web.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class ReviewController : BaseController
     {
         #region Fields

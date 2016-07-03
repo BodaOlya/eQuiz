@@ -1,4 +1,9 @@
-﻿.notifyPopUpMessage {
+﻿.right-align-div{
+    margin-right: 15px;
+    float: right;
+}
+
+.notifyPopUpMessage {
     border:solid;
     border-color:forestgreen;
     background-color:lightgreen;
