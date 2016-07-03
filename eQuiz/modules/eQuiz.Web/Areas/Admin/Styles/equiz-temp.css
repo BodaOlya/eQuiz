@@ -1,14 +1,69 @@
-﻿.right-align-div{
+﻿/*Dinamic font size header*/
+.h-font-responsive {
+    font-size: 20px;
+}
+
+@media (max-width: 768px) {
+    .h-font-responsive {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1280px) {
+    .h-font-responsive {
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 1281px) and (max-width: 1600px) {
+    .h-font-responsive {
+        font-size: 18px;
+    }
+}
+/*End dinamic font size*/
+
+.h-responsive {
+    height: 54px;
+}
+
+@media (max-width: 768px) {
+    .h-responsive {
+        height: 45px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1280px) {
+    .h-responsive {
+        height: 48px;
+    }
+}
+
+@media (min-width: 1281px) and (max-width: 1600px) {
+    .h-responsive {
+        height: 51px;
+    }
+}
+
+.sans-fonts {
+    font-family: sans-serif
+}
+
+.pad-top-bottom {
+    padding-top: 13px;
+    padding-bottom: 13px;
+}
+
+.right-align-div {
     margin-right: 15px;
     float: right;
 }
 
 .notifyPopUpMessage {
-    border:solid;
-    border-color:forestgreen;
-    background-color:lightgreen;
-    width:auto;
-    min-height:60px;
+    border: solid;
+    border-color: forestgreen;
+    background-color: lightgreen;
+    width: auto;
+    min-height: 60px;
     min-width: 120px;
     bottom: 0;
     right: 0;
@@ -16,69 +71,69 @@
 }
 
 .notifyPopUpErrorMessage {
-    border:solid;
-    border-color:red;
-    background-color:lightcoral;
-    width:auto;
-    min-height:60px;
+    border: solid;
+    border-color: red;
+    background-color: lightcoral;
+    width: auto;
+    min-height: 60px;
     min-width: 120px;
     bottom: 0;
     right: 0;
     position: fixed;
-    font-size:larger;
+    font-size: larger;
 }
 
 .closePopUp {
-    float:right;
-    border:medium;
-    border-color:darkgreen;
-    font:300;
-    font-family:Arial;
+    float: right;
+    border: medium;
+    border-color: darkgreen;
+    font: 300;
+    font-family: Arial;
 }
 
 .confirmPopUp {
-    display:block;
-    width:inherit;
-    margin:5px;
-    text-align:center;
-    border:medium;
-    background-color:lightgreen;
-    font-family:Arial;
-    align-content:center;
+    display: block;
+    width: inherit;
+    margin: 5px;
+    text-align: center;
+    border: medium;
+    background-color: lightgreen;
+    font-family: Arial;
+    align-content: center;
 }
 
 .buttonPopUp {
-    background-color:lightgreen;
-    border:medium;
-    border-color:darkmagenta;
-    font-size:80%;
-    color:black;
-    font-family:Arial;
-    margin-top:15px;
-    width:30px;
+    background-color: lightgreen;
+    border: medium;
+    border-color: darkmagenta;
+    font-size: 80%;
+    color: black;
+    font-family: Arial;
+    margin-top: 15px;
+    width: 30px;
 }
 
 .ConfirmPopUpText {
-    display:block;
-    font:700;
-    font-family:Arial;
-    margin:5px;
-    text-align:center;
-    width:inherit;
-    height:auto;
+    display: block;
+    font: 700;
+    font-family: Arial;
+    margin: 5px;
+    text-align: center;
+    width: inherit;
+    height: auto;
 }
 
 .NotifyPopUpText {
-    display:block;
-    font:700;
-    font-family:Arial;
-    margin:20px;
-    text-align:center;
-    width:inherit;
-    height:auto;
+    display: block;
+    font: 700;
+    font-family: Arial;
+    margin: 20px;
+    text-align: center;
+    width: inherit;
+    height: auto;
 }
 
-.highlightedText  {
+.highlightedText {
     background: lightblue;
 }
 
@@ -91,10 +146,10 @@
 }
 
 .reviewTable {
-        width: 100%;
-        height: auto;
-        text-align: left;
-        align-items: center;
+    width: 100%;
+    height: auto;
+    text-align: left;
+    align-items: center;
 }
 
 th, td {
@@ -106,7 +161,7 @@ th, td {
 }
 
 .groupBtn {
-    float:right;
+    float: right;
 }
 
 .tabLabels {
@@ -121,10 +176,10 @@ th, td {
 }
 
 #tabContainer {
-    height:300px;
-    border:1px solid gray;
-    padding:40px;
-    width:90em;
+    height: 300px;
+    border: 1px solid gray;
+    padding: 40px;
+    width: 90em;
 }
 
 .tabLabels li {
@@ -141,95 +196,91 @@ th, td {
     position: relative;
 }
 
-.tabLabels li a {
-    text-decoration: none;
-    color: #000;
-    display: block;
-    font-size: 1.2em;
-    padding: 0 20px;
-    border: 1px solid #fff;
-    outline: none;
-}
+    .tabLabels li a {
+        text-decoration: none;
+        color: #000;
+        display: block;
+        font-size: 1.2em;
+        padding: 0 20px;
+        border: 1px solid #fff;
+        outline: none;
+    }
 
-.tabLabels li a:hover {
-    background: #ccc;
-    cursor:pointer;
-}   
+        .tabLabels li a:hover {
+            background: #ccc;
+            cursor: pointer;
+        }
 
-html .tabLabels li.active, html .tabLabels li.active a:hover  {
+html .tabLabels li.active, html .tabLabels li.active a:hover {
     background: #fff;
     border-bottom: 1px solid #fff;
 }
 
-.tabLabels li a.selected
-{
+.tabLabels li a.selected {
     color: #000;
-    font-weight:bold;
+    font-weight: bold;
     background-color: #fff;
     border-bottom: 1px solid #fff;
 }
 
 .footerButtons {
-    
-    text-align:center;
-    font:14px
+    text-align: center;
+    font: 14px;
 }
 
-.link
-{
-    cursor:pointer;
+.link {
+    cursor: pointer;
 }
 
-.commentTextBox
-{
+.commentTextBox {
     resize: none;
     width: 300px;
     height: 170px;
 }
 
-.authorTextBox
-{
+.authorTextBox {
     width: 300px;
 }
 
 .footerButtons button {
-    width:170px; 
-    height:40px
+    width: 170px;
+    height: 40px;
 }
 
 .footerButtons div {
-    width:200px;
-    height:auto;
-    display:inline-block;
+    width: 200px;
+    height: auto;
+    display: inline-block;
 }
 
 .ng-invalid.ng-dirty.showValidation {
-border: 1px solid red;
+    border: 1px solid red;
 }
 
 .ng-valid.ng-dirty.showValidation {
-border: 1px solid green;
+    border: 1px solid green;
 }
 
 /* Next are quizReview styles */
 
-div.confirm_btns_section {    
-    text-align: center;    
+div.confirm_btns_section {
+    text-align: center;
     padding: 10px 50px 10px 50px;
-    margin: 10px;    
+    margin: 10px;
 }
 
 button.btn-lightgreen-hover:hover {
-    background: lightgreen;   
+    background: lightgreen;
     color: black;
 }
 
 button.btn-lightgrey-hover:hover {
-    background: lightgrey;    
+    background: lightgrey;
     color: black;
 }
+
 button.btn-lightcoral-hover:hover {
-    background: lightcoral;      
+    background: lightcoral;
     color: black;
 }
 
@@ -239,14 +290,15 @@ button.btn-standart {
 }
 
 button.btn-lightgreen {
-    background: lightgreen;    
+    background: lightgreen;
 }
 
 button.btn-lightgrey {
-    background: lightgrey;    
+    background: lightgrey;
 }
+
 button.btn-lightcoral {
-    background: lightcoral;      
+    background: lightcoral;
 }
 
 .btn_spacing {
@@ -256,12 +308,12 @@ button.btn-lightcoral {
 .btn_length {
     width: 140px;
     height: 40px;
-    font-size:initial;
-    font-weight:200;
+    font-size: initial;
+    font-weight: 200;
 }
 
 .display_inline {
-    display: inline-block;         
+    display: inline-block;
     margin: 5px 30px 0px 5px;
 }
 
@@ -277,10 +329,10 @@ button.btn-lightcoral {
 
 .textarea {
     width: 95%;
-    height: 100px;   
+    height: 100px;
 }
 
-.showRightAnswer:hover + textarea{
+.showRightAnswer:hover + textarea {
     display: block;
 }
 
@@ -288,55 +340,70 @@ button.btn-lightcoral {
     display: none;
 }
 
-.adminHintAnswer:hover  {
-    display: block;
-}
+    .adminHintAnswer:hover {
+        display: block;
+    }
 
 /* quizReview Styles END */
 
 
 /*Loading animation spinner START*/
 .cssload-container {
-	width: 100%;
-	height: 100px;
-	text-align: center;
+    width: 100%;
+    height: 100px;
+    text-align: center;
 }
 
 .cssload-speeding-wheel {
-	width: 100px;
-	height: 100px;
-	margin: 0 auto;
-	border: 6px solid rgba(138,138,138,0.98);
-	border-radius: 50%;
-	border-left-color: transparent;
-	border-right-color: transparent;
-	animation: cssload-spin 575ms infinite linear;
-		-o-animation: cssload-spin 575ms infinite linear;
-		-ms-animation: cssload-spin 575ms infinite linear;
-		-webkit-animation: cssload-spin 575ms infinite linear;
-		-moz-animation: cssload-spin 575ms infinite linear;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    border: 6px solid rgba(138,138,138,0.98);
+    border-radius: 50%;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    animation: cssload-spin 575ms infinite linear;
+    -o-animation: cssload-spin 575ms infinite linear;
+    -ms-animation: cssload-spin 575ms infinite linear;
+    -webkit-animation: cssload-spin 575ms infinite linear;
+    -moz-animation: cssload-spin 575ms infinite linear;
 }
 
 
 
 @keyframes cssload-spin {
-	100%{ transform: rotate(360deg); transform: rotate(360deg); }
+    100% {
+        transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
 }
 
 @-o-keyframes cssload-spin {
-	100%{ -o-transform: rotate(360deg); transform: rotate(360deg); }
+    100% {
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
 }
 
 @-ms-keyframes cssload-spin {
-	100%{ -ms-transform: rotate(360deg); transform: rotate(360deg); }
+    100% {
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
 }
 
 @-webkit-keyframes cssload-spin {
-	100%{ -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
 }
 
 @-moz-keyframes cssload-spin {
-	100%{ -moz-transform: rotate(360deg); transform: rotate(360deg); }
+    100% {
+        -moz-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
 }
 /*Loading animation spinner END*/
 
@@ -345,13 +412,13 @@ button.btn-lightcoral {
 .dropbtn {
     background-color: white;
     color: black;
-    padding: 4px;    
+    padding: 4px;
     border-style: groove;
     height: 2em;
     width: 10em;
 }
 
-.dropdown {    
+.dropdown {
     position: relative;
     display: inline-block;
     margin-left: 5px;
@@ -369,16 +436,16 @@ button.btn-lightcoral {
     overflow-y: auto;
 }
 
-.dropdown-content a {
-    color: black;
-    padding: 8px 8px;
-    text-decoration: none;
-    display: block;
-}
+    .dropdown-content a {
+        color: black;
+        padding: 8px 8px;
+        text-decoration: none;
+        display: block;
+    }
 
-.dropdown-content a:hover {
-    background-color: #f1f1f1
-}
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
 
 .dropdown:hover .dropdown-content {
     display: block;
@@ -389,13 +456,13 @@ button.btn-lightcoral {
 }
 
 .dropdownContentElemChecked {
-    display: none;        
+    display: none;
 }
 
 /* multilevel drop down */
 
 .multileveldropdown {
-    position:relative;
+    position: relative;
     display: inline-block;
     margin-left: 5px;
 }
@@ -408,18 +475,18 @@ button.btn-lightcoral {
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
-.multileveldropdown-content a {
-    color: black;
-    padding: 8px 8px;
-    text-decoration: none;
-    display: block;
-}
+    .multileveldropdown-content a {
+        color: black;
+        padding: 8px 8px;
+        text-decoration: none;
+        display: block;
+    }
 
-.multileveldropdown-content a:hover {
-    background-color: #f1f1f1;
-}
+        .multileveldropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
 
-.multileveldropdown:hover .multileveldropdown-content{
+.multileveldropdown:hover .multileveldropdown-content {
     background-color: #F7F7F7;
     display: block;
 }
@@ -428,29 +495,29 @@ button.btn-lightcoral {
     display: none;
 }
 
-.multileveldropdown-content div a:hover + div{
-    display: block;    
+.multileveldropdown-content div a:hover + div {
+    display: block;
 }
 
 .multileveldropdown-content div div {
-  left: 100%;
-  min-width: 10em;  
-  width: 100%;
-  height: 225px;
-  top: 0;
-  position: absolute;
-  background-color: #f9f9f9; 
-  overflow-y: auto; 
+    left: 100%;
+    min-width: 10em;
+    width: 100%;
+    height: 225px;
+    top: 0;
+    position: absolute;
+    background-color: #f9f9f9;
+    overflow-y: auto;
 }
 
-.multileveldropdown-content div div:hover {
-    display:block; 
-}
+    .multileveldropdown-content div div:hover {
+        display: block;
+    }
 /* Drop-down list styles END */
 
 .centered {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
