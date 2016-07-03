@@ -1,74 +1,89 @@
-﻿@{ 
+﻿@{
     ViewBag.Title = "Edit/Create user group";
     Layout = "~/Views/Shared/Layout.cshtml";
 }
 
-<section class="listQuizzes-wrapper" ng-controller="UserGroupsController as ug" ng-cloak>
+<section class="wrapperDashboard1" ng-controller="UserGroupsController as ug" ng-cloak>
 
-    <h2>@Html.ActionLink(linkText: "Create new", actionName: "Create")</h2>    
-    <br />
+
     <div class="cssload-container" ng-show="ug.isLoading">
         <div class="cssload-whirlpool"></div>
     </div>
     <br />
 
-    <div class="container-quizzes" ng-show="!ug.isLoading">
-        <label>Search</label>
-        <input type="text" ng-model="ug.pagingInfo.searchText" ng-change="ug.reloadUserGroups()" style="width:10em; margin-bottom: 10px">
-        <label style="margin-left:10px">Select status</label>
-        <select style="height:30px;" ng-model="ug.pagingInfo.selectedStatus" ng-change="ug.changedValue(ug.pagingInfo.selectedStatus)">
-            <option ng-repeat="status in ug.statuses">{{status}}</option>
-        </select>
-        <table class="table-quizzes">
-            <thead>
-                <tr>
-                    <th>
-                        <a href="#" ng-click="ug.sortBy('Name')">
-                            {{ug.showOrderArrow('Name')}}Name
-                        </a>
-                    </th>
-                    <th>
-                        <a href="#" ng-click="ug.sortBy('CountOfStudents')">
-                            {{ug.showOrderArrow('CountOfStudents')}}Students
-                        </a>
-                    </th>
-                    <th>
-                        <a href="#" ng-click="ug.sortBy('CountOfQuizzes')">
-                            {{ug.showOrderArrow('CountOfQuizzes')}}Quizzes
-                        </a>
-                    </th>
-                    <th>
-                        <a href="#" ng-click="ug.sortBy('CreatedDate')">
-                            {{ug.showOrderArrow('CreatedDate')}}Created date
-                        </a>
-                    </th>
-                    <th>
-                        <a href="#" ng-click="ug.sortBy('CreatedBy')">
-                            {{ug.showOrderArrow('CreatedBy')}}Created by
-                        </a>
-                    </th>
-                    <th>
-                        <a href="#" ng-click="ug.sortBy('StateName')">
-                            {{ug.showOrderArrow('StateName')}}State
-                        </a>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="ugroups in ug.userGroups">
-                    <td><a ng-href="/moderator/usergroup/edit/#/getusergroup?id={{ugroups.Id}}">{{ ugroups.Name }}</a></td>
-                    <td>{{ ugroups.CountOfStudents }}</td>
-                    <td>{{ ugroups.CountOfQuizzes }}</td>
-                    <td>{{ ugroups.CreatedDate | ctime | date:"dd-MM-yyyy HH:mm" }}</td>
-                    <td>{{ ugroups.CreatedBy }}</td>
-                    <td>{{ ugroups.StateName }}</td>
-                </tr>
-            </tbody>
-        </table>
-        <br />
-        <uib-pagination total-items="ug.pagingInfo.userGroupsTotal" ng-model="ug.pagingInfo.currentPage" ng-change="ug.reloadUserGroups()"
-                        items-per-page="ug.pagingInfo.userGroupsPerPage" max-size="5" class="pagination-sm" boundary-link-numbers="true">
-        </uib-pagination>
+    <div class="row right-margin" ng-show="!ug.isLoading">
+        <div class="col-md-offset-1 col-md-10 col-xs-offset-0 col-xs-12">
+            <h2>@Html.ActionLink(linkText: "Create new", actionName: "Create")</h2>
+            <br />
+            <div class="form-inline">
+            <label>Search</label>
+            <input type="search" ng-model="ug.pagingInfo.searchText" ng-change="ug.reloadUserGroups()" class="form-control">
+            <label style="margin-left:20px">Select status</label>
+            <select style="border-radius:0" class="form-control" ng-model="ug.pagingInfo.selectedStatus" ng-change="ug.changedValue(ug.pagingInfo.selectedStatus)">
+                <option ng-repeat="status in ug.statuses">{{status}}</option>
+            </select>
+                </div>
+        </div>
+    </div>
+    <div class="row box right-margin">
+        <div ng-cloak class="col-md-offset-1 col-md-10 col-xs-offset-0 col-xs-12 table-responsive">
+
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            <a href="#" ng-click="ug.sortBy('Name')">
+                                {{ug.showOrderArrow('Name')}}Name
+                            </a>
+                        </th>
+                        <th>
+                            <a href="#" ng-click="ug.sortBy('CountOfStudents')">
+                                {{ug.showOrderArrow('CountOfStudents')}}Students
+                            </a>
+                        </th>
+                        <th>
+                            <a href="#" ng-click="ug.sortBy('CountOfQuizzes')">
+                                {{ug.showOrderArrow('CountOfQuizzes')}}Quizzes
+                            </a>
+                        </th>
+                        <th>
+                            <a href="#" ng-click="ug.sortBy('CreatedDate')">
+                                {{ug.showOrderArrow('CreatedDate')}}Created date
+                            </a>
+                        </th>
+                        <th>
+                            <a href="#" ng-click="ug.sortBy('CreatedBy')">
+                                {{ug.showOrderArrow('CreatedBy')}}Created by
+                            </a>
+                        </th>
+                        <th>
+                            <a href="#" ng-click="ug.sortBy('StateName')">
+                                {{ug.showOrderArrow('StateName')}}State
+                            </a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="ugroups in ug.userGroups">
+                        <td><a ng-href="/moderator/usergroup/edit/#/getusergroup?id={{ugroups.Id}}">{{ ugroups.Name }}</a></td>
+                        <td>{{ ugroups.CountOfStudents }}</td>
+                        <td>{{ ugroups.CountOfQuizzes }}</td>
+                        <td>{{ ugroups.CreatedDate | ctime | date:"dd-MM-yyyy HH:mm" }}</td>
+                        <td>{{ ugroups.CreatedBy }}</td>
+                        <td>{{ ugroups.StateName }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row box right-margin">
+        <div ng-if="!ug.isLoading" class="col-md-offset-1 col-md-10 col-xs-offset-0 col-xs-12">
+
+            <uib-pagination total-items="ug.pagingInfo.userGroupsTotal" ng-model="ug.pagingInfo.currentPage" ng-change="ug.reloadUserGroups()"
+                            items-per-page="ug.pagingInfo.userGroupsPerPage" max-size="5" class="pagination-sm" boundary-link-numbers="true">
+            </uib-pagination>
+        </div>
     </div>
 </section>
 
@@ -83,6 +98,8 @@
 @section HeadStyles{
     <link href="~/Styles/bootstrap.css" rel="stylesheet" />
     <link href="~/Areas/Moderator/Styles/equiz-temp.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Oswald" />
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 }
 
 @section PageHeader{
