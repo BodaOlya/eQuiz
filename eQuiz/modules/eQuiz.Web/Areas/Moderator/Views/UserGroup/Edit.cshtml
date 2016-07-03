@@ -4,144 +4,139 @@
     Layout = "~/Views/Shared/Layout.cshtml";
 }
 
-@section HeadStyles
-{
-    <link href="~/Styles/bootstrap.css" rel="stylesheet" />
-    <link href="~/Areas/Moderator/Styles/equiz-temp.css" rel="stylesheet" />
-}
 
-@section PageHeader{
-    @{
-        Html.RenderPartial("~/Areas/Moderator/Views/Shared/_Header.cshtml");
-    }
-}
-
-<div ng-controller="UserGroupController as g" ng-cloak class="user-group">
+<section class="wrapperDashboard1" ng-controller="UserGroupController as g" ng-cloak>
     <ng-form name="g.groupForm">
-        <h2> Create new/ Edit {{g.group.Name}}</h2>
+        <div class="row right-margin">
+            <div class="col-md-offset-1 col-md-10 col-xs-offset-0 col-xs-12">
 
-        <div class="container-quizzes">
-            <div unique-user-group-name>
-                <label class="control-label"> Name </label>
-                <input class="form-control" type="text" ng-disabled="!g.isEditingEnabled()" ng-model="g.group.Name" name="GroupName" required />
-                <input type="hidden" value="{{g.group.Id}}" name="Id" />
-                <div ng-messages="g.groupForm.GroupName.$error" class="help-block hide">
-                    <p ng-message="required">Group name is required</p>
-                    <p ng-message="nonUniqueName">This name is already used</p>
+                <h2> Create new/ Edit {{g.group.Name}}</h2>
+
+                <div class="form-inline">
+                    <div unique-user-group-name>
+                        <label> Name </label>
+                        <input class="form-control" type="search" ng-disabled="!g.isEditingEnabled()" ng-model="g.group.Name" name="GroupName" required />
+                        <input type="hidden" value="{{g.group.Id}}" name="Id" />
+                        <div ng-messages="g.groupForm.GroupName.$error" class="help-block hide">
+                            <p ng-message="required">Group name is required</p>
+                            <p ng-message="nonUniqueName">This name is already used</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="ug-import">
-                <label> Students </label>
-                <label id="file-link" for="ug-file-upload"> Import from *.csv </label>
-                <input type="file" id="ug-file-upload" ng-disabled="!g.isEditingEnabled()" import-users-from-file callback="g.useImportedData(data)" hidden />
-            </div>
-
-            <table class="table-quizzes">
-
-                <thead>
-                    <tr>
-                        <th>
-                            <a href="#" ng-click="g.sortBy('LastName')">
-                                {{g.showOrderArrow('LastName')}}LastName
-                            </a>
-                        </th>
-                        <th>
-                            <a href="#" ng-click="g.sortBy('FirstName')">
-                                {{g.showOrderArrow('FirstName')}}FirstName
-                            </a>
-                        </th>
-                        <th>
-                            <a href="#" ng-click="g.sortBy('Email')">
-                                {{g.showOrderArrow('Email')}}E-mail
-                            </a>
-                        </th>
-                        <th>
-                            Delete
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-form="g.userForm[$index]" ng-repeat="user in g.users track by $index" unique-user-email users="g.users" user="user">
-                        <td>
-                            <div show-error>
-                                <input class="form-control" type="text" ng-disabled="!g.isEditingEnabled()" ng-model="user.LastName" name="LastName" ng-change="g.checkEmail()" required />
-                                <div ng-messages="g.userForm[$index].LastName.$error" class="help-block hide">
-                                    <p ng-message="required">Last name is required</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div show-error>
-                                <input class="form-control" type="text" ng-disabled="!g.isEditingEnabled()" ng-model="user.FirstName" name="FirstName" ng-change="g.checkEmail()" required />
-                                <div ng-messages="g.userForm[$index].FirstName.$error" class="help-block hide">
-                                    <p ng-message="required">First name is required</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <input class="form-control" type="email" ng-disabled="!g.isEditingEnabled()" ng-model="user.Email" name="Email" ng-pattern="g.regEx" required />
-                                <div ng-messages="g.userForm[$index].Email.$error" class="help-block hide">
-                                    <p ng-message="required">Email is required</p>
-                                    <p ng-message="pattern">Please enter a valid email address</p>
-                                    <p ng-message="nonUniqueEmail">This email is used by another user</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <a href="#" ng-click="g.isEditingEnabled() && g.deleteUser(user)">Delete</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            <a href="#" ng-click="g.isEditingEnabled() && g.addUser()">Add new</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
-            <div class="row">
-                <div class="col-sm-2 col-sm-offset-2">
-                    <button class="btn btn-default form-control lightgray" ng-click="g.save()" ng-disabled="!g.isEditingEnabled()">Save</button>
-                </div>
-                <div class="col-sm-2">
-                    <button class="btn btn-default form-control lightgray" ng-click="g.archive()" ng-disabled="!g.isEditingEnabled() || !g.canArchive()">Archive</button>
-                </div>
-                <div class="col-sm-2">
-                    @Html.ActionLink(linkText: "Cancel", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-default lightgray" })                    
-                </div>
-            </div>
+        <br/>
+        <div class="row right-margin">
+            <div class="col-md-offset-1 col-md-10 col-xs-offset-0 col-xs-12">
 
-            <div ng-cloak class="loading-background" ng-show="g.loadingVisible">
-                <div class="loading-content">
-                    <p>
-                        Processing...
-                    </p>
+                <div class="ug-import">
+                    <label> Students </label>
+                    <label id="file-link" for="ug-file-upload"> Import from *.csv </label>
+                    <input type="file" id="ug-file-upload" ng-disabled="!g.isEditingEnabled()" import-users-from-file callback="g.useImportedData(data)" hidden />
                 </div>
+
+                <table class="table">
+
+                    <thead>
+                        <tr>
+                            <th>
+                                <a href="#" ng-click="g.sortBy('LastName')">
+                                    {{g.showOrderArrow('LastName')}}LastName
+                                </a>
+                            </th>
+                            <th>
+                                <a href="#" ng-click="g.sortBy('FirstName')">
+                                    {{g.showOrderArrow('FirstName')}}FirstName
+                                </a>
+                            </th>
+                            <th>
+                                <a href="#" ng-click="g.sortBy('Email')">
+                                    {{g.showOrderArrow('Email')}}E-mail
+                                </a>
+                            </th>
+                            <th>
+                                Delete
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-form="g.userForm[$index]" ng-repeat="user in g.users track by $index" unique-user-email users="g.users" user="user">
+                            <td>
+                                <div show-error>
+                                    <input class="form-control" style="border-radius:0" type="text" ng-disabled="!g.isEditingEnabled()" ng-model="user.LastName" name="LastName" ng-change="g.checkEmail()" required />
+                                    <div ng-messages="g.userForm[$index].LastName.$error" class="help-block hide">
+                                        <p ng-message="required">Last name is required</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div show-error>
+                                    <input class="form-control" type="text" style="border-radius:0" ng-disabled="!g.isEditingEnabled()" ng-model="user.FirstName" name="FirstName" ng-change="g.checkEmail()" required />
+                                    <div ng-messages="g.userForm[$index].FirstName.$error" class="help-block hide">
+                                        <p ng-message="required">First name is required</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <input class="form-control" type="email" style="border-radius:0" ng-disabled="!g.isEditingEnabled()" ng-model="user.Email" name="Email" ng-pattern="g.regEx" required />
+                                    <div ng-messages="g.userForm[$index].Email.$error" class="help-block hide">
+                                        <p ng-message="required">Email is required</p>
+                                        <p ng-message="pattern">Please enter a valid email address</p>
+                                        <p ng-message="nonUniqueEmail">This email is used by another user</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="#" ng-click="g.isEditingEnabled() && g.deleteUser(user)">Delete</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <a href="#" ng-click="g.isEditingEnabled() && g.addUser()">Add new</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div ng-cloak class="message-container" ng-show="g.errorMessageVisible">
-                <div class="message-content">
-                    <p>
-                        Changes have not been saved due to
-                    </p>
-                    <p class="red text-center">
-                        SERVER ERROR
-                    </p>
-                </div>
+        </div>
+        <div class="col-sm-offset-3">
+            <button class="btn btn-success col-md-2" ng-click="g.save()" ng-disabled="!g.isEditingEnabled()">Save</button>
+            <button class="btn btn-info col-sm-offset-1 col-md-2" ng-click="g.archive()" ng-disabled="!g.isEditingEnabled() || !g.canArchive()">Archive</button>
+
+            @Html.ActionLink(linkText: "Cancel", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-info col-sm-offset-1 col-md-2" })
+
+        </div>
+
+        <div ng-cloak class="loading-background" ng-show="g.loadingVisible">
+            <div class="loading-content">
+                <p>
+                    Processing...
+                </p>
             </div>
-            <div ng-cloak class="message-container" ng-show="g.successMessageVisible">
-                <div class="message-content">
-                    <p>
-                        All changes have been
-                    </p>
-                    <p class="green">
-                        SUCCESSFULLY SAVED
-                    </p>
-                </div>
-            </div>        
+        </div>
+        <div ng-cloak class="message-container" ng-show="g.errorMessageVisible">
+            <div class="message-content">
+                <p>
+                    Changes have not been saved due to
+                </p>
+                <p class="red text-center">
+                    SERVER ERROR
+                </p>
+            </div>
+        </div>
+        <div ng-cloak class="message-container" ng-show="g.successMessageVisible">
+            <div class="message-content">
+                <p>
+                    All changes have been
+                </p>
+                <p class="green">
+                    SUCCESSFULLY SAVED
+                </p>
+            </div>
+        </div>
     </ng-form>
-</div>
+</section>
 
 @section FootScripts{
     <script src="~/Areas/Moderator/Scripts/app/pages/shared/user-group.service.js"></script>
@@ -149,5 +144,17 @@
     <script src="~/Areas/Moderator/Scripts/app/pages/user-group/user-group.controller.js"></script>
     <script src="~/Areas/Moderator/Scripts/app/pages/shared/show-error.directive.js"></script>
     <script src="~/Areas/Moderator/Scripts/app/pages/user-group/unique-user-email.directive.js"></script>
-<script src="~/Areas/Moderator/Scripts/app/pages/user-group/unique-user-group-name.directive.js"></script>
+    <script src="~/Areas/Moderator/Scripts/app/pages/user-group/unique-user-group-name.directive.js"></script>
+}
+@section HeadStyles{
+    <link href="~/Styles/bootstrap.css" rel="stylesheet" />
+    <link href="~/Areas/Moderator/Styles/equiz-temp.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Oswald" />
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+}
+
+@section PageHeader{
+    @{
+        Html.RenderPartial("~/Areas/Moderator/Views/Shared/_Header.cshtml");
+    }
 }
