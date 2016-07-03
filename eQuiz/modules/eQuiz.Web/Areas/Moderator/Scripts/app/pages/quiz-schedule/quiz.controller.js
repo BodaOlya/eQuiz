@@ -5,6 +5,7 @@
 
     function QuizController($scope, quizService, userGroupService, $timeout) {
         var vm = this;
+        vm.now = new Date();
         vm.loadingVisible = false;
         vm.errorMessageVisible = false;
         vm.successMessageVisible = false;
