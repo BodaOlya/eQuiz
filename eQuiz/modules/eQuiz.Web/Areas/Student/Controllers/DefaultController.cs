@@ -132,7 +132,6 @@ namespace eQuiz.Web.Areas.Student.Controllers
 
                     _repository.Insert<QuizPass>(quizPassToInsert);
                     quizPassId = quizPassToInsert.Id;
-                    TempData["doc"] = quizPassToInsert.Id;
 
                     var quizQuestions = _repository.Get<QuizQuestion>(q => q.QuizVariant.QuizId == id && q.QuizBlock.Quiz.TimeLimitMinutes == duration);
                     foreach (var question in quizQuestions)
