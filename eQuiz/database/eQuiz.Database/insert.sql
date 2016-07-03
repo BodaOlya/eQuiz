@@ -56,9 +56,9 @@ USE [eQuiz];
 SET IDENTITY_INSERT [dbo].[tblUser] ON
 INSERT INTO [dbo].[tblUser] ([Id],[FirstName],[LastName],[FatheName],[Email],[Phone],[IsEmailConfirmed])
 VALUES
-	(1,'Oleksii', 'Shevchuk', 'Mykolayovych', 'oleksii.shevchuk.n@gmail.com','0630045424',1),
-	(2,'Rostislav', 'Burba', 'Olegovich', 'burba.ros111.gmail.com','0982343564',1),
-	(3,'Oleg', 'Yazepov', 'Volodimirovich', 'oleg.yazopov22.@gmail.com','0637876543',1),
+    (1,'Oleksii', 'Shevchuk', 'Mykolayovych', 'oleksii.shevchuk.n@gmail.com','0630045424',1),
+	(2,'Rostislav', 'Burba', 'Olegovich', 'burba.ros111@gmail.com','0982343564',1),
+	(3,'Oleg', 'Yazepov', 'Volodimirovich', 'oleg.yazopov22@gmail.com','0637876543',1),
 	(4,'Igor', 'Chipak', 'Rostislavovich', 'ehorka1994@gmail.com','0939098700',0),
 	(5,N'Володимир', N'Стеців', N'Ігорович', 'volodymyrsteciv@gmail.com','0687653721',1),
 	(6,N'Олена', N'Слухаєвська', N'Миколаївна', 'olena.slukhaevska@gmail.com','0634456371',0),
