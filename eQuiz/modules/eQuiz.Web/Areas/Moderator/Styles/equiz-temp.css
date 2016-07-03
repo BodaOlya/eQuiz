@@ -72,12 +72,13 @@ a {
 .loading-content {
     position: relative;
     margin: 0 auto;
-    margin-top: 15%;
+    margin-top: 10%;
     width: 300px;
     height: 300px;
     background-color: white;
     padding: 30px;
     padding-top: 120px;
+    background: none;
 }
 
 .red {
@@ -300,7 +301,7 @@ ul.moderator-top-header li:last-child {
     margin-top: 10px;
 }
 .wrapperDashboard1 input[type=search] {
-    margin-right: 10px
+    margin-right: 10px;
 }
 .wrapperDashboard1 input[type=checkbox] {
     position: relative; 
@@ -601,7 +602,8 @@ ul.moderator-top-header li:last-child {
 .cssload-container{
 	position:relative;
     text-align: center;
-    top: 40%;
+    top: 110px;
+    left: calc(50% - 20px);
 }
 	
 .cssload-whirlpool,
@@ -609,7 +611,6 @@ ul.moderator-top-header li:last-child {
 .cssload-whirlpool::after {
 	position: absolute;
 	top: 50%;
-	left: 50%;
 	border: 1px solid rgb(204,204,204);
 	border-left-color: rgb(0,0,0);
 	border-radius: 974px;

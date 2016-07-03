@@ -6,11 +6,12 @@
 
 <section class="wrapperDashboard1" ng-controller="QuizzesController as q" ng-cloak>
 
+    <div style="margin-top: 20px;">
+        <div class="cssload-container" ng-show="q.isLoading">
 
-    <div class="cssload-container" ng-show="q.isLoading">
-        <div class="cssload-whirlpool"></div>
+            <div class="cssload-whirlpool"></div>
+        </div>
     </div>
-
     <div class="row right-margin" ng-if="!q.isLoading">
         <div class="col-md-offset-1 col-md-10 col-xs-offset-0 col-xs-12">
             <h2>@Html.ActionLink(linkText: "Create new", actionName: "Create")</h2>
