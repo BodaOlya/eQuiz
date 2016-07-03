@@ -104,7 +104,7 @@ a {
     position: relative;
     font-size: 20px;
     margin: 0 auto;
-    margin-top: calc(25% - 55px);
+    margin-top: 200px;
     width: 400px;
     height: 110px;
     background-color: white;
@@ -564,11 +564,11 @@ ul.moderator-top-header li:last-child {
     overflow-y: auto;
     top: 0px;
     left: 0px;
-    margin: 1% 10%;
+    margin: 60px 10%;
     z-index: 10000;
     background-color: white;
     width: 80%;
-    max-height: 97%;
+    max-height: calc(97% - 60px);
 }
 
 .existing-question-container {
@@ -588,9 +588,10 @@ ul.moderator-top-header li:last-child {
 }
 
 .close-button{
-    position:fixed; 
-    top:4%; 
-    right:12%;
+    font-size:14px;
+    position:absolute; 
+    top: 20px; 
+    right: calc(5% + 10px);
 }
 
 .copy-button-container{
