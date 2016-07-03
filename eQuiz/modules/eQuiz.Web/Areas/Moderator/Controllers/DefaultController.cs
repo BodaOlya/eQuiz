@@ -33,7 +33,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var today = DateTime.Now; // Todo: implement with ITimeService
+            var today = DateTime.UtcNow; // Todo: implement with ITimeService
             
             ViewBag.QuizzesCount = _repository.Count<Quiz>();
             ViewBag.ActiveQuizzesCount = _repository.Count<Quiz>(quiz => quiz.StartDate <= today && today <= quiz.EndDate);

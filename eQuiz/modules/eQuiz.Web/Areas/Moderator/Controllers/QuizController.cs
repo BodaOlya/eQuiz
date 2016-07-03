@@ -67,7 +67,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Id is null");
             }
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
             var locked = false;
             var latestChange = _repository.Get<QuizEditHistory>(q => q.QuizId == id, q => q.User).OrderByDescending(q => q.LastChangeDate).Take(1).FirstOrDefault();
 
@@ -232,7 +232,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, errorMessage);
             }
 
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
 
             if (quiz.Id != 0)
             {
@@ -673,7 +673,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 errorMessages.Add("There is no start date");
             }
 
-            if (quiz.StartDate <= DateTime.Now)
+            if (quiz.StartDate <= DateTime.UtcNow)
             {
                 errorMessages.Add("Start date should be greater then current date");
             }
@@ -683,7 +683,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 errorMessages.Add("There is no end date");
             }
 
-            if (quiz.EndDate <= DateTime.Now)
+            if (quiz.EndDate <= DateTime.UtcNow)
             {
                 errorMessages.Add("End date should be greater then current date");
             }

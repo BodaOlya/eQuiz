@@ -206,7 +206,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             {
                 userGroup.UserGroupStateId = _repository.GetSingle<UserGroupState>(x => x.Name == "Active").Id;
                 userGroup.CreatedByUserId = User.Identity.GetUserId(); //temporary
-                userGroup.CreatedDate = DateTime.Now;
+                userGroup.CreatedDate = DateTime.UtcNow;
                 _repository.Insert<UserGroup>(userGroup);
                 var id = _repository.GetSingle<UserGroup>(g => g.Name == userGroup.Name).Id;
                 userGroupId = id;

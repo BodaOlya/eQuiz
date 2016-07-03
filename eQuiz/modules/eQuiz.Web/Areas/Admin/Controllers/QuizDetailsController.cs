@@ -16,6 +16,7 @@ using System.Web.Services;
 
 namespace eQuiz.Web.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class QuizDetailsController : BaseController
     {
         #region Fields

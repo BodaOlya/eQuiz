@@ -11,6 +11,7 @@ using eQuiz.Web.Areas.Admin.Models;
 
 namespace eQuiz.Web.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class QuizzesController : BaseController
     {
         #region Fields

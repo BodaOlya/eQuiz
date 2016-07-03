@@ -1,7 +1,7 @@
 ﻿@{
     Layout = "~/Views/Shared/Layout.cshtml";
 }
-
+@using Microsoft.AspNet.Identity;
 @section HeadScripts
 {
     <base href="/Admin/Default/" />
@@ -17,13 +17,15 @@
                 <button onclick="location.href='/Admin/Default/Index/Students'" class="btn btn-default" style="font-size:20px" ng-click="lc.GoToReview()">
                     Students
                 </button>
-                <div style="float: right">
+                <div class="right-align-div">
                     @using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm" }))
                     {
                         @Html.AntiForgeryToken()
 
-                        <button class="btn btn-default" style="font-size: 20px">@User.Identity.Name</button>
-                        <a href="javascript:document.getElementById('logoutForm').submit()">Log Out</a>
+                        <label style="font-size:17px">@User.Identity.GetUserName()</label>
+                        <button onclick="javascript:document.getElementById('logoutForm').submit()" class="btn btn-default" style="font-size:20px">
+                            Log Off
+                        </button>
                     }
                 </div>
             </div>

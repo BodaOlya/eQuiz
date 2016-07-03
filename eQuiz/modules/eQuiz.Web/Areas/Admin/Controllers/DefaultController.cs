@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace eQuiz.Web.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class DefaultController : BaseController
     {
         [HttpGet]
