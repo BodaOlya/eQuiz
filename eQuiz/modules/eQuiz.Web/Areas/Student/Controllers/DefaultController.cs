@@ -84,7 +84,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                              // Unix time convertation.
                              StartDate = q.StartDate.HasValue ? (long)(q.StartDate.Value.Subtract(new DateTime(1970, 1, 1))).TotalMilliseconds : -1,
                              TimeLimitMinutes = q.TimeLimitMinutes,
-                             IsActive = (q.StartDate.HasValue && q.StartDate.Value <= DateTime.Now) &&
+                             IsActive = (q.StartDate.HasValue && q.StartDate.Value <= DateTime.UtcNow) &&
                              ((from qp in quizPass
                               where qp.QuizId == q.Id && qp.UserId == currentUser.Id
                               && qp.StartTime != null && qp.FinishTime != null
@@ -125,7 +125,7 @@ namespace eQuiz.Web.Areas.Student.Controllers
                     QuizPass quizPassToInsert = new QuizPass
                     {
                         QuizId = id,
-                        UserId = currentUser.Id,//TODO will be fixed after authentification
+                        UserId = currentUser.Id,
                         StartTime = DateTime.UtcNow,
                         FinishTime = null
                     };
