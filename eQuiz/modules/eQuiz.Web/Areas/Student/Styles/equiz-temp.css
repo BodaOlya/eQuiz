@@ -666,6 +666,7 @@ caption.dashboard span {
 .headerText {
     margin-top: 1%;
     margin-bottom: 1%;
+    font-size:16px;
     font-family: Oswald;
 }
 
@@ -772,10 +773,6 @@ div.cn {
     width: 100%;
     margin-top: 0px;
     color: white;
-}
-.headerText {
-    margin-top: 1%;
-    margin-bottom: 1%;
 }
 
 .container-fluid {
@@ -889,4 +886,49 @@ div.cn {
     font-size:12pt;
     margin-bottom:5%;
     margin-top:8%;
+}
+li.headerText > a {
+    color: white;
+}
+.nav {
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+
+.nav:before,
+.nav:after {
+  display: table;
+  content: " ";
+}
+
+.nav:after {
+  clear: both;
+}
+
+.nav:before,
+.nav:after {
+  display: table;
+  content: " ";
+}
+
+.nav:after {
+  clear: both;
+}
+
+.nav > li {
+  position: relative;
+  display: block;
+}
+
+.nav > li > a {
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+}
+.nav > li > a:hover,
+.nav > li > a:focus {
+background-color: transparent;
+    color: #23527c;
+    text-decoration: underline;
 }

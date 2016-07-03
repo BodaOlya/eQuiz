@@ -454,6 +454,7 @@
     <Content Include="Scripts\libs\jquery\bootstrap.js" />
     <Content Include="Scripts\libs\jquery\bootstrap.min.js" />
     <Content Include="Areas\Student\Views\Default\QuizInRun.cshtml" />
+    <Content Include="Areas\Student\Views\Shared\_LoginPartial.cshtml" />
     <None Include="Scripts\libs\jquery\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\libs\jquery\jquery-1.10.2.js" />
     <Content Include="Scripts\libs\jquery\jquery-1.10.2.min.js" />
@@ -585,7 +586,6 @@
     <Folder Include="Areas\Admin\Views\Student\" />
     <Folder Include="Areas\Moderator\Views\QuizQuestion\" />
     <Folder Include="Areas\Student\Scripts\libs\" />
-    <Folder Include="Areas\Student\Views\Shared\" />
     <Folder Include="Scripts\app\pages\" />
   </ItemGroup>
   <ItemGroup>

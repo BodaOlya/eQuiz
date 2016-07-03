@@ -1,4 +1,5 @@
-﻿
+﻿@using Microsoft.AspNet.Identity
+
 @{
     Layout = "~/Views/Shared/Layout.cshtml";
 }
@@ -18,11 +19,25 @@
     <script src="~/Areas/Student/Scripts/app/pages/quizInRun/quizInRun.controller.js"></script>
 }
 <body id="quizInRunBody" ng-controller="quizInRunCtrl as qc" ng-cloak>
-
+    <div class="cssload-container" ng-if="qc.isLoading">
+        <div class="cssload-whirlpool"></div>
+    </div>
     @section PageHeader{
         <div class='container-fluid' ng-if="!qc.isLoading">
-
-            <div class='col-xs-4 text-left headerText'>
+            <div class='text-right headerText'>
+                @using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <ul class="nav navbar-nav">
+                        <li class="headerText">
+                            <a href="#">Hello @User.Identity.GetUserName() !</a>
+                        </li>
+                        <li class="headerText"><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                    </ul>
+                }
+                <br />
+            </div>
+            <div class='col-xs-4 text-left headerText' style="padding-bottom: 2%; margin-top:0.5%">
                 <a class="quizInRunLink" href="#">Menu</a>
             </div>
 
@@ -33,14 +48,13 @@
             </div>
 
             <div class='col-xs-4 text-right headerText'>
-                User Groups: <a class="quizInRunLink" href="#" ng-repeat="group in qc.userGroups">#{{$index+1}} {{group}}<br /> </a>
+
+                User Group # <a class="quizInRunLink" href="#">FullName</a>
             </div>
 
         </div>
     }
-    <div class="cssload-container" ng-if="qc.isLoading">
-        <div class="cssload-whirlpool"></div>
-    </div>
+
     <div>
         <div class="inner" ng-if="!qc.isLoading">
             <div id="quizContent">
