@@ -609,6 +609,7 @@
             vm.selectedQuizIdForAddQuestion = 0;
             vm.questionsForAdding = {};
             vm.model.questionsForAdding = {};
+            vm.questionSearch = "";
         }
 
         function closeAddingQuestionWindow() {

@@ -3,7 +3,7 @@
     <div>
         <div class="text-left col-xs-4 verticalAlign">
             @Html.ActionLink(linkText: "QUIZZES", actionName: "Index", controllerName: "Quiz")
-
+            <span> &nbsp; </span>
             @Html.ActionLink(linkText: "USER GROUP", actionName: "Index", controllerName: "UserGroup")
         </div>
         <div class="col-xs-4" style="z-index:-1;">
@@ -19,6 +19,7 @@
         <div class="text-left col-xs-4 verticalAlign">
             <div class="right-align-div">
                 @User.Identity.GetUserName()
+                <span> &nbsp; </span>
                 <a href="javascript:document.getElementById('logoutForm').submit()">LOG OFF</a>
             </div>
         </div>

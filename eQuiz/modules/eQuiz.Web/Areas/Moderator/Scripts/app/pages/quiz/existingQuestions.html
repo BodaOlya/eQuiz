@@ -1,7 +1,7 @@
 ﻿<div class="loading-background"></div>
 <div class="existing-question-window">
     <div align="right">
-        <button href="" class="close-button" ng-click="vm.closeAddingQuestionWindow()">X</button>
+        <button href="" class="btn btn-default close-button" ng-click="vm.closeAddingQuestionWindow()">CLOSE</button>
     </div>
     <div class="existing-question-container">
         <h2>Add existing question</h2>
@@ -20,19 +20,19 @@
         <div class="question-block" ng-show="vm.selectedQuizIdForAddQuestion != 0">
             <div class="row bordered">
                 <div class="col-sm-12 col-md-12">
-                    <input type="text" class="form-control" placeholder="Search questions" ng-model="questionSearch" />
+                    <input type="text" class="form-control" placeholder="Search questions" ng-model="vm.questionSearch" />
                 </div>
             </div>
-            <div class="row bordered">                
-                <div ng-repeat="q in questions = (vm.model.questionsForAdding.questions | filter: questionSearch) | startFrom: (vm.questionsPagingInfo.currentPage - 1) * vm.questionsPagingInfo.questionsPerPage | limitTo : vm.questionsPagingInfo.questionsPerPage  track by $index">
+            <div class="row bordered">
+                <div ng-repeat="q in questions = (vm.model.questionsForAdding.questions | filter: vm.questionSearch) | startFrom: (vm.questionsPagingInfo.currentPage - 1) * vm.questionsPagingInfo.questionsPerPage | limitTo : vm.questionsPagingInfo.questionsPerPage  track by $index">
                     <div class="row">
                         <div class="col-sm-1 col-md-1">
-                            <input type="checkbox" class="form-control" ng-model="q.checked" />
+                            <input type="checkbox" id="{{'Question' + $index}}" class="form-control" ng-model="q.checked" />
                         </div>
                         <div class="col-sm-11 col-md-11">
-                            <p class="control-label">
+                            <label for="{{'Question' + $index}}" class="control-label">
                                 <b>Question {{ vm.getNumeration($index) }}.</b>  {{q.QuestionText}}
-                            </p>
+                            </label>
                         </div>
                     </div>
                     <div class="row" ng-show="q.isExpanded">
@@ -48,7 +48,7 @@
                                         </div>
                                         <div class="col-sm-11 col-md-11">
                                             <p class="control-label">
-                                               {{answer.AnswerText}}
+                                                {{answer.AnswerText}}
                                             </p>
                                         </div>
                                     </div>
@@ -91,8 +91,8 @@
                             items-per-page="vm.questionsPagingInfo.questionsPerPage" max-size="5" class="pagination-sm" boundary-link-numbers="true">
             </uib-pagination>
             <div class="row copy-button-container">
-                <div class="col-md-offset-10 col-sm-offset-10 col-md-2 col-sm-2">
-                    <button ng-click="vm.AddExistingQuestions()" ng-disabled="vm.GetCountSelectedQuestions() == 0" class="form-control">Copy</button>
+                <div class="col-md-offset-5 col-sm-offset-5 col-md-2 col-sm-2">
+                    <button ng-click="vm.AddExistingQuestions()" ng-disabled="vm.GetCountSelectedQuestions() == 0" class="btn btn-success form-control">Copy</button>
                 </div>
             </div>
         </div>

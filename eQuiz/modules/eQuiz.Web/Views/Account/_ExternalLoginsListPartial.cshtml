@@ -1,8 +1,33 @@
 ﻿@model eQuiz.Web.Models.ExternalLoginListViewModel
 @using Microsoft.Owin.Security
 
+@helper LoginBtnStyle(string AuthenticationType)
+{
+    var btnClass = "";
+    switch (@AuthenticationType.ToUpper())
+    {
+        case "GOOGLE":
+        {
+            btnClass = "google-btn";
+            break;
+        }
+        case "FACEBOOK":
+        {
+            btnClass = "facebook-btn";
+            break;
+        }
+        case "LINKEDIN":
+        {
+            btnClass = "linkedin-btn";
+            break;
+        }
+    }
+
+    @btnClass.ToString()
+}
+
 @*<h4>Use another service to log in.</h4>
-<hr />*@
+    <hr />*@
 @{
     var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
     if (loginProviders.Count() == 0)
@@ -22,7 +47,7 @@
             <div id="socialLoginList" class="custom-container-fluid center">
                 @foreach (AuthenticationDescription p in loginProviders)
                 {
-                    <button type="submit" class="btn btn-success btn-lg center-block col-md-3" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>
+                    <button type="submit" class="btn @LoginBtnStyle(@p.AuthenticationType) btn-lg center-block col-md-3" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>
                 }
             </div>
         }

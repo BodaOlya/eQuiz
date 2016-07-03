@@ -25,3 +25,71 @@ h1 {
     border: 2px solid black;
     border-radius: 4px;
 }
+
+.facebook-btn {
+    background-color: #3B5998;
+}
+
+.google-btn {
+    background-color: #3369E8;
+}
+
+.linkedin-btn {
+    background-color: #0077B5;
+}
+
+#form-container {
+    width: 60%;
+    margin: 0 auto;
+    background-color: white;
+}
+
+.content-wrapper {
+    background-color: whitesmoke;
+    font-family: Oswald;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+    z-index: -100;
+    display: flex;
+    align-items: center;
+}
+
+.form-wrapper{
+    margin-top:20px;
+    padding:1px 20px 20px 20px;
+    background-color: none;
+    font-family: Oswald;
+}
+
+.form-wrapper input {
+    border-radius: 0;
+}
+
+.form-wrapper select {
+    border-radius: 0;
+}
+
+.form-wrapper textarea {
+    border-radius: 0;
+}
+
+.form-wrapper button {
+    border-radius: 0;
+}
+
+.form-wrapper a {
+    border-radius: 0;
+}
+
+.top-section {
+    background-color:white;
+    height:80px;
+}
+
+.top-section img {
+    height: 70px;
+}
