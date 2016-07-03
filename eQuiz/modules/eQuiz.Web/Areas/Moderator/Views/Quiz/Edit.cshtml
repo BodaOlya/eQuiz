@@ -31,32 +31,33 @@
                 @Html.ActionLink(linkText: "Cancel", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-info col-sm-offset-1 col-md-2" })
             </div>
 
-            
-
             <div ng-cloak class="loading-background" ng-show="vm.loadingVisible">
-                    <div class="cssload-container">
-                        <div class="cssload-whirlpool"></div>
-                    </div>
-
-            </div>
-            <div ng-cloak class="message-container" ng-show="vm.errorMessageVisible">
-                <div class="message-content">
-                    <p>
-                        Changes have not been saved due to
-                    </p>
-                    <p class="red text-center">
-                        SERVER ERROR
-                    </p>
+                <div class="cssload-container">
+                    <div class="cssload-whirlpool"></div>
                 </div>
             </div>
-            <div ng-cloak class="message-container" ng-show="vm.successMessageVisible">
-                <div class="message-content">
-                    <p>
-                        All changes have been
-                    </p>
-                    <p class="green">
-                        SUCCESSFULLY SAVED
-                    </p>
+            <div ng-cloak class="loading-background" ng-show="vm.errorMessageVisible">
+                <div ng-cloak class="message-container">
+                    <div class="message-content">
+                        <p>
+                            Changes have not been saved due to
+                        </p>
+                        <p class="red text-center">
+                            SERVER ERROR
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div ng-cloak class="loading-background" ng-show="vm.successMessageVisible">
+                <div ng-cloak class="message-container">
+                    <div class="message-content">
+                        <p>
+                            All changes have been
+                        </p>
+                        <p class="green">
+                            SUCCESSFULLY SAVED
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
