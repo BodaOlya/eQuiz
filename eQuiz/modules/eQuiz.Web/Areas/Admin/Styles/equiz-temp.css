@@ -79,6 +79,8 @@
 
 .lightGray {
     background-color: lightgray;
+    font-family: Oswald;
+    font-size: 16px;
 }
 
 .backgroundColor {
@@ -607,4 +609,22 @@ button.btn-lightcoral {
     -webkit-border-radius: 6px 0 6px 6px;
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
+}
+
+.logo {
+    position: absolute;
+    left: 50%;
+    margin-left: -55px !important;  /* 50% of your logo width */
+    display: block;
+}
+
+.navbar-custom {
+    background-color: #fff;
+    font-family: Oswald;
+    font-size: 16px;
+}
+
+.table > tbody > tr > td {
+    vertical-align: middle;
+    font-size: 14px;
 }
