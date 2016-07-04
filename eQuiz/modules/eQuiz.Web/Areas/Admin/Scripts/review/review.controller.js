@@ -5,7 +5,7 @@
 
     function ReviewController($scope, $filter, reviewDataService, studentsList) {
         var vm = this;
-
+        vm.filterIsOpened = false;
         var orderBy = $filter('orderBy');
         vm.groupListOpened = false;
         vm.search = ''; // Represents search field on the form
@@ -156,7 +156,7 @@
 
         vm.isChecked = function (id) {
             if (vm.selectedGroup.toString().indexOf(id.toString()) > -1) {
-                return 'icon-ok pull-right';
+                return 'pull-right';
             }
             return false;
         };

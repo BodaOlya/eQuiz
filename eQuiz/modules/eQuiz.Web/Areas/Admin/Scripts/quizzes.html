@@ -3,9 +3,9 @@
         <label class="font-responsive font-Oswald font-normal">Search</label>
         <input class="input-sm font-responsive sans-fonts" type="text" ng-model="qc.search">
 
-        <div class="btn-group" ng-class="{open: open}"  style="margin-left: 10px">
-            <button class="btn btn-default font-responsive">Filter</button>
-            <button class="btn dropdown-toggle btn-default font-responsive" ng-click="open=!open">
+        <div class="btn-group" ng-class="{open: qc.filterIsOpened}"  style="margin-left: 10px">
+            <button class="btn btn-default font-responsive">Filters</button>
+            <button class="btn dropdown-toggle btn-default font-responsive" ng-click="qc.filterIsOpened=!qc.filterIsOpened">
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
@@ -13,13 +13,14 @@
                     <a>{{category.name}}</a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a ng-click="rc.checkAll()"><i class="icon-ok-sign"></i>Check All</a>
+                            <a ng-click="qc.checkAll(category)"><i class="icon-ok-sign"></i>Check All</a>
                         </li>
                         <li>
-                            <a ng-click="rc.unCheckAll()"><i class="icon-remove-sign"></i>Uncheck All</a>
+                            <a ng-click="qc.unCheckAll(category)"><i class="icon-remove-sign"></i>Uncheck All</a>
                         </li>
+                        <li class="divider"></li>
                         <li ng-repeat="categoryItem in category.CategoryItems">
-                            <a class="test" href="#" ng-click="setSelectedGroup(category)">{{categoryItem}}</a>
+                            <a class="test" href="#" ng-click="setSelectedGroup(category)">{{categoryItem}} <span ng-class="rc.isChecked(group)"> <b ng-hide="qc.isChecked(categoryItem, category)" class="pull-right"> &#x2713 </b> </span> </a> 
                         </li>
                     </ul>
                 </li>
