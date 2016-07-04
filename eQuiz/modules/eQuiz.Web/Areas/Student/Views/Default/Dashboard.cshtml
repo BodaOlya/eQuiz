@@ -17,7 +17,9 @@
     <script src="~/Areas/Student/Scripts/app/pages/dashboard/dashboard.time.filter.js"></script>
 }
 <body ng-controller="dashboardCtrl as dc" ng-cloak>
-
+    <div class="cssload-container" ng-if="dc.isLoading">
+        <div class="cssload-whirlpool"></div>
+    </div>
     @section PageHeader{
     <div class="header">
         <div class="row">
@@ -40,9 +42,7 @@
         <!--<div ng-if="isLoading">
                 <span id="loadingMessage">Loading...</span>
             </div>-->
-        <div class="cssload-container" ng-if="dc.isLoading">
-            <div class="cssload-whirlpool"></div>
-        </div>
+
         <div class="row" ng-if="!dc.isLoading" id="inputsContainer">
             <div class="col-md-offset-1 col-md-10 col-xs-offset-0 col-xs-12">
                 <div id="title">
