@@ -1,6 +1,6 @@
 ﻿<div class="pad-top-bottom backgroundColor" style="height: 100vh;">
     <div class="col-md-10 text-left">
-        <label class="font-responsive sans-fonts">Search</label>
+        <label class="font-responsive font-Oswald font-normal">Search</label>
         <input class="input-sm font-responsive sans-fonts" type="text" ng-model="qc.search">
 
         <div class="btn-group" ng-class="{open: open}"  style="margin-left: 10px">
@@ -34,7 +34,7 @@
             <thead class="lightGray">
                 <tr>
                     <th ng-repeat="h in qc.headers">
-                        <a href="#" class="font-responsive font-Oswald tableHeader" ng-click="qc.refreshPredicate(h.predicateIndex); qc.order(qc.myPredicate[h.predicateIndex],null)">
+                        <a href="#" class="font-responsive font-Oswald font-normal" ng-click="qc.refreshPredicate(h.predicateIndex); qc.order(qc.myPredicate[h.predicateIndex],null)">
                             <span class="sortorder" ng-show="qc.direction(h.predicateIndex) !== null" ng-class="{direction:qc.direction(h.predicateIndex)}"></span>
                             {{h.name}}
                         </a>
