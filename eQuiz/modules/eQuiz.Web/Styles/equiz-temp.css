@@ -39,7 +39,7 @@ h1 {
 }
 
 #form-container {
-    width: 35%;
+    width: 40%;
     margin: 0 auto;
     background-color: white;
 }
@@ -57,12 +57,7 @@ h1 {
     display: flex;
     align-items: center;
 }
-.content-wrapper input[type=email] {
-    cursor: text;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
-}
+
 
 .form-wrapper{
     margin-top:20px;
