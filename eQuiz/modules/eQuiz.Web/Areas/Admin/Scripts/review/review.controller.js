@@ -154,6 +154,13 @@
             return output;
         }
 
+        vm.isChecked = function (id) {
+            if (vm.selectedGroup.toString().indexOf(id.toString()) > -1) {
+                return 'icon-ok pull-right';
+            }
+            return false;
+        };
+
         vm.setLink = function (studentId) {
             vm.link += studentId.Id + '/Profile';
         };
