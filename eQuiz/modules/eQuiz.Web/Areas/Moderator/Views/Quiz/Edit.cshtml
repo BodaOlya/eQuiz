@@ -21,10 +21,7 @@
             </div>
 
             <div class="col-sm-offset-3">
-                @*<div class="col-sm-2 col-sm-offset-3">*@
                 <button class="btn btn-success col-md-2" ng-click="vm.save()" ng-disabled="!vm.isEditingEnabled()">Save</button>
-
-
                 <button class="btn btn-warning col-sm-offset-1 col-md-2" ng-hide="vm.archiveQuizCanExecute()" ng-click="vm.deleteQuiz()" ng-disabled="!vm.deleteCanExecute()">Delete</button>
                 <button class="btn btn-info col-sm-offset-1 col-md-2" ng-hide="!vm.archiveQuizCanExecute()" ng-click="vm.archiveQuiz()" ng-disabled="!vm.archiveQuizCanExecute()">Archive</button>
 

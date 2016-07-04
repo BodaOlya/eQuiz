@@ -3,10 +3,10 @@
         <div ng-form="oneQuestionForm" ng-repeat="question in vm.model.questions track by $index">
             <div class="row" show-error>
                 <div class="col-sm-12 col-md-12 question-padding">
-                    <p class="control-label">
-                        Question #{{ $index + 1 }}
+                    <div>
+                        <label> Question #{{ $index + 1 }}</label>
                         <input type="button" class="btn-warning control-label" ng-click="vm.isEditingEnabled() && vm.deleteQuestion($index)" value="Delete question" />
-                    </p>
+                    </div>
                 </div>
                 <div class="col-sm-12 col-md-12">
                     <textarea class="questionText form-control" ng-model="question.QuestionText" ng-disabled="!vm.isEditingEnabled()" required name="QuestionText">{{ question.QuestionText }}</textarea>
@@ -70,10 +70,10 @@
                 <div ng-switch-when="2">
                     <div class="row">
                         <div class="col-sm-12 col-md-12">
-                            <p class="control-label">
-                                Options
+                            <div class="form-inline">
+                                <label> Options</label>
                                 <input type="button" class="btn-success" ng-click="vm.isEditingEnabled() && vm.addNewAnswer(question, $index)" value="Add new">
-                            </p>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -96,11 +96,7 @@
                                         </div>
                                     </td>
                                     <td class="col-sm-2 col-md-2">
-                                        <div class="radio">
-                                            <label>
-                                                <input type="radio" class="form-control radio-vertical-center primary" ng-disabled="!vm.isEditingEnabled()" ng-click="vm.checkAnswerForSelectOne(answer, question)" ng-value="true" ng-model="answer.IsRight">
-                                            </label>
-                                        </div>
+                                        <input type="radio" class="radio-button" ng-disabled="!vm.isEditingEnabled()" ng-click="vm.checkAnswerForSelectOne(answer, question)" ng-value="true" ng-model="answer.IsRight">
                                     </td>
                                     <td class="col-sm-2 col-md-2">
                                         <button class="btn-warning" ng-click="vm.isEditingEnabled() && vm.deleteAnswer(answer, question)">
@@ -125,10 +121,10 @@
                 <div ng-switch-when="3">
                     <div class="row">
                         <div class="col-sm-12 col-md-12">
-                            <p class="control-label">
-                                Options
-                                <button class="btn-success"  ng-click="vm.isEditingEnabled() && vm.addNewAnswer(question, $index)">Add new</button>
-                            </p>
+                            <div class="form-inline">
+                                <label>Options</label>
+                                <button class="btn-success" ng-click="vm.isEditingEnabled() && vm.addNewAnswer(question, $index)">Add new</button>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -151,7 +147,7 @@
                                         </div>
                                     </td>
                                     <td class="col-sm-2 col-md-2">
-                                        <input type="checkbox" ng-disabled="!vm.isEditingEnabled()" class="form-control" ng-click="vm.model.answersDirty[vm.model.questions.indexOf(question)].checkedAnswersDirty=true" ng-model="answer.IsRight">
+                                        <input type="checkbox" ng-disabled="!vm.isEditingEnabled()" class="check-box" ng-click="vm.model.answersDirty[vm.model.questions.indexOf(question)].checkedAnswersDirty=true" ng-model="answer.IsRight">
                                     </td>
                                     <td class="col-sm-2 col-md-2">
                                         <button class="btn-warning" ng-click="vm.isEditingEnabled() && vm.deleteAnswer(answer, question)">Delete</button>

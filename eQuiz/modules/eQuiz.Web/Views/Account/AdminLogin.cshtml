@@ -21,7 +21,7 @@
             @using (Html.BeginForm("AdminLogin", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
-                <h3 style="text-align:center;">@ViewBag.Title</h3>
+                <h3 style="text-align:center;">@ViewBag.Title for staff only</h3>
                 <hr />
                 <div class="form-group">
                     @Html.LabelFor(m => m.Email, new { @class = "col-md-3 control-label" })

@@ -18,6 +18,7 @@
     display: flex;
     align-items: center;
 }
+
 .wrapper .formHeader {
     text-align: center;
     font-size: large;
@@ -261,12 +262,20 @@ ul.moderator-top-header li:last-child {
     min-height: calc(100% - 81px);
     
 }
-
+.wrapperDashboard1 button{
+     border-radius:0;
+}
+.wrapperDashboard1 label{
+     margin-right: 10px;
+}
 .wrapperForm{
     margin-top:20px;
     padding:1px 20px 60px 20px;
     background-color: none;
     font-family: Oswald;
+}
+.wrapperForm label{
+    margin-right:10px;
 }
 
 .wrapperForm input {
@@ -703,6 +712,9 @@ ul.moderator-top-header li:last-child {
 .answer-table th{
     text-align: center;
 }
+.answer-table td{
+    text-align: center;
+}
 
 .answer-table th,
 .answer-table td,
@@ -730,4 +742,21 @@ ul.moderator-top-header li:last-child {
 
 .loking-message{
     color: orange;
+}
+
+.wrapperDashboard1 .margin-button button+a{
+   margin-bottom: 40px;
+   border-radius:0;
+  }
+.wrapperDashboard1 .check-box{
+    width:2.5em;
+    height:2.5em;
+    margin:initial;
+    position:relative;  
+}
+.wrapperDashboard1 .radio-button{
+    width:2.5em;
+    height:2.5em;
+    margin:initial;
+    position:relative;  
 }
