@@ -559,3 +559,16 @@ button.btn-lightcoral {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.logo {
+    position: absolute;
+    left: 50%;
+    margin-left: -55px !important;  /* 50% of your logo width */
+    display: block;
+}
+
+.navbar-custom {
+    background-color: #fff;
+    font-family: Oswald;
+    font-size: 16px;
+}
