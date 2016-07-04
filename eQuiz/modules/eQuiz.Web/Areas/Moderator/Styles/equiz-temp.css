@@ -28,7 +28,7 @@
     }
 
 .header {
-    height: 70px;
+    height: 78px;
     font-family: Oswald;
     -webkit-box-shadow: 0 2px 3px 0 rgba(0,0,0,0.25);
     box-shadow: 0 2px 3px 0 rgba(0,0,0,0.25);
@@ -99,7 +99,7 @@ a {
 }
 
 .message-container {
-    position: fixed;
+    position: relative;
     top: 0px;
     left: 0px;
     z-index: 10000;
@@ -109,11 +109,12 @@ a {
 }
 
 .message-content {
-    padding: 20px;
     position: relative;
+    text-align: center;
+    top: calc(50% - 55px);
+    left: calc(50% - 200px);
+    padding: 20px;
     font-size: 20px;
-    margin: 0 auto;
-    margin-top: 200px;
     width: 400px;
     height: 110px;
     background-color: white;
@@ -590,11 +591,11 @@ ul.moderator-top-header li:last-child {
     overflow-y: auto;
     top: 0px;
     left: 0px;
-    margin: 60px 10%;
+    margin: 80px 10%;
     z-index: 10000;
     background-color: white;
     width: 80%;
-    max-height: calc(97% - 60px);
+    max-height: calc(97% - 80px);
 }
 
 .existing-question-container {
@@ -629,8 +630,8 @@ ul.moderator-top-header li:last-child {
 .cssload-container {
     position: relative;
     text-align: center;
-    top: 110px;
-    left: calc(50% - 20px);
+    top: calc(50% - 42px);
+    left: calc(50% - 42px);
 }
 
 .cssload-whirlpool,
@@ -649,8 +650,8 @@ ul.moderator-top-header li:last-child {
 
 .cssload-whirlpool {
     /*margin: -24px 0 0 -24px;*/
-    height: 49px;
-    width: 49px;
+    height: 89px;
+	width: 89px;
     animation: cssload-rotate 750ms linear infinite;
     -o-animation: cssload-rotate 750ms linear infinite;
     -ms-animation: cssload-rotate 750ms linear infinite;
@@ -660,9 +661,9 @@ ul.moderator-top-header li:last-child {
 
     .cssload-whirlpool::before {
         content: "";
-        margin: -22px 0 0 -22px;
-        height: 43px;
-        width: 43px;
+        margin: -42px 0 0 -42px;
+        height: 83px;
+        width: 83px;
         animation: cssload-rotate 750ms linear infinite;
         -o-animation: cssload-rotate 750ms linear infinite;
         -ms-animation: cssload-rotate 750ms linear infinite;
@@ -672,9 +673,9 @@ ul.moderator-top-header li:last-child {
 
     .cssload-whirlpool::after {
         content: "";
-        margin: -28px 0 0 -28px;
-        height: 55px;
-        width: 55px;
+        margin: -48px 0 0 -48px;
+        height: 95px;
+        width: 95px;
         animation: cssload-rotate 1500ms linear infinite;
         -o-animation: cssload-rotate 1500ms linear infinite;
         -ms-animation: cssload-rotate 1500ms linear infinite;
@@ -761,7 +762,10 @@ ul.moderator-top-header li:last-child {
     color: orange;
 }
 
-.wrapperDashboard1 .margin-button button + a {
+.wrapperDashboard1 .margin-button button{
+    margin-bottom: 40px;
+}
+.wrapperDashboard1 .margin-button a {
     margin-bottom: 40px;
     border-radius: 0;
 }
