@@ -46,6 +46,30 @@
 }
 /*End dinamic font size*/
 
+/*Dinamic fond size pages*/
+.t-font-responsive {
+    font-size: 17px;
+}
+
+@media (max-width: 768px) {
+    .t-font-responsive {
+        font-size: 11px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1280px) {
+    .t-font-responsive {
+        font-size: 13px;
+    }
+}
+
+@media (min-width: 1281px) and (max-width: 1600px) {
+    .t-font-responsive {
+        font-size: 15px;
+    }
+}
+/*End dinamic font size*/
+
 .h-responsive {
     height: 54px;
 }
@@ -77,10 +101,18 @@
     padding-bottom: 13px;
 }
 
+.font-Oswald {
+    font-family: Oswald;
+}
+
 .lightGray {
     background-color: lightgray;
-    font-family: Oswald;
-    font-size: 16px;
+}
+
+.tableHeader {
+    font-weight:400;
+    font-style: normal;
+    color: black;
 }
 
 .backgroundColor {
@@ -625,10 +657,8 @@ button.btn-lightcoral {
 .navbar-custom {
     background-color: #fff;
     font-family: Oswald;
-    font-size: 16px;
 }
 
 .table > tbody > tr > td {
     vertical-align: middle;
-    font-size: 14px;
 }

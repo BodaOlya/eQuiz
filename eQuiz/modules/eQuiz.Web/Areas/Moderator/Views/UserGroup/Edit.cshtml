@@ -30,7 +30,7 @@
             <div class="col-md-offset-1 col-md-10 col-xs-offset-0 col-xs-12">
 
                 <div class="ug-import">
-                    <label> Students </label>
+                    <label>Students </label>
                     <label id="file-link" for="ug-file-upload"> Import from *.csv </label>
                     <input type="file" id="ug-file-upload" ng-disabled="!g.isEditingEnabled()" import-users-from-file callback="g.useImportedData(data)" hidden />
                 </div>
@@ -55,7 +55,7 @@
                                 </a>
                             </th>
                             <th>
-                                Delete
+
                             </th>
                         </tr>
                     </thead>
@@ -88,7 +88,7 @@
                                 </div>
                             </td>
                             <td>
-                                <a href="#" ng-click="g.isEditingEnabled() && g.deleteUser(user)">Delete</a>
+                                <button class="btn btn-warning" ng-click="g.isEditingEnabled() && g.deleteUser(user)">Delete</button>
                             </td>
                         </tr>
                         <tr>
@@ -100,12 +100,15 @@
                 </table>
             </div>
         </div>
-        <div class="col-sm-offset-3">
-            <button class="btn btn-success col-md-2" ng-click="g.save()" ng-disabled="!g.isEditingEnabled()">Save</button>
-            <button class="btn btn-info col-sm-offset-1 col-md-2" ng-click="g.archive()" ng-disabled="!g.isEditingEnabled() || !g.canArchive()">Archive</button>
+        <div class="margin-button">
+            <div class="col-sm-offset-3">
 
-            @Html.ActionLink(linkText: "Cancel", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-info col-sm-offset-1 col-md-2" })
+                <button class="btn btn-success col-md-2" ng-click="g.save()" ng-disabled="!g.isEditingEnabled()">Save</button>
+                <button class="btn btn-info col-sm-offset-1 col-md-2" ng-click="g.archive()" ng-disabled="!g.isEditingEnabled() || !g.canArchive()">Archive</button>
 
+                @Html.ActionLink(linkText: "Cancel", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-info col-sm-offset-1 col-md-2" })
+
+            </div>
         </div>
 
         <div ng-cloak class="loading-background" ng-show="g.loadingVisible">
@@ -114,27 +117,23 @@
             </div>
         </div>
         <div ng-cloak class="loading-background" ng-show="g.errorMessageVisible">
-            <div ng-cloak class="message-container">
-                <div class="message-content">
-                    <p>
-                        Changes have not been saved due to
-                    </p>
-                    <p class="red text-center">
-                        SERVER ERROR
-                    </p>
-                </div>
+            <div class="message-content">
+                <p>
+                    Changes have not been saved due to
+                </p>
+                <p class="red text-center">
+                    SERVER ERROR
+                </p>
             </div>
         </div>
         <div ng-cloak class="loading-background" ng-show="g.successMessageVisible">
-            <div ng-cloak class="message-container">
-                <div class="message-content">
-                    <p>
-                        All changes have been
-                    </p>
-                    <p class="green">
-                        SUCCESSFULLY SAVED
-                    </p>
-                </div>
+            <div class="message-content">
+                <p>
+                    All changes have been
+                </p>
+                <p class="green">
+                    SUCCESSFULLY SAVED
+                </p>
             </div>
         </div>
     </ng-form>

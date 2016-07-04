@@ -6,9 +6,8 @@
 
 <section class="wrapperDashboard1" ng-controller="QuizzesController as q" ng-cloak>
 
-    <div style="margin-top: 20px;">
-        <div class="cssload-container" ng-show="q.isLoading">
-
+    <div ng-cloak class="loading-background" ng-show="q.isLoading">
+        <div class="cssload-container">
             <div class="cssload-whirlpool"></div>
         </div>
     </div>
