@@ -2,30 +2,32 @@
     <div class="col-md-10 text-left">
         <label class="font-responsive sans-fonts">Search</label>
         <input class="input-sm font-responsive sans-fonts" type="text" ng-model="qc.search">
+
+        <div class="btn-group" ng-class="{open: open}"  style="margin-left: 10px">
+            <button class="btn btn-default font-responsive">Filter</button>
+            <button class="btn dropdown-toggle btn-default font-responsive" ng-click="open=!open">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                <li ng-repeat="category in qc.filterCategories" class="dropdown-submenu">
+                    <a>{{category.name}}</a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a ng-click="rc.checkAll()"><i class="icon-ok-sign"></i>Check All</a>
+                        </li>
+                        <li>
+                            <a ng-click="rc.unCheckAll()"><i class="icon-remove-sign"></i>Uncheck All</a>
+                        </li>
+                        <li ng-repeat="categoryItem in category.CategoryItems">
+                            <a class="test" href="#" ng-click="setSelectedGroup(category)">{{categoryItem}}</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
 
-    <div class="btn-group pull-left" ng-class="{open: open}">
-        <button class="btn">Filter</button>
-        <button class="btn dropdown-toggle" ng-click="open=!open">
-            <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
-             <li ng-repeat="category in qc.filterCategories" class="dropdown-submenu">
-                 <a>{{category.name}}</a> 
-                 <ul class="dropdown-menu">
-                     <li>
-                         <a ng-click="rc.checkAll()"><i class="icon-ok-sign"></i>Check All</a>
-                     </li>
-                     <li>
-                         <a ng-click="rc.unCheckAll()"><i class="icon-remove-sign"></i>Uncheck All</a>
-                     </li> 
-                     <li ng-repeat="categoryItem in category.CategoryItems">
-                         <a class="test" href="#" ng-click="setSelectedGroup(category)">{{categoryItem}}</a>
-                     </li>
-                 </ul>
-             </li>           
-        </ul>
-    </div>
+
 
     <div class="col-md-12 pad-top-bottom">
         <table class="table font-responsive sans-fonts tableStyle">
