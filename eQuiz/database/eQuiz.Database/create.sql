@@ -143,7 +143,7 @@ CREATE TABLE [dbo].[tblQuizPassScore]
 	[Id] [INT] NOT NULL IDENTITY(1, 1),
 	[QuizPassId] [INT] NOT NULL,
 	[PassScore] [SMALLINT] NOT NULL,
-	[EvaluatedBy] [INT] NOT NULL,
+	[EvaluatedBy] [NVARCHAR](128) NOT NULL,
 	[EvaluatedAt] [SMALLDATETIME] NOT NULL,
 	CONSTRAINT [PK_tblQuizPassScore_Id] PRIMARY KEY ([Id]), 
 	CONSTRAINT [UK_tblQuizPassScore_QuizPassId] UNIQUE ([QuizPassId])
@@ -208,7 +208,7 @@ CREATE TABLE [dbo].[tblUserAnswerScore]
 	[Id] [INT] NOT NULL IDENTITY(1, 1), 
 	[QuizPassQuestionId] [INT] NOT NULL, 
 	[Score] [FLOAT] NOT NULL,
-	[EvaluatedBy] [INT] NOT NULL,
+	[EvaluatedBy] [NVARCHAR](128) NULL,
 	[EvaluatedAt] [SMALLDATETIME] NOT NULL,
 	CONSTRAINT [PK_tblUserAnswerScore_Id] PRIMARY KEY ([Id]),
 	CONSTRAINT [UK_tblUserAnswerScore_QuizPassQuestionId] UNIQUE ([QuizPassQuestionId])
@@ -270,83 +270,11 @@ CREATE TABLE [dbo].[tblUserTextAnswer]
 CREATE TABLE [dbo].[tblUserComment](
     Id int IDENTITY(1,1) NOT NULL,
     UserId int NOT NULL,
-    AdminId int NOT NULL,
+    AdminId [NVARCHAR](128) NOT NULL,
     CommentTime datetime NOT NULL,
     CommentText nvarchar(max) NOT NULL,     
     CONSTRAINT PK_tblUserComment_Id PRIMARY KEY ([Id]),
 )
-
-GO
- 
-ALTER TABLE [dbo].[tblUserComment] ADD CONSTRAINT [FK_tblUserComment_AdminId_tblUser] FOREIGN KEY([AdminId]) REFERENCES [dbo].[tblUser] ([Id]);
-
-ALTER TABLE [dbo].[tblUserComment] ADD CONSTRAINT [FK_tblUserComment_UserId_tblUser] FOREIGN KEY([UserId]) REFERENCES [dbo].[tblUser] ([Id]);
-
-ALTER TABLE [dbo].[tblFacebookUser] ADD CONSTRAINT [FK_tblFacebookUser_tblUser] FOREIGN KEY([UserId]) REFERENCES [dbo].[tblUser] ([Id]);
-
-ALTER TABLE [dbo].[tblQuestionAnswer] ADD CONSTRAINT [FK_tblQuestionAnswer_tblQuestion] FOREIGN KEY([QuestionId]) REFERENCES [dbo].[tblQuestion] ([Id]);
-
-ALTER TABLE [dbo].[tblQuestion] ADD CONSTRAINT [FK_tblQuestion_tblQuestionType] FOREIGN KEY([QuestionTypeId]) REFERENCES [dbo].[tblQuestionType] ([Id]);
-
-ALTER TABLE [dbo].[tblQuestion] ADD CONSTRAINT [FK_tblQuestion_tblTopic] FOREIGN KEY([TopicId]) REFERENCES [dbo].[tblTopic] ([Id]);
-
-ALTER TABLE [dbo].[tblQuestionTag] ADD CONSTRAINT [FK_tblQuestionTag_tblQuestion] FOREIGN KEY([QuestionId]) REFERENCES [dbo].[tblQuestion] ([Id]);
-
-ALTER TABLE [dbo].[tblQuestionTag] ADD CONSTRAINT [FK_tblQuestionTag_tblTag] FOREIGN KEY([TagId]) REFERENCES [dbo].[tblTag] ([Id]);
-
-ALTER TABLE [dbo].[tblQuizBlock] ADD CONSTRAINT [FK_tblQuizBlock_tblQuiz] FOREIGN KEY([QuizId]) REFERENCES [dbo].[tblQuiz] ([Id]);
-
-ALTER TABLE [dbo].[tblQuizBlock] ADD CONSTRAINT [FK_tblQuizBlock_Topic] FOREIGN KEY([TopicId]) REFERENCES [dbo].[tblTopic] ([Id]);
-
-ALTER TABLE [dbo].[tblQuiz] ADD CONSTRAINT [FK_tblQuiz_tblQuizType] FOREIGN KEY([QuizTypeId]) REFERENCES [dbo].[tblQuizType] ([Id]);
-
-ALTER TABLE [dbo].[tblQuiz] ADD CONSTRAINT [FK_tblQuiz_tblGroup] FOREIGN KEY([GroupId]) REFERENCES [dbo].[tblUserGroup] ([Id]);
-
-ALTER TABLE [dbo].[tblQuiz] ADD CONSTRAINT [FK_tblQuiz_tblQuizState] FOREIGN KEY([QuizStateId]) REFERENCES [dbo].[tblQuizState] ([Id]);
-
-ALTER TABLE [dbo].[tblQuizEditHistory] ADD CONSTRAINT [FK_tblQuizEditHistory_tblQuiz] FOREIGN KEY([QuizId]) REFERENCES [dbo].[tblQuiz] ([Id]);
-
-ALTER TABLE [dbo].[tblQuizPass] ADD CONSTRAINT [FK_tblQuizPass_tblQuiz] FOREIGN KEY([QuizId]) REFERENCES [dbo].[tblQuiz] ([Id]);
-
-ALTER TABLE [dbo].[tblQuizPass]  ADD CONSTRAINT [FK_tblQuizPass_tblUser] FOREIGN KEY([UserId]) REFERENCES [dbo].[tblUser] ([Id]);
-
-ALTER TABLE [dbo].[tblQuizPassQuestion] ADD CONSTRAINT [FK_tblQuizPassQuestion_tblQuestion] FOREIGN KEY([QuestionId]) REFERENCES [dbo].[tblQuestion] ([Id]);
-
-ALTER TABLE [dbo].[tblQuizPassQuestion] ADD CONSTRAINT [FK_tblQuizPassQuestion_QuizBlock] FOREIGN KEY([QuizBlockId]) REFERENCES [dbo].[tblQuizBlock] ([Id]);
-
-ALTER TABLE [dbo].[tblQuizPassQuestion] ADD CONSTRAINT [FK_tblQuizPassQuestion_tblQuizPass] FOREIGN KEY([QuizPassId]) REFERENCES [dbo].[tblQuizPass] ([Id]);
-
-ALTER TABLE [dbo].[tblQuizPassScore] ADD CONSTRAINT [FK_tblQuizPassScore_tblQuizPass] FOREIGN KEY([QuizPassId]) REFERENCES [dbo].[tblQuizPass] ([Id]);
-
-ALTER TABLE [dbo].[tblQuizPassScore] ADD  CONSTRAINT [FK_tblQuizPassScore_tblUser] FOREIGN KEY([EvaluatedBy]) REFERENCES [dbo].[tblUser] ([Id]);
-
-ALTER TABLE [dbo].[tblQuizQuestion] ADD  CONSTRAINT [FK_tblQuizQuestion_tblQuestion] FOREIGN KEY([QuestionId]) REFERENCES [dbo].[tblQuestion] ([Id]); --Remade
-
-ALTER TABLE [dbo].[tblQuizQuestion] ADD  CONSTRAINT [FK_tblQuizQuestion_tblQuizBlock] FOREIGN KEY([QuizBlockId]) REFERENCES [dbo].[tblQuizBlock] ([Id]);
-
-ALTER TABLE [dbo].[tblQuizQuestion] ADD  CONSTRAINT [FK_tblQuizQuestion_tblQuizVariant] FOREIGN KEY([QuizVariantId]) REFERENCES [dbo].[tblQuizVariant] ([Id]);
-
-ALTER TABLE [dbo].[tblQuizVariant] ADD  CONSTRAINT [FK_tblQuizVariant_tblQuiz] FOREIGN KEY([QuizId]) REFERENCES [dbo].[tblQuiz] ([Id]);  ---------
-
-ALTER TABLE [dbo].[tblUserAnswer] ADD  CONSTRAINT [FK_tblUserAnswer_tblAnswer] FOREIGN KEY([AnswerId]) REFERENCES [dbo].[tblAnswer] ([Id]); ----------
-
-ALTER TABLE [dbo].[tblUserAnswer] ADD  CONSTRAINT [FK_tblUserAnswer_tblQuizPassQuestion] FOREIGN KEY([QuizPassQuestionId]) REFERENCES [dbo].[tblQuizPassQuestion] ([Id]);
-
-ALTER TABLE [dbo].[tblUserAnswerScore] ADD  CONSTRAINT [FK_tblUserAnswerScore_tblQuizPassQuestion] FOREIGN KEY([QuizPassQuestionId]) REFERENCES [dbo].[tblQuizPassQuestion] ([Id]);
-
-ALTER TABLE [dbo].[tblUserAnswerScore] ADD  CONSTRAINT [FK_tblUserAnswerScore_tblUser] FOREIGN KEY([EvaluatedBy]) REFERENCES [dbo].[tblUser] ([Id]);
-
-ALTER TABLE [dbo].[tblUserToUserGroup] ADD  CONSTRAINT [FK_tblUserToUserGroup_tblUserGroup] FOREIGN KEY([GroupId]) REFERENCES [dbo].[tblUserGroup] ([Id]);
-
-ALTER TABLE [dbo].[tblUserToUserGroup] ADD  CONSTRAINT [FK_tblUserToUserGroup_tblUser] FOREIGN KEY([UserId]) REFERENCES [dbo].[tblUser] ([Id]);
-
-ALTER TABLE [dbo].[tblUserTextAnswer] ADD  CONSTRAINT [FK_tblUserTextAnswer_tblQuizPassQuestion] FOREIGN KEY([QuizPassQuestionId]) REFERENCES [dbo].[tblQuizPassQuestion] ([Id]);
-
-ALTER TABLE [dbo].[tblQuestionAnswer] ADD  CONSTRAINT [FK_tblQuestionAnswer_tblAnswer] FOREIGN KEY([AnswerId]) REFERENCES [dbo].[tblAnswer] ([Id]); ---------------
-
-ALTER TABLE [dbo].[tblUserGroup] ADD  CONSTRAINT [FK_tblUserGroup_tblUserGroupState] FOREIGN KEY([UserGroupStateId]) REFERENCES [dbo].[tblUserGroupState] ([Id]);
-
-
 
 GO
 
@@ -535,4 +463,73 @@ ALTER TABLE [dbo].[tblUserGroup] ADD  CONSTRAINT [FK_tblUserGroup_AspNetUsers] F
 GO
 
 ALTER TABLE [dbo].[tblQuizEditHistory] ADD CONSTRAINT [FK_tblQuizEditHistory_AspNetUsers] FOREIGN KEY([UserId]) REFERENCES [dbo].[AspNetUsers] ([Id]);
+GO
+
+ALTER TABLE [dbo].[tblUserComment] ADD CONSTRAINT [FK_tblUserComment_AdminId_tblUser] FOREIGN KEY([AdminId]) REFERENCES [dbo].[AspNetUsers] ([Id]);
+
+ALTER TABLE [dbo].[tblUserComment] ADD CONSTRAINT [FK_tblUserComment_UserId_tblUser] FOREIGN KEY([UserId]) REFERENCES [dbo].[tblUser] ([Id]);
+
+ALTER TABLE [dbo].[tblFacebookUser] ADD CONSTRAINT [FK_tblFacebookUser_tblUser] FOREIGN KEY([UserId]) REFERENCES [dbo].[tblUser] ([Id]);
+
+ALTER TABLE [dbo].[tblQuestionAnswer] ADD CONSTRAINT [FK_tblQuestionAnswer_tblQuestion] FOREIGN KEY([QuestionId]) REFERENCES [dbo].[tblQuestion] ([Id]);
+
+ALTER TABLE [dbo].[tblQuestion] ADD CONSTRAINT [FK_tblQuestion_tblQuestionType] FOREIGN KEY([QuestionTypeId]) REFERENCES [dbo].[tblQuestionType] ([Id]);
+
+ALTER TABLE [dbo].[tblQuestion] ADD CONSTRAINT [FK_tblQuestion_tblTopic] FOREIGN KEY([TopicId]) REFERENCES [dbo].[tblTopic] ([Id]);
+
+ALTER TABLE [dbo].[tblQuestionTag] ADD CONSTRAINT [FK_tblQuestionTag_tblQuestion] FOREIGN KEY([QuestionId]) REFERENCES [dbo].[tblQuestion] ([Id]);
+
+ALTER TABLE [dbo].[tblQuestionTag] ADD CONSTRAINT [FK_tblQuestionTag_tblTag] FOREIGN KEY([TagId]) REFERENCES [dbo].[tblTag] ([Id]);
+
+ALTER TABLE [dbo].[tblQuizBlock] ADD CONSTRAINT [FK_tblQuizBlock_tblQuiz] FOREIGN KEY([QuizId]) REFERENCES [dbo].[tblQuiz] ([Id]);
+
+ALTER TABLE [dbo].[tblQuizBlock] ADD CONSTRAINT [FK_tblQuizBlock_Topic] FOREIGN KEY([TopicId]) REFERENCES [dbo].[tblTopic] ([Id]);
+
+ALTER TABLE [dbo].[tblQuiz] ADD CONSTRAINT [FK_tblQuiz_tblQuizType] FOREIGN KEY([QuizTypeId]) REFERENCES [dbo].[tblQuizType] ([Id]);
+
+ALTER TABLE [dbo].[tblQuiz] ADD CONSTRAINT [FK_tblQuiz_tblGroup] FOREIGN KEY([GroupId]) REFERENCES [dbo].[tblUserGroup] ([Id]);
+
+ALTER TABLE [dbo].[tblQuiz] ADD CONSTRAINT [FK_tblQuiz_tblQuizState] FOREIGN KEY([QuizStateId]) REFERENCES [dbo].[tblQuizState] ([Id]);
+
+ALTER TABLE [dbo].[tblQuizEditHistory] ADD CONSTRAINT [FK_tblQuizEditHistory_tblQuiz] FOREIGN KEY([QuizId]) REFERENCES [dbo].[tblQuiz] ([Id]);
+
+ALTER TABLE [dbo].[tblQuizPass] ADD CONSTRAINT [FK_tblQuizPass_tblQuiz] FOREIGN KEY([QuizId]) REFERENCES [dbo].[tblQuiz] ([Id]);
+
+ALTER TABLE [dbo].[tblQuizPass]  ADD CONSTRAINT [FK_tblQuizPass_tblUser] FOREIGN KEY([UserId]) REFERENCES [dbo].[tblUser] ([Id]);
+
+ALTER TABLE [dbo].[tblQuizPassQuestion] ADD CONSTRAINT [FK_tblQuizPassQuestion_tblQuestion] FOREIGN KEY([QuestionId]) REFERENCES [dbo].[tblQuestion] ([Id]);
+
+ALTER TABLE [dbo].[tblQuizPassQuestion] ADD CONSTRAINT [FK_tblQuizPassQuestion_QuizBlock] FOREIGN KEY([QuizBlockId]) REFERENCES [dbo].[tblQuizBlock] ([Id]);
+
+ALTER TABLE [dbo].[tblQuizPassQuestion] ADD CONSTRAINT [FK_tblQuizPassQuestion_tblQuizPass] FOREIGN KEY([QuizPassId]) REFERENCES [dbo].[tblQuizPass] ([Id]);
+
+ALTER TABLE [dbo].[tblQuizPassScore] ADD CONSTRAINT [FK_tblQuizPassScore_tblQuizPass] FOREIGN KEY([QuizPassId]) REFERENCES [dbo].[tblQuizPass] ([Id]);
+
+ALTER TABLE [dbo].[tblQuizPassScore] ADD  CONSTRAINT [FK_tblQuizPassScore_tblUser] FOREIGN KEY([EvaluatedBy]) REFERENCES [dbo].[AspNetUsers] ([Id]);
+
+ALTER TABLE [dbo].[tblQuizQuestion] ADD  CONSTRAINT [FK_tblQuizQuestion_tblQuestion] FOREIGN KEY([QuestionId]) REFERENCES [dbo].[tblQuestion] ([Id]); --Remade
+
+ALTER TABLE [dbo].[tblQuizQuestion] ADD  CONSTRAINT [FK_tblQuizQuestion_tblQuizBlock] FOREIGN KEY([QuizBlockId]) REFERENCES [dbo].[tblQuizBlock] ([Id]);
+
+ALTER TABLE [dbo].[tblQuizQuestion] ADD  CONSTRAINT [FK_tblQuizQuestion_tblQuizVariant] FOREIGN KEY([QuizVariantId]) REFERENCES [dbo].[tblQuizVariant] ([Id]);
+
+ALTER TABLE [dbo].[tblQuizVariant] ADD  CONSTRAINT [FK_tblQuizVariant_tblQuiz] FOREIGN KEY([QuizId]) REFERENCES [dbo].[tblQuiz] ([Id]);  ---------
+
+ALTER TABLE [dbo].[tblUserAnswer] ADD  CONSTRAINT [FK_tblUserAnswer_tblAnswer] FOREIGN KEY([AnswerId]) REFERENCES [dbo].[tblAnswer] ([Id]); ----------
+
+ALTER TABLE [dbo].[tblUserAnswer] ADD  CONSTRAINT [FK_tblUserAnswer_tblQuizPassQuestion] FOREIGN KEY([QuizPassQuestionId]) REFERENCES [dbo].[tblQuizPassQuestion] ([Id]);
+
+ALTER TABLE [dbo].[tblUserAnswerScore] ADD  CONSTRAINT [FK_tblUserAnswerScore_tblQuizPassQuestion] FOREIGN KEY([QuizPassQuestionId]) REFERENCES [dbo].[tblQuizPassQuestion] ([Id]);
+
+ALTER TABLE [dbo].[tblUserAnswerScore] ADD  CONSTRAINT [FK_tblUserAnswerScore_tblUser] FOREIGN KEY([EvaluatedBy]) REFERENCES [dbo].[AspNetUsers] ([Id]);
+
+ALTER TABLE [dbo].[tblUserToUserGroup] ADD  CONSTRAINT [FK_tblUserToUserGroup_tblUserGroup] FOREIGN KEY([GroupId]) REFERENCES [dbo].[tblUserGroup] ([Id]);
+
+ALTER TABLE [dbo].[tblUserToUserGroup] ADD  CONSTRAINT [FK_tblUserToUserGroup_tblUser] FOREIGN KEY([UserId]) REFERENCES [dbo].[tblUser] ([Id]);
+
+ALTER TABLE [dbo].[tblUserTextAnswer] ADD  CONSTRAINT [FK_tblUserTextAnswer_tblQuizPassQuestion] FOREIGN KEY([QuizPassQuestionId]) REFERENCES [dbo].[tblQuizPassQuestion] ([Id]);
+
+ALTER TABLE [dbo].[tblQuestionAnswer] ADD  CONSTRAINT [FK_tblQuestionAnswer_tblAnswer] FOREIGN KEY([AnswerId]) REFERENCES [dbo].[tblAnswer] ([Id]); ---------------
+
+ALTER TABLE [dbo].[tblUserGroup] ADD  CONSTRAINT [FK_tblUserGroup_tblUserGroupState] FOREIGN KEY([UserGroupStateId]) REFERENCES [dbo].[tblUserGroupState] ([Id]);
 GO
