@@ -5,9 +5,10 @@
 
 <section class="wrapperDashboard1" ng-controller="UserGroupsController as ug" ng-cloak>
 
-
-    <div class="cssload-container" ng-show="ug.isLoading">
-        <div class="cssload-whirlpool"></div>
+    <div ng-cloak class="loading-background" ng-show="ug.isLoading">
+        <div class="cssload-container">
+            <div class="cssload-whirlpool"></div>
+        </div>
     </div>
     <br />
 
