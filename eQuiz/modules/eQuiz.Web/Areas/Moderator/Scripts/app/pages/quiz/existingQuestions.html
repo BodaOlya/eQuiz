@@ -27,7 +27,7 @@
                 <div ng-repeat="q in questions = (vm.model.questionsForAdding.questions | filter: vm.questionSearch) | startFrom: (vm.questionsPagingInfo.currentPage - 1) * vm.questionsPagingInfo.questionsPerPage | limitTo : vm.questionsPagingInfo.questionsPerPage  track by $index">
                     <div class="row">
                         <div class="col-sm-1 col-md-1">
-                            <input type="checkbox" id="{{'Question' + $index}}" class="form-control" ng-model="q.checked" />
+                            <input type="checkbox" id="{{'Question' + $index}}" class="check-box" ng-model="q.checked" />
                         </div>
                         <div class="col-sm-11 col-md-11">
                             <label for="{{'Question' + $index}}" class="control-label">
@@ -44,7 +44,7 @@
                                 <div ng-switch-when="2">
                                     <div class="row" ng-repeat="answer in vm.getAnswersForQuestion(q)">
                                         <div class="col-sm-1 col-md-1">
-                                            <input type="radio" class="form-control" ng-disabled="true" ng-checked="answer.IsRight" />
+                                            <input type="radio" class="radio-button" ng-disabled="true" ng-checked="answer.IsRight" />
                                         </div>
                                         <div class="col-sm-11 col-md-11">
                                             <p class="control-label">
