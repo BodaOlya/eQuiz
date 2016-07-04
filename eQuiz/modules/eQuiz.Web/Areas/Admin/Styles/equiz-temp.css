@@ -563,6 +563,8 @@ button.btn-lightcoral {
 }
 
 
+/* bootstrap sub dropdown START*/
+
 .dropdown-submenu {
     position: relative;
 }
@@ -610,6 +612,8 @@ button.btn-lightcoral {
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
 }
+
+/* bootstrap sub dropdown END*/
 
 .logo {
     position: absolute;
