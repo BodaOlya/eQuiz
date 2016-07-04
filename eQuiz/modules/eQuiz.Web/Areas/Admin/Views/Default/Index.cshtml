@@ -8,36 +8,34 @@
 }
 @section PageHeader
 {
-    <div ng-app="equizModule" class="header h-responsive">
-        <div class="text-left col-md-4 verticalAlign pad-top-bottom">
-            <a class="h-font-responsive sans-font" onclick="location.href='/Admin/Default/Index'" style="margin-right: 8px">QUIZZES</a>
-            <a class="h-font-responsive sans-font" onclick="location.href='/Admin/Default/Index/Students'">STUDENTS</a>
-        </div>
+<nav class="navbar  navbar-custom  ">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="/Admin/Default/Index">QUIZZES</a></li>
+            <li class="active"><a href="/Admin/Default/Index/Students">STUDENTS</a></li>
+        </ul>
 
-        <div class="col-md-4" style="height: 100%; z-index:-1;">
-            <img src="/Areas/Student/Images/logo.png" class="img-responsive center-block" style="height: 100%">
+        <div class="logo" href="#">
+            <img src="~/Areas/Admin/Images/logo.png">
         </div>
 
         @using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm" }))
-    {
+        {
             @Html.AntiForgeryToken()
 
-            <div class="text-left col-md-4 verticalAlign pad-top-bottom">
-                <div class="right-align-div h-font-responsive">
-                    @User.Identity.GetUserName()
-                    <a class="h-font-responsive" style="padding-left: 8px" href="javascript:document.getElementById('logoutForm').submit()">LOG OFF</a>
-                </div>
-            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><p class="navbar-text">@User.Identity.GetUserName()</p></li>
+                <li><a href="javascript:document.getElementById('logoutForm').submit()">LOG OFF</a></li>
+            </ul>
         }
     </div>
+</nav>
 }
 
 <div style="z-index: 5" data-loading class="cssload-container centered">
     <div class="cssload-speeding-wheel"></div>
 </div>
 <div style="z-index: 2" ng-view> </div>
-</div>
-</div>
 
 @section FootScripts
 {
@@ -72,4 +70,5 @@
     <link href="~/Styles/bootstrap.css" rel="stylesheet" />
     <link href="~/Areas/Admin/Styles/equiz-temp.css" rel="stylesheet" />
     <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Oswald" />
 }
