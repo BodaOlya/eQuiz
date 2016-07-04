@@ -572,3 +572,8 @@ button.btn-lightcoral {
     font-family: Oswald;
     font-size: 16px;
 }
+
+.table > tbody > tr > td {
+    vertical-align: middle;
+    font-size: 14px;
+}
