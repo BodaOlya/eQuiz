@@ -106,7 +106,7 @@
                 <button class="btn btn-success col-md-2" ng-click="g.save()" ng-disabled="!g.isEditingEnabled()">Save</button>
                 <button class="btn btn-info col-sm-offset-1 col-md-2" ng-click="g.archive()" ng-disabled="!g.isEditingEnabled() || !g.canArchive()">Archive</button>
 
-                @Html.ActionLink(linkText: "Cancel", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-info col-sm-offset-1 col-md-2", style = "margin-bottom: 0px;" })
+                @Html.ActionLink(linkText: "Cancel", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-info col-sm-offset-1 col-md-2" })
 
             </div>
         </div>

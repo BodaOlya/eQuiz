@@ -762,7 +762,10 @@ ul.moderator-top-header li:last-child {
     color: orange;
 }
 
-.wrapperDashboard1 .margin-button button + a {
+.wrapperDashboard1 .margin-button button{
+    margin-bottom: 40px;
+}
+.wrapperDashboard1 .margin-button a {
     margin-bottom: 40px;
     border-radius: 0;
 }
