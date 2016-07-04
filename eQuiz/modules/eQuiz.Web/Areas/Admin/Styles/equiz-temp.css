@@ -81,6 +81,10 @@
     background-color: lightgray;
 }
 
+.backgroundColor {
+     background-color: #f9f9f9";
+}
+
 .tableStyle {
     vertical-align: central;
     background-color: ActiveBorder;

@@ -1,4 +1,4 @@
-﻿<div class="pad-top-bottom" style="height: 100vh; background-color: #f9f9f9">
+﻿<div class="pad-top-bottom backgroundColor" style="height: 100vh;">
     <div class="col-md-10 text-left">
         <label class="font-responsive sans-fonts">Search</label>
         <input class="input-sm font-responsive sans-fonts" type="text" ng-model="qc.search">
@@ -26,7 +26,7 @@
             </tbody>
         </table>
     </div>
-    <div class="col-md-12">
+    <div class="col-md-12 sans-fonts">
         <span class="font-responsive">
             Rows on the page:
             <select style="margin:5px" ng-model="qc.resultsPerPage" ng-options="p for p in qc.resultsCount" ng-change="qc.paginationChanged()"></select>
