@@ -662,3 +662,9 @@ button.btn-lightcoral {
 .table > tbody > tr > td {
     vertical-align: middle;
 }
+
+.filters-scrollbar {
+    min-height: 150px; 
+    max-height: 250px; 
+    overflow-y: auto;
+}

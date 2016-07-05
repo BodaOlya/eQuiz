@@ -5,11 +5,11 @@
 
 
         <div class="btn-group" ng-class="{open: rc.filterIsOpened}" style="margin-left: 10px">
-            <button class="btn btn-default font-responsive">Filter Group</button>
+            <button class="btn btn-default font-responsive">Group Filter</button>
             <button class="btn dropdown-toggle btn-default font-responsive" ng-click="rc.filterIsOpened=!rc.filterIsOpened">
                 <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+            </button>            
+            <ul class="dropdown-menu filters-scrollbar" aria-labelledby="dropdownMenu">
                 <li>
                     <a ng-click="rc.checkAll()"><i class="icon-ok-sign"></i>Check All</a>
                 </li>
@@ -20,7 +20,7 @@
                 <li ng-repeat="group in rc.groupList">
                     <a ng-click="setSelectedGroup()" ng-model="group">{{group}} <span ng-class="rc.isChecked(group)"> <b ng-hide="!rc.isChecked(group)">&#x2713</b></span> </a>
                 </li>
-            </ul>
+            </ul>            
         </div>
     </div>
 
