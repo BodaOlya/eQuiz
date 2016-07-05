@@ -21,6 +21,10 @@ h1 {
     width: 15px;
 }
 
+.userFullName {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
+}
+
 .LoginBtn {
     border: 2px solid black;
     border-radius: 4px;

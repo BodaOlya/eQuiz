@@ -1,6 +1,10 @@
 ﻿@model eQuiz.Web.Models.ExternalLoginConfirmationViewModel
 @{
     ViewBag.Title = "Register";
+    var errorMessages = string.Join("; ", ViewData
+                                        .ModelState.Values
+                                        .SelectMany(x => x.Errors)
+                                        .Select(x => x.ErrorMessage));
 }
 
 @section HeadStyles{
@@ -31,7 +35,7 @@
                     You've successfully authenticated with <strong>@ViewBag.LoginProvider</strong>.
                     Please enter a user name for this site below and click the Register button to finish
                     logging in.
-                </div>
+                </div>                
             </div>
             
             <hr />
@@ -40,6 +44,12 @@
                 <div class="col-sm-6">
                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    @if (!string.IsNullOrWhiteSpace(errorMessages))
+                    {
+                        <div class="text-danger">
+                            @errorMessages
+                        </div>
+                    }
                 </div>
             </div>
         
