@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using eQuiz.Web.Validation;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace eQuiz.Web.Models
@@ -6,8 +7,10 @@ namespace eQuiz.Web.Models
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
+        [EmailAddress]
         [Display(Name = "Email")]
-        public string Email { get; set; }
+        [VerificationEmailAttribute]
+        public string Email { get; set; }        
     }
 
     public class ExternalLoginListViewModel

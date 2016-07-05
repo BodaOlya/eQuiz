@@ -518,6 +518,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Validation\VerificationEmailAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -532,7 +533,6 @@
     <Content Include="Views\Home\MainLogin.cshtml" />
     <Content Include="Areas\Student\Views\Default\Dashboard.cshtml" />
     <Content Include="Areas\Student\Views\Default\Details.cshtml" />
-    <Content Include="Areas\Student\Views\Account\Login.cshtml" />
     <Content Include="Areas\Moderator\Views\Quiz\Edit.cshtml" />
     <Content Include="Areas\Moderator\Views\Shared\_Header.cshtml" />
     <Content Include="Areas\Moderator\Views\Quiz\Index.cshtml" />

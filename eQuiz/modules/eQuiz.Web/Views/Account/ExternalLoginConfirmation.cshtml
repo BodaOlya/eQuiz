@@ -2,35 +2,52 @@
 @{
     ViewBag.Title = "Register";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>Associate your @ViewBag.LoginProvider account.</h3>
 
-@using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
-
-    <h4>Association Form</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <p class="text-info">
-        You've successfully authenticated with <strong>@ViewBag.LoginProvider</strong>.
-        Please enter a user name for this site below and click the Register button to finish
-        logging in.
-    </p>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
-        </div>
-    </div>
+@section HeadStyles{
+    <link rel="stylesheet" href="~/Areas/Student/Styles/equiz-temp.css">
+    <link href="~/Styles/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Oswald" />
 }
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+@section PageHeader{
+    <div class="header">
+        <div id="epamLogo">
+            <img src="~/Areas/Student/Images/logo.png" class="img-responsive center-block" />
+        </div>
+        <hr />
+    </div>
 }
+<div class="wrapper">
+    <div class="container col-sm-offset-3 col-sm-6 jumbotron">
+      @using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+      {
+        @Html.AntiForgeryToken()
+            <div class="form-group row">
+                <label class="col-sm-12 formHeader">Associate your @ViewBag.LoginProvider account.</label>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    You've successfully authenticated with <strong>@ViewBag.LoginProvider</strong>.
+                    Please enter a user name for this site below and click the Register button to finish
+                    logging in.
+                </div>
+            </div>
+            
+            <hr />
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Email, new { @class = "col-sm-6 form-control-label" })
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        
+            <div class="form-group row">
+                <div class="col-sm-offset-10 col-md-2">
+                    <button type="submit" class="btn btn-success form-control">Register</button>
+                </div>
+            </div>
+      }
+    </div>
+</div>

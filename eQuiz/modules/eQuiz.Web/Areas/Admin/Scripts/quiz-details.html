@@ -1,33 +1,33 @@
 ﻿<div class="pad-top-bottom backgroundColor" style="height: 100vh;">
     <div class="col-md-10 text-left">
-        <h1 class="h-font-responsive sans-fonts">{{qc.quizInfo[0].quizName}}, {{qc.quizInfo[0].groupName}}</h1>
+        <h1 class="h-font-responsive font-Oswald">{{qc.quizInfo[0].quizName}}, {{qc.quizInfo[0].groupName}}</h1>
     </div>
     <div class="col-md-2 pad-top-bottom">
         <button class="btn btn-primary font-responsive sans-fonts" ng-click="qc.exportShow=!qc.exportShow" style="float:right;">Export</button>
     </div>
     <div class="col-md-10 pad-top-bottom font-responsive sans-fonts">
-        <label class="font-responsive sans-fonts">Search</label>
+        <label class="font-responsive font-Oswald font-normal">Search</label>
         <input class="input-sm font-responsive sans-fonts" type="text" ng-model="qc.search">
     </div>
     <div class="col-md-12 pad-top-bottom">
         <table class="table font-responsive sans-fonts tableStyle">
             <thead class="lightGray">
                 <tr>
-                    <th><a href="#" ng-show="qc.exportShow" ng-click="qc.addOrRemoveFromExportAll(qc.contents)">{{qc.multipleExportToDo(qc.contents)}}</a></th>
+                    <th><a href="#" class="font-responsive font-Oswald font-normal" ng-show="qc.exportShow" ng-click="qc.addOrRemoveFromExportAll(qc.contents)">{{qc.multipleExportToDo(qc.contents)}}</a></th>
                     <th ng-repeat="h in qc.headers">
-                        <a class="link" href="#" ng-click="qc.refreshPredicate(h.predicateIndex); qc.order(qc.myPredicate[h.predicateIndex],null)">
+                        <a class="font-responsive font-Oswald font-normal" href="#" ng-click="qc.refreshPredicate(h.predicateIndex); qc.order(qc.myPredicate[h.predicateIndex],null)">
                             <span class="sortorder" ng-show="qc.direction(h.predicateIndex) !== null" ng-class="{direction:qc.direction(h.predicateIndex)}"></span>
                             {{h.name}}
                         </a>
                     </th>
                     <th>
-                        <a class="link">
+                        <a class="font-responsive font-Oswald font-normal">
                             Questions Details
                         </a>
                     </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="t-font-responsive">
                 <tr ng-repeat="c in qc.contents = (qc.studentsFiltered = (qc.students | filter: {student:qc.search}) | startFrom: qc.tablePage*qc.resultsPerPage | limitTo:qc.resultsPerPage)" style="height: 50px">
                     <td><a href="#" ng-show="qc.exportShow" ng-click="qc.addOrRemoveFromExport(c)">{{qc.singleExportToDo(c)}}</a></td>
                     <td><a href="{{qc.linkToProfile}}" class="link" ng-click="qc.setLink(c.id);" ng-bind-html="c.student | highlight: qc.search">{{c.student}}</a></td>
@@ -59,16 +59,16 @@
         </span>
     </div>
     <div class="col-lg-12" ng-show="qc.exportShow">
-        <h1 class="h-font-responsive sans-fonts">Exporting to excel file:</h1>
+        <h1 class="h-font-responsive font-Oswald">Exporting to excel file:</h1>
         <table id="exportable" class="table font-responsive sans-fonts tableStyle">
-            <thead id="headers" class="lightGray">
+            <thead id="headers" class="lightGray font-Oswald font-responsive">
                 <tr>
-                    <th>Student</th>
-                    <th>Email</th>
-                    <th>Score</th>
+                    <th class="font-normal">Student</th>
+                    <th class="font-normal">Email</th>
+                    <th class="font-normal">Score</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="t-font-responsive">
                 <tr ng-repeat="c in qc.contentsToExport | orderBy: 'studentScore'">
                     <td>{{c.student}}</td>
                     <td>{{c.email}}</td>
@@ -77,7 +77,15 @@
             </tbody>
         </table>
         <br />
-        <div style="float: left">
+        <div class="col-md-10 text-left">
+            <label class="font-responsive font-normal" style="padding-right: 8px">Total for export: {{qc.contentsToExport.length}};</label>
+            <label class="font-responsive font-normal">Path: </label>
+            <input class="input-sm font-responsive" type="text" value="C:\\" ng-model="qc.excelPath"/>
+            <button class="btn btn-success font-responsive" ng-click="qc.CreateExcel()" ng-disabled="qc.contentsToExport.length === 0">Save</button>
+            <button class="btn btn-danger font-responsive" ng-click="qc.exportShow=!qc.exportShow">Cancel</button>
+        </div>
+
+        <!--<div style="float: left">
             <button class="btn btn-danger font-responsive" ng-click="qc.exportShow=!qc.exportShow" style="font-size:20px">Cancel</button>
         </div>
         <div style="float: right">
@@ -89,7 +97,7 @@
                 <p style="margin:0px 0px 0px 50px">Total for export: {{qc.contentsToExport.length}}</p>
                 <button class="btn btn-success font-responsive" ng-click="qc.CreateExcel()" ng-disabled="qc.contentsToExport.length === 0" style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Save</button>
             </div>
-        </div>
+        </div>-->
     </div>
     <div pop-up-window></div>
 </div>
