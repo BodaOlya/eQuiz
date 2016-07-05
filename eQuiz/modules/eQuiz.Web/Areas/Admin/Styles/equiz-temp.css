@@ -222,6 +222,8 @@
     height: auto;
     text-align: left;
     align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 th, td {
@@ -315,8 +317,8 @@ html .tabLabels li.active, html .tabLabels li.active a:hover {
 }
 
 .footerButtons button {
-    width: 170px;
-    height: 40px;
+    width: 120px;
+    height: 30px;
 }
 
 .footerButtons div {
@@ -661,4 +663,31 @@ button.btn-lightcoral {
 
 .table > tbody > tr > td {
     vertical-align: middle;
+}
+
+/* student page bootstrap adjusting*/
+	
+.row-top-buffer {
+    margin-top: 10px;
+    vertical-align: middle;
+}
+
+.add-comment-row {
+    margin-left: 30px;
+    font-size: 14px;
+}
+
+.comment-row > blockquote {
+    margin-left: 30px;
+    font-size: 16px;
+}
+
+.oswald-text {
+    font-family: Oswald;
+    font-size: 16px;
+    font-weight: normal;
+}		
+
+.disable-click{
+    pointer-events: none;
 }
