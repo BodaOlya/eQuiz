@@ -23,6 +23,7 @@ namespace eQuiz.Entities
             this.UserGroups = new HashSet<UserGroup>();
             this.AspNetRoles = new HashSet<AspNetRole>();
             this.QuizEditHistories = new HashSet<QuizEditHistory>();
+            this.tblUserComments = new HashSet<UserComment>();
         }
     
         public string Id { get; set; }
@@ -51,5 +52,7 @@ namespace eQuiz.Entities
         public virtual ICollection<AspNetRole> AspNetRoles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuizEditHistory> QuizEditHistories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserComment> tblUserComments { get; set; }
     }
 }
