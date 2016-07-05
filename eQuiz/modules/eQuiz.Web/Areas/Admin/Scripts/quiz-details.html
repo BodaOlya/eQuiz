@@ -45,18 +45,20 @@
         </table>
     </div>
     <div class="col-md-12 sans-fonts">
-        <span class="font-responsive">
-            Rows on the page:
-            <select style="margin:5px" ng-model="qc.resultsPerPage" ng-options="p for p in qc.resultsCount" ng-change="qc.paginationChanged()"></select>
-            <span class="font-responsive" ng-show="qc.numberOfPages() &gt; 1">
-                <button class="btn btn-default font-responsive" ng-disabled="qc.tablePage==0" ng-click="qc.tablePage=qc.tablePage-1">Previous page</button>
-                <span ng-repeat="i in qc.getNumber(qc.numberOfPages()) track by $index">
-                    <button class="btn btn-default font-responsive" ng-click="qc.goToPage($index)"><span ng-class="{ 'table-active-page' : qc.tablePage==$index}">{{$index+1}}</span></button>
-                </span>
-                <button class="btn btn-default font-responsive" ng-disabled="qc.tablePage==qc.numberOfPages()-1" ng-click="qc.tablePage=qc.tablePage+1">Next page</button>
-            </span>
-            Total: {{qc.studentsFiltered.length}}
-        </span>
+        <div class="row font-responsive">
+            <div class="col-sm-4" style="margin-top: -10px">
+                <label class="font-Oswald font-normal">Rows on the page:</label>
+                <select class="md-primary" ng-model="qc.resultsPerPage" ng-change="qc.paginationChanged()" ng-options="p for p in qc.resultsCount"></select>
+                <label class="font-Oswald font-normal" style="margin-left: 10px">Total: {{qc.studentsFiltered.length}}</label>
+            </div>
+            <div class="col-sm-4" ng-show="qc.numberOfPages() &gt; 1" style="margin-top: -40px">
+                <ul class="pagination">
+                    <li><a href="#" ng-class="qc.tablePage==0&&'disable-click'" ng-click="qc.tablePage=qc.tablePage-1">&laquo;</a></li>
+                    <li ng-class="qc.tablePage==$index&&'page-item active'" ng-repeat="i in qc.getNumber(qc.numberOfPages()) track by $index"><a href="#" ng-click="qc.goToPage($index)">{{$index+1}}</a></li>
+                    <li><a href="#" ng-class="qc.tablePage==qc.numberOfPages()-1&&'disable-click'" ng-click="qc.tablePage=qc.tablePage+1">&raquo;</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
     <div class="col-lg-12" ng-show="qc.exportShow">
         <h1 class="h-font-responsive font-Oswald">Exporting to excel file:</h1>
