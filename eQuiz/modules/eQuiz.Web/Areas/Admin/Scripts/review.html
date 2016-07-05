@@ -1,4 +1,4 @@
-﻿<div class="pad-top-bottom backgroundColor" style="height: 100vh;">
+﻿<div class="container-fluid div-container">
     <div class="col-md-10 text-left">
         <label class="font-responsive font-Oswald font-normal">Search</label>
         <input class="input-sm font-responsive sans-fonts" type="text" ng-model="rc.search">
@@ -8,7 +8,7 @@
             <button class="btn btn-default font-responsive">Group Filter</button>
             <button class="btn dropdown-toggle btn-default font-responsive" ng-click="rc.filterIsOpened=!rc.filterIsOpened">
                 <span class="caret"></span>
-            </button>            
+            </button>
             <ul class="dropdown-menu filters-scrollbar" aria-labelledby="dropdownMenu">
                 <li>
                     <a ng-click="rc.checkAll()"><i class="icon-ok-sign"></i>Check All</a>
@@ -20,7 +20,7 @@
                 <li ng-repeat="group in rc.groupList">
                     <a ng-click="setSelectedGroup()" ng-model="group">{{group}} <span ng-class="rc.isChecked(group)"> <b ng-hide="!rc.isChecked(group)">&#x2713</b></span> </a>
                 </li>
-            </ul>            
+            </ul>
         </div>
     </div>
 
@@ -36,7 +36,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="t-font-responsive white-background">
+            <tbody class="t-font-responsive">
                 <tr ng-repeat="c in rc.contents = ((rc.searchFiltered = (rc.students | groupFilter: rc.selectedGroup:'userGroup' | filter: {student:rc.search})) | startFrom: rc.tablePage*rc.resultsPerPage | limitTo:rc.resultsPerPage)" style="height: 50px">
                     <td><a href="Index/Student?Id={{c.id}}#Profile" class="link" ng-bind-html="c.student | highlight: rc.search">{{c.student}}</a></td>
                     <td>{{c.userGroup}}</td>
@@ -63,3 +63,80 @@
         </div>
     </div>
 </div>
+
+<!--<div>
+    <br />
+    <br />
+
+    <div style="display:inline; margin-left: 8px">
+        <label>Search</label>
+        <input class="input-sm" type="text" ng-model="rc.search">
+
+        <div class="dropdown">
+            <button class="dropbtn"> Group Filter &#x25BC </button>
+            <div class="dropdown-content">
+                <a ng-click="rc.checkAll()">&#x2714 Check All</a>
+                <a ng-click="rc.unCheckAll()">&#x2716 Uncheck All</a>
+                <div ng-repeat="group in rc.groupList">
+                    <a ng-click="setSelectedGroup()" ng-model="group"> {{group}} <b ng-class="{dropdownContentElemChecked: rc.toggleDropDownElem(group)}" ng-bind-html="' ' + rc.checkSymbol | trustAsHtml"> </b></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+        <table class="table table-striped" auto-height="{{rc.groupList.length}}">
+            <thead>
+                <tr>
+                    <th ng-repeat="h in rc.headers">
+                        <a class="link" href="#" ng-click="rc.refreshPredicate(h.predicateIndex); rc.order(rc.myPredicate[h.predicateIndex],null)">
+                            <span class="sortorder" ng-show="rc.direction(h.predicateIndex) !== null" ng-class="{direction:rc.direction(h.predicateIndex)}"></span>
+                            {{h.name}}
+                        </a>-->
+<!--<div ng-if="h.field == 'userGroup'" ng-cloak class="btn-group groupBtn" ng-class="{open: rc.groupListOpened}">
+
+    <button class="btn dropdown-toggle" ng-click="rc.groupListOpened=!rc.groupListOpened">
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+        <li>
+            <a ng-click="rc.checkAll()"><i class="icon-ok-sign"></i>Check All</a>
+        </li>
+        <li>
+            <a ng-click="rc.unCheckAll()"><i class="icon-remove-sign"></i>Uncheck All</a>
+        </li>
+        <li class="divider"></li>
+        <li ng-repeat="group in rc.groupList">
+            <a ng-click="setSelectedGroup()" ng-model="group">{{group}} <span ng-class="rc.isChecked(group)"></span> </a>
+        </li>
+    </ul>
+</div>-->
+<!--</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="c in rc.contents = ((rc.searchFiltered = (rc.students | groupFilter: rc.selectedGroup:'userGroup' | filter: {student:rc.search})) | startFrom: rc.tablePage*rc.resultsPerPage | limitTo:rc.resultsPerPage)" style="height: 50px">
+                    <td><a href="Index/Student?Id={{c.id}}#Profile" class="link" ng-bind-html="c.student | highlight: rc.search">{{c.student}}</a></td>
+                    <td>{{c.userGroup}}</td>
+                    <td>{{c.quizzes}}</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <div layout="row" style="margin-left: 8px">
+            <span>
+                Rows on the page:
+                <select style="margin:5px;" ng-model="rc.resultsPerPage" ng-change="rc.tablePage=0" ng-options="p for p in rc.resultsCount"></select>
+                <span ng-show="rc.numberOfPages() &gt; 1">
+                    <button class="btn btn-default" ng-disabled="rc.tablePage==0" ng-click="rc.tablePage=rc.tablePage-1">Previous page</button>
+                    <span ng-repeat="i in rc.getNumber(rc.numberOfPages()) track by $index">
+                        <button class="btn btn-default" ng-click="rc.goToPage($index)"><span ng-class="{ 'table-active-page' : rc.tablePage==$index}">{{$index+1}}</span></button>
+                    </span>
+                    <button class="btn btn-default" ng-disabled="rc.tablePage==rc.numberOfPages()-1" ng-click="rc.tablePage=rc.tablePage+1">Next page</button>
+                </span>
+                Total: {{rc.searchFiltered.length}}
+            </span>
+        </div>
+    </div>
+</div>-->
