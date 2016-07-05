@@ -63,8 +63,8 @@ namespace eQuiz.Web
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "723237518353-ktl0g0cg168u9v1lukf7s2dg8rvo7naa.apps.googleusercontent.com",
-                ClientSecret = "gJr_Xao-Tea7E8J07rots9sd",
+                ClientId = "947709765832-34vvl7d7b3t1203dj59ok0bkf33hg6qn.apps.googleusercontent.com",
+                ClientSecret = "WF2cmZ2uQzKltaWho0heAYSv",               
             });
         }
     }

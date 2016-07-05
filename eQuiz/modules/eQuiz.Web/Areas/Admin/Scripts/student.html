@@ -1,4 +1,4 @@
-﻿<div class="container-fluid" style="background: #f9f9f9">
+﻿<div class="container" style="background: #f9f9f9">
     <h3 class="h-font-responsive" style="margin-left: 13px">{{sc.studentInfo.firstName + ' ' + sc.studentInfo.lastName}}</h3>
     <ul class="nav nav-tabs font-Oswald font-responsive">
         <li ng-class="sc.currentTab=='Profile'&&'active'"><a data-toggle="tab" href="#Profile" ng-class="sc.currentTab=='Profile'&&'selected'" ng-click="sc.currentTab='Profile'">Profile</a></li>
@@ -140,7 +140,7 @@
                 <div class="row ">
                     <div class="col-sm-4" style="margin-top: 20px">
                         <label class="font-Oswald font-normal font-responsive">Rows on the page:</label>
-                        <select ng-model="sc.resultsPerCommentsPage" ng-change="sc.commentsPage=0" ng-options="p for p in sc.resultsCount"></select>
+                            <select ng-model="sc.resultsPerCommentsPage" ng-change="sc.commentsPage=0" ng-options="p for p in sc.resultsCount"></select>
                     </div>
                     <div class="col-sm-4 font-responsive" ng-show="sc.numberOfCommentsPages() &gt; 1">
                         <ul class="pagination font-responsive">
