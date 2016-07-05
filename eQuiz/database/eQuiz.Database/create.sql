@@ -270,7 +270,7 @@ CREATE TABLE [dbo].[tblUserTextAnswer]
 CREATE TABLE [dbo].[tblUserComment](
     Id int IDENTITY(1,1) NOT NULL,
     UserId int NOT NULL,
-    AdminId int NOT NULL,
+    AdminId [nvarchar](128) NOT NULL,
     CommentTime datetime NOT NULL,
     CommentText nvarchar(max) NOT NULL,     
     CONSTRAINT PK_tblUserComment_Id PRIMARY KEY ([Id]),
@@ -278,8 +278,6 @@ CREATE TABLE [dbo].[tblUserComment](
 
 GO
  
-ALTER TABLE [dbo].[tblUserComment] ADD CONSTRAINT [FK_tblUserComment_AdminId_tblUser] FOREIGN KEY([AdminId]) REFERENCES [dbo].[tblUser] ([Id]);
-
 ALTER TABLE [dbo].[tblUserComment] ADD CONSTRAINT [FK_tblUserComment_UserId_tblUser] FOREIGN KEY([UserId]) REFERENCES [dbo].[tblUser] ([Id]);
 
 ALTER TABLE [dbo].[tblFacebookUser] ADD CONSTRAINT [FK_tblFacebookUser_tblUser] FOREIGN KEY([UserId]) REFERENCES [dbo].[tblUser] ([Id]);
@@ -409,6 +407,9 @@ CREATE TABLE [dbo].[AspNetUsers](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
  
 GO
+
+--ALTER TABLE [dbo].[tblUserComment] ADD CONSTRAINT [FK_tblUserComment_AdminId_tblUser] FOREIGN KEY([AdminId]) REFERENCES [dbo].[AspNetUsers] ([Id]);
+--GO
 
 USE [eQuiz];
 GO

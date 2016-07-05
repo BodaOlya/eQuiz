@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using eQuiz.Web.Areas.Admin.Models;
+using Microsoft.AspNet.Identity;
 
 namespace eQuiz.Web.Areas.Admin.Controllers
 {
@@ -188,7 +189,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                                     QuizId = grouped.Key,
                                     IsAutomatic = grouped.Select(q => q.qt.IsAutomatic).Count()
                                 };
-            
+
             var passed = from q in quizzes
                          join uq in userQuizzes on q.Id equals uq.QuizId
                          join qb in quizBlocks on q.Id equals qb.QuizId
@@ -211,7 +212,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             {
                 result.Add(item);
             }
-            
+
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -226,7 +227,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                         select new
                         {
                             date = c.CommentTime.ToString(),
-                            author = "Admin",
+                            author = c.AdminId,
                             text = c.CommentText
                         };
 
@@ -239,11 +240,12 @@ namespace eQuiz.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public void AddComment(int studentId, string adminId, string comment)
+        public void AddComment(int studentId, int adminId, string comment)
         {
+            var aspUser = _repository.GetSingle<AspNetUser>(u => u.UserName == User.Identity.Name);
             var comm = new UserComment();
             comm.UserId = studentId;
-            comm.AdminId = adminId;
+            comm.AdminId = aspUser.UserName;
             comm.CommentText = comment;
             comm.CommentTime = DateTime.Now;
 
