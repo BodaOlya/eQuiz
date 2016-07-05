@@ -7,11 +7,16 @@
         var service = {
             getQuizzes: getQuizzesAjax,
             //getQuestionsById: getQuestionsByIdAjax,
-            getUserGroups : getGroups
-
+            getUserGroups : getGroups,
+            getUserInfo: getUser
         };
 
         return service;
+
+        function getUser() {
+            var promise = $http.get("GetUserInfo");
+            return promise;
+        };
 
         function getGroups() {
             var promise = $http.get("GetUserGroups");

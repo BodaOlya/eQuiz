@@ -2,12 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using eQuiz.Repositories.Abstract;
-using eQuiz.Repositories.Concrete;
 using eQuiz.Entities;
-using Newtonsoft.Json;
 using eQuiz.Web.Areas.Student.Models;
 using System.Data.Entity.Infrastructure;
 
@@ -450,6 +447,13 @@ namespace eQuiz.Web.Areas.Student.Controllers
                     }
                 }
             }
+        }
+
+        [HttpGet]
+        public ActionResult GetUserInfo()
+        {
+            User currentUser = _repository.GetSingle<User>(u => u.Email == User.Identity.Name);
+            return Json(new { FirstName = currentUser.FirstName, LastName = currentUser.LastName }, JsonRequestBehavior.AllowGet);
         }
         #endregion
     }
