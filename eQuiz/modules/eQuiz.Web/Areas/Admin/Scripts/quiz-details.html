@@ -60,7 +60,7 @@
     </div>
     <div class="col-lg-12" ng-show="qc.exportShow">
         <h1 class="h-font-responsive sans-fonts">Exporting to excel file:</h1>
-        <table id="exportable" class="table font-responsive sans-fonts tableStyle">
+        <table class="table font-responsive sans-fonts tableStyle">
             <thead id="headers" class="lightGray">
                 <tr>
                     <th>Student</th>
@@ -77,15 +77,15 @@
             </tbody>
         </table>
         <br />
-        <div style="float: left">
-            <button class="btn btn-danger font-responsive" ng-click="qc.exportShow=!qc.exportShow" style="font-size:20px">Cancel</button>
-        </div>
-        <div style="float: right">
-            <div style="float: left; margin: auto">
+        <div  style="float: right">
+            <div style="float: left">
+                <button class="btn btn-danger font-responsive" ng-click="qc.exportShow=!qc.exportShow" style="font-size:20px">Cancel</button>
+            </div>
+            <div>
                 <p style="margin:0px 0px 0px 50px">Saving path:</p>
                 <input class="input-sm" type="text" value="C:\\" ng-model="qc.excelPath" />
             </div>
-            <div style="float: right; margin: auto">
+            <div style="float: right">
                 <p style="margin:0px 0px 0px 50px">Total for export: {{qc.contentsToExport.length}}</p>
                 <button class="btn btn-success font-responsive" ng-click="qc.CreateExcel()" ng-disabled="qc.contentsToExport.length === 0" style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Save</button>
             </div>

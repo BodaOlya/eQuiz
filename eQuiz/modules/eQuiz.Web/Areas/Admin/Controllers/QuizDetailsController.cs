@@ -206,7 +206,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return "While data was parsing or sorting an error occured!\n" + ex.Message;
+                    return "While data was parsing or sorting an error occured: " + ex.Message;
                 }
 
                 // Creating an excel file and filling it with data
@@ -229,7 +229,9 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                     }
                     catch (Exception ex)
                     {
-                        return "Sheet in file was not created!\n" + ex.Message;
+                        connection.Close();
+                        System.IO.File.Delete(fileName);
+                        return "File was not created!\n" + ex.Message;
                     }
 
                     try
@@ -251,7 +253,9 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                     }
                     catch (Exception ex)
                     {
-                        return "While data inserting an error occured: \n" + ex.Message;
+                        connection.Close();
+                        System.IO.File.Delete(fileName);
+                        return "While data inserting an error occured: " + ex.Message;
                     }
                 }
 
@@ -268,11 +272,15 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return "While file downloading from server, an error occured:\n" + ex.Message;
+                    return "While file downloading from server, an error occured: " + ex.Message
+                        + " First of all check if the saving path is correct!";
+                }
+                finally
+                {
+                    // Deleting created file from server
+                    System.IO.File.Delete(fileName);
                 }
 
-                // Deleting created file from server
-                System.IO.File.Delete(fileName);
                 return "File was successfully saved to:\n" + pathToFile + nameOfFile;
             }
             return "There was no data to write into the file!";
