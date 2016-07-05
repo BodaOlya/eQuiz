@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/Layout.cshtml";
 }
 
-<section class="wrapperDashboard1" ng-controller="UserGroupsController as ug" ng-cloak>
+<section class="wrapperBody" ng-controller="UserGroupsController as ug" ng-cloak>
 
     <div ng-cloak class="loading-background" ng-show="ug.isLoading">
         <div class="cssload-container">
@@ -35,7 +35,7 @@
                     <tr>
                         <th>
                             <a href="#" ng-click="ug.sortBy('Name')">
-                                {{ug.showOrderArrow('Name')}}Name
+                                {{ug.showOrderArrow('Name')}}User group
                             </a>
                         </th>
                         <th>
@@ -70,7 +70,7 @@
                         <td><a ng-href="/moderator/usergroup/edit/#/getusergroup?id={{ugroups.Id}}">{{ ugroups.Name }}</a></td>
                         <td>{{ ugroups.CountOfStudents }}</td>
                         <td>{{ ugroups.CountOfQuizzes }}</td>
-                        <td>{{ ugroups.CreatedDate | ctime | date:"dd-MM-yyyy HH:mm" }}</td>
+                        <td>{{ ugroups.CreatedDate | ctime | date:"dd-MM-yyyy HH:mm" :'+0600'}}</td>
                         <td>{{ ugroups.CreatedBy }}</td>
                         <td>{{ ugroups.StateName }}</td>
                     </tr>

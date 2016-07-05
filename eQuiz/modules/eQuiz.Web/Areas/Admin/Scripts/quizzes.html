@@ -1,9 +1,9 @@
-﻿<div class="pad-top-bottom backgroundColor" style="height: 100vh;">
+﻿<div class="container-fluid div-container">
     <div class="col-md-10 text-left">
         <label class="font-responsive font-Oswald font-normal">Search</label>
         <input class="input-sm font-responsive sans-fonts" type="text" ng-model="qc.search">
 
-        <div class="btn-group" ng-class="{open: qc.filterIsOpened}"  style="margin-left: 10px">
+        <div class="btn-group" ng-class="{open: qc.filterIsOpened}" style="margin-left: 10px">
             <button class="btn btn-default font-responsive">Filters</button>
             <button class="btn dropdown-toggle btn-default font-responsive" ng-click="qc.filterIsOpened=!qc.filterIsOpened">
                 <span class="caret"></span>
@@ -20,15 +20,13 @@
                         </li>
                         <li class="divider"></li>
                         <li ng-repeat="categoryItem in category.CategoryItems">
-                            <a class="test" href="#" ng-click="setSelectedGroup(category)">{{categoryItem}} <span ng-class="rc.isChecked(group)"> <b ng-hide="qc.isChecked(categoryItem, category)" class="pull-right"> &#x2713 </b> </span> </a> 
+                            <a class="test" href="#" ng-click="setSelectedGroup(category)">{{categoryItem}} <span ng-class="rc.isChecked(group)"> <b ng-hide="qc.isChecked(categoryItem, category)" class="pull-right"> &#x2713 </b> </span> </a>
                         </li>
                     </ul>
                 </li>
             </ul>
         </div>
     </div>
-
-
 
     <div class="col-md-12 pad-top-bottom">
         <table class="table font-responsive tableStyle">
@@ -43,7 +41,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="t-font-responsive" ng-repeat="item in qc.content = ((qc.quizzesFiltered = (qc.quizzes | groupFilter: qc.filterCategories[1].selectedGroup:'verification_type' | groupFilter: qc.filterCategories[0].selectedGroup:'group_name' | filter: {quiz_name:qc.search})) | startFrom: qc.tablePage*qc.resultsPerPage | limitTo:qc.resultsPerPage)" style="height: 50px">
+                <tr class="t-font-responsive white-background" ng-repeat="item in qc.content = ((qc.quizzesFiltered = (qc.quizzes | groupFilter: qc.filterCategories[1].selectedGroup:'verification_type' | groupFilter: qc.filterCategories[0].selectedGroup:'group_name' | filter: {quiz_name:qc.search})) | startFrom: qc.tablePage*qc.resultsPerPage | limitTo:qc.resultsPerPage)" style="height: 50px">
                     <td><a href="Index/Details?Id={{item.id}}" ng-bind-html="item.quiz_name | highlight: qc.search">{{item.quiz_name}}</a></td>
                     <td>{{item.group_name}}</td>
                     <td>{{item.questions_amount}}</td>
@@ -71,65 +69,3 @@
 
     </div>
 </div>
-
-<!--<div style="height:100vh">
-    <br />
-    <br />
-    <div style="display:inline; margin-left: 8px">
-        <label>Search</label>
-        <input class="input-sm" type="text" ng-model="qc.search">
-
-        <div class="multileveldropdown">
-            <button class="dropbtn"> Filters &#x25BC </button>
-            <div class="multileveldropdown-content">
-                <div ng-repeat="category in qc.filterCategories">
-                    <a> {{category.name}} </a>
-                    <div>
-                        <a ng-click="qc.checkAll(category)">&#x2714 Check All</a>
-                        <a ng-click="qc.unCheckAll(category)">&#x2716 Uncheck All</a> <hr />
-                        <a ng-repeat="categoryItem in category.CategoryItems" ng-click="setSelectedGroup(category)" ng-model="categoryItem"> {{categoryItem}} <b ng-class="{dropdownContentElemChecked: qc.toggleDropDownElem(categoryItem, category)}" ng-bind-html="' ' + qc.checkSymbol | trustAsHtml"></b></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div>
-        <table class="table table-striped" style="min-height:200px; vertical-align:central">
-            <thead>
-                <tr>
-                    <th ng-repeat="h in qc.headers">
-                        <a href="#" ng-click="qc.refreshPredicate(h.predicateIndex); qc.order(qc.myPredicate[h.predicateIndex],null)">
-                            <span class="sortorder" ng-show="qc.direction(h.predicateIndex) !== null" ng-class="{direction:qc.direction(h.predicateIndex)}"></span>
-                            {{h.name}}
-                        </a>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="item in qc.content = ((qc.quizzesFiltered = (qc.quizzes | groupFilter: qc.filterCategories[1].selectedGroup:'verification_type' | groupFilter: qc.filterCategories[0].selectedGroup:'group_name' | filter: {quiz_name:qc.search})) | startFrom: qc.tablePage*qc.resultsPerPage | limitTo:qc.resultsPerPage)" style="height: 50px">
-                    <td><a href="Index/Details?Id={{item.id}}" ng-bind-html="item.quiz_name | highlight: qc.search">{{item.quiz_name}}</a></td>
-                    <td>{{item.group_name}}</td>
-                    <td>{{item.questions_amount}}</td>
-                    <td>{{item.students_amount}}</td>
-                    <td>{{item.verification_type}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div layout="row" style="margin-left: 8px">
-        <span>
-            Rows on the page:
-            <select style="margin:5px" ng-model="qc.resultsPerPage" ng-options="p for p in qc.resultsCount" ng-change="qc.paginationChanged()"></select>
-            <span ng-show="qc.numberOfPages() &gt; 1">
-                <button class="btn btn-default" ng-disabled="qc.tablePage==0" ng-click="qc.tablePage=qc.tablePage-1">Previous page</button>
-                <span ng-repeat="i in qc.getNumber(qc.numberOfPages()) track by $index">
-                    <button class="btn btn-default" ng-click="qc.goToPage($index)"><span ng-class="{ 'table-active-page' : qc.tablePage==$index}">{{$index+1}}</span></button>
-                </span>
-                <button class="btn btn-default" ng-disabled="qc.tablePage==qc.numberOfPages()-1" ng-click="qc.tablePage=qc.tablePage+1">Next page</button>
-            </span>
-            Total: {{qc.quizzesFiltered.length}}
-        </span>
-    </div>
-</div>-->

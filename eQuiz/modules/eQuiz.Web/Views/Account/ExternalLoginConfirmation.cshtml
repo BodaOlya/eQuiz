@@ -1,7 +1,7 @@
 ﻿@model eQuiz.Web.Models.ExternalLoginConfirmationViewModel
 @{
-    ViewBag.Title = "Register";
-    var errorMessages = string.Join("; ", ViewData
+    ViewBag.Title = "Verify Email";
+    var errorMessages = string.Join(" ", ViewData
                                         .ModelState.Values
                                         .SelectMany(x => x.Errors)
                                         .Select(x => x.ErrorMessage));
@@ -43,7 +43,6 @@
                 @Html.LabelFor(m => m.Email, new { @class = "col-sm-6 form-control-label" })
                 <div class="col-sm-6">
                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                     @if (!string.IsNullOrWhiteSpace(errorMessages))
                     {
                         <div class="text-danger">

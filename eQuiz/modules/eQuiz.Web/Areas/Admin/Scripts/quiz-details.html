@@ -1,4 +1,4 @@
-﻿<div class="pad-top-bottom backgroundColor" style="height: 100vh;">
+﻿<div class="container-fluid div-container">
     <div class="col-md-10 text-left">
         <h1 class="h-font-responsive font-Oswald">{{qc.quizInfo[0].quizName}}, {{qc.quizInfo[0].groupName}}</h1>
     </div>
@@ -27,7 +27,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="t-font-responsive">
+            <tbody class="t-font-responsive white-background">
                 <tr ng-repeat="c in qc.contents = (qc.studentsFiltered = (qc.students | filter: {student:qc.search}) | startFrom: qc.tablePage*qc.resultsPerPage | limitTo:qc.resultsPerPage)" style="height: 50px">
                     <td><a href="#" ng-show="qc.exportShow" ng-click="qc.addOrRemoveFromExport(c)">{{qc.singleExportToDo(c)}}</a></td>
                     <td><a href="{{qc.linkToProfile}}" class="link" ng-click="qc.setLink(c.id);" ng-bind-html="c.student | highlight: qc.search">{{c.student}}</a></td>
@@ -70,7 +70,7 @@
                     <th class="font-normal">Score</th>
                 </tr>
             </thead>
-            <tbody class="t-font-responsive">
+            <tbody class="t-font-responsive white-background">
                 <tr ng-repeat="c in qc.contentsToExport | orderBy: 'studentScore'">
                     <td>{{c.student}}</td>
                     <td>{{c.email}}</td>
@@ -82,127 +82,9 @@
         <div class="col-md-10 text-left">
             <label class="font-responsive font-normal" style="padding-right: 8px">Total for export: {{qc.contentsToExport.length}};</label>
             <label class="font-responsive font-normal">Path: </label>
-            <input class="input-sm font-responsive" type="text" value="C:\\" ng-model="qc.excelPath"/>
+            <input class="input-sm font-responsive" type="text" value="C:\\" ng-model="qc.excelPath" />
             <button class="btn btn-success font-responsive" ng-click="qc.CreateExcel()" ng-disabled="qc.contentsToExport.length === 0">Save</button>
             <button class="btn btn-danger font-responsive" ng-click="qc.exportShow=!qc.exportShow">Cancel</button>
         </div>
-
-        <!--<div style="float: left">
-            <button class="btn btn-danger font-responsive" ng-click="qc.exportShow=!qc.exportShow" style="font-size:20px">Cancel</button>
-        </div>
-        <div style="float: right">
-            <div style="float: left; margin: auto">
-                <p style="margin:0px 0px 0px 50px">Saving path:</p>
-                <input class="input-sm" type="text" value="C:\\" ng-model="qc.excelPath" />
-            </div>
-            <div style="float: right; margin: auto">
-                <p style="margin:0px 0px 0px 50px">Total for export: {{qc.contentsToExport.length}}</p>
-                <button class="btn btn-success font-responsive" ng-click="qc.CreateExcel()" ng-disabled="qc.contentsToExport.length === 0" style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Save</button>
-            </div>
-        </div>-->
     </div>
-    <div pop-up-window></div>
 </div>
-
-<!--<div>
-    <br />
-    <div layout="row">
-        <h1 class="h-font-responsive sans-fonts">{{qc.quizInfo[0].quizName}}, {{qc.quizInfo[0].groupName}}</h1>
-        <button class="btn btn-default" ng-click="qc.exportShow=!qc.exportShow" style="text-decoration:solid; font-size:20px; float:right; margin-right: 13px">
-            Export
-        </button>
-    </div>
-    <br />
-    <br />
-    <label style="margin-left: 8px">Search</label>
-    <input class="input-sm" type="text" ng-model="qc.search" style="width:15em">
-    <div style="overflow-x:auto;">
-
-        <table class="table table-striped" style="text-align:left">
-            <thead>
-                <tr>
-                    <th><a href="#" ng-show="qc.exportShow" ng-click="qc.addOrRemoveFromExportAll(qc.contents)">{{qc.multipleExportToDo(qc.contents)}}</a></th>
-                    <th ng-repeat="h in qc.headers">
-                        <a class="link" href="#" ng-click="qc.refreshPredicate(h.predicateIndex); qc.order(qc.myPredicate[h.predicateIndex],null)">
-                            <span class="sortorder" ng-show="qc.direction(h.predicateIndex) !== null" ng-class="{direction:qc.direction(h.predicateIndex)}"></span>
-                            {{h.name}}
-                        </a>
-                    </th>
-                    <th>
-                        <a class="link">
-                            Questions Details
-                        </a>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="c in qc.contents = (qc.studentsFiltered = (qc.students | filter: {student:qc.search}) | startFrom: qc.tablePage*qc.resultsPerPage | limitTo:qc.resultsPerPage)" style="height: 50px">
-                    <td><a href="#" ng-show="qc.exportShow" ng-click="qc.addOrRemoveFromExport(c)">{{qc.singleExportToDo(c)}}</a></td>
-                    <td><a href="{{qc.linkToProfile}}" class="link" ng-click="qc.setLink(c.id);" ng-bind-html="c.student | highlight: qc.search">{{c.student}}</a></td>
-                    <td>{{c.studentScore}} / {{qc.quizInfo[0].quizScore}} </td>
-                    <td>{{c.quizStatus}}</td>
-                    <td>
-                        <a href="{{qc.linkToQuizRewiew}}" class="link" ng-click="qc.setLinkToQuiz(c.id, c.quizPassId);">
-                            Passed : {{c.questionDetails.passed}}
-                            In Verification : {{c.questionDetails.inVerification}}
-                            Not Passed : {{c.questionDetails.notPassed}}
-                        </a>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-
-    </div>
-    <div layout="row" style="margin-left: 8px">
-        <span>
-            Rows on the page:
-            <select style="margin:5px" ng-model="qc.resultsPerPage" ng-options="p for p in qc.resultsCount" ng-change="qc.paginationChanged()"></select>
-            <span ng-show="qc.numberOfPages() &gt; 1">
-                <button class="btn btn-default" ng-disabled="qc.tablePage==0" ng-click="qc.tablePage=qc.tablePage-1">Previous page</button>
-                <span ng-repeat="i in qc.getNumber(qc.numberOfPages()) track by $index">
-                    <button class="btn btn-default" ng-click="qc.goToPage($index)"><span ng-class="{ 'table-active-page' : qc.tablePage==$index}">{{$index+1}}</span></button>
-                </span>
-                <button class="btn btn-default" ng-disabled="qc.tablePage==qc.numberOfPages()-1" ng-click="qc.tablePage=qc.tablePage+1">Next page</button>
-            </span>
-            Total: {{qc.studentsFiltered.length}}
-        </span>
-    </div>
-
-    <br />
-
-    <div class="col-lg-12" ng-show="qc.exportShow">
-        <p style="text-decoration:solid; font-size:20px; margin:5px">Exporting to excel file:</p>
-        <table id="exportable" class="table table-bordered table-striped" style="border:double; margin:auto">
-            <thead id="headers">
-                <tr>
-                    <th>Student</th>
-                    <th>Email</th>
-                    <th>Score</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="c in qc.contentsToExport | orderBy: 'studentScore'">
-                    <td>{{c.student}}</td>
-                    <td>{{c.email}}</td>
-                    <td>{{c.studentScore}}</td>
-                </tr>
-            </tbody>
-        </table>
-        <br />
-        <div style="float: left">
-            <button class="btn btn-danger" ng-click="qc.exportShow=!qc.exportShow" style="font-size:20px">Cancel</button>
-        </div>
-        <div style="float: right">
-            <div style="float: left; margin: auto">
-                <p style="margin:0px 0px 0px 50px">Saving path:</p>
-                <input class="input-sm" type="text" value="C:\\" ng-model="qc.excelPath" />
-            </div>
-            <div style="float: right; margin: auto">
-                <p style="margin:0px 0px 0px 50px">Total for export: {{qc.contentsToExport.length}}</p>
-                <button class="btn btn-success" ng-click="qc.CreateExcel()" ng-disabled="qc.contentsToExport.length === 0" style="margin:5px 0px 10px 70px ; text-decoration:solid; font-size:20px">Save</button>
-            </div>
-        </div>
-    </div>
-    <div pop-up-window></div>
-</div>-->

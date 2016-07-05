@@ -5,7 +5,7 @@
 }
 
 
-<section class="wrapperDashboard1" ng-controller="UserGroupController as g" ng-cloak>
+<section class="wrapperBody" ng-controller="UserGroupController as g" ng-cloak>
     <ng-form name="g.groupForm">
         <div class="row right-margin">
             <div class="col-md-offset-1 col-md-10 col-xs-offset-0 col-xs-12">
@@ -103,7 +103,7 @@
         <div class="margin-button">
             <div class="col-sm-offset-3">
 
-                <button class="btn btn-success col-md-2" ng-click="g.save()" ng-disabled="!g.isEditingEnabled()">Save</button>
+                <button class="btn btn-success col-md-2" ng-click="g.save()" ng-disabled="!g.isEditingEnabled() || !g.canSave()">Save</button>
                 <button class="btn btn-info col-sm-offset-1 col-md-2" ng-click="g.archive()" ng-disabled="!g.isEditingEnabled() || !g.canArchive()">Archive</button>
 
                 @Html.ActionLink(linkText: "Cancel", actionName: "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-info col-sm-offset-1 col-md-2" })

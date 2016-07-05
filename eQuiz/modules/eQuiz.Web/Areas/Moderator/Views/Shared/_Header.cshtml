@@ -2,9 +2,33 @@
 <div class="header">
     <div>
         <div class="text-left col-xs-4 verticalAlign">
-            @Html.ActionLink(linkText: "QUIZZES", actionName: "Index", controllerName: "Quiz")
+            @if (Request.Path.ToLower().Contains("moderator/quiz"))
+            {
+                <div class="menu-item-container active">
+                    <a href="/moderator/quiz/" class="menu-item">QUIZZES</a>
+                </div>
+            }
+            else
+            {
+                <div class="menu-item-container">
+                    <a href="/moderator/quiz/" class="menu-item">QUIZZES</a>
+                </div>
+            }
+            
             <span> &nbsp; </span>
-            @Html.ActionLink(linkText: "USER GROUP", actionName: "Index", controllerName: "UserGroup")
+
+            @if (Request.Path.ToLower().Contains("moderator/usergroup"))
+            {
+                <div class="menu-item-container active">
+                    <a href="/moderator/usergroup/" class="menu-item">USER GROUPS</a>
+                </div>
+            }
+            else
+            {
+                <div class="menu-item-container">
+                    <a href="/moderator/usergroup/" class="menu-item">USER GROUPS</a>
+                </div>
+            }
         </div>
         <div class="col-xs-4" style="z-index:-1;">
             <img src="~/Areas/Moderator/Images/logo.png" class="img-responsive center-block" />

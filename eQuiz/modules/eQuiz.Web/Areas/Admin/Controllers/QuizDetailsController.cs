@@ -99,6 +99,19 @@ namespace eQuiz.Web.Areas.Admin.Controllers
                 res.Add(item);
             }
 
+            // -- Only for pagination demonstration
+            foreach (var item in query)
+            {
+                res.Add(item);
+                res.Add(item);
+            }
+            foreach (var item in query)
+            {
+                res.Add(item);
+                res.Add(item);
+            }
+            // -- Delete immediatly)
+
             return Json(res, JsonRequestBehavior.AllowGet);
         }
 

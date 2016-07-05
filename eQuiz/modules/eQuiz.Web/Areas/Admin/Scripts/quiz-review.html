@@ -1,4 +1,4 @@
-﻿<div class="backgroundColor" style="height: 100vh;">
+﻿<div class="container-fluid" style="background: #f9f9f9">
     <div class="col-md-12">
         <h1 class="h-font-responsive pad-top-bottom" ng-cloak>
             {{ReviewCtrl.student.firstName + " " + ReviewCtrl.student.lastName + " " + ReviewCtrl.student.fatherName}}, {{ReviewCtrl.quizPassInfo[0].group_name}}, {{ReviewCtrl.quizPassInfo[0].quiz_name}}
@@ -40,10 +40,10 @@
 
                 <div class="font-responsive">
                     User answer:
-                    <textarea class="form-control font-responsive" style="background-color:ActiveBorder;" readonly> {{item.Answer}} </textarea>
+                    <textarea class="form-control font-responsive white-background" readonly> {{item.Answer}} </textarea>
                     <p></p>
                     <button class="showRightAnswer btn btn-default font-responsive"> Show Right answer: </button>
-                    <textarea class="form-control adminHintAnswer font-responsive" style="background-color:ActiveBorder; border-color:lightgreen" readonly> {{item.RightAnswer}} </textarea>
+                    <textarea class="form-control adminHintAnswer font-responsive white-background" style="border-color:lightgreen" readonly> {{item.RightAnswer}} </textarea>
                 </div>
 
                 <div class="pad-top-bottom">
@@ -94,99 +94,3 @@
     <div pop-up-window></div>
 
 </div>
-
-<!--<div>
-    <div class="spacing">
-        <h1 class="h-font-responsive" ng-cloak>
-            {{ReviewCtrl.student.firstName + " " + ReviewCtrl.student.lastName + " " + ReviewCtrl.student.fatherName}}, {{ReviewCtrl.quizPassInfo[0].group_name}}, {{ReviewCtrl.quizPassInfo[0].quiz_name}}
-        </h1>
-    </div>
-    <div class="spacing" ng-cloak>
-        <div class="display_inline">
-            <label> Started: <b> {{ ReviewCtrl.getDateFromSeconds(ReviewCtrl.quizPassInfo[0].start_date) | date: "dd.MM.y HH:mm" }} </b></label> <br />
-            <label> Finished: <b> {{ ReviewCtrl.getDateFromSeconds(ReviewCtrl.quizPassInfo[0].end_date) | date: "dd.MM.y HH:mm" }} </b> </label>
-        </div>
-
-        <div class="display_inline">
-            <label> Total: <b> {{ReviewCtrl.quiz.length}} </b> </label> <br />
-            <label> In verification:<b> {{ReviewCtrl.quizStatistics.inVerification}} </b> </label>
-        </div>
-
-        <div class="display_inline">
-            <label> Passed: <b> {{ReviewCtrl.quizStatistics.passed}} </b> </label> <br />
-            <label> Not passed: <b> {{ReviewCtrl.quizStatistics.notPassed}} </b> </label>
-        </div>
-
-        <div class="display_inline">
-            <label> Score: <b> {{ReviewCtrl.quizStatistics.userSumPoints}} / {{ReviewCtrl.quizPassInfo[0].quiz_score}} </b> </label>
-        </div>
-    </div>
-
-    <div class="spacing">
-            Filter:
-        <label class="checkbox-inline"><input type="checkbox" ng-click="ReviewCtrl.selectStatusId(0)">In verification</label>
-        <label class="checkbox-inline"><input type="checkbox" ng-click="ReviewCtrl.selectStatusId(1)">Passed</label>
-        <label class="checkbox-inline"><input type="checkbox" ng-click="ReviewCtrl.selectStatusId(2)">Not passed</label>
-    </div>
-
-    <div class="spacing">
-        <div ng-repeat="item in filtered = (ReviewCtrl.quiz | questionStatusFilter:ReviewCtrl.selectedStatuses)" ng-cloak>
-            <div ng-if="item.Type == 'Text'">
-                <div>
-                    <p> <b>#{{$index + 1}}</b> {{item.QuestionText}} </p>
-                </div>
-
-                <div>
-                    User answer:
-                    <textarea class="textarea" readonly> {{item.Answer}} </textarea>
-                    <button class="showRightAnswer btn-standart"> Show Right answer: </button>
-                    <textarea class="textarea adminHintAnswer" style="border-color:lightgreen" readonly> {{item.RightAnswer}} </textarea>
-                </div>
-
-                <div>
-                    <div class="display_inline">
-                        <label> Score (MaxScore = {{item.MaxScore}}):</label>
-                    </div>
-
-                    <div class="display_inline">
-                        <!-- 0 - in verification, 1 - passed, 2 - not passed
-                        <input ng-model="item.UserScore" style="width: 75px" type="number" name="input" min="0" max="{{item.MaxScore}}" required>
-                        <button ng-click="ReviewCtrl.checkAndCount(item.UserScore, item.MaxScore, item.Id, $index + 1)">&#x2714</button>
-                    </div>
-                </div>
-                <br>
-            </div>
-
-            <div ng-if="item.Type == 'Select'">
-                <div>
-                    <p> <b>#{{$index + 1}}</b> {{item.QuestionText}} </p>
-                </div>
-
-                <div ng-repeat="anw in item.QuestionVariants">
-                    <input ng-checked="anw.ChosenByUser" type="checkbox" onclick="return false;" onkeydown="return false;"> {{anw.Name}} <br>
-                </div>
-
-                <div class="display_inline">
-                    <label> State:</label>
-                </div>
-
-                <div class="display_inline">
-                    <!-- 0 - in verification, 1 - passed, 2 - not passed
-                    <button ng-click="ReviewCtrl.setAutoQuestionStatus(item.Id, 1)" ng-class="{'btn-lightgreen': ReviewCtrl.setAutoQuestionColor(item.UserScore, 1)}" type="button" class="btn btn-primary btn-lightgreen-hover btn-standart">Passed</button>
-                    <button ng-click="ReviewCtrl.setAutoQuestionStatus(item.Id, 2)" ng-class="{'btn-lightcoral': ReviewCtrl.setAutoQuestionColor(item.UserScore, 2)}" type="button" class="btn btn-primary btn-lightcoral-hover btn-standart">Not Passed</button>
-                </div>
-            </div>
-            <br>
-        </div>
-    </div>
-
-    <div class="confirm_btns_section spacing">
-        <span class="btn_spacing">
-            <button ng-click="ReviewCtrl.finalizeQuizReview()" ng-disabled="ReviewCtrl.isFinalized || ReviewCtrl.quizIsInVerification" type="button" ng-class="{'btn_finalized': ReviewCtrl.isFinalized}" class="btn_spacing btn_length">Finalize</button>
-            <button ng-click="ReviewCtrl.saveQuizReview()" ng-disabled="ReviewCtrl.saveIsDisabled || ReviewCtrl.isFinalized" type="button" class="btn_spacing btn_length">Save</button>
-            <button type="button" confirmed-click="ReviewCtrl.returnButton()" ng-confirm-click="Are you sure?" class="btn_spacing btn_length">Return</button>
-            <button ng-click="ReviewCtrl.cancelQuizReview()" ng-disabled="ReviewCtrl.cancelIsDisabled || ReviewCtrl.isFinalized" type="button" class="btn_spacing btn_length">Cancel changes</button>
-        </span>
-    </div>
-    <div pop-up-window></div>
-</div>-->
