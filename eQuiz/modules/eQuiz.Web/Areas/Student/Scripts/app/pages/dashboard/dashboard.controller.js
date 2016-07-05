@@ -7,6 +7,7 @@
     function dashboardCtrl($scope, dashboardService) {
         var vm = this;
 
+        vm.user = {};
         vm.allQuizzes = [];
         vm.pagedQuizzes = [];
         vm.page = 0;
@@ -54,6 +55,10 @@
             dashboardService.getUserGroups()
             .then(function (responce) {
                 vm.userGroups = responce.data;
+            });
+
+            dashboardService.getUserInfo().then(function (responce) {
+                vm.user = responce.data;
             });
         }
 

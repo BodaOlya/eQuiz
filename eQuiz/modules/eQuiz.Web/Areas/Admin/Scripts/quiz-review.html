@@ -54,7 +54,7 @@
                     <div class="display_inline">
                         <!--0 - in verification, 1 - passed, 2 - not passed-->
                         <input ng-model="item.UserScore" class="input-sm font-responsive" style="width: 75px" type="number" name="input" min="0" max="{{item.MaxScore}}" required>
-                        <button class="btn btn-success font-responsive" ng-click="ReviewCtrl.checkAndCount(item.UserScore, item.MaxScore, item.Id, $index + 1)">&#x2714</button>
+                        <button class="approve-btn-style btn btn-success font-responsive" ng-click="ReviewCtrl.checkAndCount(item.UserScore, item.MaxScore, item.Id, $index + 1)">&#x2714</button>
                     </div>
                 </div>
                 <br>
@@ -82,6 +82,17 @@
             <br>
         </div>
     </div>
+
+    <div class="confirm_btns_section spacing">
+        <span class="btn_spacing">
+            <button ng-click="ReviewCtrl.finalizeQuizReview()" ng-disabled="ReviewCtrl.isFinalized || ReviewCtrl.quizIsInVerification" type="button" ng-class="{'btn_finalized': ReviewCtrl.isFinalized}" class="btn-standart btn btn-lg font-responsive btn_spacing">Finalize</button>
+            <button ng-click="ReviewCtrl.saveQuizReview()" ng-disabled="ReviewCtrl.saveIsDisabled || ReviewCtrl.isFinalized" type="button" class="btn-standart btn btn-lg font-responsive btn_spacing">Save</button>
+            <button type="button" confirmed-click="ReviewCtrl.returnButton()" ng-confirm-click="Are you sure?" class="btn-standart btn btn-lg font-responsive btn_spacing">Return</button>
+            <button ng-click="ReviewCtrl.cancelQuizReview()" ng-disabled="ReviewCtrl.cancelIsDisabled || ReviewCtrl.isFinalized" type="button" class="btn-standart btn btn-lg font-responsive btn_spacing">Cancel changes</button>
+        </span>
+    </div>
+    <div pop-up-window></div>
+
 </div>
 
 <!--<div>

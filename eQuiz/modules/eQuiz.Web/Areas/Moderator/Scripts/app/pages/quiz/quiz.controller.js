@@ -230,6 +230,7 @@
                     vm.model.latestChange = data.data.latestChange;
                     vm.model.latestChange.StartDate = new Date(vm.model.latestChange.StartDate);
                     vm.model.latestChange.LastChangeDate = new Date(vm.model.latestChange.LastChangeDate);
+                    vm.model.latestChange.EndLockDate = new Date(vm.model.latestChange.EndLockDate);
                     vm.model.locked = data.data.locked;
         }
 
