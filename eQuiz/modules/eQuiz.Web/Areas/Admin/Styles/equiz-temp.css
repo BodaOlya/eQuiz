@@ -353,6 +353,11 @@ button.btn-lightgrey-hover:hover {
     color: black;
 }
 
+.approve-btn-style {
+    background-color: lightgreen; 
+    color: black;
+}
+
 button.btn-lightcoral-hover:hover {
     background: lightcoral;
     color: black;
