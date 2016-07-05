@@ -85,10 +85,10 @@
 
     <div class="confirm_btns_section spacing">
         <span class="btn_spacing">
-            <button ng-click="ReviewCtrl.finalizeQuizReview()" ng-disabled="ReviewCtrl.isFinalized || ReviewCtrl.quizIsInVerification" type="button" ng-class="{'btn_finalized': ReviewCtrl.isFinalized}" class="btn-standart btn btn-lg font-responsive btn_spacing">Finalize</button>
-            <button ng-click="ReviewCtrl.saveQuizReview()" ng-disabled="ReviewCtrl.saveIsDisabled || ReviewCtrl.isFinalized" type="button" class="btn-standart btn btn-lg font-responsive btn_spacing">Save</button>
-            <button type="button" confirmed-click="ReviewCtrl.returnButton()" ng-confirm-click="Are you sure?" class="btn-standart btn btn-lg font-responsive btn_spacing">Return</button>
-            <button ng-click="ReviewCtrl.cancelQuizReview()" ng-disabled="ReviewCtrl.cancelIsDisabled || ReviewCtrl.isFinalized" type="button" class="btn-standart btn btn-lg font-responsive btn_spacing">Cancel changes</button>
+            <button ng-click="ReviewCtrl.finalizeQuizReview()" ng-disabled="ReviewCtrl.isFinalized || ReviewCtrl.quizIsInVerification" type="button" ng-class="{'btn_finalized': ReviewCtrl.isFinalized}" class="btn-standart btn_length btn btn-lg font-responsive btn_spacing">Finalize</button>
+            <button ng-click="ReviewCtrl.saveQuizReview()" ng-hide="ReviewCtrl.isFinalized" ng-disabled="ReviewCtrl.saveIsDisabled || ReviewCtrl.isFinalized" type="button" class="btn-standart btn_length btn btn-lg font-responsive btn_spacing">Save</button>
+            <button type="button" confirmed-click="ReviewCtrl.returnButton()" ng-confirm-click="Are you sure?" class="btn-standart btn_length btn btn-lg font-responsive btn_spacing">Return</button>
+            <button ng-click="ReviewCtrl.cancelQuizReview()" ng-hide="ReviewCtrl.isFinalized" ng-disabled="ReviewCtrl.cancelIsDisabled || ReviewCtrl.isFinalized" type="button" class="btn-standart btn_length btn btn-lg font-responsive btn_spacing">Cancel changes</button>
         </span>
     </div>
     <div pop-up-window></div>

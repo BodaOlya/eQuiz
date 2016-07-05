@@ -371,7 +371,7 @@ button.btn-lightcoral-hover:hover {
 button.btn-standart {
     background: white;
     color: black;
-    border: 1px solid black;
+    border: 1px solid black;    
 }
 
 button.btn-lightgreen {
@@ -407,9 +407,9 @@ button.btn-lightcoral {
     padding: 0px 5px 0px 5px;
 }
 
-.btn_finalized {
-    border-width: medium;
-    border-color: green;
+.btn_finalized:disabled {    
+    border-color: green;    
+    border-width: 2px;
 }
 
 .textarea {

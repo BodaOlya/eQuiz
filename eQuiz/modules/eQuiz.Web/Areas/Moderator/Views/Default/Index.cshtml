@@ -13,10 +13,7 @@
         <p>Inactive: @ViewBag.InactiveQuizzesCount</p>
         <p><h2>Questions: @ViewBag.QuestionsCount</h2></p>
         <p>Active: @ViewBag.ActiveQuestionsCount</p>
-        <p>Inactive: @(ViewBag.QuestionsCount - ViewBag.ActiveQuestionsCount)</p>
-        <div>
-            <a href="@Url.Action("Index", "Home", new { area = "" })">Back Home</a>
-        </div>
+        <p>Inactive: @(ViewBag.QuestionsCount - ViewBag.ActiveQuestionsCount)</p>        
     </div>
 
     <div class="moderator-dashboard-right">
