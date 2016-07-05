@@ -380,9 +380,9 @@
     <Content Include="Areas\Admin\Scripts\quiz-details\quiz-details-data.service.js" />
     <Content Include="Areas\Admin\Scripts\quiz-details\quiz-details.controller.js" />
     <Content Include="Areas\Admin\Scripts\quiz-review.html" />
-    <Content Include="Areas\Admin\Scripts\quizReview\question-status.filter.js" />
-    <Content Include="Areas\Admin\Scripts\quizReview\quiz-review-data.service.js" />
-    <Content Include="Areas\Admin\Scripts\quizReview\quiz-review.controller.js" />
+    <Content Include="Areas\Admin\Scripts\quiz-review\question-status.filter.js" />
+    <Content Include="Areas\Admin\Scripts\quiz-review\quiz-review-data.service.js" />
+    <Content Include="Areas\Admin\Scripts\quiz-review\quiz-review.controller.js" />
     <Content Include="Areas\Admin\Scripts\quizzes.html" />
     <Content Include="Areas\Admin\Scripts\quizzes\quizzes-data.service.js" />
     <Content Include="Areas\Admin\Scripts\quizzes\quizzes.controller.js" />

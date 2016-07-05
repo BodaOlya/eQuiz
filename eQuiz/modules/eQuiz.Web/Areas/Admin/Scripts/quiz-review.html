@@ -54,7 +54,7 @@
                     <div class="display_inline">
                         <!--0 - in verification, 1 - passed, 2 - not passed-->
                         <input ng-model="item.UserScore" class="input-sm font-responsive" style="width: 75px" type="number" name="input" min="0" max="{{item.MaxScore}}" required>
-                        <button class="btn btn-success font-responsive" ng-click="ReviewCtrl.checkAndCount(item.UserScore, item.MaxScore, item.Id, $index + 1)">&#x2714</button>
+                        <button class="approve-btn-style btn btn-success font-responsive" ng-click="ReviewCtrl.checkAndCount(item.UserScore, item.MaxScore, item.Id, $index + 1)">&#x2714</button>
                     </div>
                 </div>
                 <br>

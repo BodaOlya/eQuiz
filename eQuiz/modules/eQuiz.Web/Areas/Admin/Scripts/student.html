@@ -1,38 +1,38 @@
 ﻿<div class="container" style="background: #f9f9f9">
-    <h3 style="margin-left: 13px">{{sc.studentInfo.firstName + ' ' + sc.studentInfo.lastName}}</h3>
-    <ul class="nav nav-tabs oswald-text">
+    <h3 class="h-font-responsive" style="margin-left: 13px">{{sc.studentInfo.firstName + ' ' + sc.studentInfo.lastName}}</h3>
+    <ul class="nav nav-tabs font-Oswald font-responsive">
         <li ng-class="sc.currentTab=='Profile'&&'active'"><a data-toggle="tab" href="#Profile" ng-class="sc.currentTab=='Profile'&&'selected'" ng-click="sc.currentTab='Profile'">Profile</a></li>
         <li ng-class="sc.currentTab=='Quizzes'&&'active'"><a data-toggle="tab" href="#Quizzes" ng-class="sc.currentTab=='Quizzes'&&'selected'" ng-click="sc.currentTab='Quizzes'">Quizzes ({{sc.getPassedQuizzes()}})</a></li>
         <li ng-class="sc.currentTab=='Comments'&&'active'"><a data-toggle="tab" href="#Comments" ng-class="sc.currentTab=='Comments'&&'selected'" ng-click="sc.currentTab='Comments'">Comments ({{sc.studentComments.length}})</a></li>
     </ul>
 
     <div class="tab-content">
-        <div id="Profile" ng-show="sc.currentTab=='Profile'" style="margin-left: 30px;">
+        <div class="font-responsive" id="Profile" ng-show="sc.currentTab=='Profile'" style="margin-left: 30px;">
             <form name='profileInfo' novalidate>
                 <div class="row row-top-buffer">
                     <div class="col-sm-2">
-                        <label class="oswald-text">First Name</label>
+                        <label class="font-Oswald font-normal">First Name</label>
                     </div>
                     <div class="col-sm-3">
-                        <input type="text" class="form-control showValidation" name="firstName" ng-model="sc.studentInfo.firstName" ng-change="sc.modelChanged = true;" required />
+                        <input type="text" class="form-control showValidation font-responsive" name="firstName" ng-model="sc.studentInfo.firstName" ng-change="sc.modelChanged = true;" required />
                     </div>
                     <div class="col-sm-2 col-sm-offset-1">
-                        <label class="oswald-text">E-Mail</label>
+                        <label class="font-Oswald font-normal">E-Mail</label>
                     </div>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" ng-model="sc.studentInfo.email" readonly />
+                        <input type="text" class="form-control font-responsive" ng-model="sc.studentInfo.email" readonly />
                     </div>
                 </div>
 
                 <div class="row row-top-buffer">
                     <div class="col-sm-2">
-                        <label class="oswald-text">Last Name</label>
+                        <label class="font-Oswald font-normal">Last Name</label>
                     </div>
                     <div class="col-sm-3">
-                        <input type="text" class="form-control showValidation" name="lastName" ng-model="sc.studentInfo.lastName" ng-change="sc.modelChanged = true;" required />
+                        <input type="text" class="form-control showValidation font-responsive" name="lastName" ng-model="sc.studentInfo.lastName" ng-change="sc.modelChanged = true;" required />
                     </div>
                     <div class="col-sm-2 col-sm-offset-1">
-                        <label class="oswald-text">User group</label>
+                        <label class="font-Oswald font-normal">User group</label>
                     </div>
                     <div class="col-sm-4">
                         <input type="text" class="form-control" ng-model="sc.studentInfo.userGroup" readonly />
@@ -40,10 +40,10 @@
                 </div>
                 <div class="row row-top-buffer">
                     <div class="col-sm-2">
-                        <label class="oswald-text">Phone</label>
+                        <label class="font-Oswald font-normal">Phone</label>
                     </div>
                     <div class="col-sm-3">
-                        <input type="tel" class="form-control showValidation" name="phone" ng-model="sc.studentInfo.phone" ng-change="sc.modelChanged = true;" required />
+                        <input type="tel" class="form-control showValidation font-responsive" name="phone" ng-model="sc.studentInfo.phone" ng-change="sc.modelChanged = true;" required />
                     </div>
                 </div>
             </form>
@@ -51,21 +51,21 @@
             <div class="row row-top-buffer footerButtons">
                 <br />
                 <div class="col-sm-1 col-sm-offset-3">
-                    <button ng-click="sc.saveProfile()" ng-disabled="!sc.validationCheck()">Save</button>
+                    <button class="btn btn-success font-responsive" ng-click="sc.saveProfile()" ng-disabled="!sc.validationCheck()">Save</button>
                 </div>
                 <div class="col-sm-1 ">
-                    <button ng-click="sc.cancelProfile()">Cancel</button>
+                    <button class="btn btn-warning font-responsive" ng-click="sc.cancelProfile()">Cancel</button>
                 </div>
             </div>
         </div>
 
-        <div id="Quizzes" ng-show="sc.currentTab=='Quizzes'" style="margin-left: 30px;">
+        <div class="font-responsive" id="Quizzes" ng-show="sc.currentTab=='Quizzes'" style="margin-left: 30px;">
             <div>
                 <table class="reviewTable">
                     <thead>
                         <tr>
                             <th ng-repeat="h in sc.studentQuizzesHeaders">
-                                <a href="#" class="link oswald-text" ng-click="sc.refreshPredicate(h.predicateIndex); sc.order(sc.myPredicate[h.predicateIndex],null)">
+                                <a href="#" class="link font-Oswald font-normal" ng-click="sc.refreshPredicate(h.predicateIndex); sc.order(sc.myPredicate[h.predicateIndex],null)">
                                     <span class="sortorder" ng-show="sc.direction(h.predicateIndex) !== null" ng-class="{direction:sc.direction(h.predicateIndex)}"></span>
                                     {{h.name}}
                                 </a>
@@ -73,7 +73,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="q in sc.studentQuizzes | startFrom: sc.tablePage*sc.resultsPerPage | limitTo:sc.resultsPerPage" style="height: 50px">
+                        <tr class="t-font-responsive" ng-repeat="q in sc.studentQuizzes | startFrom: sc.tablePage*sc.resultsPerPage | limitTo:sc.resultsPerPage" style="height: 50px">
                             <td><a href="Index/Quiz?Student={{sc.studentInfo.id}}&Quiz={{q.id}}" class="link" ng-click="sc.setQuizLink(q.id)">{{q.name}}</a></td>
                             <td>{{q.state}}</td>
                             <td>{{q.questions}}</td>
@@ -83,9 +83,9 @@
                     </tbody>
                 </table>
             </div>
-            <div class="row ">
+            <div class="row font-responsive">
                 <div class="col-sm-4" style="margin-top: 20px">
-                    <label class="oswald-text">Rows on the page:</label>
+                    <label class="font-Oswald font-normal">Rows on the page:</label>
                     <select class="md-primary" ng-model="sc.resultsPerPage" ng-change="sc.tablePage=0" ng-options="p for p in sc.resultsCount"></select>
                 </div>
                 <div class="col-sm-4" ng-show="sc.numberOfPages() &gt; 1">
@@ -100,27 +100,27 @@
 
         <div id="Comments" ng-show="sc.currentTab=='Comments'">
 
-            <div class="container">
+            <div class="container font-responsive">
                 <div class="row add-comment-row">
                     <div class="row row-top-buffer">
-                        <a class="link oswald-text" ng-click="sc.toggleNewCommentFrame()">Add new</a>
+                        <a class="link font-Oswald font-responsive" ng-click="sc.toggleNewCommentFrame()">Add new</a>
                     </div>
                     <div class="row row-top-buffer" ng-show="sc.newCommentFrame">
                         <form name="addNewCommentForm" novalidate>
                             <div class="row row-top-buffer">
                                 <div class="col-sm-10">
-                                    <label class="oswald-text">Text:</label>
-                                    <textarea class="form-control" rows="4" ng-keydown="sc.addCommentKeyDown()"
+                                    <label class="font-Oswald font-normal font-responsive">Text:</label>
+                                    <textarea class="form-control font-responsive" rows="4" ng-keydown="sc.addCommentKeyDown()"
                                               ng-keyup="sc.addCommentKeyUp()" name="commentText" ng-model="sc.newComment.text"
                                               required></textarea>
                                 </div>
                             </div>
                             <div class="row row-top-buffer footerButtons">
                                 <div class="col-sm-2 col-sm-offset-1">
-                                    <button ng-click="sc.addComment()" ng-disabled="addNewCommentForm.commentAuthor.$error.required || addNewCommentForm.commentText.$error.required">Add comment</button>
+                                    <button class="btn btn-success font-responsive" ng-click="sc.addComment()" ng-disabled="addNewCommentForm.commentAuthor.$error.required || addNewCommentForm.commentText.$error.required">Add comment</button>
                                 </div>
                                 <div class="col-sm-2">
-                                    <button ng-click="sc.toggleNewCommentFrame()">Close</button>
+                                    <button class="btn btn-warning font-responsive" ng-click="sc.toggleNewCommentFrame()">Close</button>
                                 </div>
                             </div>
                         </form>
@@ -129,7 +129,7 @@
                 <br />
                 <div class="row comment-row" ng-repeat="comment in sc.studentComments | startFrom: sc.commentsPage*sc.resultsPerCommentsPage | limitTo:sc.resultsPerCommentsPage">
                     <blockquote>
-                        <p>
+                        <p class="t-font-responsive">
                             {{comment.text}}
                         </p>
                         <footer>
@@ -139,11 +139,11 @@
                 </div>
                 <div class="row ">
                     <div class="col-sm-4" style="margin-top: 20px">
-                        <label class="oswald-text">Rows on the page:</label>
+                        <label class="font-Oswald font-normal font-responsive">Rows on the page:</label>
                             <select ng-model="sc.resultsPerCommentsPage" ng-change="sc.commentsPage=0" ng-options="p for p in sc.resultsCount"></select>
                     </div>
-                    <div class="col-sm-4" ng-show="sc.numberOfCommentsPages() &gt; 1">
-                        <ul class="pagination">
+                    <div class="col-sm-4 font-responsive" ng-show="sc.numberOfCommentsPages() &gt; 1">
+                        <ul class="pagination font-responsive">
                             <li><a href="#" ng-class="sc.commentsPage==0&&'disable-click'" ng-click="sc.commentsPage=sc.commentsPage-1">&laquo;</a></li>
                             <li ng-class="sc.commentsPage==$index&&'page-item active'" ng-repeat="i in sc.getNumber(sc.numberOfCommentsPages()) track by $index"><a href="#" ng-click="sc.goToCommentsPage($index)">{{$index+1}}</a></li>
                             <li><a href="#" ng-class="sc.commentsPage==sc.numberOfCommentsPages()-1&&'disable-click'" ng-click="sc.commentsPage=sc.commentsPage+1">&raquo;</a></li>

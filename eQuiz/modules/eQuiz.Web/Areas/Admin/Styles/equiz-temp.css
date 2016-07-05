@@ -353,6 +353,11 @@ button.btn-lightgrey-hover:hover {
     color: black;
 }
 
+.approve-btn-style {
+    background-color: lightgreen; 
+    color: black;
+}
+
 button.btn-lightcoral-hover:hover {
     background: lightcoral;
     color: black;
@@ -688,6 +693,12 @@ button.btn-lightcoral {
     font-weight: normal;
 }		
 
-.disable-click{
+.disable-click { 
     pointer-events: none;
+}
+
+.filters-scrollbar {
+    min-height: 150px; 
+    max-height: 250px; 
+    overflow-y: auto;
 }
