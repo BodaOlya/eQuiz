@@ -92,6 +92,10 @@
     }
 }
 
+.white-background {
+    background-color: white;
+}
+
 .sans-fonts {
     font-family: sans-serif
 }
@@ -117,6 +121,7 @@
 
 .backgroundColor {
      background-color: #f9f9f9;
+     height: 100%;
 }
 
 .tableStyle {
