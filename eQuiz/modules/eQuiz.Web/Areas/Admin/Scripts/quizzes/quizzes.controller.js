@@ -11,6 +11,7 @@
         vm.resultsCount = [10, 25, 50, 100];
         vm.tablePage = 0;
         vm.search = '';
+        vm.checkSymbol = "&#x2714";
         var orderBy = $filter('orderBy');
         vm.filterCategories = [{
             name: 'Group',
@@ -171,15 +172,7 @@
                 categoryName.selectedGroup.push(id);
             }
             return false;
-        };
-
-        vm.checkSymbol = "&#x2714";
-        vm.toggleDropDownElem = function (group, categoryName) {
-            if (categoryName.selectedGroup.toString().indexOf(group.toString()) > -1) {
-                return false;
-            }
-            return true;
-        };
+        };        
 
         vm.checkAll = function (categoryName) {
             categoryName.selectedGroup = [];            
