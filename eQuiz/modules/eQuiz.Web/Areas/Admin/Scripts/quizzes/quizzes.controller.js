@@ -6,6 +6,7 @@
     function QuizzesController($scope, quizzesDataService, $filter, quizzesList) {
         var vm = this;
         vm.myPredicate = null;
+        vm.filterIsOpened = false;
         vm.resultsPerPage = 10;
         vm.resultsCount = [10, 25, 50, 100];
         vm.tablePage = 0;
@@ -181,7 +182,7 @@
         };
 
         vm.checkAll = function (categoryName) {
-            categoryName.selectedGroup = [];
+            categoryName.selectedGroup = [];            
             for (var i = 0; i < categoryName.CategoryItems.length; i++) {
                 categoryName.selectedGroup.push(categoryName.CategoryItems[i]);
             }
@@ -190,6 +191,13 @@
 
         vm.unCheckAll = function (categoryName) {
             categoryName.selectedGroup = [];
+        };
+
+        vm.isChecked = function (group, categoryName) {
+            if (categoryName.selectedGroup.toString().indexOf(group.toString()) > -1) {
+                return false;
+            }
+            return true;
         };
     }
 })(angular);

@@ -1,11 +1,11 @@
 ﻿<div class="pad-top-bottom backgroundColor" style="height: 100vh;">
     <div class="col-md-10 text-left">
-        <label class="font-responsive sans-fonts">Search</label>
+        <label class="font-responsive font-Oswald font-normal">Search</label>
         <input class="input-sm font-responsive sans-fonts" type="text" ng-model="qc.search">
 
-        <div class="btn-group" ng-class="{open: open}"  style="margin-left: 10px">
-            <button class="btn btn-default font-responsive">Filter</button>
-            <button class="btn dropdown-toggle btn-default font-responsive" ng-click="open=!open">
+        <div class="btn-group" ng-class="{open: qc.filterIsOpened}"  style="margin-left: 10px">
+            <button class="btn btn-default font-responsive">Filters</button>
+            <button class="btn dropdown-toggle btn-default font-responsive" ng-click="qc.filterIsOpened=!qc.filterIsOpened">
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
@@ -13,13 +13,14 @@
                     <a>{{category.name}}</a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a ng-click="rc.checkAll()"><i class="icon-ok-sign"></i>Check All</a>
+                            <a ng-click="qc.checkAll(category)"><i class="icon-ok-sign"></i>Check All</a>
                         </li>
                         <li>
-                            <a ng-click="rc.unCheckAll()"><i class="icon-remove-sign"></i>Uncheck All</a>
+                            <a ng-click="qc.unCheckAll(category)"><i class="icon-remove-sign"></i>Uncheck All</a>
                         </li>
+                        <li class="divider"></li>
                         <li ng-repeat="categoryItem in category.CategoryItems">
-                            <a class="test" href="#" ng-click="setSelectedGroup(category)">{{categoryItem}}</a>
+                            <a class="test" href="#" ng-click="setSelectedGroup(category)">{{categoryItem}} <span ng-class="rc.isChecked(group)"> <b ng-hide="qc.isChecked(categoryItem, category)" class="pull-right"> &#x2713 </b> </span> </a> 
                         </li>
                     </ul>
                 </li>
@@ -30,11 +31,11 @@
 
 
     <div class="col-md-12 pad-top-bottom">
-        <table class="table font-responsive sans-fonts tableStyle">
+        <table class="table font-responsive tableStyle">
             <thead class="lightGray">
                 <tr>
                     <th ng-repeat="h in qc.headers">
-                        <a href="#" ng-click="qc.refreshPredicate(h.predicateIndex); qc.order(qc.myPredicate[h.predicateIndex],null)">
+                        <a href="#" class="font-responsive font-Oswald font-normal" ng-click="qc.refreshPredicate(h.predicateIndex); qc.order(qc.myPredicate[h.predicateIndex],null)">
                             <span class="sortorder" ng-show="qc.direction(h.predicateIndex) !== null" ng-class="{direction:qc.direction(h.predicateIndex)}"></span>
                             {{h.name}}
                         </a>
@@ -42,7 +43,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in qc.content = ((qc.quizzesFiltered = (qc.quizzes | groupFilter: qc.filterCategories[1].selectedGroup:'verification_type' | groupFilter: qc.filterCategories[0].selectedGroup:'group_name' | filter: {quiz_name:qc.search})) | startFrom: qc.tablePage*qc.resultsPerPage | limitTo:qc.resultsPerPage)" style="height: 50px">
+                <tr class="t-font-responsive" ng-repeat="item in qc.content = ((qc.quizzesFiltered = (qc.quizzes | groupFilter: qc.filterCategories[1].selectedGroup:'verification_type' | groupFilter: qc.filterCategories[0].selectedGroup:'group_name' | filter: {quiz_name:qc.search})) | startFrom: qc.tablePage*qc.resultsPerPage | limitTo:qc.resultsPerPage)" style="height: 50px">
                     <td><a href="Index/Details?Id={{item.id}}" ng-bind-html="item.quiz_name | highlight: qc.search">{{item.quiz_name}}</a></td>
                     <td>{{item.group_name}}</td>
                     <td>{{item.questions_amount}}</td>
