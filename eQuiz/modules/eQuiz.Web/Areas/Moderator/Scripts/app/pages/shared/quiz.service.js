@@ -46,7 +46,7 @@
         }
 
         function schedule(quiz) {
-            return $http.post("/quiz/Schedule", quiz);
+            return $http.post("/quiz/Schedule", { quiz: quiz, timeZoneOffset: new Date().getTimezoneOffset() });
         }
 
         function deleteQuiz(id) {

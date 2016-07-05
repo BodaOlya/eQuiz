@@ -23,7 +23,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
         private readonly IRepository _repository;
 
-        private const int QuizLockDuration = 2;
+        private const int QuizLockDuration = 15;
 
         #endregion
 
@@ -280,7 +280,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         }
 
         [HttpPost]
-        public ActionResult Schedule(Quiz quiz)
+        public ActionResult Schedule(Quiz quiz, int timeZoneOffset)
         {
             var errorMessages = ValidateSchedule(quiz);
             if (errorMessages != null)
@@ -295,8 +295,8 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             var newQuiz = new Quiz()
             {
                 Name = String.Format("{0} / {1}", quiz.Name, quiz.UserGroup.Name),
-                StartDate = quiz.StartDate,
-                EndDate = quiz.EndDate,
+                StartDate = quiz.StartDate?.AddMinutes(timeZoneOffset),
+                EndDate = quiz.EndDate?.AddMinutes(timeZoneOffset),
                 TimeLimitMinutes = quiz.TimeLimitMinutes,
                 QuizStateId = sheduledStateId,
                 QuizTypeId = copy.QuizTypeId,
