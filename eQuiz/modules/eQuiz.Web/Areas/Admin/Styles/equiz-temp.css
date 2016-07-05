@@ -46,6 +46,30 @@
 }
 /*End dinamic font size*/
 
+/*Dinamic fond size pages*/
+.t-font-responsive {
+    font-size: 17px;
+}
+
+@media (max-width: 768px) {
+    .t-font-responsive {
+        font-size: 11px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1280px) {
+    .t-font-responsive {
+        font-size: 13px;
+    }
+}
+
+@media (min-width: 1281px) and (max-width: 1600px) {
+    .t-font-responsive {
+        font-size: 15px;
+    }
+}
+/*End dinamic font size*/
+
 .h-responsive {
     height: 54px;
 }
@@ -77,10 +101,18 @@
     padding-bottom: 13px;
 }
 
+.font-Oswald {
+    font-family: Oswald;
+}
+
 .lightGray {
     background-color: lightgray;
-    font-family: Oswald;
-    font-size: 16px;
+}
+
+.font-normal {
+    font-weight:400;
+    font-style: normal;
+    color: black;
 }
 
 .backgroundColor {
@@ -190,6 +222,8 @@
     height: auto;
     text-align: left;
     align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 th, td {
@@ -283,8 +317,8 @@ html .tabLabels li.active, html .tabLabels li.active a:hover {
 }
 
 .footerButtons button {
-    width: 170px;
-    height: 40px;
+    width: 120px;
+    height: 30px;
 }
 
 .footerButtons div {
@@ -354,7 +388,7 @@ button.btn-lightcoral {
 
 .display_inline {
     display: inline-block;
-    margin: 5px 30px 0px 5px;
+    margin: 0px 30px 0px 0px;
 }
 
 .spacing {
@@ -563,6 +597,8 @@ button.btn-lightcoral {
 }
 
 
+/* bootstrap sub dropdown START*/
+
 .dropdown-submenu {
     position: relative;
 }
@@ -611,6 +647,8 @@ button.btn-lightcoral {
     border-radius: 6px 0 6px 6px;
 }
 
+/* bootstrap sub dropdown END*/
+
 .logo {
     position: absolute;
     left: 50%;
@@ -621,10 +659,35 @@ button.btn-lightcoral {
 .navbar-custom {
     background-color: #fff;
     font-family: Oswald;
-    font-size: 16px;
 }
 
 .table > tbody > tr > td {
     vertical-align: middle;
+}
+
+/* student page bootstrap adjusting*/
+	
+.row-top-buffer {
+    margin-top: 10px;
+    vertical-align: middle;
+}
+
+.add-comment-row {
+    margin-left: 30px;
     font-size: 14px;
+}
+
+.comment-row > blockquote {
+    margin-left: 30px;
+    font-size: 16px;
+}
+
+.oswald-text {
+    font-family: Oswald;
+    font-size: 16px;
+    font-weight: normal;
+}		
+
+.disable-click{
+    pointer-events: none;
 }

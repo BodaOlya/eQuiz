@@ -533,7 +533,6 @@
     <Content Include="Views\Home\MainLogin.cshtml" />
     <Content Include="Areas\Student\Views\Default\Dashboard.cshtml" />
     <Content Include="Areas\Student\Views\Default\Details.cshtml" />
-    <Content Include="Areas\Student\Views\Account\Login.cshtml" />
     <Content Include="Areas\Moderator\Views\Quiz\Edit.cshtml" />
     <Content Include="Areas\Moderator\Views\Shared\_Header.cshtml" />
     <Content Include="Areas\Moderator\Views\Quiz\Index.cshtml" />

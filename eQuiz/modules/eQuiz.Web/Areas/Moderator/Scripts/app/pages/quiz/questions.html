@@ -5,7 +5,7 @@
                 <div class="col-sm-12 col-md-12 question-padding">
                     <div>
                         <label> Question #{{ $index + 1 }}</label>
-                        <input type="button" class="btn-warning control-label" ng-click="vm.isEditingEnabled() && vm.deleteQuestion($index)" value="Delete question" />
+                        <input type="button" class="btn btn-warning" ng-click="vm.isEditingEnabled() && vm.deleteQuestion($index)" value="Delete question" />
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-12">
@@ -72,7 +72,7 @@
                         <div class="col-sm-12 col-md-12">
                             <div class="form-inline">
                                 <label> Options</label>
-                                <input type="button" class="btn-success" ng-click="vm.isEditingEnabled() && vm.addNewAnswer(question, $index)" value="Add new">
+                                <input type="button" class="btn btn-success" ng-click="vm.isEditingEnabled() && vm.addNewAnswer(question, $index)" value="Add new">
                             </div>
                         </div>
                     </div>
@@ -99,7 +99,7 @@
                                         <input type="radio" class="radio-button" ng-disabled="!vm.isEditingEnabled()" ng-click="vm.checkAnswerForSelectOne(answer, question)" ng-value="true" ng-model="answer.IsRight">
                                     </td>
                                     <td class="col-sm-2 col-md-2">
-                                        <button class="btn-warning" ng-click="vm.isEditingEnabled() && vm.deleteAnswer(answer, question)">
+                                        <button class="btn btn-warning" ng-click="vm.isEditingEnabled() && vm.deleteAnswer(answer, question)">
                                             Delete
                                         </button>
                                     </td>
@@ -123,7 +123,7 @@
                         <div class="col-sm-12 col-md-12">
                             <div class="form-inline">
                                 <label>Options</label>
-                                <button class="btn-success" ng-click="vm.isEditingEnabled() && vm.addNewAnswer(question, $index)">Add new</button>
+                                <button class="btn btn-success" ng-click="vm.isEditingEnabled() && vm.addNewAnswer(question, $index)">Add new</button>
                             </div>
                         </div>
                     </div>
@@ -150,7 +150,7 @@
                                         <input type="checkbox" ng-disabled="!vm.isEditingEnabled()" class="check-box" ng-click="vm.model.answersDirty[vm.model.questions.indexOf(question)].checkedAnswersDirty=true" ng-model="answer.IsRight">
                                     </td>
                                     <td class="col-sm-2 col-md-2">
-                                        <button class="btn-warning" ng-click="vm.isEditingEnabled() && vm.deleteAnswer(answer, question)">Delete</button>
+                                        <button class="btn btn-warning" ng-click="vm.isEditingEnabled() && vm.deleteAnswer(answer, question)">Delete</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -171,8 +171,8 @@
             <hr />
         </div>
         <div align="right" class="add-question-container">
-            <input type="button" class="btn-success" ng-click="vm.isEditingEnabled() && vm.addNewQuestion()" value="Add new" />
-            <input type="button" class="btn-info" ng-click="vm.isEditingEnabled() && vm.showAddExistingQuestion()" value="Add existing one" />
+            <input type="button" class="btn btn-success" ng-click="vm.isEditingEnabled() && vm.addNewQuestion()" value="Add new" />
+            <input type="button" class="btn btn-info" ng-click="vm.isEditingEnabled() && vm.showAddExistingQuestion()" value="Add existing one" />
         </div>
     </ng-form>
 
