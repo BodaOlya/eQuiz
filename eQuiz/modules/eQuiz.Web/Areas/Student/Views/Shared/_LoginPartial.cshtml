@@ -5,11 +5,9 @@
     @Html.AntiForgeryToken()
 
     <ul class="nav navbar-nav navbar-right">
-        <li>
-            <a href="#">Hello @User.Identity.GetUserName() !</a>
+        <li> 
+            <a href="#">Hello <span class="userFullName"> {{ dc.user.FirstName }} {{ dc.user.LastName }}</span>!</a>
         </li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>
 }
-
-
