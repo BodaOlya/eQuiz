@@ -36,7 +36,7 @@
                     <td>
                         <a href="{{qc.linkToQuizRewiew}}" class="link" ng-click="qc.setLinkToQuiz(c.id, c.quizPassId);">
                             Passed : {{c.questionDetails.passed}}
-                            In Verification : {{c.questionDetails.inVerification}}
+                            <span ng-if="c.quizStatus=='In Verification'">In Verification : {{c.questionDetails.inVerification}}</span>
                             Not Passed : {{c.questionDetails.notPassed}}
                         </a>
                     </td>

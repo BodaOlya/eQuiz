@@ -23,7 +23,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
 
         private readonly IRepository _repository;
 
-        private const int QuizLockDuration = 2;
+        private const int QuizLockDuration = 15;
 
         #endregion
 
@@ -280,7 +280,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         }
 
         [HttpPost]
-        public ActionResult Schedule(Quiz quiz)
+        public ActionResult Schedule(Quiz quiz, int timeZoneOffset)
         {
             var errorMessages = ValidateSchedule(quiz);
             if (errorMessages != null)
@@ -295,8 +295,8 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             var newQuiz = new Quiz()
             {
                 Name = String.Format("{0} / {1}", quiz.Name, quiz.UserGroup.Name),
-                StartDate = quiz.StartDate,
-                EndDate = quiz.EndDate,
+                StartDate = quiz.StartDate?.AddMinutes(timeZoneOffset),
+                EndDate = quiz.EndDate?.AddMinutes(timeZoneOffset),
                 TimeLimitMinutes = quiz.TimeLimitMinutes,
                 QuizStateId = sheduledStateId,
                 QuizTypeId = copy.QuizTypeId,
@@ -461,21 +461,27 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         {
             var quizBlocks = _repository.Get<QuizBlock>(qb => qb.QuizId == id);
 
-            // Deleting QuizBlocks dependent to Quiz
+            #region Deleting QuizBlocks dependent to Quiz
+
             foreach (var quizBlock in quizBlocks)
             {
-                // Deleting QuizQuestions dependent to QuizBlock
+                #region Deleting QuizQuestions dependent to QuizBlock
+
                 var quizQuestions = _repository.Get<QuizQuestion>(qq => qq.QuizBlockId == quizBlock.Id);
                 foreach (var quizQuestion in quizQuestions)
                 {
                     _repository.Delete<int, QuizQuestion>("Id", quizQuestion.Id);
                 }
 
-                // Deleting QuizPassQuestions dependent to QuizBlock
+                #endregion
+
+                #region Deleting QuizPassQuestions dependent to QuizBlock
+
                 var quizPassQuestions = _repository.Get<QuizPassQuestion>(qpq => qpq.QuizBlockId == quizBlock.Id);
                 foreach (var quizPassQuestion in quizPassQuestions)
                 {
-                    // Deleting UserAnswers dependent to QuizPassQuestion
+                    #region Deleting UserAnswers dependent to QuizPassQuestion
+
                     var userAnswers =
                         _repository.Get<UserAnswer>(ua => ua.QuizPassQuestionId == quizPassQuestion.Id);
                     foreach (var userAnswer in userAnswers)
@@ -483,63 +489,141 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                         _repository.Delete<int, UserAnswer>("Id", userAnswer.Id);
                     }
 
-                    // Deleting UserTextAnswers dependent to QuizPassQuestion
+                    #endregion
+
+                    #region Deleting UserTextAnswers dependent to QuizPassQuestion
+
                     var userTextAnswers = _repository.Get<UserTextAnswer>(ua => ua.QuizPassQuestionId == quizPassQuestion.Id);
                     foreach (var userTextAnswer in userTextAnswers)
                     {
                         _repository.Delete<int, UserTextAnswer>("Id", userTextAnswer.Id);
                     }
 
+                    #endregion
+
+                    #region Deleting UserAnswersScore dependent to QuizPassQuestion
+
+                    var userAnswerScores = _repository.Get<UserAnswerScore>(uas => uas.QuizPassQuestionId == quizPassQuestion.Id);
+
+                    foreach (var userAnswerScore in userAnswerScores)
+                    {
+                        _repository.Delete<int, UserAnswerScore>("Id", userAnswerScore.Id);
+                    }
+
+                    #endregion
+
                     _repository.Delete<int, QuizPassQuestion>("Id", quizPassQuestion.Id);
                 }
+
+                #endregion
 
                 _repository.Delete<int?, QuizBlock>("Id", quizBlock.Id);
             }
 
-            // Deleting QuizPasses dependent to Quiz
+            #endregion
+
+            #region Deleting QuizPasses dependent to Quiz
+
             var quizPasses = _repository.Get<QuizPass>(qp => qp.QuizId == id);
             foreach (var quizPass in quizPasses)
             {
-                // Deleting QuizPassQuestions dependent to QuizPass
+                #region Deleting QuizPassQuestions dependent to QuizPass
+
                 var quizPassQuestions = _repository.Get<QuizPassQuestion>(qpq => qpq.QuizPassId == quizPass.Id);
+
                 foreach (var quizPassQuestion in quizPassQuestions)
                 {
-                    // Deleting UserAnswers dependent to QuizPassQuestion
+                    #region Deleting UserAnswers dependent to QuizPassQuestion
+
                     var userAnswers = _repository.Get<UserAnswer>(ua => ua.QuizPassQuestionId == quizPassQuestion.Id);
+
                     foreach (var userAnswer in userAnswers)
                     {
                         _repository.Delete<int, UserAnswer>("Id", userAnswer.Id);
                     }
 
-                    // Deleting UserTextAnswers dependent to QuizPassQuestion
+                    #endregion
+
+                    #region Deleting UserTextAnswers dependent to QuizPassQuestion
+
                     var userTextAnswers = _repository.Get<UserTextAnswer>(ua => ua.QuizPassQuestionId == quizPassQuestion.Id);
+
                     foreach (var userTextAnswer in userTextAnswers)
                     {
                         _repository.Delete<int, UserTextAnswer>("Id", userTextAnswer.Id);
                     }
 
+                    #endregion
+
+                    #region Deleting UserAnswersScore dependent to QuizPassQuestion
+
+                    var userAnswerScores = _repository.Get<UserAnswerScore>(uas => uas.QuizPassQuestionId == quizPassQuestion.Id);
+
+                    foreach (var userAnswerScore in userAnswerScores)
+                    {
+                        _repository.Delete<int, UserAnswerScore>("Id", userAnswerScore.Id);
+                    }
+
+                    #endregion
+
                     _repository.Delete<int, QuizPassQuestion>("Id", quizPassQuestion.Id);
                 }
+
+                #endregion
+
+                #region Deleting QuizPassScores dependent to QuizPass
+
+                var quizPassScores = _repository.Get<QuizPassScore>(qps => qps.QuizPassId == quizPass.Id);
+
+                foreach (var quizPassScore in quizPassScores)
+                {
+                    _repository.Delete<int, QuizPassScore>("Id", quizPassScore.Id);
+                }                
+
+                #endregion
 
                 _repository.Delete<int, QuizPass>("Id", quizPass.Id);
             }
 
-            // Deleting QuizVariants dependent to Quiz
+            #endregion
+
+            #region Deleting QuizVariants dependent to Quiz
+
             var quizVariants = _repository.Get<QuizVariant>(qv => qv.QuizId == id);
+
             foreach (var quizVariant in quizVariants)
             {
+                #region Deleting QuizQuestions dependent to QuizVariant
+
+                var quizQuestions = _repository.Get<QuizQuestion>(qq => qq.QuizVariantId == quizVariant.Id);
+
+                foreach (var quizQuestion in quizQuestions)
+                {
+                    _repository.Delete<int, QuizQuestion>("Id", quizQuestion.Id);
+                }
+
+                #endregion
+
                 _repository.Delete<int?, QuizVariant>("Id", quizVariant.Id);
             }
 
-            // Deleting QuizEditHistories dependent to Quiz
+            #endregion
+
+            #region Deleting QuizEditHistories dependent to Quiz
+
             var quizEditHistories = _repository.Get<QuizEditHistory>(qeh => qeh.QuizId == id);
             foreach (var quizEditHistory in quizEditHistories)
             {
                 _repository.Delete<int, QuizEditHistory>("Id", quizEditHistory.Id);
             }
 
-            // Deleting Quiz
+            #endregion
+
+            #region Deleting Quiz
+
             _repository.Delete<int, Quiz>("Id", id);
+
+            #endregion
 
             var result = Json(new HttpStatusCodeResult(HttpStatusCode.OK));
 
@@ -632,7 +716,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
         private object GetQuizEditHistoryForSerialization(QuizEditHistory history)
         {
             object user = null;
-            if (history.User!= null)
+            if (history.User != null)
             {
                 user = new
                 {
@@ -715,7 +799,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
             var latestEdit = new QuizEditHistory()
             {
                 QuizId = quizId,
-                UserId = userId, 
+                UserId = userId,
                 StartDate = date,
                 LastChangeDate = date
             };
@@ -772,7 +856,7 @@ namespace eQuiz.Web.Areas.Moderator.Controllers
                 }
             }
 
-            if(quiz.Id != 0)
+            if (quiz.Id != 0)
             {
                 var latestEdit = _repository.Get<QuizEditHistory>(q => q.QuizId == quiz.Id, q => q.User).OrderByDescending(q => q.LastChangeDate).Take(1).FirstOrDefault();
 
