@@ -239,7 +239,7 @@ namespace eQuiz.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public void AddComment(int studentId, int adminId, string comment)
+        public void AddComment(int studentId, string adminId, string comment)
         {
             var comm = new UserComment();
             comm.UserId = studentId;

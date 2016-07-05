@@ -1,16 +1,17 @@
 ﻿@model eQuiz.Web.Areas.Moderator.Models.QuizPreviewModel
 @{
-    Layout = "~/Views/Shared/Layout.cshtml";
-    ViewBag.showButton = !Model.State.Equals("Scheduled");
+    Layout = "~/Views/Shared/Layout.cshtml";    
 }
 
 <section class="wrapperBody">
-    <div align="center">
+    <div align="center" ng-controller="QuizController as vm" ng-cloak>
         <h2>@Model.Name</h2>
-        <p ng-controller="QuizController as qc">
-           <h4> <a href="/moderator/quiz/edit/#/quiz?id=@Model.Id">Edit </a>
-            <a href="" ng-show="@ViewBag.showButton" ng-click="qc.model.quiz.Id=@Model.Id; qc.deleteQuiz()">Delete</a></h4>
-        </p>
+        <div align="center">
+            <h4>
+                <a class = "btn btn-success" href="/moderator/quiz/edit/#/quiz?id=@Model.Id">Edit </a>
+                <a class = "btn btn-warning" href="" ng-click="vm.deleteQuiz()" ng-show="vm.deleteCanExecute()">Delete</a>
+            </h4>            
+        </div>
         <p>
             <i>@Model.Descriprtion</i>
         </p>
@@ -156,6 +157,30 @@
                 }
             </div>
         </div>
+
+        <div ng-cloak align="center" class="loading-background" ng-show="vm.loadingVisible">
+            <div class="cssload-container">
+                <div class="cssload-whirlpool"></div>
+            </div>
+        </div>
+        <div ng-cloak align="center" class="loading-background" ng-show="vm.errorMessageVisible">
+            <div class="message-content">
+                <p class="red text-center">
+                    SERVER ERROR
+                </p>
+            </div>
+        </div>
+        <div ng-cloak align="center" class="loading-background" ng-show="vm.successMessageVisible">
+            <div class="message-content">
+                <p>
+                    Quiz have been
+                </p>
+                <p class="green">
+                    SUCCESSFULLY DELETED
+                </p>
+            </div>
+        </div>
+
     </div>
 </section>
 @section FootScripts{
