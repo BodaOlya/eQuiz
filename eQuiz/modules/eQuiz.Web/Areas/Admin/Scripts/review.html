@@ -1,4 +1,4 @@
-﻿<div class="pad-top-bottom backgroundColor" style="height: 100vh;">
+﻿<div class="container-fluid div-container">
     <div class="col-md-10 text-left">
         <label class="font-responsive font-Oswald font-normal">Search</label>
         <input class="input-sm font-responsive sans-fonts" type="text" ng-model="rc.search">
@@ -8,7 +8,7 @@
             <button class="btn btn-default font-responsive">Group Filter</button>
             <button class="btn dropdown-toggle btn-default font-responsive" ng-click="rc.filterIsOpened=!rc.filterIsOpened">
                 <span class="caret"></span>
-            </button>            
+            </button>
             <ul class="dropdown-menu filters-scrollbar" aria-labelledby="dropdownMenu">
                 <li>
                     <a ng-click="rc.checkAll()"><i class="icon-ok-sign"></i>Check All</a>
@@ -20,7 +20,7 @@
                 <li ng-repeat="group in rc.groupList">
                     <a ng-click="setSelectedGroup()" ng-model="group">{{group}} <span ng-class="rc.isChecked(group)"> <b ng-hide="!rc.isChecked(group)">&#x2713</b></span> </a>
                 </li>
-            </ul>            
+            </ul>
         </div>
     </div>
 
