@@ -96,6 +96,11 @@
     background-color: white;
 }
 
+.white-background:read-only {
+    background-color: white;
+    min-height: 100px;
+}
+
 .sans-fonts {
     font-family: sans-serif
 }
