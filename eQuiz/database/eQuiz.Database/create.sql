@@ -408,7 +408,7 @@ CREATE TABLE [dbo].[AspNetUsers](
  
 GO
 
---ALTER TABLE [dbo].[tblUserComment] ADD CONSTRAINT [FK_tblUserComment_AdminId_tblUser] FOREIGN KEY([AdminId]) REFERENCES [dbo].[AspNetUsers] ([Id]);
+--ALTER TABLE [dbo].[tblUserComment] ADD CONSTRAINT [FK_tblUserComment_AdminId_AspNetUsers] FOREIGN KEY([AdminId]) REFERENCES [dbo].[AspNetUsers] ([Id]);
 --GO
 
 USE [eQuiz];
