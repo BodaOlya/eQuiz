@@ -119,7 +119,7 @@
                 vm.cancelIsDisabled = true;
                 vm.saveIsDisabled = true;
             };
-            $scope.showWarningPopUp("Do you realy want cancel all changes?", ifOK, undefined);
+            $scope.showWarningPopUp("Do you realy want cancel all changes?", ifOk, undefined);
         };
 
         vm.saveQuizReview = function () {
