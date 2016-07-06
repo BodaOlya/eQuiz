@@ -222,12 +222,13 @@ namespace eQuiz.Web.Areas.Admin.Controllers
             var result = new List<object>();
             var comments = _repository.Get<UserComment>(com => com.UserId == id);
             var user = _repository.GetSingle<User>(u => u.Id == id);
+            var aspNetUser = _repository.Get<AspNetUser>();
 
             var query = from c in comments
                         select new
                         {
                             date = c.CommentTime.ToString(),
-                            author = c.AdminId,
+                            author = aspNetUser.SingleOrDefault(u => u.Id == c.AdminId) == null ? " " : aspNetUser.SingleOrDefault(u => u.Id == c.AdminId).UserName,
                             text = c.CommentText
                         };
 
@@ -242,10 +243,11 @@ namespace eQuiz.Web.Areas.Admin.Controllers
         [HttpPost]
         public void AddComment(int studentId, int adminId, string comment)
         {
-            var aspUser = _repository.GetSingle<AspNetUser>(u => u.UserName == User.Identity.Name);
+            var aspUser = _repository.Get<AspNetUser>();
             var comm = new UserComment();
             comm.UserId = studentId;
-            comm.AdminId = aspUser.UserName;
+            string temp = aspUser.SingleOrDefault(u => u.UserName == User.Identity.Name).Id;
+            comm.AdminId = temp;
             comm.CommentText = comment;
             comm.CommentTime = DateTime.Now;
 
