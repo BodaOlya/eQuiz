@@ -600,3 +600,8 @@ button.btn-lightcoral {
     max-height: 250px; 
     overflow-y: auto;
 }
+
+.div-container {
+    background: #f9f9f9; 
+    padding-top: 15px;
+}

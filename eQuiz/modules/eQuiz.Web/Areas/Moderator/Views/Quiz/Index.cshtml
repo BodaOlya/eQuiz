@@ -32,27 +32,27 @@
             <table class="table" ng-if="!q.isLoading">
                 <thead>
                     <tr>
-                        <th>
+                        <th class="col-sm-4">
                             <a href="#" class="sortBtn" ng-click="q.sortBy('Name')">
                                 {{q.showOrderArrow('Name')}}Quiz
                             </a>
                         </th>
-                        <th>
+                        <th class="col-sm-2">
                             <a href="#" ng-click="q.sortBy('CountOfQuestions')">
                                 {{q.showOrderArrow('CountOfQuestions')}}Questions
                             </a>
                         </th>
-                        <th>
+                        <th class="col-sm-3">
                             <a href="#" ng-click="q.sortBy('StartDate')">
                                 {{q.showOrderArrow('StartDate')}}Start Date
                             </a>
                         </th>
-                        <th>
+                        <th class="col-sm-2">
                             <a href="#" ng-click="q.sortBy('Duration')">
                                 {{q.showOrderArrow('Duration')}}Duration, m
                             </a>
                         </th>
-                        <th>
+                        <th class="col-sm-2">
                             <a href="#" ng-click="q.sortBy('StateName')">
                                 {{q.showOrderArrow('StateName')}}Status
                             </a>
