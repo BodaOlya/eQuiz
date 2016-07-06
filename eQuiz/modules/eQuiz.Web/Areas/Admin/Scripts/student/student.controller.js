@@ -7,13 +7,13 @@
         var vm = this;
 
         vm.studentInfo = studentInfo;
-        vm.studentQuizzes = studentQuizzes;        
+        vm.studentQuizzes = studentQuizzes;
         vm.studentComments = studentComments;
         var map = { 17: false, 13: false };
         $scope.showNotification = false;
         $scope.showWarning = false;
 
-        vm.addCommentKeyDown = function() {
+        vm.addCommentKeyDown = function () {
             var key = window.event.keyCode;
             if (key in map) {
                 map[key] = true;
@@ -78,11 +78,11 @@
             studentDataService.getStudentComments($location.search().Id).then(function (response) {
                 vm.studentComments = response.data;
                 vm.studentComments = sortByDate(vm.studentComments);
-                    return vm.studentComments;
-                });
+                return vm.studentComments;
+            });
 
             generatePredicate();
-            }
+        }
         vm.studentQuizzes = sortByDate(vm.studentQuizzes);
         vm.studentComments = sortByDate(vm.studentComments);
         generatePredicate();
@@ -197,13 +197,27 @@
         };
 
         vm.cancelProfile = function () {
-            activate();
-            vm.modelChanged = false;
+            var ifOK = function () {
+                activate();
+                vm.modelChanged = false;
+            };
+            $scope.showWarningPopUp("All changes will be canceled. Are you sure?", ifOK, undefined);
         }; // Cancel unsaved changes in the profile
 
         vm.toggleNewCommentFrame = function () {
-            vm.newCommentFrame = !vm.newCommentFrame;
-            vm.newComment = {}
+            var ifOK = function () {
+                vm.newCommentFrame = !vm.newCommentFrame;
+                vm.newComment = {}
+            };
+            if (!vm.newCommentFrame) {
+                ifOK();
+            } else {
+                if (vm.newComment.text) {
+                    $scope.showWarningPopUp("All changes will be canceled. Are you sure?", ifOK, undefined);
+                } else {
+                    ifOK();
+                }
+            }
         };
 
         vm.addComment = function () {
@@ -211,14 +225,15 @@
             .success(function (res) {
                 $scope.showNotifyPopUp("New comment was successfully added!");
                 $timeout($scope.closePopUp, 5000);
-                activate();          
+                activate();
             })
             .error(function (res) {
                 $scope.showNotifyPopUp("Error: new comment was not saved!");
                 $timeout($scope.closePopUp, 5000);
             });
-                vm.toggleNewCommentFrame();
-                vm.studentComments = sortByDate(vm.studentComments);
+            vm.newComment = {};
+            vm.toggleNewCommentFrame();
+            vm.studentComments = sortByDate(vm.studentComments);
         };
 
         vm.validationCheck = function () {

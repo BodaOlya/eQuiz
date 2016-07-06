@@ -109,15 +109,18 @@
         }
 
         vm.cancelQuizReview = function () {
-            vm.quiz = [];
+            var ifOk = function () {
+                vm.quiz = [];
 
-            for (var i = 0; i < vm.quizClone.length; i++) {
-                vm.quiz[i] = vm.deepCopy(vm.quizClone[i]);
-            }
+                for (var i = 0; i < vm.quizClone.length; i++) {
+                    vm.quiz[i] = vm.deepCopy(vm.quizClone[i]);
+                }
 
-            vm.cancelIsDisabled = true;
-            vm.saveIsDisabled = true;
-        }
+                vm.cancelIsDisabled = true;
+                vm.saveIsDisabled = true;
+            };
+            $scope.showWarningPopUp("Do you realy want cancel all changes?", ifOK, undefined);
+        };
 
         vm.saveQuizReview = function () {
             for (var i = 0; i < vm.quiz.length; i++) {
@@ -217,7 +220,8 @@
             // Changing UserScore for auto questions
         vm.setAutoQuestionStatus = function (id, status) {
             if (vm.isFinalized) {
-                alert("This quiz was finalized");
+                $scope.showErrorPopUp("This quiz was finalized, so can't make any changes.");
+                $timeout($scope.closePopUp, 5000);
             } else {
                 for (var i = 0; i < vm.quiz.length; i++) {
                     if (vm.quiz[i].Id === id) {
@@ -240,7 +244,9 @@
             // Checking and changing UserScore for text questions
         vm.checkAndCount = function (mark, maxScore, questionId, questionPosition) {
             if (vm.isFinalized) {
-                alert("This quiz was finalized");
+                //alert();
+                $scope.showErrorPopUp("This quiz was finalized, so can't make any changes.");
+                $timeout($scope.closePopUp, 5000);
             } else {
                 if (!isNaN(mark) && mark <= maxScore && mark >= 0) {
                     for (var i = 0; i < vm.quiz.length; i++) {
@@ -256,7 +262,8 @@
                             vm.quiz[i].UserScore = 0;
                         }
                     }
-                    alert("Question №" + questionPosition + " mark is invalid and user score was changed to 0");
+                    $scope.showErrorPopUp("Question №" + questionPosition + " mark is invalid and user score was changed to 0.");
+                    $timeout($scope.closePopUp, 5000);
                 }
 
                 vm.saveIsDisabled = false;
