@@ -16,7 +16,7 @@
         vm.resultsCount = [10, 25, 50, 100];
         vm.tablePage = 0;
         vm.contentsToExport = []; // Contains data for exporting into excel file
-        vm.excelPath = 'C:/'; // Default path for excel file
+        vm.excelPath = 'D:\\'; // Default path for excel file
         $scope.showNotification = false;
         $scope.showWarning = false;
 

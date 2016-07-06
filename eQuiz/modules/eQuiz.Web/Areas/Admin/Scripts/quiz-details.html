@@ -82,7 +82,7 @@
         <div class="col-md-10 text-left">
             <label class="font-responsive font-normal" style="padding-right: 8px">Total for export: {{qc.contentsToExport.length}};</label>
             <label class="font-responsive font-normal">Path: </label>
-            <input class="input-sm font-responsive" type="text" value="C:\\" ng-model="qc.excelPath" />
+            <input class="input-sm font-responsive" type="text" ng-model="qc.excelPath" />
             <button class="btn btn-success font-responsive" ng-click="qc.CreateExcel()" ng-disabled="qc.contentsToExport.length === 0">Save</button>
             <button class="btn btn-danger font-responsive" ng-click="qc.cancelExport()">Cancel</button>
         </div>

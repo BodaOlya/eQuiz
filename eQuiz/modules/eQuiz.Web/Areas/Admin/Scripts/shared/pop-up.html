@@ -1,4 +1,10 @@
-﻿<div class="notifyPopUpMessage error font-responsive sans-fonts" ng-show="showErrorNotification">
+﻿<div class="notifyPopUpMessage success font-responsive sans-fonts" ng-show="showNotification">
+    <div class="closePopUp btn" ng-click="closePopUp()">X</div>
+    <div class="NotifyPopUpText">{{messageText}}</div><div class="confirmPopUp">
+    </div>
+</div>
+
+<div class="notifyPopUpMessage error font-responsive sans-fonts" ng-show="showErrorNotification">
     <div class="closePopUp btn" ng-click="closePopUp()">X</div>
     <div class="NotifyPopUpText">
         {{messageText}}
@@ -7,18 +13,12 @@
     </div>
 </div>
 
-<div class="notifyPopUpMessage success font-responsive sans-fonts" ng-show="showNotification">
-    <div class="closePopUp btn" ng-click="closePopUp()">X</div>
-    <div class="NotifyPopUpText">{{messageText}}</div><div class="confirmPopUp">
-    </div>
-</div>
-
 <div class="notifyPopUpMessage warning font-responsive sans-fonts" ng-show="showWarning">
     <div class="closePopUp btn" ng-click="closePopUp()">X</div>
     <div class="ConfirmPopUpText">
         {{messageText}}
     </div>
-    <div class="confirmPopUp">
+    <div style="text-align: center;">
         <button class="btn btn-success" ng-click="closePopUp(); warningWindowOK()">OK</button>
         <button class="btn btn-danger" ng-click="closePopUp(); warningWindowCancel()">Cancel</button>
     </div>

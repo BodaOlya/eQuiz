@@ -13,16 +13,19 @@
 
                 $scope.showNotifyPopUp = function (text) {
                     $scope.messageText = text;
+                    $scope.closePopUp();
                     $scope.showNotification = true;
                 }
 
                 $scope.showErrorPopUp = function (text) {
                     $scope.messageText = text;
+                    $scope.closePopUp();
                     $scope.showErrorNotification = true;
                 }
 
                 $scope.showWarningPopUp = function (text, ifOk, ifCancel) {
                     $scope.messageText = text;
+                    $scope.closePopUp();
                     $scope.showWarning = true;
                     $scope.warningWindowOK = ifOk;
                     $scope.warningWindowCancel = ifCancel;

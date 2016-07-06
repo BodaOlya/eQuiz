@@ -396,6 +396,7 @@
     <Content Include="Areas\Admin\Scripts\shared\loading-screen.directive.js" />
     <Content Include="Areas\Admin\Scripts\shared\ng-confirm-click.directive.js" />
     <Content Include="Areas\Admin\Scripts\shared\pop-up-window.directive.js" />
+    <Content Include="Areas\Admin\Scripts\shared\pop-up.html" />
     <Content Include="Areas\Admin\Scripts\shared\routing.js" />
     <Content Include="Areas\Admin\Scripts\student\student.controller.js" />
     <Content Include="Areas\Admin\Scripts\student\student-data.service.js" />

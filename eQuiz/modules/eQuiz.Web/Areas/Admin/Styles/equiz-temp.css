@@ -148,17 +148,17 @@
 
 .success {
     border-color: forestgreen;
-    background-color: lightgreen;
+    background-color: #d3fcc9;
 }
 
 .warning {
     border-color: darkgoldenrod;
-    background-color: yellow;
+    background-color: #f9fbbf;
 }
 
 .error {
     border-color: red;
-    background-color: lightcoral;
+    background-color: #fcd4d4;
 }
 
 .closePopUp {
@@ -175,7 +175,6 @@
     margin: 5px;
     text-align: center;
     border: medium;
-    background-color: yellow;
     font-family: Arial;
     align-content: center;
 }
