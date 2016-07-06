@@ -84,7 +84,8 @@
             <label class="font-responsive font-normal">Path: </label>
             <input class="input-sm font-responsive" type="text" value="C:\\" ng-model="qc.excelPath" />
             <button class="btn btn-success font-responsive" ng-click="qc.CreateExcel()" ng-disabled="qc.contentsToExport.length === 0">Save</button>
-            <button class="btn btn-danger font-responsive" ng-click="qc.exportShow=!qc.exportShow">Cancel</button>
+            <button class="btn btn-danger font-responsive" ng-click="qc.cancelExport()">Cancel</button>
         </div>
     </div>
+    <div pop-up-window></div>
 </div>

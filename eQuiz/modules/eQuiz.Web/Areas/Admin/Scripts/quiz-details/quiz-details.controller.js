@@ -217,5 +217,13 @@
                 document.write(response.data);
             });
         }; // Method that sends data to the server
+
+        vm.cancelExport = function () {
+            var ifOK = function () {
+                vm.exportShow = !vm.exportShow;
+                vm.contentsToExport = [];
+            };
+            $scope.showWarningPopUp("Do you realy want cancel exporting?", ifOK, undefined);
+        };
     };
 })(angular);
